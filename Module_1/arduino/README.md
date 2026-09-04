@@ -1,69 +1,62 @@
-# Arduino Sketches - Module 1
+# Module 1 Arduino Sketches
 
-This folder contains all Arduino sketches used for Module 1 experiments. Each sketch is placed in its own folder with the same name as the `.ino` file, following the course repository template guidelines.
+This directory contains the Arduino sketches used for the Module 1 experiments.
+Each sketch is stored in a folder with the same name as its `.ino` file.
 
-## Repository Structure
+## Sketches
 
-- [`part_01_blink_1to1/`](./part_01_blink_1to1/) — [`part_01_blink_1to1.ino`](./part_01_blink_1to1/part_01_blink_1to1.ino)
-- [`part_01_blink_1to10/`](./part_01_blink_1to10/) — [`part_01_blink_1to10.ino`](./part_01_blink_1to10/part_01_blink_1to10.ino)
-- [`part_01_blink_10to1/`](./part_01_blink_10to1/) — [`part_01_blink_10to1.ino`](./part_01_blink_10to1/part_01_blink_10to1.ino)
-- [`part_02_analog_read_serial/`](./part_02_analog_read_serial/) — [`part_02_analog_read_serial.ino`](./part_02_analog_read_serial/part_02_analog_read_serial.ino)
-- [`part_03a_adc_integer/`](./part_03a_adc_integer/) — [`part_03a_adc_integer.ino`](./part_03a_adc_integer/part_03a_adc_integer.ino)
-- [`part_03b_adc_voltage/`](./part_03b_adc_voltage/) — [`part_03b_adc_voltage.ino`](./part_03b_adc_voltage/part_03b_adc_voltage.ino)
-- [`part_03c_averaging_comparison/`](./part_03c_averaging_comparison/) — [`part_03c_averaging_comparison.ino`](./part_03c_averaging_comparison/part_03c_averaging_comparison.ino)
-- [`part_03d_averaging_timing/`](./part_03d_averaging_timing/) — [`part_03d_averaging_timing.ino`](./part_03d_averaging_timing/part_03d_averaging_timing.ino)
-- [`part_04_averaged_adc_pwm_led/`](./part_04_averaged_adc_pwm_led/) — [`part_04_averaged_adc_pwm_led.ino`](./part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino)
+| Part | Sketch | Purpose |
+|---|---|---|
+| Part 1 | [Blink 1:1](./part_01_blink_1to1/part_01_blink_1to1.ino) | Generates a 500 ms HIGH and 500 ms LOW digital waveform. |
+| Part 1 | [Blink 1:10](./part_01_blink_1to10/part_01_blink_1to10.ino) | Generates a 100 ms HIGH and 1000 ms LOW digital waveform. |
+| Part 1 | [Blink 10:1](./part_01_blink_10to1/part_01_blink_10to1.ino) | Generates a 1000 ms HIGH and 100 ms LOW digital waveform. |
+| Part 2 | [AnalogReadSerial](./part_02_analog_read_serial/part_02_analog_read_serial.ino) | Reads analog pin A0 and prints the raw ADC value. |
+| Part 3A | [Integer ADC readings](./part_03a_adc_integer/part_03a_adc_integer.ino) | Prints A0 readings as labeled integer ADC values. |
+| Part 3B | [ADC-to-voltage conversion](./part_03b_adc_voltage/part_03b_adc_voltage.ino) | Converts ADC readings to voltage using a nominal 5.00 V reference. |
+| Part 3C | [Averaging comparison](./part_03c_averaging_comparison/part_03c_averaging_comparison.ino) | Produces 100 N=1 points followed by 100 N=1000 averaged points. |
+| Part 3D | [ADC acquisition timing](./part_03d_averaging_timing/part_03d_averaging_timing.ino) | Measures the time required for 1000 `analogRead()` conversions. |
+| Part 4 | [Averaged ADC PWM LED](./part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino) | Maps the averaged potentiometer input to PWM output on pin 9. |
 
----
+## Hardware Connections
 
-## Sketch Descriptions
+### Potentiometer
 
-| Sketch | Part | Description |
-| :--- | :--- | :--- |
-| [`part_01_blink_1to1.ino`](./part_01_blink_1to1/part_01_blink_1to1.ino) | Part 1 | Blink with 1:1 duty cycle (500ms HIGH, 500ms LOW). Expected duty cycle: 50%. |
-| [`part_01_blink_1to10.ino`](./part_01_blink_1to10/part_01_blink_1to10.ino) | Part 1 | Blink with 1:10 duty cycle (100ms HIGH, 1000ms LOW). Expected duty cycle: ~9.09%. |
-| [`part_01_blink_10to1.ino`](./part_01_blink_10to1/part_01_blink_10to1.ino) | Part 1 | Blink with 10:1 duty cycle (1000ms HIGH, 100ms LOW). Expected duty cycle: ~90.9%. |
-| [`part_02_analog_read_serial.ino`](./part_02_analog_read_serial/part_02_analog_read_serial.ino) | Part 2 | Reads potentiometer voltage from A0 and prints raw ADC values to Serial Monitor. |
-| [`part_03a_adc_integer.ino`](./part_03a_adc_integer/part_03a_adc_integer.ino) | Part 3A | Reads A0 and prints integer ADC values in `ADC:512` format for Serial Plotter compatibility. |
-| [`part_03b_adc_voltage.ino`](./part_03b_adc_voltage/part_03b_adc_voltage.ino) | Part 3B | Converts ADC readings to voltage (V) using a 5.00V reference and prints with 4 decimal places. |
-| [`part_03c_averaging_comparison.ino`](./part_03c_averaging_comparison/part_03c_averaging_comparison.ino) | Part 3C | Alternates between 100 points of N=1 (single reading) and 100 points of N=1000 (averaged) voltage outputs within the same sketch, allowing direct side‑by‑side comparison in Serial Plotter. |
-| [`part_03d_averaging_timing.ino`](./part_03d_averaging_timing/part_03d_averaging_timing.ino) | Part 3D | Measures the time (in microseconds) required to perform 1000 `analogRead()` conversions using `micros()`. |
-| [`part_04_averaged_adc_pwm_led.ino`](./part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino) | Part 4 | Averages 1000 ADC readings from the potentiometer, maps the value to PWM (0–255), and outputs to pin 9 for LED brightness control. |
+| Potentiometer terminal | Arduino connection |
+|---|---|
+| Outer terminal | 5 V |
+| Other outer terminal | GND |
+| Center wiper | A0 |
 
-## Part 3C: Side‑by‑Side Comparison
+### LED and PWM
 
-The sketch [`part_03c_averaging_comparison.ino`](./part_03c_averaging_comparison/part_03c_averaging_comparison.ino) repeatedly produces:
+| Component | Arduino connection |
+|---|---|
+| PWM output | Pin 9 |
+| LED | Connected in series with a current-limiting resistor |
+| Ground | Arduino GND |
 
-- **100 points** of **N = 1** (single `analogRead()` per point)
-- **100 points** of **N = 1000** (average of 1000 `analogRead()` calls per point)
+## Part 3C Output
 
-This makes it easy to compare the noise level between unaveraged and averaged data directly in Serial Plotter. The transition between the two blocks is clearly visible: N=1 appears as a rough, noisy trace, while N=1000 appears as a smooth, stable trace.
+The Part 3C sketch repeatedly produces:
 
-## Common Hardware Connections
+1. 100 voltage points with one ADC conversion per point, \(N=1\).
+2. 100 voltage points with 1000 ADC conversions averaged per point, \(N=1000\).
+3. A return to the \(N=1\) block.
 
-Unless otherwise noted in each sketch, the following connections apply:
-
-| Component | Arduino Pin |
-| :--- | :--- |
-| Potentiometer (center wiper) | A0 |
-| Potentiometer (outer terminal) | 5V |
-| Potentiometer (other outer terminal) | GND |
-| LED (PWM controlled) | Pin 9 (with series resistor, 200–2000Ω) |
+The potentiometer must remain fixed while both blocks are collected.
 
 ## Usage
 
-1. Open the desired sketch folder in Arduino IDE.
-2. Select **Tools → Board → Arduino Uno**.
-3. Select the correct **Port**.
-4. Click **Upload**.
-5. Open **Serial Monitor** (9600 baud) or **Serial Plotter** (Tools → Serial Plotter) to view output.
+1. Open the selected sketch in Arduino IDE.
+2. Select **Arduino Uno**.
+3. Select the correct serial port.
+4. click **Verify**.
+5. click **Upload**.
+6. Open Serial Monitor or Serial Plotter at `9600 baud`.
 
 ## Notes
 
-- All sketches are written for **Arduino Uno**.
-- The ADC reference voltage is assumed to be **5.00 V** (nominal). If a measured reference voltage is available, update `V_REF_VOLTS` accordingly.
-- Displaying many decimal places does **not** improve the physical ADC resolution; it is an artifact of floating-point arithmetic.
-
----
-
-*Last updated: September 4th 2026*
+- The sketches assume a nominal ADC reference voltage of 5.00 V.
+- The Arduino Uno ADC produces 1024 possible integer codes, from 0 through 1023.
+- Printing additional decimal places does not improve the physical resolution of a single ADC conversion.
+- The LED must be connected through a current-limiting resistor.
