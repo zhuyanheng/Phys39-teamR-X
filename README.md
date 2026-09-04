@@ -17,7 +17,7 @@ measurement notes, and analysis used for Module 1.
 - [Module 1 Arduino documentation](Module_1/arduino/README.md)
 - [Module 1 data documentation](Module_1/data/README.md)
 - [Part 3C quantitative analysis](Module_1/data/analysis_3c_ab.md)
-- [A1 Module 1 evidence note](module_notes/module_01_evidence.md)
+- [A1 Module 1 evidence note](Module_1/module_notes/module_01_evidence.md)
 
 ## Arduino Sketches
 
