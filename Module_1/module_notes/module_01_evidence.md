@@ -31,24 +31,24 @@ The following Arduino sketches were used to produce the Module 1 results.
 
 ### Part 1: Blink and Digital Output
 
-- [Blink with 1:1 HIGH:LOW ratio](../Module_1/arduino/part_01_blink_1to1/part_01_blink_1to1.ino)
-- [Blink with 1:10 HIGH:LOW ratio](../Module_1/arduino/part_01_blink_1to10/part_01_blink_1to10.ino)
-- [Blink with 10:1 HIGH:LOW ratio](../Module_1/arduino/part_01_blink_10to1/part_01_blink_10to1.ino)
+- [Blink with 1:1 HIGH:LOW ratio](../arduino/part_01_blink_1to1/part_01_blink_1to1.ino)
+- [Blink with 1:10 HIGH:LOW ratio](../arduino/part_01_blink_1to10/part_01_blink_1to10.ino)
+- [Blink with 10:1 HIGH:LOW ratio](../arduino/part_01_blink_10to1/part_01_blink_10to1.ino)
 
 ### Part 2: AnalogReadSerial
 
-- [AnalogReadSerial](../Module_1/arduino/part_02_analog_read_serial/part_02_analog_read_serial.ino)
+- [AnalogReadSerial](../arduino/part_02_analog_read_serial/part_02_analog_read_serial.ino)
 
 ### Part 3: ADC Digitization and Averaging
 
-- [Part 3A: Integer ADC readings](../Module_1/arduino/part_03a_adc_integer/part_03a_adc_integer.ino)
-- [Part 3B: ADC-to-voltage conversion](../Module_1/arduino/part_03b_adc_voltage/part_03b_adc_voltage.ino)
-- [Part 3C: Averaging comparison](../Module_1/arduino/part_03c_averaging_comparison/part_03c_averaging_comparison.ino)
-- [Part 3D: ADC acquisition timing](../Module_1/arduino/part_03d_averaging_timing/part_03d_averaging_timing.ino)
+- [Part 3A: Integer ADC readings](../arduino/part_03a_adc_integer/part_03a_adc_integer.ino)
+- [Part 3B: ADC-to-voltage conversion](../arduino/part_03b_adc_voltage/part_03b_adc_voltage.ino)
+- [Part 3C: Averaging comparison](../arduino/part_03c_averaging_comparison/part_03c_averaging_comparison.ino)
+- [Part 3D: ADC acquisition timing](../arduino/part_03d_averaging_timing/part_03d_averaging_timing.ino)
 
 ### Part 4: PWM LED Control
 
-- [Averaged ADC PWM LED](../Module_1/arduino/part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino)
+- [Averaged ADC PWM LED](../arduino/part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino)
 
 ## 3. ADC Digitization Results
 
@@ -63,7 +63,7 @@ midpoint.
 
 The calculated midpoint of the measured range is:
 
-\[
+$$
 n_{\mathrm{mid}}
 =
 \frac{n_{\mathrm{min}}+n_{\mathrm{max}}}{2}
@@ -71,26 +71,26 @@ n_{\mathrm{mid}}
 \frac{0+1023}{2}
 =
 511.5.
-\]
+$$
 
 The selected experimental setting near ADC code 513 was reasonably close to
 this calculated midpoint.
 
 ### ADC Minimum
 
-![Minimum ADC reading](../Module_1/figures/part_3a_min.png)
+![Minimum ADC reading](../figures/part_3a_min.png)
 
 *Figure 3. Serial Plotter and Serial Monitor showing the minimum ADC output of 0.*
 
 ### ADC Maximum
 
-![Maximum ADC reading](../Module_1/figures/part_3a_max.png)
+![Maximum ADC reading](../figures/part_3a_max.png)
 
 *Figure 4. Serial Plotter and Serial Monitor showing the maximum ADC output of 1023.*
 
 ### ADC Midrange
 
-![Midrange ADC reading](../Module_1/figures/part_3a_midpoint.png)
+![Midrange ADC reading](../figures/part_3a_midpoint.png)
 
 *Figure 5. ADC output near the selected midrange. The readings were primarily 513, with occasional transitions to 514.*
 
@@ -98,16 +98,16 @@ this calculated midpoint.
 
 The Arduino Uno has a 10-bit ADC, so it has:
 
-\[
+$$
 2^{10}=1024
-\]
+$$
 
 possible output codes, numbered from 0 through 1023.
 
-Using the nominal reference voltage \(V_{\mathrm{ref}}=5.00\ \mathrm{V}\), the
+Using the nominal reference voltage $V_{\mathrm{ref}}=5.00\ \mathrm{V}$, the
 nominal one-count ADC resolution is:
 
-\[
+$$
 \Delta V_{\mathrm{ADC}}
 =
 \frac{V_{\mathrm{ref}}}{2^{10}}
@@ -115,15 +115,15 @@ nominal one-count ADC resolution is:
 \frac{5.00\ \mathrm{V}}{1024}
 =
 0.0048828125\ \mathrm{V}.
-\]
+$$
 
 Therefore:
 
-\[
+$$
 \Delta V_{\mathrm{ADC}}
 \approx
 4.883\ \mathrm{mV/count}.
-\]
+$$
 
 The ADC values occupy discrete levels because each conversion must return one
 of the 1024 integer codes. Even when the potentiometer is not being touched,
@@ -141,15 +141,15 @@ read precisely.
 The Part 3C experiment compared:
 
 1. 100 sequential voltage points obtained from one ADC conversion per point,
-   \(N=1\).
+   $N=1$.
 2. 100 sequential voltage points obtained by averaging 1000 ADC conversions
-   per point, \(N=1000\).
+   per point, $N=1000$.
 
 The numerical data and analysis are available here:
 
-- [N=1 voltage data](../Module_1/data/part_3c_N1_data.csv)
-- [N=1000 averaged voltage data](../Module_1/data/part_3c_N1000_data.csv)
-- [Part 3C quantitative analysis](../Module_1/data/analysis_3c_ab.md)
+- [N=1 voltage data](../data/part_3c_N1_data.csv)
+- [N=1000 averaged voltage data](../data/part_3c_N1000_data.csv)
+- [Part 3C quantitative analysis](../data/analysis_3c_ab.md)
 
 ### Serial Plotter Evidence
 
@@ -163,33 +163,33 @@ Module_1/figures/part_03c_centered_transition.png
 
 Then replace this comment with:
 
-![Centered N=1 to N=1000 transition](../Module_1/figures/part_03c_centered_transition.png)
+![Centered N=1 to N=1000 transition](../figures/part_03c_centered_transition.png)
 
 *Figure 6. Serial Plotter showing the transition from the rough N=1 block to
 the smoother N=1000 block near the center of the graph.*
 -->
 
-![N=1 Serial Plotter result](../Module_1/figures/part_3c_serial_plotter_N=1.png)
+![N=1 Serial Plotter result](../figures/part_3c_serial_plotter_N=1.png)
 
-*Figure 7. Serial Plotter output for single-reading voltage measurements, \(N=1\).*
+*Figure 7. Serial Plotter output for single-reading voltage measurements, $N=1$.*
 
-![N=1000 Serial Plotter result](../Module_1/figures/part_3c_serial_plotter_N=1000.png)
+![N=1000 Serial Plotter result](../figures/part_3c_serial_plotter_N=1000.png)
 
-*Figure 8. Serial Plotter output containing only the 1000-reading averaged voltage measurements, \(N=1000\).*
+*Figure 8. Serial Plotter output containing only the 1000-reading averaged voltage measurements, $N=1000$.*
 
 ### Statistical Comparison
 
 The mean voltage was calculated using:
 
-\[
+$$
 \bar{x}
 =
 \frac{1}{n}\sum_{i=1}^{n}x_i.
-\]
+$$
 
 The sample standard deviation was calculated using:
 
-\[
+$$
 s
 =
 \sqrt{
@@ -199,65 +199,65 @@ s
 n-1
 }
 }.
-\]
+$$
 
 The results were:
 
-| Potentiometer block | Reported points | Readings averaged per point \(N\) | Mean voltage | Sample standard deviation \(s\) | Measured \(s/s_1\) | Predicted \(s/s_1\) |
+| Potentiometer block | Reported points | Readings averaged per point $N$ | Mean voltage | Sample standard deviation $s$ | Measured $s/s_1$ | Predicted $s/s_1$ |
 |---|---:|---:|---:|---:|---:|---:|
 | Unaveraged | 100 | 1 | 2.50752655 V | 1.54093 mV | 1.000 | 1.000 |
 | Long average | 100 | 1000 | 2.50724583 V | 0.034438 mV | 0.02235 | 0.03162 |
 
 The measured standard-deviation ratio was:
 
-\[
+$$
 \frac{s_{1000}}{s_1}
 =
 \frac{0.034438\ \mathrm{mV}}
 {1.54093\ \mathrm{mV}}
 =
 0.02235.
-\]
+$$
 
 The independent-noise prediction was:
 
-\[
+$$
 \frac{s_{1000}}{s_1}
 \approx
 \frac{1}{\sqrt{1000}}
 =
 0.03162.
-\]
+$$
 
 The measured precision-improvement factor was:
 
-\[
+$$
 \frac{s_1}{s_{1000}}
 =
 \frac{1.54093}{0.034438}
 =
 44.745.
-\]
+$$
 
 The corresponding measured effective bit gain was:
 
-\[
+$$
 b_{\mathrm{measured}}
 =
 \log_2(44.745)
 =
 5.484\ \text{bits}.
-\]
+$$
 
 The theoretical effective bit gain was:
 
-\[
+$$
 b_{\mathrm{predicted}}
 =
 \frac{1}{2}\log_2(1000)
 =
 4.983\ \text{bits}.
-\]
+$$
 
 The measured result was reasonably close to the theoretical estimate of
 approximately five additional effective bits. The difference between the
@@ -267,34 +267,34 @@ variation.
 
 ### Minimum Discrete Voltage Jump
 
-For the \(N=1\) block, the smallest nonzero voltage jump between subsequent
+For the $N=1$ block, the smallest nonzero voltage jump between subsequent
 points was:
 
-\[
+$$
 \Delta V_1
 =
 0.004887\ \mathrm{V}
 =
 4.887\ \mathrm{mV}.
-\]
+$$
 
 This is approximately one ADC count.
 
-For the \(N=1000\) block, consecutive points 2 and 3 were:
+For the $N=1000$ block, consecutive points 2 and 3 were:
 
-\[
+$$
 V_2=2.507239\ \mathrm{V},
-\]
+$$
 
 and:
 
-\[
+$$
 V_3=2.507243\ \mathrm{V}.
-\]
+$$
 
 Their difference was:
 
-\[
+$$
 \Delta V_{1000}
 =
 2.507243\ \mathrm{V}
@@ -302,17 +302,17 @@ Their difference was:
 2.507239\ \mathrm{V}
 =
 0.000004\ \mathrm{V}.
-\]
+$$
 
 Therefore:
 
-\[
+$$
 \Delta V_{1000}
 =
 4\ \mu\mathrm{V}
 =
 0.004\ \mathrm{mV}.
-\]
+$$
 
 Averaging can produce reported values with sub-LSB numerical spacing because
 the mean of many integer ADC codes does not have to be an integer. However,
@@ -335,30 +335,30 @@ The measured result was:
 | Time per conversion | 112.01 µs/conversion |
 | Conversion rate | 8927.6 conversions/s |
 
-![ADC timing result](../Module_1/figures/part_3d_adc_timing.png)
+![ADC timing result](../figures/part_3d_adc_timing.png)
 
 *Figure 9. Serial Monitor output showing the measured time for 1000 ADC conversions.*
 
 The time per conversion was:
 
-\[
+$$
 t_{\mathrm{conversion}}
 =
 \frac{112012\ \mu\mathrm{s}}{1000}
 =
 112.012\ \mu\mathrm{s/conversion}.
-\]
+$$
 
 The corresponding conversion rate was:
 
-\[
+$$
 R
 =
 \frac{1000\ \mathrm{conversions}}
 {0.112012\ \mathrm{s}}
 =
 8927.6\ \mathrm{conversions/s}.
-\]
+$$
 
 The measured result of approximately 112 µs per conversion is reasonably close
 to the Arduino reference value of approximately 100 µs per conversion.
@@ -380,7 +380,7 @@ The first PWM measurement used:
 - PWM value: 64
 - Expected duty cycle: 25.10%
 
-![PWM at approximately 25 percent duty cycle](../Module_1/figures/part_4_pwm_25_percent.jpg)
+![PWM at approximately 25 percent duty cycle](../figures/part_4_pwm_25_percent.jpg)
 
 *Figure 10. PWM output for PWM value 64 and expected duty cycle 25.10%.*
 
@@ -393,7 +393,7 @@ The second PWM measurement used:
 - PWM value: 191
 - Expected duty cycle: 74.90%
 
-![PWM at approximately 75 percent duty cycle](../Module_1/figures/part_4_pwm_75_percent.jpg)
+![PWM at approximately 75 percent duty cycle](../figures/part_4_pwm_75_percent.jpg)
 
 *Figure 11. PWM output for PWM value 191 and expected duty cycle 74.90%.*
 
@@ -401,27 +401,27 @@ The second PWM measurement used:
 
 Frequency was calculated from the measured period using:
 
-\[
+$$
 f=\frac{1}{T}.
-\]
+$$
 
 Duty cycle was calculated using:
 
-\[
+$$
 D
 =
 100\%
 \frac{t_{\mathrm{HIGH}}}{T}.
-\]
+$$
 
 For Arduino PWM, the expected duty cycle was calculated using:
 
-\[
+$$
 D_{\mathrm{expected}}
 =
 100\%
 \frac{\texttt{PWM value}}{255}.
-\]
+$$
 
 The oscilloscope measurements were:
 
@@ -435,37 +435,37 @@ The oscilloscope measurements were:
 
 The approximate PWM frequency calculated from the oscilloscope period was:
 
-\[
+$$
 f
 =
 \frac{1}
 {2.0\times10^{-3}\ \mathrm{s}}
 =
 500\ \mathrm{Hz}.
-\]
+$$
 
 This result is reasonably close to the expected Arduino Uno pin 9 PWM
 frequency of approximately 490 Hz.
 
 For PWM value 64, the expected duty cycle was:
 
-\[
+$$
 D_{\mathrm{expected}}
 =
 100\%\frac{64}{255}
 =
 25.10\%.
-\]
+$$
 
 For PWM value 191, the expected duty cycle was:
 
-\[
+$$
 D_{\mathrm{expected}}
 =
 100\%\frac{191}{255}
 =
 74.90\%.
-\]
+$$
 
 Turning the potentiometer changed the PWM value and duty cycle. The PWM
 frequency, period, HIGH voltage, and LOW voltage remained approximately
@@ -496,7 +496,7 @@ voltage therefore affects the absolute voltage accuracy.
 
 Averaging improves random precision but does not remove systematic calibration
 error. Correlated noise and slow drift can also cause the measured reduction
-in standard deviation to differ from the ideal \(1/\sqrt{N}\) prediction.
+in standard deviation to differ from the ideal $1/\sqrt{N}$ prediction.
 
 Oscilloscope values estimated from the screen graticule have uncertainty from
 the trace width, scale reading, and cursor placement. The reported PWM values
