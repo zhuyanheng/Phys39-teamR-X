@@ -1,105 +1,133 @@
-# Data - Module 1
+# Module 1 Data
 
-This folder contains experimental data collected during Module 1 experiments.
+This directory contains the Part 3C experimental data and quantitative analysis.
 
-## Repository Structure
+## Files
 
-- [`README.md`](./README.md) — Data folder overview
-- [`analysis_3c_ab.md`](./analysis_3c_ab.md) — Full quantitative analysis (mean, std dev, noise improvement, bit gain)
-- [`part_3c_N1_data.csv`](./part_3c_N1_data.csv) — N=1 raw data (100 points, single reading each)
-- [`part_3c_N1000_data.csv`](./part_3c_N1000_data.csv) — N=1000 averaged data (100 points, 1000-reading average each)
+- [N=1 voltage data](./part_3c_N1_data.csv)
+- [N=1000 averaged voltage data](./part_3c_N1000_data.csv)
+- [Part 3C quantitative analysis](./analysis_3c_ab.md)
+- [Arduino sketch used for the averaging comparison](../arduino/part_03c_averaging_comparison/part_03c_averaging_comparison.ino)
 
----
-
-## Data Collection Details
+## Data Collection Metadata
 
 | Item | Description |
-| :--- | :--- |
-| **Date** | September 2, 2026 |
-| **Experimenters** | Ricky and Xavier |
-| **Arduino Sketch** | `part_03c_averaging_comparison.ino` |
-| **Board** | Arduino Uno |
-| **ADC Reference** | 5.00 V (nominal) |
-| **Potentiometer** | 100 kΩ, fixed at midpoint setting (n_mid = 513) |
-| **Data Format** | CSV (comma-separated values) |
+|---|---|
+| Date | September 2, 2026 |
+| Experimenters | Ricky Huang and Xavier Zhu |
+| Board | Arduino Uno |
+| Analog input | A0 |
+| ADC reference | 5.00 V nominal |
+| Potentiometer | 100 kΩ potentiometer held near the midpoint |
+| N=1 block | 100 reported points, one ADC conversion per point |
+| N=1000 block | 100 reported points, 1000 ADC conversions averaged per point |
+| Data format | CSV |
+| Voltage unit | Volts (V) |
 
----
+## Data Columns
 
-## File Descriptions
+Both CSV files contain the following columns:
 
-### [`part_3c_N1_data.csv`](./part_3c_N1_data.csv)
+| Column | Meaning | Unit |
+|---|---|---|
+| `Point` | Sequential point number from 1 through 100 | Dimensionless |
+| `Voltage_V` | Reported voltage | V |
 
-- **Description**: 100 sequential voltage readings, each obtained from a **single** `analogRead()` conversion (N = 1).
-- **Purpose**: Represents the **unaveraged** ("rough") data block, used to estimate the noise level and minimum discrete voltage jump of a single ADC reading.
-- **Data Summary**:
+## N=1 Data
 
-| Discrete Voltage (V) | Corresponding ADC Code | Frequency |
-| :--- | :--- | :--- |
+The [N=1 CSV file](./part_3c_N1_data.csv) contains 100 sequential voltage
+values, each obtained from one `analogRead()` conversion.
+
+The measured values occupy three discrete levels:
+
+| Voltage (V) | ADC code | Frequency |
+|---:|---:|---:|
 | 2.502444 | 512 | 3 |
 | 2.507331 | 513 | 90 |
 | 2.512219 | 514 | 7 |
 
-**Columns**:
+Calculated results:
 
-| Column | Header | Description | Units |
-| :--- | :--- | :--- | :--- |
-| 1 | `Point` | Point index (1–100) | — |
-| 2 | `Voltage_V` | Measured voltage from single ADC reading | Volts (V) |
+- Mean voltage: 2.50752655 V
+- Sample standard deviation: 0.00154093 V = 1.54093 mV
+- Smallest nonzero jump between subsequent points: 0.004887 V = 4.887 mV
 
-**Example Row**:
-```
-Point, Voltage_V
-1, 2.507331
-2, 2.507331
-```
+## N=1000 Data
 
----
+The [N=1000 CSV file](./part_3c_N1000_data.csv) contains 100 sequential
+reported voltage values. Each reported point is the average of 1000
+`analogRead()` conversions.
 
-### [`part_3c_N1000_data.csv`](./part_3c_N1000_data.csv)
+Calculated results:
 
-- **Description**: 100 sequential voltage readings, each obtained by **averaging 1000** `analogRead()` conversions (N = 1000).
-- **Purpose**: Represents the **averaged** ("smooth") data block, used to quantify the noise reduction achieved by averaging.
-- **Data Range**: 2.507151 V to 2.507341 V (100 data points)
+- Mean voltage: 2.50724583 V
+- Sample standard deviation: 0.000034438 V = 0.034438 mV = 34.438 µV
+- Minimum voltage: 2.507151 V
+- Maximum voltage: 2.507341 V
+- Smallest nonzero jump between subsequent points: 0.000004 V = 0.004 mV = 4 µV
 
-**Columns**:
+For example, consecutive points 2 and 3 are:
 
-| Column | Header | Description | Units |
-| :--- | :--- | :--- | :--- |
-| 1 | `Point` | Point index (1–100) | — |
-| 2 | `Voltage_V` | Measured voltage from 1000-reading average | Volts (V) |
-
-**Example Row**:
-```
-Point, Voltage_V
-1, 2.507317
-2, 2.507239
+```text
+Point 2: 2.507239 V
+Point 3: 2.507243 V
 ```
 
----
+Their difference is:
 
-### [`analysis_3c_ab.md`](./analysis_3c_ab.md)
+\[
+2.507243\ \mathrm{V}-2.507239\ \mathrm{V}
+=0.000004\ \mathrm{V}
+=4\ \mu\mathrm{V}.
+\]
 
-- **Description**: Full quantitative analysis for Part 3C(a) and 3C(b), including mean, sample standard deviation, noise improvement ratio, minimum discrete voltage jump, and effective bit gain calculations.
+## Averaging Results
 
----
+| Quantity | N=1 | N=1000 |
+|---|---:|---:|
+| Number of reported points | 100 | 100 |
+| Readings averaged per point | 1 | 1000 |
+| Mean voltage | 2.50752655 V | 2.50724583 V |
+| Sample standard deviation | 1.54093 mV | 0.034438 mV |
+| Measured \(s/s_1\) | 1.000 | 0.02235 |
+| Predicted \(s/s_1\) | 1.000 | 0.03162 |
+| Smallest nonzero subsequent jump | 4.887 mV | 0.004 mV |
 
-## Key Results
+The measured standard-deviation ratio is:
 
-| Quantity | N=1 Block | N=1000 Block |
-| :--- | :--- | :--- |
-| **Mean Voltage (V)** | 2.507527 | 2.507246 |
-| **Sample Std Dev (V)** | 0.001591 | 0.0000344 |
-| **Min Discrete Voltage Jump (V)** | 0.004887 | 0.000004 |
-| **Measured Noise Improvement** | — | 46.2x |
-| **Theoretical Improvement** | — | 31.6x (sqrt(1000)) |
-| **Effective Bit Gain** | — | ~5.5 bits |
+\[
+\frac{s_{1000}}{s_1}
+=
+\frac{0.034438\ \mathrm{mV}}{1.54093\ \mathrm{mV}}
+=
+0.02235.
+\]
 
-## Notes
+The independent-noise prediction is:
 
-- The noise improvement is better than the theoretical sqrt(N) prediction because the N=1 data only toggles between three adjacent ADC codes (512, 513, 514), limiting the effective noise range.
-- The minimum discrete voltage jump for N=1000 (4 μV) is much smaller than the ADC's one-count step (ΔV_ADC = 4.8876 mV), demonstrating that averaging creates sub-LSB numerical resolution.
-- However, the true **noise-limited resolution** is better represented by the standard deviation, which gives a gain of about 5.5 effective bits.
+\[
+\frac{1}{\sqrt{1000}}=0.03162.
+\]
 
----
+The measured precision-improvement factor is:
 
-*Last updated: September 4th 2026*
+\[
+\frac{s_1}{s_{1000}}=44.745.
+\]
+
+The corresponding measured effective bit gain is:
+
+\[
+\log_2(44.745)=5.484\ \text{bits}.
+\]
+
+The theoretical effective bit gain is:
+
+\[
+\frac{1}{2}\log_2(1000)=4.983\ \text{bits}.
+\]
+
+The difference between the measured result and the ideal prediction may result
+from finite sample size, ADC quantization, correlated electrical noise,
+reference-voltage variation, or slow drift. Averaging improves precision but
+does not remove calibration error or automatically improve absolute accuracy.
