@@ -16,16 +16,16 @@ The N=1 data contain only three discrete voltage values:
 
 **Mean** (\(\bar{x}_1\)):
 
-\[
-\bar{x}_1 = \frac{90(2.507331) + 3(2.502444) + 7(2.512219)}{100} = 2.5075266 \, \text{V}
-\]
+$$
+\bar{x}_1 = \frac{90(2.507331) + 3(2.502444) + 7(2.512219)}{100} = 2.5075266 \ \text{V}
+$$
 
 **Sample standard deviation** (\(s_1\), using \(n-1 = 99\)):
 
-\[
+$$
 s_1 = \sqrt{\frac{90(2.507331 - 2.5075266)^2 + 3(2.502444 - 2.5075266)^2 + 7(2.512219 - 2.5075266)^2}{99}}
-= 0.001591 \, \text{V} = 1.591 \, \text{mV}
-\]
+= 0.001591 \ \text{V} = 1.591 \ \text{mV}
+$$
 
 ---
 
@@ -33,13 +33,13 @@ s_1 = \sqrt{\frac{90(2.507331 - 2.5075266)^2 + 3(2.502444 - 2.5075266)^2 + 7(2.5
 
 Based on the data:
 
-\[
-\bar{x}_{1000} \approx 2.5072458 \, \text{V}
-\]
+$$
+\bar{x}_{1000} \approx 2.5072458 \ \text{V}
+$$
 
-\[
-s_{1000} \approx 0.00003444 \, \text{V} = 34.44 \, \mu\text{V}
-\]
+$$
+s_{1000} \approx 0.00003444 \ \text{V} = 34.44 \ \mu\text{V}
+$$
 
 ---
 
@@ -47,15 +47,15 @@ s_{1000} \approx 0.00003444 \, \text{V} = 34.44 \, \mu\text{V}
 
 **Measured ratio**:
 
-\[
+$$
 \frac{s_{1000}}{s_1} = \frac{0.00003444}{0.001591} \approx 0.02165
-\]
+$$
 
 **Theoretical prediction** (independent noise):
 
-\[
+$$
 \frac{s_{1000}}{s_1} \approx \frac{1}{\sqrt{1000}} \approx 0.03162
-\]
+$$
 
 **Discussion**:
 
@@ -73,18 +73,19 @@ The measured ratio (0.02165) is smaller than the ideal prediction (0.03162), mea
 
 The smallest voltage difference between two adjacent values is the gap between discrete levels:
 
-\[
-2.507331 - 2.502444 = 0.004887 \, \text{V}
-\]
-\[
-2.512219 - 2.507331 = 0.004888 \, \text{V}
-\]
+$$
+2.507331 - 2.502444 = 0.004887 \ \text{V}
+$$
+
+$$
+2.512219 - 2.507331 = 0.004888 \ \text{V}
+$$
 
 **Comparison with \(\Delta V_{ADC}\)**:
 
-\[
-\Delta V_{ADC} = \frac{5.00}{1023} = 0.0048876 \, \text{V}
-\]
+$$
+\Delta V_{ADC} = \frac{5.00}{1023} = 0.0048876 \ \text{V}
+$$
 
 Thus, for N=1, the minimum jump is **approximately 1 LSB (4.8876 mV)**. The raw ADC resolution is limited to the 10-bit native step; no finer voltage difference can be resolved.
 
@@ -94,15 +95,15 @@ Thus, for N=1, the minimum jump is **approximately 1 LSB (4.8876 mV)**. The raw 
 
 After sorting the averaged data, the smallest difference between two consecutive points appears between:
 
-\[
-2.507190 \, \text{V} \quad \text{and} \quad 2.507194 \, \text{V}
-\]
+$$
+2.507190 \ \text{V} \quad \text{and} \quad 2.507194 \ \text{V}
+$$
 
 Giving:
 
-\[
-0.000004 \, \text{V} = 4 \, \mu\text{V}
-\]
+$$
+0.000004 \ \text{V} = 4 \ \mu\text{V}
+$$
 
 (Other adjacent differences are also of the order of 4–5 \(\mu\)V.)
 
@@ -112,24 +113,25 @@ Giving:
 
 The theoretical gain of **about 5 effective bits** from averaging 1000 samples comes from the standard-deviation improvement:
 
-\[
+$$
 \sqrt{1000} \approx 32, \quad \log_2(32) = 5
-\]
+$$
 
 The smallest voltage jump observed here (4 \(\mu\)V) gives a much larger apparent bit gain:
 
-\[
-\frac{\Delta V_{ADC}}{4 \times 10^{-6}} = \frac{0.0048876}{0.000004} \approx 1222, \quad \log_2(1222) \approx 10.3 \, \text{bits}
-\]
+$$
+\frac{\Delta V_{ADC}}{4 \times 10^{-6}} = \frac{0.0048876}{0.000004} \approx 1222, \quad \log_2(1222) \approx 10.3 \ \text{bits}
+$$
 
 However, this is **not** the physically meaningful resolution. The true noise-limited resolution is better represented by the standard deviation:
 
-\[
+$$
 \frac{s_1}{s_{1000}} = \frac{0.001591}{0.00003444} \approx 46.2
-\]
-\[
-\log_2(46.2) \approx 5.5 \, \text{bits}
-\]
+$$
+
+$$
+\log_2(46.2) \approx 5.5 \ \text{bits}
+$$
 
 This agrees well with the theoretical prediction of **5 bits** (since \(1000 \approx 2^{10}\), \(\sqrt{1000} \approx 2^{5}\)).
 
