@@ -3,11 +3,13 @@
 This folder contains experimental data collected during Module 1 experiments.
 
 ## Repository Structure
-data/
-├── README.md
-├── analysis_3c_ab.md
-├── part_3c_N1_data.csv
-└── part_3c_N1000_data.csv
+
+- [`README.md`](./README.md) — Data folder overview
+- [`analysis_3c_ab.md`](./analysis_3c_ab.md) — Full quantitative analysis (mean, std dev, noise improvement, bit gain)
+- [`part_3c_N1_data.csv`](./part_3c_N1_data.csv) — N=1 raw data (100 points, single reading each)
+- [`part_3c_N1000_data.csv`](./part_3c_N1000_data.csv) — N=1000 averaged data (100 points, 1000-reading average each)
+
+---
 
 ## Data Collection Details
 
@@ -25,7 +27,7 @@ data/
 
 ## File Descriptions
 
-### `part_3c_N1_data.csv`
+### [`part_3c_N1_data.csv`](./part_3c_N1_data.csv)
 
 - **Description**: 100 sequential voltage readings, each obtained from a **single** `analogRead()` conversion (N = 1).
 - **Purpose**: Represents the **unaveraged** ("rough") data block, used to estimate the noise level and minimum discrete voltage jump of a single ADC reading.
@@ -45,13 +47,15 @@ data/
 | 2 | `Voltage_V` | Measured voltage from single ADC reading | Volts (V) |
 
 **Example Row**:
+```
 Point, Voltage_V
 1, 2.507331
 2, 2.507331
+```
 
 ---
 
-### `part_3c_N1000_data.csv`
+### [`part_3c_N1000_data.csv`](./part_3c_N1000_data.csv)
 
 - **Description**: 100 sequential voltage readings, each obtained by **averaging 1000** `analogRead()` conversions (N = 1000).
 - **Purpose**: Represents the **averaged** ("smooth") data block, used to quantify the noise reduction achieved by averaging.
@@ -65,21 +69,21 @@ Point, Voltage_V
 | 2 | `Voltage_V` | Measured voltage from 1000-reading average | Volts (V) |
 
 **Example Row**:
+```
 Point, Voltage_V
 1, 2.507317
 2, 2.507239
+```
 
 ---
 
-### `analysis_3c_ab.md`
+### [`analysis_3c_ab.md`](./analysis_3c_ab.md)
 
 - **Description**: Full quantitative analysis for Part 3C(a) and 3C(b), including mean, sample standard deviation, noise improvement ratio, minimum discrete voltage jump, and effective bit gain calculations.
 
 ---
 
 ## Key Results
-
-Based on the data in this folder:
 
 | Quantity | N=1 Block | N=1000 Block |
 | :--- | :--- | :--- |
