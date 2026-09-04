@@ -3,25 +3,18 @@
 This folder contains all Arduino sketches used for Module 1 experiments. Each sketch is placed in its own folder with the same name as the `.ino` file, following the course repository template guidelines.
 
 ## Repository Structure
-arduino/
-├── part_01_blink_1to1/
-│ └── part_01_blink_1to1.ino
-├── part_01_blink_1to10/
-│ └── part_01_blink_1to10.ino
-├── part_01_blink_10to1/
-│ └── part_01_blink_10to1.ino
-├── part_02_analog_read_serial/
-│ └── part_02_analog_read_serial.ino
-├── part_03a_adc_integer/
-│ └── part_03a_adc_integer.ino
-├── part_03b_adc_voltage/
-│ └── part_03b_adc_voltage.ino
-├── part_03c_averaging_comparison/
-│ └── part_03c_averaging_comparison.ino
-├── part_03d_averaging_timing/
-│ └── part_03d_averaging_timing.ino
-└── part_04_averaged_adc_pwm_led/
-└── part_04_averaged_adc_pwm_led.ino
+
+- [`part_01_blink_1to1/`](./part_01_blink_1to1/) — [`part_01_blink_1to1.ino`](./part_01_blink_1to1/part_01_blink_1to1.ino)
+- [`part_01_blink_1to10/`](./part_01_blink_1to10/) — [`part_01_blink_1to10.ino`](./part_01_blink_1to10/part_01_blink_1to10.ino)
+- [`part_01_blink_10to1/`](./part_01_blink_10to1/) — [`part_01_blink_10to1.ino`](./part_01_blink_10to1/part_01_blink_10to1.ino)
+- [`part_02_analog_read_serial/`](./part_02_analog_read_serial/) — [`part_02_analog_read_serial.ino`](./part_02_analog_read_serial/part_02_analog_read_serial.ino)
+- [`part_03a_adc_integer/`](./part_03a_adc_integer/) — [`part_03a_adc_integer.ino`](./part_03a_adc_integer/part_03a_adc_integer.ino)
+- [`part_03b_adc_voltage/`](./part_03b_adc_voltage/) — [`part_03b_adc_voltage.ino`](./part_03b_adc_voltage/part_03b_adc_voltage.ino)
+- [`part_03c_averaging_comparison/`](./part_03c_averaging_comparison/) — [`part_03c_averaging_comparison.ino`](./part_03c_averaging_comparison/part_03c_averaging_comparison.ino)
+- [`part_03d_averaging_timing/`](./part_03d_averaging_timing/) — [`part_03d_averaging_timing.ino`](./part_03d_averaging_timing/part_03d_averaging_timing.ino)
+- [`part_04_averaged_adc_pwm_led/`](./part_04_averaged_adc_pwm_led/) — [`part_04_averaged_adc_pwm_led.ino`](./part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino)
+
+---
 
 ## Sketch Descriptions
 
