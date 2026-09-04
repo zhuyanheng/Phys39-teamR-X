@@ -1,15 +1,11 @@
 # A1: Module 1 Evidence Note
-
-**Assignment:** A1 — Module 1 Evidence Note  
-**Team members:** Ricky Huang and Xavier Zhu  
-**Date:** September 4, 2026  
-**Repository:** [Phys 39 Team R&X](https://github.com/zhuyanheng/Phys39-teamR-X)  
-**Git checkpoint:** `TODO: INSERT FINAL FULL COMMIT HASH`
+Team members: Ricky Huang and Xavier Zhu  
+Date: September 4, 2026  
+Repository: [Phys 39 Team R&X](https://github.com/zhuyanheng/Phys39-teamR-X)  
 
 ## 1. Apparatus and Hardware Configuration
 
 The Module 1 experiments used the following equipment:
-
 - Arduino Uno
 - 100 kΩ potentiometer
 - LED
@@ -28,13 +24,6 @@ For the PWM measurement, Arduino pin 9 was used as the PWM output. The LED was
 connected in series with a current-limiting resistor. The oscilloscope probe
 measured the voltage at pin 9 relative to Arduino GND.
 
-![Potentiometer apparatus](../Module_1/figures/part_2b_potentiometer.jpg)
-
-*Figure 1. Potentiometer voltage-divider apparatus used for the ADC measurements.*
-
-![PWM wiring](../Module_1/figures/part_4_wiring.jpg)
-
-*Figure 2. Arduino, LED, resistor, potentiometer, and oscilloscope wiring used for the PWM measurement.*
 
 ## 2. Arduino Code
 
