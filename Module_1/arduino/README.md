@@ -20,26 +20,26 @@ arduino/
 │ └── part_03c_averaging_comparison.ino
 ├── part_03d_averaging_timing/
 │ └── part_03d_averaging_timing.ino
-├── part_04_averaged_adc_pwm_led/
-│ └── part_04_averaged_adc_pwm_led.ino
+└── part_04_averaged_adc_pwm_led/
+└── part_04_averaged_adc_pwm_led.ino
 
 ## Sketch Descriptions
 
 | Sketch | Part | Description |
 | :--- | :--- | :--- |
-| `part_01_blink_1to1.ino` | Part 1 | Blink with 1:1 duty cycle (500ms HIGH, 500ms LOW). Expected duty cycle: 50%. |
-| `part_01_blink_1to10.ino` | Part 1 | Blink with 1:10 duty cycle (100ms HIGH, 1000ms LOW). Expected duty cycle: ~9.09%. |
-| `part_01_blink_10to1.ino` | Part 1 | Blink with 10:1 duty cycle (1000ms HIGH, 100ms LOW). Expected duty cycle: ~90.9%. |
-| `part_02_analog_read_serial.ino` | Part 2 | Reads potentiometer voltage from A0 and prints raw ADC values to Serial Monitor. |
-| `part_03a_adc_integer.ino` | Part 3A | Reads A0 and prints integer ADC values in `ADC:512` format for Serial Plotter compatibility. |
-| `part_03b_adc_voltage.ino` | Part 3B | Converts ADC readings to voltage (V) using a 5.00V reference and prints with 4 decimal places. |
-| `part_03c_averaging_comparison.ino` | Part 3C | Alternates between 100 points of N=1 (single reading) and 100 points of N=1000 (averaged) voltage outputs within the same sketch, allowing direct side‑by‑side comparison in Serial Plotter. |
-| `part_03d_averaging_timing.ino` | Part 3D | Measures the time (in microseconds) required to perform 1000 `analogRead()` conversions using `micros()`. |
-| `part_04_averaged_adc_pwm_led.ino` | Part 4 | Averages 1000 ADC readings from the potentiometer, maps the value to PWM (0–255), and outputs to pin 9 for LED brightness control. |
+| [`part_01_blink_1to1.ino`](./part_01_blink_1to1/part_01_blink_1to1.ino) | Part 1 | Blink with 1:1 duty cycle (500ms HIGH, 500ms LOW). Expected duty cycle: 50%. |
+| [`part_01_blink_1to10.ino`](./part_01_blink_1to10/part_01_blink_1to10.ino) | Part 1 | Blink with 1:10 duty cycle (100ms HIGH, 1000ms LOW). Expected duty cycle: ~9.09%. |
+| [`part_01_blink_10to1.ino`](./part_01_blink_10to1/part_01_blink_10to1.ino) | Part 1 | Blink with 10:1 duty cycle (1000ms HIGH, 100ms LOW). Expected duty cycle: ~90.9%. |
+| [`part_02_analog_read_serial.ino`](./part_02_analog_read_serial/part_02_analog_read_serial.ino) | Part 2 | Reads potentiometer voltage from A0 and prints raw ADC values to Serial Monitor. |
+| [`part_03a_adc_integer.ino`](./part_03a_adc_integer/part_03a_adc_integer.ino) | Part 3A | Reads A0 and prints integer ADC values in `ADC:512` format for Serial Plotter compatibility. |
+| [`part_03b_adc_voltage.ino`](./part_03b_adc_voltage/part_03b_adc_voltage.ino) | Part 3B | Converts ADC readings to voltage (V) using a 5.00V reference and prints with 4 decimal places. |
+| [`part_03c_averaging_comparison.ino`](./part_03c_averaging_comparison/part_03c_averaging_comparison.ino) | Part 3C | Alternates between 100 points of N=1 (single reading) and 100 points of N=1000 (averaged) voltage outputs within the same sketch, allowing direct side‑by‑side comparison in Serial Plotter. |
+| [`part_03d_averaging_timing.ino`](./part_03d_averaging_timing/part_03d_averaging_timing.ino) | Part 3D | Measures the time (in microseconds) required to perform 1000 `analogRead()` conversions using `micros()`. |
+| [`part_04_averaged_adc_pwm_led.ino`](./part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino) | Part 4 | Averages 1000 ADC readings from the potentiometer, maps the value to PWM (0–255), and outputs to pin 9 for LED brightness control. |
 
 ## Part 3C: Side‑by‑Side Comparison
 
-The sketch `part_03c_averaging_comparison.ino` repeatedly produces:
+The sketch [`part_03c_averaging_comparison.ino`](./part_03c_averaging_comparison/part_03c_averaging_comparison.ino) repeatedly produces:
 
 - **100 points** of **N = 1** (single `analogRead()` per point)
 - **100 points** of **N = 1000** (average of 1000 `analogRead()` calls per point)
