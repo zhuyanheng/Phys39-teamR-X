@@ -3,7 +3,7 @@
 **Team members:** Ricky Huang and Xavier Zhu  
 **Date:** September 4, 2026  
 **Repository:** [Phys 39 Team R&X](https://github.com/zhuyanheng/Phys39-teamR-X)  
-**Commit hash:** `5b25203534ee6c2d3e32ef46a5f46952195f6c34`
+**Commit hash:** `a07718767b158b851b16935af2b39c42e7a850d1`
 
 ---
 
