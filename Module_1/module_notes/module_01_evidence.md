@@ -3,7 +3,7 @@
 **Team members:** Ricky Huang and Xavier Zhu  
 **Date:** September 4, 2026  
 **Repository:** [Phys 39 Team R&X](https://github.com/zhuyanheng/Phys39-teamR-X)  
-**Commit hash:** `a07718767b158b851b16935af2b39c42e7a850d1`
+**Commit hash:** `205e2c3976eb814650c5a9366e376e0d345802ce`
 
 ---
 
@@ -103,7 +103,7 @@ $$
 
 possible output codes, numbered from 0 through 1023.
 
-Using the nominal reference voltage \( V_{\text{ref}} = 5.00 \ \text{V} \), the nominal one-count ADC resolution is:
+Using the nominal reference voltage $$ V_{\text{ref}} = 5.00 \ \text{V} $$, the nominal one-count ADC resolution is:
 
 $$
 \Delta V_{\text{ADC}} = \frac{V_{\text{ref}}}{2^{10}} = \frac{5.00 \ \text{V}}{1024} = 0.0048828125 \ \text{V}
