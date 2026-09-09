@@ -2,7 +2,8 @@
 
 **Team members:** Ricky Huang and Xavier Zhu  
 **Date:** September 4, 2026  
-**Repository:** [Phys 39 Team R&X](https://github.com/zhuyanheng/Phys39-teamR-X)
+**Repository:** [Phys 39 Team R&X](https://github.com/zhuyanheng/Phys39-teamR-X)  
+**Commit hash:** `5b25203534ee6c2d3e32ef46a5f46952195f6c34`
 
 ---
 
@@ -22,6 +23,10 @@ The Module 1 experiments used the following equipment:
 For the ADC measurements, the potentiometer was connected as a voltage divider. One outer terminal was connected to Arduino 5 V, the other outer terminal was connected to Arduino GND, and the center wiper was connected to analog input A0.
 
 For the PWM measurement, Arduino pin 9 was used as the PWM output. The LED was connected in series with a current-limiting resistor. The oscilloscope probe measured the voltage at pin 9 relative to Arduino GND.
+
+![Experimental apparatus](../figures/part_4_wiring.png)
+
+*Figure 1. Experimental apparatus showing Arduino Uno, breadboard, potentiometer, LED, and current-limiting resistor.*
 
 ---
 
@@ -74,19 +79,19 @@ The selected experimental setting near ADC code 513 was reasonably close to this
 
 ![Minimum ADC reading](../figures/part_3a_min.png)
 
-*Figure 1. Serial Plotter and Serial Monitor showing the minimum ADC output of 0.*
+*Figure 2. Serial Plotter and Serial Monitor showing the minimum ADC output of 0.*
 
 ### ADC Maximum
 
 ![Maximum ADC reading](../figures/part_3a_max.png)
 
-*Figure 2. Serial Plotter and Serial Monitor showing the maximum ADC output of 1023.*
+*Figure 3. Serial Plotter and Serial Monitor showing the maximum ADC output of 1023.*
 
 ### ADC Midrange
 
 ![Midrange ADC reading](../figures/part_3a_midpoint.png)
 
-*Figure 3. ADC output near the selected midrange. The readings were primarily 513, with occasional transitions to 514.*
+*Figure 4. ADC output near the selected midrange. The readings were primarily 513, with occasional transitions to 514.*
 
 ### One-Count ADC Resolution
 
@@ -133,11 +138,11 @@ The numerical data and analysis are available here:
 
 ![N=1 Serial Plotter result](../figures/part_3c_serial_plotter_N=1.png)
 
-*Figure 4. Serial Plotter output for single-reading voltage measurements, \( N = 1 \).*
+*Figure 5. Serial Plotter output for single-reading voltage measurements, \( N = 1 \).*
 
 ![N=1000 Serial Plotter result](../figures/part_3c_serial_plotter_N=1000.png)
 
-*Figure 5. Serial Plotter output containing only the 1000-reading averaged voltage measurements, \( N = 1000 \).*
+*Figure 6. Serial Plotter output containing only the 1000-reading averaged voltage measurements, \( N = 1000 \).*
 
 ### Statistical Comparison
 
@@ -240,7 +245,7 @@ The measured result was:
 
 ![ADC timing result](../figures/part_3d_adc_timing.png)
 
-*Figure 6. Serial Monitor output showing the measured time for 1000 ADC conversions.*
+*Figure 7. Serial Monitor output showing the measured time for 1000 ADC conversions.*
 
 The time per conversion was:
 
@@ -264,41 +269,19 @@ Averaging improves precision because independent measurement fluctuations partia
 
 ### Blink: Digital Output Waveforms
 
-For the three Blink sketches, the oscilloscope was used to measure the digital output on pin 9. Since the output is a digital square wave, the high voltage is approximately 5.0 V and the low voltage is approximately 0 V. The following table summarizes the measured period, frequency, and duty cycle for each timing ratio:
+For the three Blink sketches, the following values were calculated from the `delay()` timing in the sketches. Since the output is a digital square wave, the high voltage is approximately 5.0 V and the low voltage is approximately 0 V.
 
-| Waveform | Setting | High voltage | Low voltage | Period | Frequency | Measured duty cycle | Expected duty cycle |
-|---|---|---|---|---|---|---|---|
-| Blink 1:1 | HIGH 500 ms, LOW 500 ms | ~5.0 V | ~0 V | ~1.00 s | ~1.00 Hz | ~50.0% | 50.0% |
-| Blink 1:10 | HIGH 100 ms, LOW 1000 ms | ~5.0 V | ~0 V | ~1.10 s | ~0.91 Hz | ~9.09% | 9.09% |
-| Blink 10:1 | HIGH 1000 ms, LOW 100 ms | ~5.0 V | ~0 V | ~1.10 s | ~0.91 Hz | ~90.9% | 90.9% |
+| Waveform | Setting | High voltage | Low voltage | Period | Frequency | Duty cycle |
+|---|---|---|---|---|---|---|
+| Blink 1:1 | HIGH 500 ms, LOW 500 ms | ~5.0 V | ~0 V | 1.00 s | 1.00 Hz | 50.0% |
+| Blink 1:10 | HIGH 100 ms, LOW 1000 ms | ~5.0 V | ~0 V | 1.10 s | 0.91 Hz | 9.09% |
+| Blink 10:1 | HIGH 1000 ms, LOW 100 ms | ~5.0 V | ~0 V | 1.10 s | 0.91 Hz | 90.9% |
 
-The measured duty cycles agree with the expected values calculated from the `delay()` timing. This confirms that digital output behaves as an on/off switch: the voltage levels are fixed, and only the timing (duty cycle) changes between configurations.
+These values confirm that digital output behaves as an on/off switch: the voltage levels are fixed, and only the timing (duty cycle) changes between configurations.
 
 ### PWM: LED Brightness Control
 
-For the PWM measurements, the oscilloscope measured the output on pin 9 while the potentiometer was turned. The following two settings were recorded:
-
-**PWM Setting 1 (low brightness):**
-
-- Average ADC value: approximately 256
-- Average input voltage: approximately 1.251 V
-- PWM value: 64
-- Expected duty cycle: 25.10%
-
-<!-- TODO: Insert oscilloscope screenshot for PWM setting 1 -->
-*Figure 7. PWM output for PWM value 64 and expected duty cycle 25.10%. (Screenshot to be inserted.)*
-
-**PWM Setting 2 (high brightness):**
-
-- Average ADC value: approximately 765
-- Average input voltage: approximately 3.738 V
-- PWM value: 191
-- Expected duty cycle: 74.90%
-
-<!-- TODO: Insert oscilloscope screenshot for PWM setting 2 -->
-*Figure 8. PWM output for PWM value 191 and expected duty cycle 74.90%. (Screenshot to be inserted.)*
-
-Frequency was calculated from the measured period using:
+For the PWM measurements, the oscilloscope measured the output on pin 9 while the potentiometer was turned. Frequency was calculated from the measured period using:
 
 $$
 f = \frac{1}{T}
@@ -314,7 +297,7 @@ For Arduino PWM, the expected duty cycle was calculated using:
 
 $$
 D_{\text{expected}} = 100\% \cdot \frac{\text{PWM value}}{255}
-\]
+$$
 
 The oscilloscope measurements were:
 
