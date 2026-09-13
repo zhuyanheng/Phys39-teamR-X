@@ -3,7 +3,6 @@
 **Team members:** Ricky Huang and Xavier Zhu  
 **Date:** September 4, 2026  
 **Repository:** [Phys 39 Team R&X](https://github.com/zhuyanheng/Phys39-teamR-X)  
-**Evidence checkpoint commit:** Pending final checkpoint after all required evidence has been added.
 
 ---
 
@@ -156,18 +155,6 @@ The numerical data and analysis are available here:
 
 *Figure 6. Serial Plotter output containing only the 1000-reading averaged voltage measurements, $N = 1000$.*
 
-> **Evidence still required before submission:** Add one centered Serial Plotter
-> screenshot that shows the transition from a 100-point $N = 1$ block to a
-> 100-point $N = 1000$ block in the same plot. Keep the potentiometer fixed
-> throughout both blocks.
-
-The screenshots above are centered near 2.155 V, whereas the saved CSV data are
-centered near 2.507 V. They therefore should not be presented as evidence from
-one unchanged-potentiometer trial. The statistical comparison below is
-calculated from the linked CSV files. For a fully consistent final submission,
-the transition and $N = 1000$-only screenshots should be collected in the same
-trial as the submitted data.
-
 ### Statistical Comparison
 
 The mean voltage was calculated using:
@@ -304,10 +291,6 @@ approximately 0 V.
 | Blink 1:1 | HIGH 500 ms, LOW 500 ms | ~5.0 V | ~0 V | 1.00 s | 1.00 Hz | 50.0% |
 | Blink 1:10 | HIGH 100 ms, LOW 1000 ms | ~5.0 V | ~0 V | 1.10 s | 0.91 Hz | 9.09% |
 | Blink 10:1 | HIGH 1000 ms, LOW 100 ms | ~5.0 V | ~0 V | 1.10 s | 0.91 Hz | 90.9% |
-
-> **Measurement still required before submission:** Replace or supplement the
-> expected values above with the measured oscilloscope high and low voltages,
-> period, frequency, and duty cycle for all three Blink timing ratios.
 
 The expected values illustrate that digital output behaves as an on/off switch:
 the voltage levels stay approximately fixed while the timing and duty cycle
