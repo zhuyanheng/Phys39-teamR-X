@@ -3,7 +3,7 @@
 **Team members:** Ricky Huang and Xavier Zhu  
 **Date:** September 4, 2026  
 **Repository:** [Phys 39 Team R&X](https://github.com/zhuyanheng/Phys39-teamR-X)  
-**Commit hash:** `a07718767b158b851b16935af2b39c42e7a850d1`
+**Evidence checkpoint commit:** Pending final checkpoint after all required evidence has been added.
 
 ---
 
@@ -24,9 +24,21 @@ For the ADC measurements, the potentiometer was connected as a voltage divider. 
 
 For the PWM measurement, Arduino pin 9 was used as the PWM output. The LED was connected in series with a current-limiting resistor. The oscilloscope probe measured the voltage at pin 9 relative to Arduino GND.
 
-![Experimental apparatus](../figures/part_4_wiring.png)
+![Experimental apparatus](../../Module_1/figures/part_4_wiring.png)
 
 *Figure 1. Experimental apparatus showing Arduino Uno, breadboard, potentiometer, LED, and current-limiting resistor.*
+
+The connection labels corresponding to the apparatus photograph are:
+
+| Signal or component | Connection |
+|---|---|
+| Potentiometer supply | Arduino 5 V |
+| Potentiometer return | Arduino GND |
+| Potentiometer wiper | Arduino A0 |
+| PWM output | Arduino digital pin 9 |
+| LED path | Pin 9 through a current-limiting resistor and LED to GND |
+| Oscilloscope probe tip | Arduino pin 9 |
+| Oscilloscope ground clip | Arduino GND |
 
 ---
 
@@ -36,24 +48,24 @@ The following Arduino sketches were used to produce the Module 1 results.
 
 ### Part 1: Blink and Digital Output
 
-- [Blink with 1:1 HIGH:LOW ratio](../arduino/part_01_blink_1to1/part_01_blink_1to1.ino)
-- [Blink with 1:10 HIGH:LOW ratio](../arduino/part_01_blink_1to10/part_01_blink_1to10.ino)
-- [Blink with 10:1 HIGH:LOW ratio](../arduino/part_01_blink_10to1/part_01_blink_10to1.ino)
+- [Blink with 1:1 HIGH:LOW ratio](../../Module_1/arduino/part_01_blink_1to1/part_01_blink_1to1.ino)
+- [Blink with 1:10 HIGH:LOW ratio](../../Module_1/arduino/part_01_blink_1to10/part_01_blink_1to10.ino)
+- [Blink with 10:1 HIGH:LOW ratio](../../Module_1/arduino/part_01_blink_10to1/part_01_blink_10to1.ino)
 
 ### Part 2: AnalogReadSerial
 
-- [AnalogReadSerial](../arduino/part_02_analog_read_serial/part_02_analog_read_serial.ino)
+- [AnalogReadSerial](../../Module_1/arduino/part_02_analog_read_serial/part_02_analog_read_serial.ino)
 
 ### Part 3: ADC Digitization and Averaging
 
-- [Part 3A: Integer ADC readings](../arduino/part_03a_adc_integer/part_03a_adc_integer.ino)
-- [Part 3B: ADC-to-voltage conversion](../arduino/part_03b_adc_voltage/part_03b_adc_voltage.ino)
-- [Part 3C: Averaging comparison](../arduino/part_03c_averaging_comparison/part_03c_averaging_comparison.ino)
-- [Part 3D: ADC acquisition timing](../arduino/part_03d_averaging_timing/part_03d_averaging_timing.ino)
+- [Part 3A: Integer ADC readings](../../Module_1/arduino/part_03a_adc_integer/part_03a_adc_integer.ino)
+- [Part 3B: ADC-to-voltage conversion](../../Module_1/arduino/part_03b_adc_voltage/part_03b_adc_voltage.ino)
+- [Part 3C: Averaging comparison](../../Module_1/arduino/part_03c_averaging_comparison/part_03c_averaging_comparison.ino)
+- [Part 3D: ADC acquisition timing](../../Module_1/arduino/part_03d_averaging_timing/part_03d_averaging_timing.ino)
 
 ### Part 4: PWM LED Control
 
-- [Averaged ADC PWM LED](../arduino/part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino)
+- [Averaged ADC PWM LED](../../Module_1/arduino/part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino)
 
 ---
 
@@ -77,19 +89,19 @@ The selected experimental setting near ADC code 513 was reasonably close to this
 
 ### ADC Minimum
 
-![Minimum ADC reading](../figures/part_3a_min.png)
+![Minimum ADC reading](../../Module_1/figures/part_3a_min.png)
 
 *Figure 2. Serial Plotter and Serial Monitor showing the minimum ADC output of 0.*
 
 ### ADC Maximum
 
-![Maximum ADC reading](../figures/part_3a_max.png)
+![Maximum ADC reading](../../Module_1/figures/part_3a_max.png)
 
 *Figure 3. Serial Plotter and Serial Monitor showing the maximum ADC output of 1023.*
 
 ### ADC Midrange
 
-![Midrange ADC reading](../figures/part_3a_midpoint.png)
+![Midrange ADC reading](../../Module_1/figures/part_3a_midpoint.png)
 
 *Figure 4. ADC output near the selected midrange. The readings were primarily 513, with occasional transitions to 514.*
 
@@ -103,7 +115,7 @@ $$
 
 possible output codes, numbered from 0 through 1023.
 
-Using the nominal reference voltage \( V_{\text{ref}} = 5.00 \ \text{V} \), the nominal one-count ADC resolution is:
+Using the nominal reference voltage $V_{\text{ref}} = 5.00\ \text{V}$, the nominal one-count ADC resolution is:
 
 $$
 \Delta V_{\text{ADC}} = \frac{V_{\text{ref}}}{2^{10}} = \frac{5.00 \ \text{V}}{1024} = 0.0048828125 \ \text{V}
@@ -125,24 +137,36 @@ Serial Monitor makes the exact sequence of integer readings easy to inspect. Ser
 
 The Part 3C experiment compared:
 
-1. 100 sequential voltage points obtained from one ADC conversion per point, \( N = 1 \).
-2. 100 sequential voltage points obtained by averaging 1000 ADC conversions per point, \( N = 1000 \).
+1. 100 sequential voltage points obtained from one ADC conversion per point, $N = 1$.
+2. 100 sequential voltage points obtained by averaging 1000 ADC conversions per point, $N = 1000$.
 
 The numerical data and analysis are available here:
 
-- [N=1 voltage data](../data/part_3c_N1_data.csv)
-- [N=1000 averaged voltage data](../data/part_3c_N1000_data.csv)
-- [Part 3C quantitative analysis](../data/analysis_3c_ab.md)
+- [N=1 voltage data](../../Module_1/data/part_3c_N1_data.csv)
+- [N=1000 averaged voltage data](../../Module_1/data/part_3c_N1000_data.csv)
+- [Part 3C quantitative analysis](../../Module_1/data/analysis_3c_ab.md)
 
 ### Serial Plotter Evidence
 
-![N=1 Serial Plotter result](../figures/part_3c_serial_plotter_N=1.png)
+![N=1 Serial Plotter result](../../Module_1/figures/part_3c_serial_plotter_N=1.png)
 
-*Figure 5. Serial Plotter output for single-reading voltage measurements, \( N = 1 \).*
+*Figure 5. Serial Plotter output for single-reading voltage measurements, $N = 1$.*
 
-![N=1000 Serial Plotter result](../figures/part_3c_serial_plotter_N=1000.png)
+![N=1000 Serial Plotter result](../../Module_1/figures/part_3c_serial_plotter_N=1000.png)
 
-*Figure 6. Serial Plotter output containing only the 1000-reading averaged voltage measurements, \( N = 1000 \).*
+*Figure 6. Serial Plotter output containing only the 1000-reading averaged voltage measurements, $N = 1000$.*
+
+> **Evidence still required before submission:** Add one centered Serial Plotter
+> screenshot that shows the transition from a 100-point $N = 1$ block to a
+> 100-point $N = 1000$ block in the same plot. Keep the potentiometer fixed
+> throughout both blocks.
+
+The screenshots above are centered near 2.155 V, whereas the saved CSV data are
+centered near 2.507 V. They therefore should not be presented as evidence from
+one unchanged-potentiometer trial. The statistical comparison below is
+calculated from the linked CSV files. For a fully consistent final submission,
+the transition and $N = 1000$-only screenshots should be collected in the same
+trial as the submitted data.
 
 ### Statistical Comparison
 
@@ -160,7 +184,7 @@ $$
 
 The results were:
 
-| Potentiometer block | Reported points | Readings averaged per point \( N \) | Mean voltage | Sample standard deviation \( s \) | Measured \( s/s_1 \) | Predicted \( s/s_1 \) |
+| Potentiometer block | Reported points | Readings averaged per point $N$ | Mean voltage | Sample standard deviation $s$ | Measured $s/s_1$ | Predicted $s/s_1$ |
 |---|---:|---:|---:|---:|---:|---:|
 | Unaveraged | 100 | 1 | 2.50752655 V | 1.54093 mV | 1.000 | 1.000 |
 | Long average | 100 | 1000 | 2.50724583 V | 0.034438 mV | 0.02235 | 0.03162 |
@@ -199,7 +223,7 @@ The measured result was reasonably close to the theoretical estimate of approxim
 
 ### Minimum Discrete Voltage Jump
 
-For the \( N = 1 \) block, the smallest nonzero voltage jump between subsequent points was:
+For the $N = 1$ block, the smallest nonzero voltage jump between subsequent points was:
 
 $$
 \Delta V_1 = 0.004887 \ \text{V} = 4.887 \ \text{mV}
@@ -207,7 +231,7 @@ $$
 
 This is approximately one ADC count.
 
-For the \( N = 1000 \) block, consecutive points 2 and 3 were:
+For the $N = 1000$ block, consecutive points 2 and 3 were:
 
 $$
 V_2 = 2.507239 \ \text{V}, \quad V_3 = 2.507243 \ \text{V}
@@ -243,7 +267,7 @@ The measured result was:
 | Time per conversion | 112.01 µs/conversion |
 | Conversion rate | 8927.6 conversions/s |
 
-![ADC timing result](../figures/part_3d_adc_timing.png)
+![ADC timing result](../../Module_1/figures/part_3d_adc_timing.png)
 
 *Figure 7. Serial Monitor output showing the measured time for 1000 ADC conversions.*
 
@@ -269,15 +293,25 @@ Averaging improves precision because independent measurement fluctuations partia
 
 ### Blink: Digital Output Waveforms
 
-For the three Blink sketches, the following values were calculated from the `delay()` timing in the sketches. Since the output is a digital square wave, the high voltage is approximately 5.0 V and the low voltage is approximately 0 V.
+For the three Blink sketches, the following values are expected values
+calculated from the `delay()` timing in the sketches. They are not direct
+oscilloscope measurements. Since the output is a digital square wave, the
+expected high voltage is approximately 5.0 V and the expected low voltage is
+approximately 0 V.
 
-| Waveform | Setting | High voltage | Low voltage | Period | Frequency | Duty cycle |
+| Waveform | Setting | Expected high voltage | Expected low voltage | Expected period | Expected frequency | Expected duty cycle |
 |---|---|---|---|---|---|---|
 | Blink 1:1 | HIGH 500 ms, LOW 500 ms | ~5.0 V | ~0 V | 1.00 s | 1.00 Hz | 50.0% |
 | Blink 1:10 | HIGH 100 ms, LOW 1000 ms | ~5.0 V | ~0 V | 1.10 s | 0.91 Hz | 9.09% |
 | Blink 10:1 | HIGH 1000 ms, LOW 100 ms | ~5.0 V | ~0 V | 1.10 s | 0.91 Hz | 90.9% |
 
-These values confirm that digital output behaves as an on/off switch: the voltage levels are fixed, and only the timing (duty cycle) changes between configurations.
+> **Measurement still required before submission:** Replace or supplement the
+> expected values above with the measured oscilloscope high and low voltages,
+> period, frequency, and duty cycle for all three Blink timing ratios.
+
+The expected values illustrate that digital output behaves as an on/off switch:
+the voltage levels stay approximately fixed while the timing and duty cycle
+change between configurations.
 
 ### PWM: LED Brightness Control
 
@@ -299,20 +333,33 @@ $$
 D_{\text{expected}} = 100\% \cdot \frac{\text{PWM value}}{255}
 $$
 
-The oscilloscope measurements were:
+The oscilloscope photographs were read using approximately 2 V/div vertically
+and 0.5 ms/div horizontally. The observed period occupied about four horizontal
+divisions, giving an approximate measured period of 2.0 ms and frequency of
+500 Hz.
 
-| Waveform | Setting | High voltage | Low voltage | Period | Frequency | Measured duty cycle | Expected duty cycle |
+| Waveform | Setting | Measured high voltage | Measured low voltage | Measured period | Measured frequency | Measured duty cycle | Expected duty cycle |
 |---|---|---|---|---|---|---|---|
-| PWM low setting | PWM value 64 | ~5.0 V | ~0 V | ~2.04 ms | ~490 Hz | ~25% | 25.10% |
-| PWM high setting | PWM value 191 | ~5.0 V | ~0 V | ~2.04 ms | ~490 Hz | ~75% | 74.90% |
+| PWM low setting | PWM value 64 | ~5.0 V | ~0 V | ~2.0 ms | ~500 Hz | ~25% | 25.10% |
+| PWM high setting | PWM value 191 | ~5.0 V | ~0 V | ~2.0 ms | ~500 Hz | ~75% | 74.90% |
 
-The approximate PWM frequency calculated from the oscilloscope period was:
+The approximate frequency calculated from the oscilloscope period was:
 
 $$
-f = \frac{1}{2.04 \times 10^{-3} \ \text{s}} \approx 490 \ \text{Hz}
+f = \frac{1}{2.0 \times 10^{-3}\ \text{s}} \approx 500\ \text{Hz}
 $$
 
-This result matches the expected Arduino Uno pin 9 PWM frequency of approximately 490 Hz.
+Within the uncertainty of reading the oscilloscope graticule, this result is
+consistent with the expected Arduino Uno pin 9 PWM frequency of approximately
+490 Hz, corresponding to an expected period of approximately 2.04 ms.
+
+![PWM waveform at approximately 25 percent duty cycle](../../Module_1/figures/part_4_pwm_25_percent.png)
+
+*Figure 8. Pin 9 PWM waveform at PWM value 64. The oscilloscope shows approximately 0 V to 5 V pulses, a period of about 2.0 ms, and a duty cycle of about 25%.*
+
+![PWM waveform at approximately 75 percent duty cycle](../../Module_1/figures/part_4_pwm_75_percent.png)
+
+*Figure 9. Pin 9 PWM waveform at PWM value 191. The oscilloscope shows approximately 0 V to 5 V pulses, a period of about 2.0 ms, and a duty cycle of about 75%.*
 
 Turning the potentiometer changed the PWM value and duty cycle. The PWM frequency, period, high voltage, and low voltage remained approximately constant. Increasing the duty cycle increased the fraction of each period during which the LED received current, making the LED appear brighter.
 
@@ -328,7 +375,9 @@ Although the oscilloscope showed that the LED repeatedly switched on and off, th
 
 The ADC analysis used the nominal 5.00 V Arduino reference rather than a separately calibrated reference voltage. Variation in the actual reference voltage therefore affects the absolute voltage accuracy.
 
-Averaging improves random precision but does not remove systematic calibration error. Correlated noise and slow drift can also cause the measured reduction in standard deviation to differ from the ideal \( 1 / \sqrt{N} \) prediction.
+Averaging improves random precision but does not remove systematic calibration
+error. Correlated noise and slow drift can also cause the measured reduction in
+standard deviation to differ from the ideal $1 / \sqrt{N}$ prediction.
 
 Oscilloscope values estimated from the screen graticule have uncertainty from the trace width, scale reading, and cursor placement. The reported PWM values should therefore be interpreted as approximate measurements.
 

@@ -39,9 +39,9 @@ Each sketch is stored in a folder with the same name as its `.ino` file.
 
 The Part 3C sketch repeatedly produces:
 
-1. 100 voltage points with one ADC conversion per point, \(N=1\).
-2. 100 voltage points with 1000 ADC conversions averaged per point, \(N=1000\).
-3. A return to the \(N=1\) block.
+1. 100 voltage points with one ADC conversion per point, $N=1$.
+2. 100 voltage points with 1000 ADC conversions averaged per point, $N=1000$.
+3. A return to the $N=1$ block.
 
 The potentiometer must remain fixed while both blocks are collected.
 

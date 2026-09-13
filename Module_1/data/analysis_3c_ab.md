@@ -96,7 +96,7 @@ $$
 V = 5.00 \cdot \frac{n}{1023}
 $$
 
-so that ADC code 1023 maps to 5.00 V. Consequently, adjacent displayed voltage values differ by approximately \(5.00 / 1023 = 4.8876\) mV. This displayed mapping interval should be distinguished from the nominal ADC bin width of \(5.00 / 1024 = 4.883\) mV.
+so that ADC code 1023 maps to 5.00 V. Consequently, adjacent displayed voltage values differ by approximately $5.00 / 1023 = 4.8876$ mV. This displayed mapping interval should be distinguished from the nominal ADC bin width of $5.00 / 1024 = 4.883$ mV.
 
 ---
 
