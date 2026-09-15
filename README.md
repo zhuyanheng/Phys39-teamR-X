@@ -19,6 +19,35 @@ measurement notes, and analysis used for Module 1.
 - [Part 3C quantitative analysis](Module_1/data/analysis_3c_ab.md)
 - [A1 Module 1 evidence note](docs/module_notes/module_01_evidence.md)
 
+### Module 1 Arduino Sketches
+
+#### Part 1: Blink and Digital Output
+
+- [Blink with 1:1 HIGH:LOW ratio](Module_1/arduino/part_01_blink_1to1/part_01_blink_1to1.ino)
+- [Blink with 1:10 HIGH:LOW ratio](Module_1/arduino/part_01_blink_1to10/part_01_blink_1to10.ino)
+- [Blink with 10:1 HIGH:LOW ratio](Module_1/arduino/part_01_blink_10to1/part_01_blink_10to1.ino)
+
+#### Part 2: AnalogReadSerial
+
+- [AnalogReadSerial](Module_1/arduino/part_02_analog_read_serial/part_02_analog_read_serial.ino)
+
+#### Part 3: ADC Digitization and Averaging
+
+- [Part 3A: Integer ADC readings](Module_1/arduino/part_03a_adc_integer/part_03a_adc_integer.ino)
+- [Part 3B: ADC-to-voltage conversion](Module_1/arduino/part_03b_adc_voltage/part_03b_adc_voltage.ino)
+- [Part 3C: N=1 and N=1000 averaging comparison](Module_1/arduino/part_03c_averaging_comparison/part_03c_averaging_comparison.ino)
+- [Part 3D: ADC acquisition timing](Module_1/arduino/part_03d_averaging_timing/part_03d_averaging_timing.ino)
+
+#### Part 4: PWM LED Control
+
+- [Averaged ADC input controlling LED PWM](Module_1/arduino/part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino)
+
+### Module 1 Experimental Data
+
+- [N=1 voltage data](Module_1/data/part_3c_N1_data.csv)
+- [N=1000 averaged voltage data](Module_1/data/part_3c_N1000_data.csv)
+- [Part 3C data analysis](Module_1/data/analysis_3c_ab.md)
+
 ## Module 2: First Real Instrument Pieces
 
 This repository contains the Arduino sketches, figures, and evidence note
@@ -46,35 +75,6 @@ trim-pot PWM control, H-bridge logic verification, and DC motor drive.
 - [Part 3B Heat PWM=60](Module_2/figures/part_3b_heat_PWM=60.png)
 - [Part 3C Heat Motor Running](Module_2/figures/part_3c_heat.png)
 - [Part 3C Motor Video](Module_2/figures/part_3c.mp4)
-
-## Module 1 Arduino Sketches
-
-### Part 1: Blink and Digital Output
-
-- [Blink with 1:1 HIGH:LOW ratio](Module_1/arduino/part_01_blink_1to1/part_01_blink_1to1.ino)
-- [Blink with 1:10 HIGH:LOW ratio](Module_1/arduino/part_01_blink_1to10/part_01_blink_1to10.ino)
-- [Blink with 10:1 HIGH:LOW ratio](Module_1/arduino/part_01_blink_10to1/part_01_blink_10to1.ino)
-
-### Part 2: AnalogReadSerial
-
-- [AnalogReadSerial](Module_1/arduino/part_02_analog_read_serial/part_02_analog_read_serial.ino)
-
-### Part 3: ADC Digitization and Averaging
-
-- [Part 3A: Integer ADC readings](Module_1/arduino/part_03a_adc_integer/part_03a_adc_integer.ino)
-- [Part 3B: ADC-to-voltage conversion](Module_1/arduino/part_03b_adc_voltage/part_03b_adc_voltage.ino)
-- [Part 3C: N=1 and N=1000 averaging comparison](Module_1/arduino/part_03c_averaging_comparison/part_03c_averaging_comparison.ino)
-- [Part 3D: ADC acquisition timing](Module_1/arduino/part_03d_averaging_timing/part_03d_averaging_timing.ino)
-
-### Part 4: PWM LED Control
-
-- [Averaged ADC input controlling LED PWM](Module_1/arduino/part_04_averaged_adc_pwm_led/part_04_averaged_adc_pwm_led.ino)
-
-## Module 1 Experimental Data
-
-- [N=1 voltage data](Module_1/data/part_3c_N1_data.csv)
-- [N=1000 averaged voltage data](Module_1/data/part_3c_N1000_data.csv)
-- [Part 3C data analysis](Module_1/data/analysis_3c_ab.md)
 
 ## Hardware
 
