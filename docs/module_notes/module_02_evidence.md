@@ -4,11 +4,12 @@
 **Module:** 2 - First Real Instrument Pieces  
 **Session:** S4 (Wednesday, September 9)  
 **Demo:** S6 (Wednesday, September 16)  
-**C2 Rubric Alignment:** Measurement And Actuator Electronics
+**Team member:** Ricky Huang and Xavier Zhu  
+**Repository:** [Phys 39 Team R&X](https://github.com/zhuyanheng/Phys39-teamR-X)
 
 ---
 
-## 1. Thermistor Temperature Measurement (Part 1)
+## 1. Thermistor Temperature Measurement (Part 1 & Part 2)
 
 ### 1.1 Thermistor Divider Circuit and Constants
 The thermistor voltage divider is wired to Arduino 5V, A0, and GND.
@@ -25,15 +26,19 @@ The thermistor voltage divider is wired to Arduino 5V, A0, and GND.
 *   `SAMPLE_COUNT = 100` (Averaging between 100-1000 raw ADC readings)
 
 **Conversion Equations (Beta Model):**
+
 $$
 V_{out} = \frac{\text{Average ADC}}{1023.0} \times V_{REF}
 $$
+
 $$
 R_{therm} = R_{fixed} \times \frac{V_{out}}{V_{REF} - V_{out}}
 $$
+
 $$
 \frac{1}{T} = \frac{1}{T_0} + \frac{1}{\beta} \ln\left(\frac{R_{therm}}{R_0}\right)
 $$
+
 $$
 T(^\circ C) = \frac{1}{T} - 273.15
 $$
