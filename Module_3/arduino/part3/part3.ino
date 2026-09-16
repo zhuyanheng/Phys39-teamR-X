@@ -62,7 +62,7 @@ float resistanceToCelsius(float resistance) {
   return temperatureK - 273.15;
 }
 
-// Convert the potentiometer ADC value to PWM 0-255.
+// Convert the potentiometer ADC value from 0-1023 to PWM 0-255.
 int adcToPwm(float averageAdc) {
   int pwmCommand =
       int(averageAdc * 255.0 / 1023.0 + 0.5);
@@ -70,8 +70,9 @@ int adcToPwm(float averageAdc) {
   return constrain(pwmCommand, 0, 255);
 }
 
-// Apply PWM to the selected H-bridge input.
+// Apply PWM to the correct H-bridge input.
 void setBridgeCommand(int pwmCommand, bool heatMode) {
+  // Turn both outputs off before selecting a direction.
   analogWrite(PWM_PIN_9, 0);
   analogWrite(PWM_PIN_10, 0);
 
@@ -80,17 +81,22 @@ void setBridgeCommand(int pwmCommand, bool heatMode) {
   }
 
   if (heatMode) {
+    // D11 HIGH: D9 carries PWM and D10 stays LOW.
     analogWrite(PWM_PIN_9, pwmCommand);
   } else {
+    // D11 LOW: D9 stays LOW and D10 carries PWM.
     analogWrite(PWM_PIN_10, pwmCommand);
   }
 }
 
-// Print only the important values.
+// Print the complete Part 3 measurement and control status.
 void printStatus(
-    float temperatureC,
     float timeSeconds,
+    float thermistorAdc,
     float thermistorVoltage,
+    float thermistorResistance,
+    float temperatureC,
+    float potAdc,
     int pwmCommand,
     bool heatMode) {
 
@@ -100,14 +106,35 @@ void printStatus(
   Serial.print(", Time (s): ");
   Serial.print(timeSeconds, 2);
 
-  Serial.print(", Voltage (V): ");
-  Serial.print(thermistorVoltage, 3);
-
   Serial.print(", PWM: ");
   Serial.print(pwmCommand);
 
   Serial.print(", Heat/Cool: ");
-  Serial.println(heatMode ? 1 : 0);
+  Serial.print(heatMode ? 1 : 0);
+
+  Serial.print(", Direction: ");
+  Serial.print(heatMode ? "HEAT" : "COOL");
+
+  Serial.print(", D11 input: ");
+  Serial.print(heatMode ? "5V" : "0V");
+
+  Serial.print(", Active PWM pin: ");
+  Serial.print(heatMode ? PWM_PIN_9 : PWM_PIN_10);
+
+  Serial.print(", Thermistor ADC: ");
+  Serial.print(thermistorAdc, 1);
+
+  Serial.print(", Voltage (V): ");
+  Serial.print(thermistorVoltage, 3);
+
+  Serial.print(", Resistance (kOhm): ");
+  Serial.print(thermistorResistance / 1000.0, 2);
+
+  Serial.print(", Pot ADC: ");
+  Serial.print(potAdc, 1);
+
+  Serial.print(", Samples: ");
+  Serial.println(SAMPLE_COUNT);
 }
 
 void setup() {
@@ -118,7 +145,7 @@ void setup() {
   pinMode(PWM_PIN_9, OUTPUT);
   pinMode(PWM_PIN_10, OUTPUT);
 
-  // Start with both H-bridge outputs at zero.
+  // Start with both H-bridge control outputs at zero.
   analogWrite(PWM_PIN_9, 0);
   analogWrite(PWM_PIN_10, 0);
 
@@ -126,7 +153,7 @@ void setup() {
 }
 
 void loop() {
-  // Read the potentiometer and calculate PWM.
+  // Read the trim potentiometer and calculate PWM.
   float averagePotAdc =
       averageAnalogRead(TRIM_POT_PIN);
 
@@ -144,15 +171,19 @@ void loop() {
   if (currentTime - lastReportTime >= REPORT_INTERVAL_MS) {
     lastReportTime = currentTime;
 
+    // Step 1: Average the thermistor ADC readings.
     float averageThermistorAdc =
         averageAnalogRead(THERMISTOR_PIN);
 
+    // Step 2: Convert ADC to voltage.
     float thermistorVoltage =
         adcToVoltage(averageThermistorAdc);
 
+    // Step 3: Convert voltage to resistance.
     float thermistorResistance =
         voltageToResistance(thermistorVoltage);
 
+    // Step 4: Convert resistance to temperature.
     float temperatureC =
         resistanceToCelsius(thermistorResistance);
 
@@ -160,9 +191,12 @@ void loop() {
         currentTime / 1000.0;
 
     printStatus(
-        temperatureC,
         timeSeconds,
+        averageThermistorAdc,
         thermistorVoltage,
+        thermistorResistance,
+        temperatureC,
+        averagePotAdc,
         pwmCommand,
         heatMode);
   }
