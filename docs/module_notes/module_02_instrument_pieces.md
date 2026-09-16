@@ -36,11 +36,17 @@ R_{therm} = R_{fixed} \times \frac{V_{out}}{V_{REF} - V_{out}}
 $$
 
 $$
-\frac{1}{T} = \frac{1}{T_0} + \frac{1}{\beta} \ln\left(\frac{R_{therm}}{R_0}\right)
+\frac{1}{T_K} = \frac{1}{T_0} + \frac{1}{\beta} \ln\left(\frac{R_{therm}}{R_0}\right)
 $$
 
 $$
-T(^\circ C) = \frac{1}{T} - 273.15
+T_C =
+\left[
+\frac{1}{T_0}
++ \frac{1}{\beta}
+\ln\left(\frac{R_{therm}}{R_0}\right)
+\right]^{-1}
+- 273.15
 $$
 
 ### 1.2 Human-Readable Serial Output
