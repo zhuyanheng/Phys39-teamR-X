@@ -87,36 +87,36 @@ time = 10.00 s   average ADC = 445.7    voltage = 2.178 V    resistance = 77.20 
 
 ---
 
-## 2. Trim-Pot PWM and H-Bridge Verification (Part 3A & 3B)
+## 2. Trim-Pot PWM and H-Bridge Verification (Part 3A)
 
 ### 2.1 Trim-Pot to PWM Signal Path
-*   **Signal Path:** `Trim-pot voltage (A1)` $\rightarrow$ `analogRead average` $\rightarrow$ `map(0-1023 to 0-255)` $\rightarrow$ `analogWrite` $\rightarrow$ `H-bridge input`
+*   **Signal Path:** `Trim-pot voltage (A1)` $\rightarrow$ `analogRead average` $\rightarrow$ `scale and round from 0-1023 to 0-255` $\rightarrow$ `analogWrite` $\rightarrow$ `H-bridge input`
 *   **Direction Input:** Pin 11 used as a digital input (5V = Heat/Clockwise, 0V = Cool/Counterclockwise).
 
 ### 2.2 Completed H-Bridge Heat/Cool Signal Table
-This table represents the verified logic (Method 2) from the 3B oscilloscope checks:
+This table represents the verified logic (Method 2) from the 3A oscilloscope checks:
 
 | Arduino Pin 11 (Direction) | Mode | Arduino Pin 9 (RPWM) | Arduino Pin 10 (LPWM) |
 | :--- | :--- | :--- | :--- |
 | **5V (HIGH)** | Heat / Clockwise | **PWM Signal** (Active) | **0V** (Inactive) |
 | **0V (LOW)** | Cool / Counterclockwise | **0V** (Inactive) | **PWM Signal** (Active) |
 
-### 2.3 Oscilloscope Evidence for Active PWM Pins (3B)
+### 2.3 Oscilloscope Evidence for Active PWM Pins (3A)
 *Safety Check:* Actuator power was OFF, TEC disconnected. Scope ground clips connected to Arduino GND.
 *   **Voltage Level:** Logic HIGH $\approx$ 5V, Logic LOW $\approx$ 0V.
 *   **Frequency:** $\approx$ 490 Hz (standard Arduino Uno PWM frequency).
 *   **Duty Cycle Verification:** The duty cycle visually matched the commanded PWM value. When the inactive side was checked, it stayed strictly at 0V.
 
 *Evidence:*
-![3B Setup](../../Module_2/figures/part_3ab_setup.png)
-![3B Cool PWM=142](../../Module_2/figures/part_3b_cool_PWM=142.png)
-![3B Cool PWM=60](../../Module_2/figures/part_3b_cool_PWM=60.png)
-![3B Heat PWM=115](../../Module_2/figures/part_3b_heat_PWM=115.png)
-![3B Heat PWM=60](../../Module_2/figures/part_3b_heat_PWM=60.png)
+![3A Setup](../../Module_2/figures/part_3ab_setup.png)
+![3A Cool PWM=142](../../Module_2/figures/part_3b_cool_PWM=142.png)
+![3A Cool PWM=60](../../Module_2/figures/part_3b_cool_PWM=60.png)
+![3A Heat PWM=115](../../Module_2/figures/part_3b_heat_PWM=115.png)
+![3A Heat PWM=60](../../Module_2/figures/part_3b_heat_PWM=60.png)
 
 ---
 
-## 3. DC Motor Drive (Part 3C)
+## 3. DC Motor Drive (Part 3B)
 
 ### 3.1 Motor Direction and PWM Speed Observations
 *   **Wiring:** 12V power supply connected directly to B+/B-. Motor connected to M+/M- via isolated paired positions. TEC remained disconnected.
@@ -132,9 +132,9 @@ This table represents the verified logic (Method 2) from the 3B oscilloscope che
     *   In Cool/Counterclockwise mode, M- showed the PWM waveform while M+ stayed at 0V.
     *   The waveforms swapped roles perfectly when the direction switch was flipped, confirming correct H-bridge output logic.
 
-*Evidence (Note: Video recording had an issue, so a supplementary image is provided):*
-![3C Heat Motor Running](../../Module_2/figures/part_3c_heat.png)
-*[Link to 3C Video](../../Module_2/figures/part_3c.mp4)*
+*Evidence: Motor video and supplementary oscilloscope image:*
+![Part 3B Heat M+ and M- Oscilloscope Waveform](../../Module_2/figures/part_3c_heat.png)
+*[Part 3B Motor Direction and PWM Speed Video](../../Module_2/figures/part_3c.mp4)*
 
 ---
 
@@ -146,5 +146,5 @@ The exact Arduino sketches used for this module are stored in the repository.
 
 ## 5. Individual Explanation & Verification (C2 Rubric Prep)
 *   **Divider Conversion:** Explained the chain of averaging ADC readings first, then converting to voltage via $V_{out} = \text{ADC} \times \frac{5}{1023}$. Then applying the voltage divider formula to find $R_{therm}$, and finally using the Beta equation to get Celsius. Averaging first reduces noise before non-linear conversion.
-*   **PWM:** Explained `map()` converting 10-bit ADC (0-1023) to 8-bit PWM (0-255) for `analogWrite`.
+*   **PWM:** Explained scaling and rounding the 10-bit ADC average (0-1023) to an 8-bit PWM command (0-255) for `analogWrite`.
 *   **Expected H-Bridge Inputs:** Explained that only ONE of the two PWM pins (9 or 10) should be active at a time to prevent shorting the H-bridge. Pin 11 acts as the direction selector, routing the PWM signal to either RPWM (Heat) or LPWM (Cool) while forcing the other to 0V.
