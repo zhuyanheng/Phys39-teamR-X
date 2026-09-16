@@ -39,7 +39,7 @@ $$
 \frac{1}{T_K} = \frac{1}{T_0} + \frac{1}{\beta} \ln\left(\frac{R_{therm}}{R_0}\right)
 $$
 
-$$
+```math
 T_C =
 \left[
 \frac{1}{T_0}
@@ -47,7 +47,7 @@ T_C =
 \ln\left(\frac{R_{therm}}{R_0}\right)
 \right]^{-1}
 - 273.15
-$$
+```
 
 ### 1.2 Human-Readable Serial Output
 Three representative lines from the Part 1 Arduino output (saved from `part_1.png`):
