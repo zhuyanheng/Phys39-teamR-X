@@ -140,9 +140,9 @@ This table represents the verified logic (Method 2) from the 3B oscilloscope che
 
 ## 4. Authoritative Arduino Sketches
 The exact Arduino sketches used for this module are stored in the repository. 
-*   [Part 1: Thermistor Serial Data and Temperature Conversion](../../Module_2/arduino/part_1)
-*   [Part 2: Serial Plotter Output](../../Module_2/arduino/part_2)
-*   [Part 3: Trim-Pot, H-Bridge, and Motor Control](../../Module_2/arduino/part_3)
+*   [Part 1: Thermistor Serial Data and Temperature Conversion](../../Module_2/arduino/part_1/part_1.ino)
+*   [Part 2: Serial Plotter Output](../../Module_2/arduino/part_2/part_2.ino)
+*   [Part 3: Trim-Pot, H-Bridge, and Motor Control](../../Module_2/arduino/part_3/part_3.ino)
 
 ## 5. Individual Explanation & Verification (C2 Rubric Prep)
 *   **Divider Conversion:** Explained the chain of averaging ADC readings first, then converting to voltage via $V_{out} = \text{ADC} \times \frac{5}{1023}$. Then applying the voltage divider formula to find $R_{therm}$, and finally using the Beta equation to get Celsius. Averaging first reduces noise before non-linear conversion.

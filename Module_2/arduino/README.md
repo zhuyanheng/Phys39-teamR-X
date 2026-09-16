@@ -19,7 +19,6 @@ Each sketch is stored in a folder with the same name as its `.ino` file.
 |---|---|
 | Fixed resistor (100 kΩ) | 5V to A0 |
 | Thermistor (100 kΩ NTC) | A0 to GND |
-| Thermistor wiper | A0 |
 
 ### Trim-Pot (Part 3)
 
