@@ -13,6 +13,25 @@
 
 ### 1.1 Thermistor Divider Circuit and Constants
 The thermistor voltage divider is wired to Arduino 5V, A0, and GND.
+
+**Labeled thermistor-divider diagram:**
+
+```text
+                 Arduino 5 V (V_REF)
+                         |
+                         |
+                 R_fixed = 100 kOhm
+                         |
+                         +-------- A0 (V_out / averaged ADC input)
+                         |
+                 NTC thermistor (R_therm)
+                 R_0 = 100 kOhm at 25 C
+                 beta = 4540 K
+                         |
+                         |
+                    Arduino GND
+```
+
 *   **Circuit:** 5V -> Fixed Resistor ($R_{fixed}$) -> A0 -> Thermistor ($R_{therm}$) -> GND.
 *   **Arduino Pin:** A0
 *   **Conversion Chain:** `average ADC` $\rightarrow$ `average voltage` $\rightarrow$ `thermistor resistance` $\rightarrow$ `temperature`.
