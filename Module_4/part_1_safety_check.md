@@ -1,5 +1,7 @@
 # Module 4 Part 1 software verification — 2026-09-23
 
+Current configuration after the user's operating-limit request: both PWM outputs shut down at temperature <=10 °C or >=45 °C, as well as on non-finite sensor readings. The assignment's 60 °C software limit remains in the code; the 45 °C operating guard intervenes first in normal operation. These are checks in the same firmware, not independent protective systems. GUI and new CSV files record both operating bounds and the 60 °C limit. The 10 °C and 45 °C boundaries have not been physically tested. Earlier tests below used the thresholds stated in their own sections.
+
 The user confirmed that TEC external power was off and disconnected. Arduino Uno was connected by USB at `/dev/cu.usbmodem101`, 9600 baud. No powered TEC run was performed.
 
 ## Code used
