@@ -78,7 +78,9 @@ def parse_measurement(line):
     heat_pwm = fields.get("Heat PWM", "")
     cool_pwm = fields.get("Cool PWM", "")
     limit_c = fields.get("Limit (C)", "")
-    return time_s, temperature_c, pwm, heat_cool, safety, heat_pwm, cool_pwm, limit_c
+    low_limit_c = fields.get("Low Limit (C)", "")
+    operating_high_c = fields.get("Operating High (C)", "")
+    return time_s, temperature_c, pwm, heat_cool, safety, heat_pwm, cool_pwm, limit_c, low_limit_c, operating_high_c
 
 
 # --------------------------------------------------
@@ -135,7 +137,8 @@ class TecControlWindow(QMainWindow):
         self.csv_writer = csv.writer(self.csv_file)
         self.csv_writer.writerow(
             ["time_s", "temperature_C", "pwm", "heat_cool", "safety",
-             "heat_pwm_firmware", "cool_pwm_firmware", "limit_C"]
+             "heat_pwm_firmware", "cool_pwm_firmware", "limit_C", "low_limit_C",
+             "operating_high_C"]
         )
         self.csv_file.flush()
 
@@ -371,6 +374,8 @@ class TecControlWindow(QMainWindow):
         heat_pwm,
         cool_pwm,
         limit_c,
+        low_limit_c,
+        operating_high_c,
     ):
         if self.times and time_s < self.times[-1]:
             self.clear_plot_data()
@@ -398,7 +403,10 @@ class TecControlWindow(QMainWindow):
         self.measured_direction_label.setText(
             f"Direction: {direction_text}"
         )
-        self.safety_label.setText(f"Safety: {safety} | Limit: {limit_c} C")
+        self.safety_label.setText(
+            f"Safety: {safety} | Operating: {low_limit_c}–{operating_high_c} C"
+            f" | Safety limit: {limit_c} C"
+        )
         self.safety_label.setStyleSheet(
             "color: red; font-weight: bold;" if safety != "OK" else "color: green;"
         )
@@ -414,12 +422,14 @@ class TecControlWindow(QMainWindow):
             f"Time (s): {time_s:.2f}, "
             f"PWM: {pwm}, "
             f"Heat/Cool: {heat_cool}, Safety: {safety}, "
-            f"Heat PWM: {heat_pwm}, Cool PWM: {cool_pwm}, Limit (C): {limit_c}"
+            f"Heat PWM: {heat_pwm}, Cool PWM: {cool_pwm}, "
+            f"Limit (C): {limit_c}, Low Limit (C): {low_limit_c}, "
+            f"Operating High (C): {operating_high_c}"
         )
 
         self.csv_writer.writerow(
             [f"{time_s:.2f}", f"{temperature_c:.2f}", pwm, heat_cool,
-             safety, heat_pwm, cool_pwm, limit_c]
+             safety, heat_pwm, cool_pwm, limit_c, low_limit_c, operating_high_c]
         )
         self.csv_file.flush()
 

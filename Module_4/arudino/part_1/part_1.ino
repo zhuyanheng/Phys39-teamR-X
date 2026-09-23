@@ -19,6 +19,9 @@ const unsigned long REPORT_INTERVAL_MS = 500;
 
 // Software safety limit (Part 1 requirement)
 const float SOFTWARE_TEMPERATURE_LIMIT_C = 60.0;
+const float SOFTWARE_MINIMUM_TEMPERATURE_C = 10.0;
+// Module 4 operating boundary; stops the run before the 60 C safety limit.
+const float OPERATING_MAXIMUM_TEMPERATURE_C = 45.0;
 
 // Serial command buffer
 const int COMMAND_BUFFER_SIZE = 48;
@@ -200,7 +203,11 @@ void printMeasurement(
   Serial.print(", Cool PWM: ");
   Serial.print(safetyShutdownActive || heatMode ? 0 : commandedPwm);
   Serial.print(", Limit (C): ");
-  Serial.println(SOFTWARE_TEMPERATURE_LIMIT_C, 2);
+  Serial.print(SOFTWARE_TEMPERATURE_LIMIT_C, 2);
+  Serial.print(", Low Limit (C): ");
+  Serial.print(SOFTWARE_MINIMUM_TEMPERATURE_C, 2);
+  Serial.print(", Operating High (C): ");
+  Serial.println(OPERATING_MAXIMUM_TEMPERATURE_C, 2);
 }
 
 void setup() {
@@ -225,8 +232,11 @@ void loop() {
   float voltage = adcToVoltage(averageAdc);
   float resistance = voltageToResistance(voltage);
   float temperatureC = resistanceToCelsius(resistance);
-  // Invalid sensor readings also force the actuator off.
+  // Enforce 10–45 C operating boundaries and the assignment's 60 C limit.
+  // The 45 C guard normally intervenes before the 60 C condition is reached.
   safetyShutdownActive = !isfinite(temperatureC)
+      || temperatureC <= SOFTWARE_MINIMUM_TEMPERATURE_C
+      || temperatureC >= OPERATING_MAXIMUM_TEMPERATURE_C
       || temperatureC > SOFTWARE_TEMPERATURE_LIMIT_C;
 
   // When safety shutdown is active, force both PWM outputs to zero.

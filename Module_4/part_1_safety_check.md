@@ -19,7 +19,20 @@ The 60 °C production firmware was then uploaded. Five measurements reported `Sa
 
 - [Restoration serial evidence](data/safety_restored_20260923_111532_983431.txt)
 
-## Remaining physical checks
+## Subsequent instructor-present 30 °C test
+
+The user subsequently requested a 30 °C temporary threshold with the instructor present and then reported completion. The GUI recorded a heating command and an actual threshold crossing in [the 30 °C test CSV](data/module_04_tec_20260923_114043_802804.csv). The earlier external-power-off statement applies to the initial test only; the later physical power configuration was not independently observed.
+
+| Arduino time (s) | Temperature (°C) | Commanded PWM | Safety | Firmware heat/cool PWM |
+| --- | --- | --- | --- | --- |
+| 26.41 | 29.97 | 173 | OK | 173 / 0 |
+| 26.92 | 30.67 | 0 | SHUTDOWN | 0 / 0 |
+| 28.45 | 31.61 | 0 | SHUTDOWN | 0 / 0 |
+| 34.09 | 29.87 | 0 | OK | 0 / 0 |
+
+Serial reporting continued through shutdown and recovery. The 30.67 °C sample is the first *reported* shutdown, not an exact measurement of the triggering temperature between reports. The brief temperature rise after PWM removal is consistent with thermal inertia but was not independently diagnosed. Physical output voltages remain unreported. The production source remains at 60 °C.
+
+## Physical documentation still to record
 
 Serial output values are firmware reports, not independent voltage measurements of pins 9 and 10. Verify both physical outputs with instructor-approved instruments before claiming electrical verification. Sensor-disconnection shutdown was inspected in code and its serial parsing checked, but was not tested by disconnecting the actual sensor.
 
