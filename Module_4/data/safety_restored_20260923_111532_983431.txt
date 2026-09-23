@@ -1,0 +1,8 @@
+TEC external power OFF and disconnected, confirmed by user. Output fields are firmware reports, not electrical measurements.
+TX: SET PWM 0 DIR COOL
+RX: Temperature (C): 23.52, Time (s): 0.56, PWM: 0, Heat/Cool: 0, Safety: OK, Heat PWM: 0, Cool PWM: 0, Limit (C): 60.00
+RX: Temperature (C): 23.64, Time (s): 1.07, PWM: 0, Heat/Cool: 0, Safety: OK, Heat PWM: 0, Cool PWM: 0, Limit (C): 60.00
+RX: Temperature (C): 23.73, Time (s): 1.57, PWM: 0, Heat/Cool: 0, Safety: OK, Heat PWM: 0, Cool PWM: 0, Limit (C): 60.00
+RX: Temperature (C): 23.76, Time (s): 2.08, PWM: 0, Heat/Cool: 0, Safety: OK, Heat PWM: 0, Cool PWM: 0, Limit (C): 60.00
+RX: Temperature (C): 23.82, Time (s): 2.58, PWM: 0, Heat/Cool: 0, Safety: OK, Heat PWM: 0, Cool PWM: 0, Limit (C): 60.00
+PASS: expected safety state, zero firmware output values, and continuing serial reporting.

@@ -2,6 +2,7 @@ import csv
 import math
 import sys
 import time
+from datetime import datetime
 from pathlib import Path
 
 import pyqtgraph as pg
@@ -37,7 +38,7 @@ PLOT_UPDATE_INTERVAL_MS = 100
 TEMPERATURE_MIN_C = 10.0
 TEMPERATURE_MAX_C = 70.0
 
-CSV_FILENAME = "part_7_integrated_control_data.csv"
+CSV_FILENAME = "module_04_tec"
 
 
 # --------------------------------------------------
@@ -64,9 +65,6 @@ def parse_measurement(line):
     except (KeyError, ValueError):
         return None
 
-    if not math.isfinite(temperature_c):
-        return None
-
     if not math.isfinite(time_s):
         return None
 
@@ -76,7 +74,11 @@ def parse_measurement(line):
     if heat_cool not in (0, 1):
         return None
 
-    return time_s, temperature_c, pwm, heat_cool
+    safety = fields.get("Safety", "UNKNOWN")
+    heat_pwm = fields.get("Heat PWM", "")
+    cool_pwm = fields.get("Cool PWM", "")
+    limit_c = fields.get("Limit (C)", "")
+    return time_s, temperature_c, pwm, heat_cool, safety, heat_pwm, cool_pwm, limit_c
 
 
 # --------------------------------------------------
@@ -87,7 +89,7 @@ class TecControlWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Module 3 Manual TEC Control")
+        self.setWindowTitle("Module 4 TEC Control and Safety")
         self.resize(1050, 850)
 
         self.times = []
@@ -120,17 +122,20 @@ class TecControlWindow(QMainWindow):
     def open_csv_file(self):
         script_directory = Path(__file__).resolve().parent
         data_directory = script_directory.parent / "data"
-        self.csv_path = data_directory / CSV_FILENAME
+        data_directory.mkdir(parents=True, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        self.csv_path = data_directory / f"{CSV_FILENAME}_{timestamp}.csv"
 
         self.csv_file = self.csv_path.open(
-            mode="w",
+            mode="x",
             newline="",
             encoding="utf-8",
         )
 
         self.csv_writer = csv.writer(self.csv_file)
         self.csv_writer.writerow(
-            ["time_s", "temperature_C", "pwm", "heat_cool"]
+            ["time_s", "temperature_C", "pwm", "heat_cool", "safety",
+             "heat_pwm_firmware", "cool_pwm_firmware", "limit_C"]
         )
         self.csv_file.flush()
 
@@ -202,11 +207,13 @@ class TecControlWindow(QMainWindow):
         self.time_label = QLabel("Time: -- s")
         self.measured_pwm_label = QLabel("PWM: --")
         self.measured_direction_label = QLabel("Direction: --")
+        self.safety_label = QLabel("Safety: --")
 
         layout.addWidget(self.temperature_label)
         layout.addWidget(self.time_label)
         layout.addWidget(self.measured_pwm_label)
         layout.addWidget(self.measured_direction_label)
+        layout.addWidget(self.safety_label)
 
         return group
 
@@ -360,6 +367,10 @@ class TecControlWindow(QMainWindow):
         temperature_c,
         pwm,
         heat_cool,
+        safety,
+        heat_pwm,
+        cool_pwm,
+        limit_c,
     ):
         if self.times and time_s < self.times[-1]:
             self.clear_plot_data()
@@ -387,16 +398,28 @@ class TecControlWindow(QMainWindow):
         self.measured_direction_label.setText(
             f"Direction: {direction_text}"
         )
+        self.safety_label.setText(f"Safety: {safety} | Limit: {limit_c} C")
+        self.safety_label.setStyleSheet(
+            "color: red; font-weight: bold;" if safety != "OK" else "color: green;"
+        )
+        if safety == "SHUTDOWN":
+            self.pwm_slider.blockSignals(True)
+            self.pwm_slider.setValue(0)
+            self.pwm_slider.blockSignals(False)
+            self.pwm_input.setText("0")
+            self.update_command_display()
 
         print(
             f"Temperature (C): {temperature_c:.2f}, "
             f"Time (s): {time_s:.2f}, "
             f"PWM: {pwm}, "
-            f"Heat/Cool: {heat_cool}"
+            f"Heat/Cool: {heat_cool}, Safety: {safety}, "
+            f"Heat PWM: {heat_pwm}, Cool PWM: {cool_pwm}, Limit (C): {limit_c}"
         )
 
         self.csv_writer.writerow(
-            [f"{time_s:.2f}", f"{temperature_c:.2f}", pwm, heat_cool]
+            [f"{time_s:.2f}", f"{temperature_c:.2f}", pwm, heat_cool,
+             safety, heat_pwm, cool_pwm, limit_c]
         )
         self.csv_file.flush()
 

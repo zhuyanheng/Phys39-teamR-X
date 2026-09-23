@@ -1,0 +1,20 @@
+TEC external power OFF and disconnected, confirmed by user. Output fields are firmware reports, not electrical measurements.
+TX: SET PWM 0 DIR COOL
+RX: Temperature (C): 22.84, Time (s): 0.56, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.84, Time (s): 1.07, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.84, Time (s): 1.58, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.84, Time (s): 2.10, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.84, Time (s): 2.61, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+TX: SET PWM 25 DIR HEAT
+RX: Temperature (C): 22.84, Time (s): 3.12, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.84, Time (s): 3.63, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.84, Time (s): 4.14, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.84, Time (s): 4.65, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.84, Time (s): 5.16, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+TX: SET PWM 25 DIR COOL
+RX: Temperature (C): 22.84, Time (s): 5.67, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.86, Time (s): 6.18, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.87, Time (s): 6.70, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.89, Time (s): 7.21, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+RX: Temperature (C): 22.90, Time (s): 7.72, PWM: 0, Heat/Cool: 0, Safety: SHUTDOWN, Heat PWM: 0, Cool PWM: 0, Limit (C): 20.00
+PASS: expected safety state, zero firmware output values, and continuing serial reporting.

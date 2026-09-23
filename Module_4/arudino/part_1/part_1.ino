@@ -193,7 +193,14 @@ void printMeasurement(
   Serial.print(heatMode ? 1 : 0);
 
   Serial.print(", Safety: ");
-  Serial.println(safetyShutdownActive ? "SHUTDOWN" : "OK");
+  Serial.print(safetyShutdownActive ? "SHUTDOWN" : "OK");
+  // Firmware output values; these do not replace a physical pin measurement.
+  Serial.print(", Heat PWM: ");
+  Serial.print(safetyShutdownActive || !heatMode ? 0 : commandedPwm);
+  Serial.print(", Cool PWM: ");
+  Serial.print(safetyShutdownActive || heatMode ? 0 : commandedPwm);
+  Serial.print(", Limit (C): ");
+  Serial.println(SOFTWARE_TEMPERATURE_LIMIT_C, 2);
 }
 
 void setup() {
@@ -213,30 +220,14 @@ void setup() {
 }
 
 void loop() {
-  readSerialCommands();
-
-  unsigned long currentTime = millis();
-
-  if (currentTime - lastReportTime < REPORT_INTERVAL_MS) {
-    return;
-  }
-
-  lastReportTime = currentTime;
-
+  // Measure and check safety every loop, before accepting actuator commands.
   float averageAdc = averageThermistorAdc();
   float voltage = adcToVoltage(averageAdc);
   float resistance = voltageToResistance(voltage);
   float temperatureC = resistanceToCelsius(resistance);
-  float timeSeconds = currentTime / 1000.0;
-
-  // Update safety shutdown state based on averaged temperature.
-  if (!isnan(temperatureC)) {
-    if (temperatureC > SOFTWARE_TEMPERATURE_LIMIT_C) {
-      safetyShutdownActive = true;
-    } else {
-      safetyShutdownActive = false;
-    }
-  }
+  // Invalid sensor readings also force the actuator off.
+  safetyShutdownActive = !isfinite(temperatureC)
+      || temperatureC > SOFTWARE_TEMPERATURE_LIMIT_C;
 
   // When safety shutdown is active, force both PWM outputs to zero.
   if (safetyShutdownActive) {
@@ -245,5 +236,11 @@ void loop() {
     analogWrite(COOL_PWM_PIN, 0);
   }
 
-  printMeasurement(temperatureC, timeSeconds);
+  readSerialCommands();
+
+  unsigned long currentTime = millis();
+  if (currentTime - lastReportTime >= REPORT_INTERVAL_MS) {
+    lastReportTime = currentTime;
+    printMeasurement(temperatureC, currentTime / 1000.0);
+  }
 }
