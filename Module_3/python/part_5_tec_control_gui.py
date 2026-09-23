@@ -37,7 +37,7 @@ PLOT_UPDATE_INTERVAL_MS = 100
 TEMPERATURE_MIN_C = 10.0
 TEMPERATURE_MAX_C = 70.0
 
-CSV_FILENAME = "module_03_part_5_data.csv"
+CSV_FILENAME = "part_7_integrated_control_data.csv"
 
 
 # --------------------------------------------------
@@ -119,7 +119,8 @@ class TecControlWindow(QMainWindow):
 
     def open_csv_file(self):
         script_directory = Path(__file__).resolve().parent
-        self.csv_path = script_directory / CSV_FILENAME
+        data_directory = script_directory.parent / "data"
+        self.csv_path = data_directory / CSV_FILENAME
 
         self.csv_file = self.csv_path.open(
             mode="w",
