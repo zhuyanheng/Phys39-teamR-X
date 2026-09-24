@@ -19,6 +19,9 @@ const unsigned long REPORT_INTERVAL_MS = 500;
 
 // Software safety limit (Part 1 requirement)
 const float SOFTWARE_TEMPERATURE_LIMIT_C = 60.0;
+const float SOFTWARE_MINIMUM_TEMPERATURE_C = 10.0;
+// Module 4 operating boundary; stops the run before the 60 C safety limit.
+const float OPERATING_MAXIMUM_TEMPERATURE_C = 45.0;
 
 // Serial command buffer
 const int COMMAND_BUFFER_SIZE = 48;
@@ -193,7 +196,18 @@ void printMeasurement(
   Serial.print(heatMode ? 1 : 0);
 
   Serial.print(", Safety: ");
-  Serial.println(safetyShutdownActive ? "SHUTDOWN" : "OK");
+  Serial.print(safetyShutdownActive ? "SHUTDOWN" : "OK");
+  // Firmware output values; these do not replace a physical pin measurement.
+  Serial.print(", Heat PWM: ");
+  Serial.print(safetyShutdownActive || !heatMode ? 0 : commandedPwm);
+  Serial.print(", Cool PWM: ");
+  Serial.print(safetyShutdownActive || heatMode ? 0 : commandedPwm);
+  Serial.print(", Limit (C): ");
+  Serial.print(SOFTWARE_TEMPERATURE_LIMIT_C, 2);
+  Serial.print(", Low Limit (C): ");
+  Serial.print(SOFTWARE_MINIMUM_TEMPERATURE_C, 2);
+  Serial.print(", Operating High (C): ");
+  Serial.println(OPERATING_MAXIMUM_TEMPERATURE_C, 2);
 }
 
 void setup() {
@@ -213,30 +227,17 @@ void setup() {
 }
 
 void loop() {
-  readSerialCommands();
-
-  unsigned long currentTime = millis();
-
-  if (currentTime - lastReportTime < REPORT_INTERVAL_MS) {
-    return;
-  }
-
-  lastReportTime = currentTime;
-
+  // Measure and check safety every loop, before accepting actuator commands.
   float averageAdc = averageThermistorAdc();
   float voltage = adcToVoltage(averageAdc);
   float resistance = voltageToResistance(voltage);
   float temperatureC = resistanceToCelsius(resistance);
-  float timeSeconds = currentTime / 1000.0;
-
-  // Update safety shutdown state based on averaged temperature.
-  if (!isnan(temperatureC)) {
-    if (temperatureC > SOFTWARE_TEMPERATURE_LIMIT_C) {
-      safetyShutdownActive = true;
-    } else {
-      safetyShutdownActive = false;
-    }
-  }
+  // Enforce 10–45 C operating boundaries and the assignment's 60 C limit.
+  // The 45 C guard normally intervenes before the 60 C condition is reached.
+  safetyShutdownActive = !isfinite(temperatureC)
+      || temperatureC <= SOFTWARE_MINIMUM_TEMPERATURE_C
+      || temperatureC >= OPERATING_MAXIMUM_TEMPERATURE_C
+      || temperatureC > SOFTWARE_TEMPERATURE_LIMIT_C;
 
   // When safety shutdown is active, force both PWM outputs to zero.
   if (safetyShutdownActive) {
@@ -245,5 +246,11 @@ void loop() {
     analogWrite(COOL_PWM_PIN, 0);
   }
 
-  printMeasurement(temperatureC, timeSeconds);
+  readSerialCommands();
+
+  unsigned long currentTime = millis();
+  if (currentTime - lastReportTime >= REPORT_INTERVAL_MS) {
+    lastReportTime = currentTime;
+    printMeasurement(temperatureC, currentTime / 1000.0);
+  }
 }
