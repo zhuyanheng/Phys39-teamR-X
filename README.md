@@ -76,6 +76,42 @@ trim-pot PWM control, H-bridge logic verification, and DC motor drive.
 - [Part 3C Heat Motor Running](Module_2/figures/part_3c_heat.png)
 - [Part 3C Motor Video](Module_2/figures/part_3c.mp4)
 
+## Module 3: Manual TEC Heat/Cool And First Python GUI
+
+This repository contains the Arduino sketches, Python scripts, data, and
+figures for Module 3: manual TEC control via H-bridge, thermistor feedback,
+and a Python GUI for display and control.
+
+- [Module 3 Arduino documentation](Module_3/arduino/README.md)
+- [Module 3 Python documentation](Module_3/python/README.md)
+- [Module 3 data documentation](Module_3/data/README.md)
+- [Module 3 evidence note](docs/module_notes/module_3_tec_gui.md)
+
+### Module 3 Arduino Sketches
+
+- [Part 2: Manual Trim-pot Motor Control](Module_3/arduino/part_2/part_2.ino)
+- [Part 3: Manual TEC Calibration](Module_3/arduino/part_3/part_3.ino)
+- [Part 6: TEC Python Serial Control](Module_3/arduino/part_6_tec_python_control/part_6_tec_python_control.ino)
+
+### Module 3 Python Scripts
+
+- [Part 4: Temperature Strip Chart](Module_3/python/part_4_graphing.py)
+- [Part 5: TEC Control GUI](Module_3/python/part_5_tec_control_gui.py)
+
+### Module 3 Figures
+
+- [Part 2 Cooling](Module_3/figures/part_2_cooling.png)
+- [Part 3 Oscilloscope on Digitals](Module_3/figures/part_3_oscilloscope_on_digitals.mp4)
+- [Part 3 Oscilloscope on M+ and M-](Module_3/figures/part_3_oscilloscope_on_M+-.mp4)
+- [Part 3 Switch Between Cooling and Heating](Module_3/figures/part_3_switch_between_cooling_heating.png)
+- [Part 4 Temperature Graph](Module_3/figures/part_4_temperature_graph.png)
+- [Part 5 GUI Without Actual Control](Module_3/figures/part_5_GUI_without_actual_control.png)
+- [Part 6 TEC Control Using GUI 1](Module_3/figures/part_6_TEC_control_using_GUI_1.png)
+- [Part 6 TEC Control Using GUI 2](Module_3/figures/part_6_TEC_control_using_GUI_2.png)
+- [Part 7 GUI](Module_3/figures/part_7_GUI.png)
+- [Part 7 Cooling](Module_3/figures/part_7_cooling.png)
+- [Part 7 Heating](Module_3/figures/part_7_heating.png)
+
 ## Hardware
 
 - Arduino Uno
@@ -91,6 +127,9 @@ trim-pot PWM control, H-bridge logic verification, and DC motor drive.
 - 12 V DC power supply
 - Small DC motor
 - SPDT switch
+- Thermoelectric Cooler (TEC)
+- Thermal switch (NC)
+- Heat exchanger (pump and radiator fans)
 
 ## Tested Capabilities
 
@@ -108,6 +147,11 @@ The team uploaded and tested the Module 1 and Module 2 sketches on an Arduino Un
 - Module 2 Part 3 controlled H-bridge PWM and direction with a trim-pot and switch.
 - Module 2 Part 3B verified H-bridge command signals with an oscilloscope.
 - Module 2 Part 3C drove a small DC motor in both directions with variable speed.
+- Module 3 Part 2 and Part 3 successfully drove the TEC manually and calibrated heat/cool directions.
+- Module 3 Part 4 displayed live temperature data in a Python strip chart.
+- Module 3 Part 5 built a functional Python GUI with synchronized slider and text box.
+- Module 3 Part 6 enabled serial-command control of PWM and direction from Python.
+- Module 3 Part 7 completed integrated manual-control testing with real-time plotting and CSV logging.
 
 ## How to Run a Sketch
 
@@ -117,6 +161,7 @@ The team uploaded and tested the Module 1 and Module 2 sketches on an Arduino Un
 4. Click **Verify**.
 5. Click **Upload**.
 6. Open Serial Monitor or Serial Plotter at `9600 baud` when required.
+7. For Module 3 Python scripts, ensure the Serial Monitor is closed before running the GUI.
 
 ## AI Use
 
