@@ -29,7 +29,7 @@ This directory contains the experimental data and quantitative analysis for the 
 | Reporting interval | 500 ms |
 | Thermistor samples per reported temperature | 1000 |
 | Serial baud rate | 9600 baud |
-| Power-supply voltage and current limit | Not yet recorded; add from the signed lab checklist |
+| Power-supply voltage | 12 V |
 
 ## Data Columns
 

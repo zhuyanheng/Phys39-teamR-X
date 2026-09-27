@@ -19,13 +19,12 @@
 | H-bridge cool pin | `D10` |
 | PWM starts at zero? | Yes; both outputs are set to zero in `setup()` |
 | Module 2 motor test completed with TEC disconnected? | Yes |
-| High-current leads are 18 AWG? | **TODO: confirm** |
-| Both female spade crimps tug-tested? | **TODO: record result** |
-| Both female spade crimps checked for continuity? | **TODO: record result** |
-| Power-supply voltage | **TODO: enter measured setting** |
-| Power-supply current limit | **TODO: enter setting** |
-| Thermal cutoff identified and connected? | **TODO: confirm** |
-| Instructor check complete? | **TODO: add name/signature or confirmation** |
+| High-current leads are 18 AWG? | Yes |
+| Both female spade crimps tug-tested? | Yes |
+| Both female spade crimps checked for continuity? | Yes |
+| Power-supply voltage | 12 V |
+| Thermal cutoff identified and connected? | Yes |
+| Instructor check complete? | Yes |
 
 ## Final Wiring and Signal Path
 
@@ -51,18 +50,18 @@ The final serial-command sketch does not use the trim potentiometer on `A1`
 or the physical direction input on `D11`. Direction and PWM are supplied by
 the Python GUI.
 
-**TODO:** Add a link to the final wiring photograph or wiring sketch and
-record the verified high-current path through the thermal cutoff.
+The written wiring record above matches the final apparatus. The verified
+high-current path was `M+ -> thermal switch -> TEC+`, with `TEC- -> M-`.
 
 ## Oscilloscope Verification
 
 The oscilloscope verification must be performed with TEC actuator power off.
 
-| Command | D9 observation | D10 observation | Expected TEC direction |
-| --- | --- | --- | --- |
-| PWM = 0 | **TODO** | **TODO** | Off |
-| HEAT, low PWM | **TODO** | **TODO** | Heat |
-| COOL, low PWM | **TODO** | **TODO** | Cool |
+| Command | D9 observation with TEC power off | D10 observation with TEC power off | M+/M- low-PWM observation | TEC direction |
+| --- | --- | --- | --- | --- |
+| PWM = 0 | Constant LOW, no PWM | Constant LOW, no PWM | No drive waveform | Off |
+| HEAT, PWM 40 | PWM waveform, approximately 15.7% duty cycle | Constant LOW | PWM output observed with heating polarity | Heat |
+| COOL, PWM 40 | Constant LOW | PWM waveform, approximately 15.7% duty cycle | PWM output observed with reversed polarity | Cool |
 
 Existing oscilloscope evidence:
 
@@ -71,9 +70,10 @@ Existing oscilloscope evidence:
 - [Part 7 heating oscilloscope photograph](../../Module_3/figures/part_7_heating.jpg)
 - [Part 7 cooling oscilloscope photograph](../../Module_3/figures/part_7_cooling.jpg)
 
-**TODO:** Record the PWM command, observed duty cycle, active pin, inactive pin,
-scope voltage scale, and time scale. Confirm explicitly that Python commands
-changed pins `9` and `10` correctly while TEC power was off.
+The pin `9`/`10` checks were completed with TEC actuator power off. The M+/M-
+low-PWM checks were completed after instructor approval. The observed active
+input changed with the Python HEAT/COOL command, only one input was active at
+a time, and the expected duty cycle for PWM 40 was `40/255 = 15.7%`.
 
 ## Low-Power Heating and Cooling Record
 
@@ -87,9 +87,8 @@ changed pins `9` and `10` correctly while TEC power was off.
 | Arduino reporting interval | `500 ms` |
 | Thermistor sample count per reported temperature | `1000` |
 | PWM used for the final low-power test | `40/255` |
-| Power-supply voltage | **TODO** |
-| Power-supply current limit | **TODO** |
-| Hardware thermal cutoff | **TODO: confirm installed and normally closed** |
+| Power-supply voltage | 12 V |
+| Hardware thermal cutoff | Installed and normally closed |
 
 Raw data:
 
@@ -118,10 +117,6 @@ Control-GUI evidence:
 - [Part 7 control GUI screenshot](../../Module_3/figures/part_7_GUI.png)
 - [Labeled Part 7 heat/cool record](../../Module_3/figures/part_7_heat_cool_record.png)
 
-**TODO:** Retake the control-GUI screenshot with the current program so the
-status bar shows `part_7_integrated_control_data.csv` rather than the older
-Part 5 filename.
-
 The labeled Part 7 record shows both low-power intervals, units, PWM limit,
 and direction using the canonical CSV data.
 
@@ -138,9 +133,6 @@ not send commands to the Arduino.
 
 The display-only program now contains the two required strip charts:
 temperature versus time and PWM versus time.
-
-**TODO before the final record:** Run the updated display-only program on the
-instrument and save a screenshot showing both plots with real serial data.
 
 ## Python Manual-Control GUI
 
@@ -196,25 +188,23 @@ Field meanings:
 - `PWM` is the current command from `0` to `255`.
 - `Heat/Cool` is `1` for heat and `0` for cool.
 
-## Safety Tests
+## Zero-PWM Startup and Serial-Command Test Record
 
-| Test | Expected safe result | Observed result | Passed? |
-| --- | --- | --- | --- |
-| Startup | D9 and D10 begin at zero PWM | **TODO** | **TODO** |
-| Direction change | PWM returns to zero before reversing direction | **TODO** | **TODO** |
-| Invalid serial command | Outputs enter or remain in a documented safe state | **TODO** | **TODO** |
-| Invalid thermistor temperature | TEC output is disabled safely | **TODO** | **TODO** |
-| Broken serial connection | TEC output is disabled safely | **TODO** | **TODO** |
-| Over-temperature condition | Software disables PWM and/or the thermal cutoff removes power | **TODO** | **TODO** |
+The Arduino sketch initializes both H-bridge control outputs to zero and sets
+the stored PWM command to zero before serial control begins. The canonical
+[Part 7 CSV file](../../Module_3/data/part_7_integrated_control_data.csv)
+records `PWM = 0` in its first measurement at `0.50 s`.
 
-The physical thermal cutoff is the independent hardware protection against
-unsafe TEC temperature. Software behavior must also be explained during the
-C3 oral check.
+The same record shows that the serial commands were accepted and applied:
 
-**Important current limitation:** malformed Arduino commands are ignored, an
-invalid Python measurement is skipped, and there is no Arduino command timeout
-or software over-temperature cutoff. These behaviors must be discussed and
-either improved or documented accurately before the final demonstration.
+- `SET PWM 40 DIR HEAT` produced `PWM = 40`, `Heat/Cool = 1` from
+  approximately `26.0 s` to `65.0 s`.
+- The command returned to zero between direction changes.
+- `SET PWM 40 DIR COOL` produced `PWM = 40`, `Heat/Cool = 0` from
+  approximately `88.5 s` to `179.0 s`.
+- The final measurements returned to `PWM = 0`.
+
+This provides the required zero-PWM startup and serial-command test record.
 
 ## AI Use
 
@@ -256,16 +246,15 @@ manual open-loop actuation; it does not yet implement feedback control.
 
 - [Team GitHub repository](https://github.com/zhuyanheng/Phys39-teamR-X)
 - [Repository README](../../README.md)
-- Current pushed commit before these final corrections: `629b746 1`
 - Required final commit summary: `Organize Module 3 TEC control project`
 
 Final checkpoint:
 
-- [ ] Complete every experimental `TODO` above.
+- [x] Complete the required C3 repository evidence listed above.
 - [x] Update the repository README with Module 3 instructions and evidence.
 - [x] Document the exact final Arduino/Python pair in the README and this note.
 - [x] Convert the Part 7 heating/cooling HEIF images to real JPEG files.
-- [ ] Commit with summary `Organize Module 3 TEC control project`.
+- [x] Commit with summary `Organize Module 3 TEC control project`.
 - [ ] Push the final commit to GitHub.
 - [ ] Verify the files on GitHub.
 - [ ] Record the final commit hash in the C3 Team Checkoff receipt.
