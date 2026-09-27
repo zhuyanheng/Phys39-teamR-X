@@ -7,7 +7,13 @@ from pathlib import Path
 import pyqtgraph as pg
 import serial
 from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QMessageBox,
+    QVBoxLayout,
+    QWidget,
+)
 
 
 # --------------------------------------------------
@@ -22,8 +28,10 @@ PLOT_UPDATE_INTERVAL_MS = 100
 
 TEMPERATURE_MIN_C = 10.0
 TEMPERATURE_MAX_C = 50.0
+PWM_MIN = 0
+PWM_MAX = 255
 
-CSV_FILENAME = "module_03_part_4_data.csv"
+CSV_FILENAME = "part_4_data.csv"
 
 
 # --------------------------------------------------
@@ -85,15 +93,17 @@ class TemperatureStripChart(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Module 3 Temperature Strip Chart")
-        self.resize(900, 550)
+        self.resize(900, 850)
 
         self.times = []
         self.temperatures = []
+        self.pwms = []
+        self.directions = []
         self.serial_buffer = ""
 
         self.open_serial_port()
         self.open_csv_file()
-        self.create_plot()
+        self.create_plots()
         self.create_timer()
 
     def open_serial_port(self):
@@ -108,7 +118,9 @@ class TemperatureStripChart(QMainWindow):
         self.serial_port.reset_input_buffer()
 
     def open_csv_file(self):
-        csv_path = Path(CSV_FILENAME)
+        script_directory = Path(__file__).resolve().parent
+        data_directory = script_directory.parent / "data"
+        csv_path = data_directory / CSV_FILENAME
 
         self.csv_file = csv_path.open(
             mode="w",
@@ -127,44 +139,67 @@ class TemperatureStripChart(QMainWindow):
 
         self.csv_file.flush()
 
-    def create_plot(self):
-        self.plot_widget = pg.PlotWidget()
-        self.setCentralWidget(self.plot_widget)
+    def create_plots(self):
+        central_widget = QWidget()
+        layout = QVBoxLayout(central_widget)
+        self.setCentralWidget(central_widget)
 
-        self.plot_widget.setBackground("w")
-        self.plot_widget.showGrid(x=True, y=True, alpha=0.3)
-
-        self.plot_widget.setLabel(
-            "bottom",
-            "Arduino Time",
-            units="s"
+        self.temperature_plot = pg.PlotWidget(
+            title="Temperature vs Arduino Time"
+        )
+        self.pwm_plot = pg.PlotWidget(
+            title="Measured PWM vs Arduino Time"
         )
 
-        self.plot_widget.setLabel(
+        layout.addWidget(self.temperature_plot)
+        layout.addWidget(self.pwm_plot)
+
+        for plot in (self.temperature_plot, self.pwm_plot):
+            plot.setBackground("w")
+            plot.showGrid(x=True, y=True, alpha=0.3)
+            plot.setLabel("bottom", "Arduino Time", units="s")
+            plot.setXRange(0, WINDOW_DURATION_S)
+
+        self.temperature_plot.setLabel(
             "left",
             "Temperature",
             units="C"
         )
 
-        self.plot_widget.setYRange(
+        self.temperature_plot.setYRange(
             TEMPERATURE_MIN_C,
             TEMPERATURE_MAX_C
         )
 
-        self.plot_widget.setXRange(
-            0,
-            WINDOW_DURATION_S
-        )
+        self.pwm_plot.setLabel("left", "PWM")
+        self.pwm_plot.setYRange(PWM_MIN, PWM_MAX)
+        self.pwm_plot.addLegend()
 
         temperature_pen = pg.mkPen(
             color=(0, 90, 220),
             width=2
         )
 
-        self.temperature_curve = self.plot_widget.plot(
+        self.temperature_curve = self.temperature_plot.plot(
             [],
             [],
             pen=temperature_pen
+        )
+
+        self.heat_pwm_curve = self.pwm_plot.plot(
+            [],
+            [],
+            pen=pg.mkPen(color=(220, 30, 30), width=2),
+            connect="finite",
+            name="HEAT",
+        )
+
+        self.cool_pwm_curve = self.pwm_plot.plot(
+            [],
+            [],
+            pen=pg.mkPen(color=(30, 90, 220), width=2),
+            connect="finite",
+            name="COOL",
         )
 
     def create_timer(self):
@@ -221,9 +256,13 @@ class TemperatureStripChart(QMainWindow):
         if self.times and time_s < self.times[-1]:
             self.times.clear()
             self.temperatures.clear()
+            self.pwms.clear()
+            self.directions.clear()
 
         self.times.append(time_s)
         self.temperatures.append(temperature_c)
+        self.pwms.append(pwm)
+        self.directions.append(heat_cool)
 
         # Remove data outside the visible rolling window.
         minimum_visible_time = (
@@ -236,6 +275,8 @@ class TemperatureStripChart(QMainWindow):
         ):
             self.times.pop(0)
             self.temperatures.pop(0)
+            self.pwms.pop(0)
+            self.directions.pop(0)
 
         # Print only the extracted values.
         print(
@@ -255,11 +296,30 @@ class TemperatureStripChart(QMainWindow):
 
         self.csv_file.flush()
 
-        # Update the temperature plot.
+        # Update both display-only plots.
         self.temperature_curve.setData(
             self.times,
             self.temperatures
         )
+
+        heat_values = [
+            pwm_value if direction == 1 else math.nan
+            for pwm_value, direction in zip(
+                self.pwms,
+                self.directions,
+            )
+        ]
+
+        cool_values = [
+            pwm_value if direction == 0 else math.nan
+            for pwm_value, direction in zip(
+                self.pwms,
+                self.directions,
+            )
+        ]
+
+        self.heat_pwm_curve.setData(self.times, heat_values)
+        self.cool_pwm_curve.setData(self.times, cool_values)
 
         right_edge = max(
             WINDOW_DURATION_S,
@@ -271,11 +331,12 @@ class TemperatureStripChart(QMainWindow):
             right_edge - WINDOW_DURATION_S
         )
 
-        self.plot_widget.setXRange(
-            left_edge,
-            right_edge,
-            padding=0
-        )
+        for plot in (self.temperature_plot, self.pwm_plot):
+            plot.setXRange(
+                left_edge,
+                right_edge,
+                padding=0
+            )
 
     def closeEvent(self, event):
         self.timer.stop()

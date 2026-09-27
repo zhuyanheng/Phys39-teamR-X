@@ -27,6 +27,9 @@ This directory contains the experimental data and quantitative analysis for the 
 | PWM range | 0 to 255 (8-bit timer) |
 | Direction mapping | 1 = HEAT, 0 = COOL |
 | Reporting interval | 500 ms |
+| Thermistor samples per reported temperature | 1000 |
+| Serial baud rate | 9600 baud |
+| Power-supply voltage and current limit | Not yet recorded; add from the signed lab checklist |
 
 ## Data Columns
 
@@ -45,20 +48,24 @@ The [Part 4 CSV file](./part_4_data.csv) contains open-loop data with no compute
 
 ## Part 5 Data (Manual GUI Control)
 
-The [Part 5 CSV file](./part_5_data.csv) contains a full heating and cooling cycle commanded from the Python GUI. The user sets a low PWM (40) to observe gentle heating, then applies a high PWM (255) for rapid heating, followed by a direction change to COOL at 78.5 seconds. This tests the GUI slider, text box, and direction toggle synchronization.
+The [Part 5 CSV file](./part_5_data.csv) contains a development heating and cooling cycle commanded from the Python GUI. The user sets a low PWM (40) to observe gentle heating, then applies a high PWM (255) for rapid heating, followed by a direction change to COOL at 78.5 seconds. This development run tests the GUI slider, text box, and direction toggle synchronization; it is not the final low-power C3 record.
 
 ## Part 6 Data (Serial-Command Control)
 
-The [Part 6 CSV file](./part_6_data.csv) contains a long-duration test of the serial interface. Commands step from 114 to 124, then 219, 255, 189, and eventually 0. The direction is switched between HEAT and COOL multiple times to verify that the Arduino correctly parses the `SET PWM <x> DIR <HEAT/COOL>` command format.
+The [Part 6 CSV file](./part_6_data.csv) contains a development test of the serial interface. Commands step from 114 to 124, then 219, 255, 189, and eventually 0. The direction is switched between HEAT and COOL multiple times to verify that the Arduino correctly parses the `SET PWM <x> DIR <HEAT/COOL>` command format. It is not the final low-power C3 record.
 
 ## Part 7 Data (Integrated Manual-Control Test)
 
 The [Part 7 CSV file](./part_7_integrated_control_data.csv) is the canonical manual-control test result.
 
+The [labeled Part 7 heat/cool figure](../figures/part_7_heat_cool_record.png)
+was generated directly from this CSV file using
+[`plot_part_7_record.py`](../python/plot_part_7_record.py).
+
 Key observations from this run:
 
-- **Heat test (PWM 40):** From 25.0 s to 65.0 s, the temperature rose from 22.06°C to 28.97°C at a steady rate.
-- **Cool test (PWM 40):** From 88.5 s to 179.5 s, the temperature fell from 27.68°C to 20.85°C.
+- **Heat test (PWM 40):** From 26.0 s to 65.0 s, the temperature rose from 22.06°C to 28.90°C at a steady rate.
+- **Cool test (PWM 40):** From 88.5 s to 179.0 s, the temperature fell from 27.68°C to 20.87°C.
 - **Idle state:** Between tests (PWM 0), the temperature drifted slowly back toward ambient.
 
 This confirms that Python sets and displays PWM and direction, the Arduino applies the command and measures temperature, and the GUI correctly plots and saves the instrument state.

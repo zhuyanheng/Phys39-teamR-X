@@ -3,7 +3,7 @@
 ## Team and Test Information
 
 - Team members: Ricky Huang and Xavier Zhu
-- Test date: **TODO**
+- Test date: September 16, 2026
 - Arduino board: Arduino Uno
 - Serial port used during testing: `/dev/cu.usbmodem101`
 - Serial baud rate: `9600`
@@ -68,8 +68,8 @@ Existing oscilloscope evidence:
 
 - [Arduino digital-input oscilloscope video](../../Module_3/figures/part_3_oscilloscope_on_digitals.mp4)
 - [H-bridge M+/M- oscilloscope video](../../Module_3/figures/part_3_oscilloscope_on_M+-.mp4)
-- [Part 7 heating oscilloscope photograph](../../Module_3/figures/part_7_heating.png)
-- [Part 7 cooling oscilloscope photograph](../../Module_3/figures/part_7_cooling.png)
+- [Part 7 heating oscilloscope photograph](../../Module_3/figures/part_7_heating.jpg)
+- [Part 7 cooling oscilloscope photograph](../../Module_3/figures/part_7_cooling.jpg)
 
 **TODO:** Record the PWM command, observed duty cycle, active pin, inactive pin,
 scope voltage scale, and time scale. Confirm explicitly that Python commands
@@ -116,9 +116,14 @@ Raw data:
 Control-GUI evidence:
 
 - [Part 7 control GUI screenshot](../../Module_3/figures/part_7_GUI.png)
+- [Labeled Part 7 heat/cool record](../../Module_3/figures/part_7_heat_cool_record.png)
 
-**TODO:** Add or link a final labeled figure that clearly shows both the
-low-power heating and cooling intervals, units, PWM limit, and direction.
+**TODO:** Retake the control-GUI screenshot with the current program so the
+status bar shows `part_7_integrated_control_data.csv` rather than the older
+Part 5 filename.
+
+The labeled Part 7 record shows both low-power intervals, units, PWM limit,
+and direction using the canonical CSV data.
 
 ## Python Display-Only Program
 
@@ -127,13 +132,15 @@ Current display-only program:
 - [Display-only Python program](../../Module_3/python/part_4_graphing.py)
 - [Temperature strip-chart screenshot](../../Module_3/figures/part_4_temperature_graph.png)
 
-This version reads Arduino serial data, parses measurement lines, plots the
-temperature, and saves accepted measurements to a CSV file. It does not send
-commands to the Arduino.
+This version reads Arduino serial data, parses measurement lines, plots
+temperature and PWM, and saves accepted measurements to a CSV file. It does
+not send commands to the Arduino.
 
-**TODO before C3:** The course Part 5 requirement calls for two strip charts,
-temperature versus time and PWM versus time. Add the PWM plot to the
-display-only program and save a screenshot of that completed version.
+The display-only program now contains the two required strip charts:
+temperature versus time and PWM versus time.
+
+**TODO before the final record:** Run the updated display-only program on the
+instrument and save a screenshot showing both plots with real serial data.
 
 ## Python Manual-Control GUI
 
@@ -249,15 +256,15 @@ manual open-loop actuation; it does not yet implement feedback control.
 
 - [Team GitHub repository](https://github.com/zhuyanheng/Phys39-teamR-X)
 - [Repository README](../../README.md)
-- Current pushed commit before final Module 3 cleanup: `56f6538 Done for now`
+- Current pushed commit before these final corrections: `629b746 1`
 - Required final commit summary: `Organize Module 3 TEC control project`
 
 Final checkpoint:
 
 - [ ] Complete every experimental `TODO` above.
-- [ ] Update the repository README with Module 3 instructions and evidence.
-- [ ] Confirm the final Arduino and Python filenames clearly identify the pair.
-- [ ] Convert the Part 7 heating/cooling HEIF images to real PNG or JPEG files.
+- [x] Update the repository README with Module 3 instructions and evidence.
+- [x] Document the exact final Arduino/Python pair in the README and this note.
+- [x] Convert the Part 7 heating/cooling HEIF images to real JPEG files.
 - [ ] Commit with summary `Organize Module 3 TEC control project`.
 - [ ] Push the final commit to GitHub.
 - [ ] Verify the files on GitHub.

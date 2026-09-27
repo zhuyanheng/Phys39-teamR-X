@@ -85,7 +85,7 @@ and a Python GUI for display and control.
 - [Module 3 Arduino documentation](Module_3/arduino/README.md)
 - [Module 3 Python documentation](Module_3/python/README.md)
 - [Module 3 data documentation](Module_3/data/README.md)
-- [Module 3 evidence note](docs/module_notes/module_3_tec_gui.md)
+- [Module 3 evidence note](docs/module_notes/module_03_tec_gui.md)
 
 ### Module 3 Arduino Sketches
 
@@ -97,6 +97,20 @@ and a Python GUI for display and control.
 
 - [Part 4: Temperature Strip Chart](Module_3/python/part_4_graphing.py)
 - [Part 5: TEC Control GUI](Module_3/python/part_5_tec_control_gui.py)
+- [Python dependencies](requirements.txt)
+
+The final integrated pair is the
+[Arduino serial-command sketch](Module_3/arduino/part_6_tec_python_control/part_6_tec_python_control.ino)
+and the [Python TEC control GUI](Module_3/python/part_5_tec_control_gui.py).
+They communicate at `9600 baud` using commands such as
+`SET PWM 40 DIR HEAT` and measurements such as:
+
+```text
+Temperature (C): 27.73, Time (s): 645.06, PWM: 40, Heat/Cool: 1
+```
+
+The fields are temperature in degrees Celsius, Arduino elapsed time in
+seconds, the active PWM command, and direction (`1` = heat, `0` = cool).
 
 ### Module 3 Figures
 
@@ -109,8 +123,9 @@ and a Python GUI for display and control.
 - [Part 6 TEC Control Using GUI 1](Module_3/figures/part_6_TEC_control_using_GUI_1.png)
 - [Part 6 TEC Control Using GUI 2](Module_3/figures/part_6_TEC_control_using_GUI_2.png)
 - [Part 7 GUI](Module_3/figures/part_7_GUI.png)
-- [Part 7 Cooling](Module_3/figures/part_7_cooling.png)
-- [Part 7 Heating](Module_3/figures/part_7_heating.png)
+- [Part 7 Labeled Heat/Cool Record](Module_3/figures/part_7_heat_cool_record.png)
+- [Part 7 Cooling](Module_3/figures/part_7_cooling.jpg)
+- [Part 7 Heating](Module_3/figures/part_7_heating.jpg)
 
 ## Hardware
 
@@ -133,7 +148,7 @@ and a Python GUI for display and control.
 
 ## Tested Capabilities
 
-The team uploaded and tested the Module 1 and Module 2 sketches on an Arduino Uno.
+The team uploaded and tested the Module 1, Module 2, and Module 3 programs on an Arduino Uno.
 
 - The three Part 1 sketches produced the intended HIGH:LOW timing ratios.
 - Part 2 reported raw analog-input values over the serial connection.
@@ -163,8 +178,39 @@ The team uploaded and tested the Module 1 and Module 2 sketches on an Arduino Un
 6. Open Serial Monitor or Serial Plotter at `9600 baud` when required.
 7. For Module 3 Python scripts, ensure the Serial Monitor is closed before running the GUI.
 
+### Running the Module 3 Python Programs
+
+From the repository root, install the dependencies once:
+
+```text
+python3 -m pip install -r requirements.txt
+```
+
+Run the display-only strip chart:
+
+```text
+python3 Module_3/python/part_4_graphing.py
+```
+
+Run the final manual-control GUI:
+
+```text
+python3 Module_3/python/part_5_tec_control_gui.py
+```
+
 ## AI Use
 
-AI tools were used to help organize files, check calculations, explain Arduino
-code, and review documentation. The team reviewed and tested the submitted
-Arduino sketches and remains responsible for the final results.
+AI helped draft and debug the Arduino thermistor/serial-command code, Python
+serial parser, GUI controls, plotting, CSV logging, documentation, and
+repository organization. The team selected and verified the pin mapping,
+thermistor constants, 1000-sample average, heat/cool direction mapping, and
+low-power PWM setting, and tested the programs on the real Arduino, H-bridge,
+thermistor, TEC, oscilloscope, and power supply. The code paths reviewed for
+the C3 oral explanation are the measurement conversion, serial format, GUI
+synchronization, command path, and plot updates; each team member must be able
+to explain them without relying on the AI transcript.
+
+The remaining uncertainty is the final fail-safe behavior for invalid
+temperature, broken serial communication, and over-temperature conditions.
+Those behaviors require documented hardware testing before they can be marked
+complete.
