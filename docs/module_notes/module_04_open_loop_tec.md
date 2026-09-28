@@ -1,13 +1,13 @@
 # Module 4 open-loop TEC: live lab record
 
-Team: Ricky Huang and Xavier Zhu. Course: Phys 39, Module 4. Use this file as the **single live checklist** during the next supervised lab. Check a box only after observing the result and recording its evidence; an agent may edit it in VS Code, but must not infer a physical check from code alone.
+Team: Ricky Huang and Xavier Zhu. Course: Phys 39, Module 4. Use this file as the **single live measurement table**. For today's ordered, click-by-click checkboxes, use the [2026-09-28 lab-day runbook](module_04_lab_day_runbook_2026-09-28.md). Check a box only after observing the result and recording its evidence; an agent may edit it in VS Code, but must not infer a physical check from code alone.
 
 ## What is already evidenced (not the Part 3 calibration)
 
 - The current [Arduino sketch](../../Module_4/arudino/part_1/part_1.ino) averages 1000 thermistor ADC readings. It has a 60 °C software safety constant and additional 10–45 °C operating guards. D9 is HEAT; D10 is COOL. The [Python GUI](../../Module_4/python/part_5_tec_control_gui.py) records serial temperature, command, safety state and firmware-reported output PWM.
 - The [Part 1 safety record](../../Module_4/part_1_safety_check.md) documents the TEC-power-off test with a temporary 20 °C threshold: commanded HEAT and COOL were rejected, both firmware PWM values stayed at 0, and serial reporting continued. It also documents restoring 60 °C. A later instructor-present 30 °C test recorded shutdown after the temperature crossed 30 °C. Neither record independently measured D9/D10 voltage.
 - The [low-PWM cooling check](../../Module_4/cooling_direction_test.md) supports the COOL mapping. The six older [Module 4 GUI CSV files](../../Module_4/data/) are exploratory/safety records, **not** ten steady-state calibration points. In particular, do not import them into the table below merely because a file exists. The 10 °C and 45 °C boundaries have not been physically challenged.
-- The [Module 3 instrument note](module_03_tec_gui.md) records an earlier 12 V setting, 18 AWG high-current wiring, series thermal switch, and instructor check. For A2, record the actual Module 4 supply voltage, current limit, and reinspection; do not assume they were unchanged.
+- The [Module 3 instrument note](module_03_tec_gui.md) records an earlier 12 V setting, 18 AWG high-current wiring, series thermal switch, and instructor check. Record the actual Module 4 supply voltage, current limit, and reinspection here; do not assume they were unchanged. The revised A2 PDF focuses on analysis and no longer repeats apparatus/safety documentation.
 
 ## Settings to write down before the first new run
 
@@ -41,7 +41,7 @@ After Part 2, replace the four `待定` PWM values in each direction with the ex
 | C3 | COOL | 待定≈75% COOL max | 待填 | 待填 | 待填 | 待填 | 待填 |
 | C4 | COOL | 待定=COOL max | 待填 | 待填 | 待填 | 待填 | 待填 |
 
-## Detailed supervised-lab checklist
+## Reference checklist (use the lab-day runbook for live checkboxes)
 
 ### A. Before actuator power (Part 1 recheck)
 
@@ -75,12 +75,11 @@ After Part 2, replace the four `待定` PWM values in each direction with the ex
 ### D. Analysis and A2 handoff (Parts 4–6; after class)
 
 - [ ] Place **selected formal** raw time-series files in [`data/module_04/`](../../data/module_04/) with an unambiguous provenance note. Keep older exploratory files in `Module_4/data/`; do not silently mix them with calibration data or commit redundant copies.
-- [ ] Create/review one labeled heating trace, one labeled cooling trace, and the red/blue steady-T-vs-PWM graph in [`docs/figures/module_04/`](../figures/module_04/). Main axes: PWM magnitude (count) and steady temperature (°C); caption states the recorded steady criterion.
-- [ ] Calculate HEAT and COOL χ_T in °C per PWM count from clearly named points/fit, compare magnitudes, and describe any curvature/saturation and the 10–45 °C operating restriction.
-- [ ] Finish the physical asymmetry explanation: TEC heat pumping plus Joule heat, finite heat exchanger, single-location thermistor, contact/capacity/room boundary as supported by observations.
-- [ ] Complete [`docs/assessments/a2_open_loop_tec.md`](../assessments/a2_open_loop_tec.md): verified wiring diagram, **actual** supply and safety settings, table/criterion, raw links, figures, χ values, exact code links, safety evidence, and GitHub commit link. Remove all `待填` / TODO markers before submission.
-- [ ] Review generated PDF for correct figures and readable labels. Save as `A2_Huang_Zhu.pdf` **if these are the desired surname order**; each student uploads the same team PDF separately to Moodle by Monday 2026-09-28 6:00 PM.
-- [ ] Check `git status`, commit the organized work, push, verify the GitHub link and PDF/Markdown consistency. Do not commit duplicate drafts or accidental large files.
+- [ ] Create/review one labeled heating trace, one labeled cooling trace, and the red/blue steady-T-vs-**signed PWM** graph in [`docs/figures/module_04/`](../figures/module_04/). Negative x is COOL; positive x is HEAT. Add fitted lines over stated approximately linear ranges, labeled axes/units, and the actual steady criterion.
+- [ ] Calculate HEAT and COOL χ_T in °C per PWM count from the stated linear ranges; report `r=m_h/|m_c|` and any visible curvature. Keep the 10–45 °C operating restriction explicit.
+- [ ] Complete the revised [A2 analysis draft](../assessments/a2_open_loop_tec.md): PWM averaging proof, steady-state energy balance and ratio derivation, independently located Laird maximum-current values at hot-side 27 °C, comparison, passive-conduction explanation, and 100–150-word conclusion. The PDF is 1–2 pages; do not insert old circuit/safety/code sections.
+- [ ] Review generated PDF for fitted lines and readable units. Save as `A2_Huang_Zhu.pdf` **if these are the desired surname order**; each student uploads the same team PDF separately to Moodle by Monday 2026-10-05 6:00 PM.
+- [ ] Retain raw class data and working code. The revised assignment requires **no new Git checkpoint or repository A2 file** for this short submission; versioning the work remains optional.
 
 ## VS Code agent operating rule
 

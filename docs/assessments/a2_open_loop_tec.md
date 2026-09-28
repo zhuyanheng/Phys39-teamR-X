@@ -1,68 +1,59 @@
-# A2 — Open-Loop TEC Instrument Note (draft; not ready to submit)
+# A2 — TEC Heating and Cooling Analysis (optional working draft)
 
-Ricky Huang and Xavier Zhu · Phys 39 · Module 4 · **Lab date: TODO**
+Ricky Huang and Xavier Zhu · Phys 39 · Module 4 · **not yet ready for submission**
 
-This is the repository version of A2. Values marked `TODO` require new supervised measurements or an instructor-verified observation. The live [Module 4 working note and checklist](../module_notes/module_04_open_loop_tec.md) is the source for those values.
+The professor's 2026-09-28 revision changed A2 from an instrument/safety note to a **1–2 page analysis PDF due Monday, 2026-10-05 at 6:00 PM**. No repository version or new Git checkpoint is required. This Markdown file is only a private drafting aid; submit `A2_Lastname_Lastname.pdf` to Moodle separately for each teammate. Keep the [ten-run lab record](../module_notes/module_04_open_loop_tec.md), raw data and code for later modules, but **do not repeat C2/C3 circuit sketches, apparatus description, safety demonstration or code documentation in the A2 PDF**.
 
-## Apparatus and high-current wiring
+## 1. Experimental graph and measured slopes
 
-The apparatus uses a thermistor read by an Arduino Uno, a Python manual-control GUI, an H-bridge, a thermoelectric cooler (TEC), a heat exchanger, and a thermal switch. The Arduino commands HEAT on D9 or COOL on D10, never both intentionally. The high-current path uses 18 AWG stranded copper wire. The Module 3 record describes the path as supply → H-bridge B+/B−, then H-bridge M+ → series thermal switch → TEC+ → TEC− → H-bridge M−. The switch should interrupt TEC current independently of software; it opens near 70 °C. **TODO:** recheck actual Module 4 routing, wire gauge, polarity, spade connections, switch continuity/placement, instructor approval, and insert the *verified* wiring diagram here. The existing drawings in `Module_4/Diagram/` have not yet been reconciled with the physical apparatus for A2.
+Insert the [Part 4 steady-temperature graph](../figures/module_04/README.md): x = **signed PWM count** (COOL negative, HEAT positive), y = steady temperature (°C), blue COOL and red HEAT data, two fitted lines over clearly identified approximately linear ranges, and the actual steady-state criterion in its caption. Do not fit through visibly curved sections without saying so.
 
-## Power and software settings
+| Quantity | Measured result | Fit range / note |
+| --- | --- | --- |
+| HEAT slope `m_h` | TODO °C/PWM count | TODO: signed x range |
+| COOL slope `m_c` | TODO °C/PWM count | TODO: signed x range and sign convention |
+| Ratio `r=m_h/abs(m_c)` | TODO, dimensionless | TODO: show calculation |
 
-| Setting | Value / evidence |
-| --- | --- |
-| Module 4 supply voltage | **TODO: actual approved value and meter/supply reading** (Module 3 previously recorded 12 V; do not assume unchanged) |
-| Module 4 current limit | **TODO: actual approved setting** |
-| Board / port / baud | Arduino Uno; `/dev/cu.usbmodem101`; 9600 baud in the current program — **TODO: recheck on lab day** |
-| Thermistor sampling | 1000 ADC measurements averaged before each temperature calculation |
-| Software safety limit | 60 °C named constant in the [Arduino source](../../Module_4/arudino/part_1/part_1.ino) |
-| Operating range | 10–45 °C measured temperature; current code also forces both outputs to zero at/beyond these bounds |
-| Hardware cutoff | Thermal switch near 70 °C; **TODO: confirm series placement/continuity in current apparatus** |
-| Exact programs used | [Arduino safety/command sketch](../../Module_4/arudino/part_1/part_1.ino), [Python manual-control GUI](../../Module_4/python/part_5_tec_control_gui.py); **TODO: record final commit SHA and confirm upload/run matched these files** |
+The plotter prints slopes with respect to **signed x**. If instead calculating COOL's slope against its nonnegative magnitude, that number has the opposite sign; its absolute value must be used consistently in `r`. State exactly which convention and fit range you used.
 
-The GUI displays temperature versus time and PWM, and writes timestamped serial data. Open-loop means the operator selects direction and PWM magnitude; the controller is not trying to hold a temperature set point. The thermistor temperature, not a target temperature, is measured at each steady state.
+## 2. PWM averaging and steady-state model — show your derivation
 
-## Safety-interlock verification
+Use duty cycle `D=|PWM|/255`, on-state current `I`, PWM period `τ`, current `I` for `Dτ` and zero for the remainder. Starting from the period integrals, show your steps leading to `⟨I⟩=DI` and `⟨I²⟩=DI²`. Explain why `⟨I²⟩` is **not generally** `⟨I⟩²=D²I²` and how that changes the predicted slope/curvature of temperature versus PWM.
 
-With TEC actuator power disconnected, a temporary 20 °C software threshold was below the observed room temperature of 22.84–22.90 °C. The firmware reported `Safety: SHUTDOWN`; `SET PWM 25 DIR HEAT` and `SET PWM 25 DIR COOL` did not produce nonzero output commands. Both firmware-reported H-bridge PWM values stayed at 0 while 15 serial measurements continued at roughly 0.51 s intervals. The 60 °C threshold was restored afterward; five subsequent reports showed `Safety: OK`, limit 60 °C, and both PWM outputs 0. See [shutdown serial log](../../Module_4/data/safety_shutdown_20260923_111505_281492.txt), [restoration log](../../Module_4/data/safety_restored_20260923_111532_983431.txt), and [full safety record](../../Module_4/part_1_safety_check.md). These are firmware/serial observations, **not independent voltage measurements** of pins D9/D10.
+The full object-face TEC heat flow in the [course hardware discussion](https://sethfraden.github.io/Phys39F26-course/hardware/#thermoelectric-cooler) contains Peltier, half the Joule heat, and passive conduction. In the assignment's reduced model, the TEC conduction term and other passive heat leaks are already combined into the effective conductance `G`. **Do not count TEC conduction again** inside the current-dependent `Q̇_TEC`. Start from
 
-An additional instructor-present 30 °C demonstration produced a report at 29.97 °C with HEAT PWM 173 and safety OK, followed by a report at 30.67 °C with `SHUTDOWN` and both firmware output PWM values 0; serial data continued. See [30 °C test CSV](../../Module_4/data/module_04_tec_20260923_114043_802804.csv). This was a safety demonstration, **not** a steady-state calibration point. No deliberate run to 60 °C was performed. **TODO:** record any new instructor-verified physical pin-output check, if done.
+`C dT/dt = Q̇_TEC − G(T−T₀)`.
 
-## Direction, PWM levels, and steady-state criterion
+At steady state `dT/dt=0` but the individual heat flows need not be zero. With positive full-on Peltier and object-face Joule heat rates `Q̇_P` and `Q̇_J`, use the assignment's signed expressions:
 
-The final table must contain five 8-bit nonnegative PWM magnitudes per direction: 0, approximately 25%, 50%, 75%, and 100% of that direction's separately chosen maximum useful PWM. The exact integer values are not known yet. Do not substitute prior short exploratory/safety CSV runs for steady-state points.
+`Q̇_TEC,h = D(Q̇_P + Q̇_J)`; `Q̇_TEC,c = D(−Q̇_P + Q̇_J)`.
 
-**Steady-state criterion actually used:** TODO — write the reproducible window length and allowed temperature drift *before* classifying points as steady. **Maximum useful PWM reasoning:** HEAT TODO; COOL TODO. **Supply-current observations:** TODO.
+**TODO: show the algebra in the PDF** for `T_h(D)−T₀`, `T_c(D)−T₀`, both derivatives with respect to `D`, and the ratio. The target relation to verify is `Q̇_J/Q̇_P = (r−1)/(r+1)`; test your algebra with the course check `r=2 → 1/3`. Convert the measured `r` to a numerical ratio only after the measured slopes are available. If data give an unexpected sign/value, discuss the model assumptions rather than hiding the result.
 
-| Direction | PWM count | Start T (°C) | Steady T (°C) | Wait (s) | Notes / raw-data link |
-| --- | ---: | ---: | ---: | ---: | --- |
-| HEAT | 0 | TODO | TODO | TODO | TODO |
-| HEAT | TODO (~25% of HEAT max) | TODO | TODO | TODO | TODO |
-| HEAT | TODO (~50%) | TODO | TODO | TODO | TODO |
-| HEAT | TODO (~75%) | TODO | TODO | TODO | TODO |
-| HEAT | TODO (max) | TODO | TODO | TODO | TODO |
-| COOL | 0 | TODO | TODO | TODO | TODO |
-| COOL | TODO (~25% of COOL max) | TODO | TODO | TODO | TODO |
-| COOL | TODO (~50%) | TODO | TODO | TODO | TODO |
-| COOL | TODO (~75%) | TODO | TODO | TODO | TODO |
-| COOL | TODO (max) | TODO | TODO | TODO | TODO |
+## 3. Manufacturer data — student must locate values first
 
-Retained formal raw time-series data: [`data/module_04/`](../../data/module_04/) — **TODO: add links to the actual selected CSVs**. Earlier exploratory/safety files remain separately in `Module_4/data/`.
+Open the course-linked [Laird CP14-127-045 data sheet](https://sethfraden.github.io/Phys39F26-course/references/laird-tec-cp14-127-045.pdf). **Locate and transcribe these numbers yourself before asking AI to check them**. Use the class model and the **27 °C hot-side** column/table. Record units, exact table location, meaning and operating condition for each:
 
-## Temperature traces and response curve
+| Data-sheet quantity | Your independently located value + unit | Meaning, condition, citation |
+| --- | --- | --- |
+| Module resistance `R_M` | TODO | TODO |
+| Maximum current `I_max` | TODO | TODO |
+| Maximum cold-side heat pumping `Q_c,max` at `ΔT=0` | TODO | TODO |
+| Maximum temperature difference `ΔT_max` | TODO | TODO |
 
-**Heating time trace:** TODO — insert a labeled figure from `docs/figures/module_04/` with time (s), temperature (°C), direction/PWM, raw source, and steady window. **Cooling time trace:** TODO — same. **Steady-state response graph:** TODO — insert red HEAT and blue COOL points with x = PWM magnitude (count), y = steady temperature (°C), and a caption stating the actual steady criterion. Figure-generation preparation is described in the [figures README](../figures/module_04/README.md).
+At the data-sheet maximum current and `ΔT=0`, calculate `Q̇_J,max = ½ I_max² R_M`, then use `Q_c,max = Q̇_P,max − Q̇_J,max` to find `Q̇_P,max`. Calculate `r_Laird,max = (Q̇_P,max + Q̇_J,max)/(Q̇_P,max − Q̇_J,max)`. Put units on all heat-transfer rates (W). These are **manufacturer maximum-current conditions**, not automatically the lab apparatus's conditions at full PWM duty: actual current also depends on supply voltage/current limit, H-bridge drop, wiring and TEC resistance.
 
-Estimate temperature susceptibility as `χ_T = ΔT_steady / ΔPWM`, in **°C per PWM count**, separately for HEAT and COOL. **HEAT χ_T:** TODO (identify endpoints or local interval). **COOL χ_T:** TODO (identify endpoints or local interval). If the response is curved or saturates, describe that and do not present one slope as globally constant.
+## 4. Interpretation and conclusion
 
-## Physical interpretation
+Compare measured `r` with `r_Laird,max` without assuming agreement. Address PWM versus steady DC, finite temperature differences, passive heat paths, changing material properties and fit-range curvature where relevant. Explicitly answer: above room temperature, which way does passive heat flow? Below room temperature, which way? Why can approximately symmetric passive conduction oppose both directions but not by itself explain unequal slope **magnitudes**?
 
-**TODO: complete this paragraph after comparing the actual graph.** The directions need not have equal-magnitude response. Reversing a TEC reverses the Peltier heat-pumping direction, but electrical current also produces Joule heat in either direction. The heat exchanger has finite capacity to exchange heat with the room, and the thermistor measures one location rather than the whole TEC–block–sink system. Thermal contact, heat capacity, and the room-temperature boundary condition can therefore affect the two measured slopes differently. Tie these mechanisms to the observed signs, magnitudes, and any nonlinearity; do not claim a particular mechanism was directly measured unless it was.
+**Conclusion (about 100–150 English words): TODO** — state what your measurements imply about Peltier transport, Joule heating and conduction, while separating observed results from model-based interpretation.
 
-## Reproducibility and submission
+## Final PDF check
 
-- [Exact Arduino source](../../Module_4/arudino/part_1/part_1.ino) and [exact Python GUI](../../Module_4/python/part_5_tec_control_gui.py), subject to lab-day version verification.
-- [Safety evidence](../../Module_4/part_1_safety_check.md), [working lab record](../module_notes/module_04_open_loop_tec.md), and **TODO: selected formal raw CSV + final figure links**.
-- Repository: [Phys39-teamR-X](https://github.com/zhuyanheng/Phys39-teamR-X). **TODO: replace/add the final GitHub commit permalink after committing the complete A2 evidence.**
-- **TODO:** export the reviewed team PDF as `A2_Huang_Zhu.pdf` if that surname order is chosen; both teammates individually upload it to Moodle by Monday, 2026-09-28 at 6:00 PM.
+- [ ] 1–2 pages, legible graph with signed PWM, red/blue points, both fitted lines and ranges.
+- [ ] Both measured slopes in °C/PWM count and dimensionless `r`.
+- [ ] PWM averaging proof, steady-state balance/slope-ratio derivation and numerical measured ratio result.
+- [ ] All four cited Laird values with units and conditions, `Q̇_J,max`, `Q̇_P,max`, predicted `r_Laird,max`.
+- [ ] Measured/manufacturer comparison, passive-conduction answer, 100–150-word conclusion.
+- [ ] No old apparatus/safety/code sections; both teammates separately upload the same `A2_Lastname_Lastname.pdf` by 2026-10-05 6:00 PM.

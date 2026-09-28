@@ -8,6 +8,7 @@ import argparse
 import csv
 import html
 import math
+import textwrap
 from pathlib import Path
 
 
@@ -143,10 +144,12 @@ def ticks(low, high, count=5):
     return [low + i * (high - low) / count for i in range(count + 1)]
 
 
-def svg_chart(path, title, xlabel, ylabel, series, xbounds, ybounds, caption, shade=None):
-    width, height = 900, 570
-    left, right, top, bottom = 95, 45, 65, 125
-    plot_w, plot_h = width - left - right, height - top - bottom
+def svg_chart(path, title, xlabel, ylabel, series, xbounds, ybounds, caption,
+              shade=None, fit_lines=None, connect_series=True):
+    caption_lines = textwrap.wrap(caption, width=110, break_long_words=False) or [""]
+    width, height = 900, 565 + 20 * (len(caption_lines) - 1)
+    left, right, top = 95, 45, 65
+    plot_w, plot_h = width - left - right, 380
     xlo, xhi = xbounds
     ylo, yhi = ybounds
     if xlo == xhi:
@@ -175,37 +178,69 @@ def svg_chart(path, title, xlabel, ylabel, series, xbounds, ybounds, caption, sh
         y = ycoord(value)
         parts.append(f'<line x1="{left}" y1="{y:.1f}" x2="{left+plot_w}" y2="{y:.1f}" stroke="#eee"/>')
         parts.append(f'<text x="{left-11}" y="{y+4:.1f}" text-anchor="end" font-family="Arial" font-size="13">{value:.1f}</text>')
+    if xlo < 0 < xhi:
+        zero_x = xcoord(0)
+        parts.append(f'<line x1="{zero_x:.1f}" y1="{top}" x2="{zero_x:.1f}" y2="{top+plot_h}" stroke="#555" stroke-width="1.6"/>')
     parts.append(f'<rect x="{left}" y="{top}" width="{plot_w}" height="{plot_h}" fill="none" stroke="#333"/>')
     for name, color, points in series:
         ordered = sorted(points)
         if not ordered:
             continue
-        coordinates = " ".join(f"{xcoord(x):.1f},{ycoord(y):.1f}" for x, y in ordered)
-        parts.append(f'<polyline points="{coordinates}" fill="none" stroke="{color}" stroke-width="2.5"/>')
+        if connect_series:
+            coordinates = " ".join(f"{xcoord(x):.1f},{ycoord(y):.1f}" for x, y in ordered)
+            parts.append(f'<polyline points="{coordinates}" fill="none" stroke="{color}" stroke-width="2.5"/>')
         for x, y in ordered:
             parts.append(f'<circle cx="{xcoord(x):.1f}" cy="{ycoord(y):.1f}" r="4.5" fill="{color}"/>')
-    parts.append(f'<text x="{width/2}" y="{height-78}" text-anchor="middle" font-family="Arial" font-size="17">{html.escape(xlabel)}</text>')
+    for name, color, endpoints in fit_lines or []:
+        coordinates = " ".join(f"{xcoord(x):.1f},{ycoord(y):.1f}" for x, y in endpoints)
+        parts.append(f'<polyline points="{coordinates}" fill="none" stroke="{color}" stroke-width="3" stroke-dasharray="9 5"/>')
+    parts.append(f'<text x="{width/2}" y="{top+plot_h+40}" text-anchor="middle" font-family="Arial" font-size="17">{html.escape(xlabel)}</text>')
     parts.append(f'<text transform="translate(26 {top+plot_h/2}) rotate(-90)" text-anchor="middle" font-family="Arial" font-size="17">{html.escape(ylabel)}</text>')
     legend = "   |   ".join(name for name, _, _ in series)
-    parts.append(f'<text x="{width/2}" y="{height-50}" text-anchor="middle" font-family="Arial" font-size="14">{html.escape(legend)}</text>')
-    parts.append(f'<text x="{width/2}" y="{height-22}" text-anchor="middle" font-family="Arial" font-size="12">{html.escape(caption[:120])}</text>')
+    if fit_lines:
+        legend += "   |   dashed = linear fit"
+    parts.append(f'<text x="{width/2}" y="{top+plot_h+68}" text-anchor="middle" font-family="Arial" font-size="14">{html.escape(legend)}</text>')
+    for index, line in enumerate(caption_lines):
+        parts.append(f'<text x="{width/2}" y="{top+plot_h+95+20*index}" text-anchor="middle" font-family="Arial" font-size="12">{html.escape(line)}</text>')
     parts.append('</svg>')
     path.write_text("\n".join(parts) + "\n", encoding="utf-8")
 
 
-def create_figures(summary, raw_cache, output_dir, criterion):
+def fit_linear(points):
+    """Ordinary least squares, returning slope and intercept."""
+    if len(points) < 2 or len({x for x, _ in points}) < 2:
+        raise ValueError("A fit needs at least two distinct PWM points")
+    mean_x = sum(x for x, _ in points) / len(points)
+    mean_y = sum(y for _, y in points) / len(points)
+    denominator = sum((x - mean_x) ** 2 for x, _ in points)
+    slope = sum((x - mean_x) * (y - mean_y) for x, y in points) / denominator
+    return slope, mean_y - slope * mean_x
+
+
+def create_figures(summary, raw_cache, output_dir, criterion, fit_ranges):
     output_dir.mkdir(parents=True, exist_ok=True)
     all_t = [r["steady_temperature_C"] for r in summary]
     ymin, ymax = min(all_t) - 1, max(all_t) + 1
     series = []
+    fitted = []
+    slopes = {}
     for direction, color in COLORS.items():
         group = [r for r in summary if r["direction"] == direction]
+        sign = 1 if direction == "HEAT" else -1
         series.append((direction, color,
-                       [(r["pwm"], r["steady_temperature_C"]) for r in group]))
+                       [(sign * r["pwm"], r["steady_temperature_C"]) for r in group]))
         group.sort(key=lambda r: r["pwm"])
-        slope = ((group[-1]["steady_temperature_C"] - group[0]["steady_temperature_C"])
-                 / (group[-1]["pwm"] - group[0]["pwm"]))
-        print(f"{direction} endpoint χ_T = {slope:.4f} °C per PWM count (0 to {group[-1]['pwm']})")
+        low, high = fit_ranges[direction]
+        if not 0 <= low < high <= 255:
+            raise ValueError(f"{direction}: fit range must satisfy 0 <= MIN < MAX <= 255")
+        chosen = [(sign * r["pwm"], r["steady_temperature_C"])
+                  for r in group if low <= r["pwm"] <= high]
+        slope, intercept = fit_linear(chosen)
+        slopes[direction] = slope
+        xlo, xhi = min(x for x, _ in chosen), max(x for x, _ in chosen)
+        fitted.append((f"{direction} fit", color,
+                       [(xlo, slope * xlo + intercept), (xhi, slope * xhi + intercept)]))
+        print(f"{direction} signed-PWM fitted slope = {slope:.4f} °C/PWM count; magnitude range {low}–{high}")
         selected = group[-1]
         raw = raw_cache[selected["source_path"]]
         end = selected["steady_end_s"]
@@ -227,24 +262,37 @@ def create_figures(summary, raw_cache, output_dir, criterion):
                   (start_time, end), (min(temperatures)-0.5, max(temperatures)+0.5),
                   f"Green band = selected steady interval; {criterion}",
                   shade=(selected["steady_start_s"], selected["steady_end_s"]))
+    if slopes["COOL"] == 0:
+        raise ValueError("COOL fitted slope is zero; slope ratio is undefined")
+    ratio = slopes["HEAT"] / abs(slopes["COOL"])
+    print(f"Measured r = m_h / |m_c| = {ratio:.4f}")
     svg_chart(output_dir / "steady_temperature_vs_pwm.svg",
-              "Steady TEC temperature vs PWM", "PWM magnitude (count)",
+              "Steady TEC temperature vs signed PWM", "Signed PWM (count; COOL < 0, HEAT > 0)",
               "Steady temperature (°C)", series,
-              (0, max(r["pwm"] for r in summary)), (ymin, ymax),
-              f"Steady criterion: {criterion}")
+              (-max(r["pwm"] for r in summary if r["direction"] == "COOL"),
+               max(r["pwm"] for r in summary if r["direction"] == "HEAT")),
+              (ymin, ymax),
+              f"Fits: HEAT {fit_ranges['HEAT'][0]}–{fit_ranges['HEAT'][1]}, "
+              f"COOL −{fit_ranges['COOL'][1]} to −{fit_ranges['COOL'][0]}; steady: {criterion}",
+              fit_lines=fitted, connect_series=False)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("summary", type=Path, help="Completed data/module_04/steady_state.csv")
     parser.add_argument("--criterion", required=True, help="The actual recorded steady-state rule")
+    parser.add_argument("--heat-fit", type=int, nargs=2, metavar=("MIN", "MAX"), required=True,
+                        help="HEAT PWM magnitude range used for its linear fit")
+    parser.add_argument("--cool-fit", type=int, nargs=2, metavar=("MIN", "MAX"), required=True,
+                        help="COOL PWM magnitude range used for its linear fit")
     parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "docs/figures/module_04")
     args = parser.parse_args()
     summary_path = args.summary if args.summary.is_absolute() else REPO_ROOT / args.summary
     summary = read_summary(summary_path)
     raw_cache = {}
     validate_windows(summary, raw_cache)
-    create_figures(summary, raw_cache, args.output_dir, args.criterion)
+    create_figures(summary, raw_cache, args.output_dir, args.criterion,
+                   {"HEAT": args.heat_fit, "COOL": args.cool_fit})
     print(f"Created 3 figures in {args.output_dir}")
 
 

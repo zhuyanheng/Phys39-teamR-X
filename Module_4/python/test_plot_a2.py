@@ -61,9 +61,13 @@ class PlotA2Test(unittest.TestCase):
         raw_cache = {}
         plot_a2.validate_windows(summary, raw_cache)
         output = self.root / "figures"
-        plot_a2.create_figures(summary, raw_cache, output, "synthetic test rule")
+        plot_a2.create_figures(summary, raw_cache, output, "synthetic test rule",
+                               {"HEAT": (0, 40), "COOL": (0, 40)})
         for name in ("heating_trace.svg", "cooling_trace.svg", "steady_temperature_vs_pwm.svg"):
             self.assertIn("<svg", (output / name).read_text(encoding="utf-8"))
+        main_figure = (output / "steady_temperature_vs_pwm.svg").read_text(encoding="utf-8")
+        self.assertIn("Signed PWM", main_figure)
+        self.assertIn('stroke-dasharray="9 5"', main_figure)
 
     def test_shutdown_window_is_rejected(self):
         fields, rows = plot_a2.read_csv(self.raw_path)
