@@ -22,30 +22,30 @@ Team: Ricky Huang and Xavier Zhu. Course: Phys 39, Module 4. Use this file as th
 | Thermistor plausibility at PWM 0 | 23.80 °C at fresh GUI startup | `Module_4/data/module_04_tec_20260928_095700_881845.csv`; PWM 0, Safety OK, firmware outputs 0/0 |
 | Maximum useful HEAT PWM | **45**（操作者选定；报告约 45 °C、波动约 0.3 °C） | 2026-09-28 操作者报告；`Module_4/data/module_04_heating_max_pwm45_20260928_100550_571289.csv` 中 HEAT 45 的较长一段为 192.67–240.51 s、45.31–45.45 °C |
 | Maximum useful COOL PWM | **96**（操作者选定；报告约 10 °C 稳定） | 2026-09-28 操作者报告；`Module_4/data/module_04_cooling_max_pwm96_20260928_101439_464642.csv` 中 COOL 96 片段为 461.52–488.47 s、9.83–10.17 °C |
-| Operational steady-state criterion | **待决定并写成可重复规则**；老师没有给固定秒数/阈值 | |
+| Operational steady-state criterion | 操作者 2026-09-28 确认：温度不再持续单向变化、只在一定区间内波动即视为稳态。HEAT 看不再持续上升，COOL 看不再持续下降；从制冷后以 PWM 0 回到常温时看不再持续上升。已记录的档位用末约 20 s 温度均值作稳态温度；未指定固定波动幅度或斜率阈值。 | 操作者现场说明；这不是老师另行签字确认的定量判据 |
 
 ## Ten formal measurements — fill only from new supervised runs
 
-After Part 2, replace the four `待定` PWM values in each direction with the exact integers closest to 25%, 50%, 75%, and 100% of **that direction's own** chosen maximum. For each row, record the temperature immediately before the PWM change, the eventual steady temperature, elapsed wait, a short observation, the new raw CSV filename, and the chosen steady window. PWM 0 is a real baseline measurement for each direction, not a zero-degree point. A second baseline may share a continuous run only if its direction/state and timing are unambiguous; record the provenance explicitly.
+The chosen integer levels are 0/11/23/34/45 for HEAT and 0/24/48/72/96 for COOL. For each row, record the temperature immediately before the PWM change when available, the eventual steady temperature, elapsed wait when recorded, a short observation, the raw CSV filename, and the chosen steady window. PWM 0 is a real baseline measurement for each direction, not a zero-degree point. The two baseline CSVs begin after the operator reported the block had returned to room temperature, so the earlier warm-up wait cannot be reconstructed. On 2026-09-28 the operator chose to **adopt H4/C4** from the maximum-search CSVs as measurement points despite their selected windows extending outside the course's 10–45 °C range. This records the operator's decision, not an unrecorded instructor approval or a claim of strict range compliance.
 
-| ID | Direction | PWM magnitude (0–255) | Start T (°C) | Steady T (°C) | Wait (s) | Notes / current | Raw CSV + steady window (s) |
+| ID | Direction | PWM magnitude (0–255) | Start T (°C) | Steady T (°C) | Wait (s) | Notes | Raw CSV + steady window (s) |
 | --- | --- | ---: | ---: | ---: | ---: | --- | --- |
-| H0 | HEAT | 0 | 待填 | 待填 | 待填 | 待填 | 待填 |
-| H1 | HEAT | 11（约 25% × 45） | 21.89 | 28.31（暂定） | 约 210（至窗口开始） | 操作者报告约 28.3 °C 稳定；窗口 40 行均 `Safety=OK`、固件 HEAT PWM=11；稳态判据/电流待补 | `Module_4/data/module_04_heating_25pct_pwm11_20260928_102552_858326.csv`；218.12–237.97 |
-| H2 | HEAT | 23（约 50% × 45，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
-| H3 | HEAT | 34（约 75% × 45，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
-| H4 | HEAT | 45（HEAT max，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
-| C0 | COOL | 0 | 待填 | 待填 | 待填 | 待填 | 待填 |
-| C1 | COOL | 24（25% × 96，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
-| C2 | COOL | 48（50% × 96，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
-| C3 | COOL | 72（75% × 96，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
-| C4 | COOL | 96（COOL max，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
+| H0 | HEAT | 0 | 23.40（切换到 HEAT 前） | 23.44 | 未记录（采集前已接近常温） | HEAT 方向、PWM 0；末约 20 s 的 40 行为 23.39–23.51 °C，固件输出 0/0，`Safety=OK` | `Module_4/data/module_04_heating_0pct_pwm0_20260928_112039_906848.csv`；5.10–24.82 |
+| H1 | HEAT | 11（约 25% × 45） | 21.89 | 28.31 | 约 210（至窗口开始） | 操作者报告约 28.3 °C 稳定；末约 20 s 的 40 行均 `Safety=OK`、固件 HEAT PWM=11 | `Module_4/data/module_04_heating_25pct_pwm11_20260928_102552_858326.csv`；218.12–237.97 |
+| H2 | HEAT | 23（约 50% × 45） | 25.38（设 23 前一行；此前短暂 PWM 233） | 34.62 | 约 375（至窗口开始） | 末约 20 s 的 40 行为 34.55–34.67 °C、`Safety=OK`、固件 HEAT PWM=23；此前有 3 行 PWM 233，原始异常保留，不属于所选稳态窗口 | `Module_4/data/module_04_heating_50pct_pwm23_20260928_103051_243607.csv`；402.29–422.14 |
+| H3 | HEAT | 34（约 75% × 45） | 25.12 | 40.42 | 约 480（至窗口开始） | 末约 20 s 的 40 行为 40.33–40.50 °C、`Safety=OK`、固件 HEAT PWM=34 | `Module_4/data/module_04_heating_75pct_pwm34_20260928_103941_134734.csv`；519.31–539.16 |
+| H4 | HEAT | 45（HEAT max） | 45.44（从 PWM 47 切到 45 前） | 45.37（操作者采用；超出上界） | 约 28（至窗口开始） | 最大值探索文件的最后一个 HEAT 45 段；末约 20 s 的 40 行均为 45.31–45.41 °C、全部高于 45 °C；固件输出 45/0，`Safety=OK`。如实标注为课程范围例外，未记录老师批准。 | `Module_4/data/module_04_heating_max_pwm45_20260928_100550_571289.csv`；220.66–240.51 |
+| C0 | COOL | 0 | 23.43（CSV 首行） | 23.44 | 未记录（回温过程不在此 CSV） | COOL 方向、PWM 0；末约 20 s 的 40 行为 23.33–23.54 °C，固件输出 0/0，`Safety=OK` | `Module_4/data/module_04_cooling_0pct_pwm0_20260928_112013_141346.csv`；2.08–21.78 |
+| C1 | COOL | 24（25% × 96） | 29.33 | 20.44 | 约 404（至窗口开始） | 末约 20 s 的 40 行为 20.40–20.50 °C、`Safety=OK`、固件 COOL PWM=24 | `Module_4/data/module_04_cooling_25pct_pwm24_20260928_104957_896611.csv`；408.97–428.82 |
+| C2 | COOL | 48（50% × 96） | 22.64 | 16.99 | 约 311（至窗口开始） | 末约 20 s 的 40 行为 16.87–17.12 °C、`Safety=OK`、固件 COOL PWM=48 | `Module_4/data/module_04_cooling_50pct_pwm48_20260928_105744_249371.csv`；358.90–378.75 |
+| C3 | COOL | 72（75% × 96） | 17.39 | 13.40 | 约 333（至窗口开始） | 末约 20 s 的 40 行为 13.37–13.44 °C、`Safety=OK`、固件 COOL PWM=72 | `Module_4/data/module_04_cooling_75pct_pwm72_20260928_110449_677478.csv`；336.72–356.57 |
+| C4 | COOL | 96（COOL max） | 9.82（从 PWM 98 切到 96 前） | 9.99（操作者采用；部分低于下界） | 约 7（至窗口开始） | 最大值探索文件的最后一个 COOL 96 段；末约 20 s 的 40 行为 9.85–10.17 °C，其中 21 行低于 10 °C；固件输出 0/96，`Safety=OK`。如实标注为课程范围例外，未记录老师批准。 | `Module_4/data/module_04_cooling_max_pwm96_20260928_101439_464642.csv`；468.64–488.47 |
 
-## Current-session exploratory runs — not formal points
+## Current-session exploratory files and reused H4/C4 segments
 
 - 2026-09-28 CSV `Module_4/data/module_04_tec_20260928_095700_881845.csv`: operator identified HEAT PWM 55 as exploratory. It ran from Arduino 11.68 s (23.77 °C) through 128.54 s (44.98 °C); the older firmware reported `Safety=SHUTDOWN` at 45.02 °C and PWM 0 at 129.10 s. Do not place this segment in H0–H4.
-- 2026-09-28 CSV `Module_4/data/module_04_heating_max_pwm45_20260928_100550_571289.csv`: exploratory HEAT maximum search; this file also contains PWM 55, 48 and 47, not only 45. Operator selected HEAT maximum PWM 45 and described a temperature near 45 °C with about 0.3 °C variation. The longer HEAT-45 segment spans Arduino 192.67–240.51 s; its recorded temperatures span 45.31–45.45 °C, with the last ten readings 45.36–45.39 °C and `Safety=OK`. Keep this as max-selection evidence, not a completed H4 formal row: start temperature, wait time, agreed steady window, and course-range eligibility still need to be resolved.
-- 2026-09-28 CSV `Module_4/data/module_04_cooling_max_pwm96_20260928_101439_464642.csv`: exploratory COOL maximum search; this file also contains several other COOL PWM levels. Operator selected COOL maximum PWM 96 and reported stability near 10 °C. Its COOL-96 segment spans Arduino 461.52–488.47 s and 9.83–10.17 °C, with `Safety=OK`. Keep this as max-selection evidence, not a completed C4 formal row until the agreed steady window, wait time, and course-range eligibility are resolved.
+- 2026-09-28 CSV `Module_4/data/module_04_heating_max_pwm45_20260928_100550_571289.csv`: exploratory HEAT maximum search; this file also contains PWM 55, 48 and 47, not only 45. Operator selected HEAT maximum PWM 45 and described a temperature near 45 °C with about 0.3 °C variation. The final HEAT-45 segment spans Arduino 192.67–240.51 s. H4 above uses only its last 40 records, not the earlier PWM values. The operator chose to adopt H4 while preserving the fact that all selected records exceed 45 °C; instructor acceptance of this course-range exception has not been recorded.
+- 2026-09-28 CSV `Module_4/data/module_04_cooling_max_pwm96_20260928_101439_464642.csv`: exploratory COOL maximum search; this file also contains several other COOL PWM levels. Operator selected COOL maximum PWM 96 and reported stability near 10 °C. The final COOL-96 segment spans Arduino 461.52–488.47 s. C4 above uses only its last 40 records. The operator chose to adopt C4 while preserving the fact that 21 of 40 selected records are below 10 °C; instructor acceptance of this course-range exception has not been recorded.
 
 ## Reference checklist (use the lab-day runbook for live checkboxes)
 
@@ -71,7 +71,7 @@ After Part 2, replace the four `待定` PWM values in each direction with the ex
 
 ### C. Collect all ten steady-state points (Part 3)
 
-- [ ] For H0–H4, at each setting record direction and exact PWM, start T, time of command, steady T, wait time, notes/current, raw CSV path, and steady averaging window. Check one row only after its data and raw trace are preserved.
+- [ ] For H0–H4, at each setting record direction and exact PWM, start T, time of command when captured, steady T, wait time when captured, notes, raw CSV path, and steady averaging window. Check one row only after its data and raw trace are preserved; flag any course-range exception explicitly.
 - [ ] For C0–C4, record the same fields. Treat each 0-PWM baseline explicitly; do not copy a 0 point across directions without a clear shared-run explanation.
 - [ ] Throughout every run, keep measured T in 10–45 °C and watch display updates, supply current, TEC, and H-bridge. On unexpected temperature, frozen display, excess current, or hot hardware: set PWM 0 / disable actuator power, alert the instructor, and document the interruption. Never leave a powered run unattended.
 - [ ] Save at least one complete HEAT temperature-vs-time trace and one complete COOL trace, including the command transition and steady window. Ensure the labels and units can be reconstructed from the raw file.
