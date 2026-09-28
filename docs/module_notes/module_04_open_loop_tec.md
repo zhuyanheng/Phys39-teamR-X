@@ -22,9 +22,9 @@ Team: Ricky Huang and Xavier Zhu. Course: Phys 39, Module 4. Use this file as th
 | Thermistor plausibility at PWM 0 | 23.80 °C at fresh GUI startup | `Module_4/data/module_04_tec_20260928_095700_881845.csv`; PWM 0, Safety OK, firmware outputs 0/0 |
 | Maximum useful HEAT PWM | **45**（操作者选定；报告约 45 °C、波动约 0.3 °C） | 2026-09-28 操作者报告；`Module_4/data/module_04_heating_max_pwm45_20260928_100550_571289.csv` 中 HEAT 45 的较长一段为 192.67–240.51 s、45.31–45.45 °C |
 | Maximum useful COOL PWM | **96**（操作者选定；报告约 10 °C 稳定） | 2026-09-28 操作者报告；`Module_4/data/module_04_cooling_max_pwm96_20260928_101439_464642.csv` 中 COOL 96 片段为 461.52–488.47 s、9.83–10.17 °C |
-| Operational steady-state criterion | 操作者 2026-09-28 确认：温度不再持续单向变化、只在一个区间内波动（不越出界限）即视为稳态。HEAT 看不再持续上升，COOL 看不再持续下降；从制冷后以 PWM 0 回到常温时看不再持续上升。已记录的档位用末约 20 s 温度均值作稳态温度；未指定固定波动幅度或斜率阈值。 | 操作者 2026-09-28 确认 |
+| Operational steady-state criterion | 操作者 2026-09-28 确认：温度不再持续单向变化、只在一个局部区间内波动即视为稳态。HEAT 看不再持续上升，COOL 看不再持续下降；从制冷后以 PWM 0 回到常温时看不再持续上升。已记录的档位用末约 20 s 温度均值作稳态温度；未指定固定波动幅度或斜率阈值。H4/C4 越出课程 10–45 °C 测量范围的情况单独标注，不把“局部波动”误写成“始终处于课程范围”。 | 操作者 2026-09-28 确认 |
 
-## Ten formal measurements — fill only from new supervised runs
+## Ten selected measurements — traceable to supervised raw CSVs
 
 The chosen integer levels are 0/11/23/34/45 for HEAT and 0/24/48/72/96 for COOL. For each row, record the temperature immediately before the PWM change when available, the eventual steady temperature, elapsed wait when recorded, a short observation, the raw CSV filename, and the chosen steady window. PWM 0 is a real baseline measurement for each direction, not a zero-degree point. The two baseline CSVs begin after the operator reported the block had returned to room temperature, so the earlier warm-up wait cannot be reconstructed. On 2026-09-28 the operator chose to **adopt H4/C4** from the maximum-search CSVs as measurement points despite their selected windows extending outside the course's 10–45 °C range. The instructor accepted this course-range exception on 2026-09-28.
 
@@ -80,10 +80,12 @@ The chosen integer levels are 0/11/23/34/45 for HEAT and 0/24/48/72/96 for COOL.
 
 ### D. Analysis and A2 handoff (Parts 4–6; after class)
 
-- [ ] Place **selected formal** raw time-series files in [`data/module_04/`](../../data/module_04/) with an unambiguous provenance note. Keep older exploratory files in `Module_4/data/`; do not silently mix them with calibration data or commit redundant copies.
-- [ ] Create/review one labeled heating trace, one labeled cooling trace, and the red/blue steady-T-vs-**signed PWM** graph in [`docs/figures/module_04/`](../figures/module_04/). Negative x is COOL; positive x is HEAT. Add fitted lines over stated approximately linear ranges, labeled axes/units, and the actual steady criterion.
-- [ ] Calculate HEAT and COOL χ_T in °C per PWM count from the stated linear ranges; report `r=m_h/|m_c|` and any visible curvature. Keep the 10–45 °C operating restriction explicit.
-- [ ] Complete the revised [A2 analysis draft](../assessments/a2_open_loop_tec.md): PWM averaging proof, steady-state energy balance and ratio derivation, independently located Laird maximum-current values at hot-side 27 °C, comparison, passive-conduction explanation, and 100–150-word conclusion. The PDF is 1–2 pages; do not insert old circuit/safety/code sections.
+- [x] Create the ten-row [`steady_state.csv`](../../data/module_04/steady_state.csv) with source-file paths and steady windows; retain the selected raw time series unchanged in `Module_4/data/` instead of duplicating them. Mark H4/C4 as instructor-approved course-range exceptions.
+- [ ] Inspect the generated heating trace, cooling trace, and red/blue steady-T-vs-**signed PWM** [figures](../../Module_4/figures/) visually before placing the main graph in A2. Files and axis labels/fits exist; this visual-review step is still open.
+- [x] Calculate HEAT and COOL χ_T from stated signed-PWM ranges: +0.4954 and +0.1414 °C/PWM count; `r=m_h/|m_c|=3.5035`. Ten points are approximately linear (R² 0.9990/0.9991), with H4/C4's accepted 10–45 °C course-range exceptions explicit.
+- [x] In the [A2 analysis draft](../assessments/a2_open_loop_tec.md), calculate the measured slopes/ratio, derive PWM current averages and the steady-state slope relation, infer `Q̇_J/Q̇_P=0.5559` within the simplified model, and explain passive conduction. Draft a 100–150-word conclusion.
+- [ ] Student: independently locate the four Laird CP14-127-045 values and their conditions in the hot-side 27 °C table, as the assignment requires before AI checks the numbers. Then calculate the manufacturer maximum-current ratio, compare it with measured `r=3.5035`, and revise the provisional conclusion. Do not equate full PWM duty with manufacturer maximum current.
+- [ ] Assemble the revised A2 into a 1–2-page PDF without old circuit/safety/code sections.
 - [ ] Review generated PDF for fitted lines and readable units. Save as `A2_Huang_Zhu.pdf` **if these are the desired surname order**; each student uploads the same team PDF separately to Moodle by Monday 2026-10-05 6:00 PM.
 - [ ] Retain raw class data and working code. The revised assignment requires **no new Git checkpoint or repository A2 file** for this short submission; versioning the work remains optional.
 

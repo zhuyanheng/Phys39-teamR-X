@@ -1,13 +1,13 @@
-# Module 4 formal raw data
+# Module 4 selected steady-state data
 
-This folder is reserved for the **selected, supervised Part 3 steady-state time-series** supporting A2. No formal Part 3 dataset has been collected here yet.
+[`steady_state.csv`](steady_state.csv) is the ten-row Part 3 summary used for the Part 4 graph. Its grain is one selected steady window per direction/PWM setting (H0–H4 and C0–C4), not one raw sensor sample. Each window contains 40 raw samples over approximately 20 seconds. The timestamped, unchanged source CSVs remain in [`Module_4/data/`](../../Module_4/data/); `source_csv` and the inclusive Arduino-time window identify the exact samples without duplicating raw files here. The [working note](../../docs/module_notes/module_04_open_loop_tec.md) records the collection history and exceptions.
 
-The GUI currently writes timestamped source CSVs into [`Module_4/data/`](../../Module_4/data/). Those six 2026-09-23 files record software-safety, direction, and exploratory actions; they do not supply ten verified steady-state points. Preserve them there. After new runs, identify the exact source file(s), confirm the 10–45 °C limits and `Safety: OK` in each selected interval, then place the canonical Module 4 formal raw file(s) here without keeping redundant committed copies. Record original filename, acquisition date, run IDs, and any excluded/repeated intervals in the [working note](../../docs/module_notes/module_04_open_loop_tec.md). The revised A2 PDF presents analysis, not the raw files themselves, but those files must remain available for later modules.
-
-For plotting, create `steady_state.csv` **only after measurement** with one row for each of H0–H4 and C0–C4 and this header:
+The summary header is:
 
 ```text
-run_id,direction,pwm,start_temperature_C,steady_temperature_C,time_waited_s,source_csv,steady_start_s,steady_end_s,notes
+run_id,direction,pwm,start_temperature_C,steady_temperature_C,time_waited_s,source_csv,steady_start_s,steady_end_s,range_exception_approved,notes
 ```
 
-Use `HEAT`/`COOL`; `pwm` is the exact integer **magnitude** sent to the Arduino. The revised Part 4 graph converts COOL to **negative signed x**, HEAT to positive signed x; do not put negative PWM in this raw summary column. `source_csv` is a path relative to the repository root, e.g. `data/module_04/<actual-filename>.csv`. Times are the Arduino `time_s` values in that source file. `steady_start_s` and `steady_end_s` bound the actual steady interval. Never enter blank/estimated temperatures as measured values. The [plot script](../../Module_4/python/plot_a2.py) checks the schema and creates three figures from completed data; only the signed-PWM response graph is required in the revised A2 PDF, while the time traces remain retained class evidence.
+`pwm` is the nonnegative integer command magnitude; only the graph changes COOL to negative signed x. `steady_temperature_C` is the selected raw-window mean rounded to 0.01 °C. For nonzero PWM, `time_waited_s` is the elapsed time from the first sample of the final command segment to the beginning of that steady window. H0/C0 leave it blank because their earlier return-to-room-temperature wait is not in their short CSVs; the blank is unknown, not zero. `start_temperature_C` is the temperature immediately before the command change when available (C0 uses its first recorded temperature). The source and window use each raw file's Arduino `time_s` coordinate.
+
+`range_exception_approved=yes` on H4/C4 records the instructor-approved departures from the course's 10–45 °C measurement range: every H4 window sample is above 45 °C, and 21 of 40 C4 samples are below 10 °C. These are retained as measured, not clipped or relabeled. All selected windows report `Safety=OK`, firmware PWM matching the command, and shutdown `limit_C=60`. The [plot script](../../Module_4/python/plot_a2.py) rechecks these conditions, the direction (including PWM 0), waiting-time calculation, and window means before generating the figures. Only the signed-PWM response graph belongs in the revised A2 PDF; the time traces are supporting class evidence.

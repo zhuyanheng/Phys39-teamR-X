@@ -17,12 +17,11 @@ REQUIRED_IDS = {f"{direction}{i}" for direction in "HC" for i in range(5)}
 SUMMARY_FIELDS = {
     "run_id", "direction", "pwm", "start_temperature_C",
     "steady_temperature_C", "time_waited_s", "source_csv",
-    "steady_start_s", "steady_end_s", "notes",
+    "steady_start_s", "steady_end_s", "range_exception_approved", "notes",
 }
 RAW_FIELDS = {
     "time_s", "temperature_C", "pwm", "heat_cool", "safety",
-    "heat_pwm_firmware", "cool_pwm_firmware", "limit_C", "low_limit_C",
-    "operating_high_C",
+    "heat_pwm_firmware", "cool_pwm_firmware", "limit_C",
 }
 COLORS = {"HEAT": "#c62828", "COOL": "#1565c0"}
 
@@ -67,12 +66,24 @@ def read_summary(path):
         if not row["pwm"].is_integer() or not 0 <= row["pwm"] <= 255:
             raise ValueError(f"{run_id}: PWM must be an integer from 0 to 255")
         row["pwm"] = int(row["pwm"])
-        for field in ("start_temperature_C", "steady_temperature_C", "time_waited_s",
+        for field in ("start_temperature_C", "steady_temperature_C",
                       "steady_start_s", "steady_end_s"):
             row[field] = finite_number(row[field], f"{run_id} {field}")
-        if not 10 <= row["steady_temperature_C"] <= 45:
-            raise ValueError(f"{run_id}: steady T is outside 10–45 °C")
-        if row["time_waited_s"] < 0 or row["steady_end_s"] <= row["steady_start_s"]:
+        flag = row["range_exception_approved"].strip().lower()
+        if flag not in ("yes", "no"):
+            raise ValueError(f"{run_id}: range_exception_approved must be yes or no")
+        row["range_exception_approved"] = flag == "yes"
+        if (not 10 <= row["steady_temperature_C"] <= 45
+                and not row["range_exception_approved"]):
+            raise ValueError(f"{run_id}: steady T is outside 10–45 °C without an approved exception")
+        if row["range_exception_approved"] and not row["notes"].strip():
+            raise ValueError(f"{run_id}: an approved exception needs an explanatory note")
+        wait = row["time_waited_s"].strip()
+        if not wait and row["pwm"] != 0:
+            raise ValueError(f"{run_id}: nonzero PWM needs a measured wait time")
+        row["time_waited_s"] = finite_number(wait, f"{run_id} time_waited_s") if wait else None
+        if ((row["time_waited_s"] is not None and row["time_waited_s"] < 0)
+                or row["steady_end_s"] <= row["steady_start_s"]):
             raise ValueError(f"{run_id}: invalid wait time or steady window")
         source = Path(row["source_csv"].strip())
         if not source.is_absolute():
@@ -102,8 +113,7 @@ def read_raw(path):
         row["heat_cool"] = int(finite_number(row["heat_cool"], f"{path} heat_cool"))
         for field in ("heat_pwm_firmware", "cool_pwm_firmware"):
             row[field] = int(finite_number(row[field], f"{path} {field}"))
-        for field in ("limit_C", "low_limit_C", "operating_high_C"):
-            row[field] = finite_number(row[field], f"{path} {field}")
+        row["limit_C"] = finite_number(row["limit_C"], f"{path} limit_C")
     return sorted(rows, key=lambda row: row["time_s"])
 
 
@@ -112,30 +122,41 @@ def validate_windows(summary, raw_cache):
         source = row["source_path"]
         if source not in raw_cache:
             raw_cache[source] = read_raw(source)
-        subset = [sample for sample in raw_cache[source]
-                  if row["steady_start_s"] <= sample["time_s"] <= row["steady_end_s"]]
+        raw = raw_cache[source]
+        selected_indices = [i for i, sample in enumerate(raw)
+                            if row["steady_start_s"] <= sample["time_s"] <= row["steady_end_s"]]
+        subset = [raw[i] for i in selected_indices]
         if len(subset) < 2:
             raise ValueError(f"{row['run_id']}: fewer than two raw samples in steady window")
         expected_bit = 1 if row["direction"] == "HEAT" else 0
         for sample in subset:
             if sample["pwm"] != row["pwm"]:
                 raise ValueError(f"{row['run_id']}: raw PWM differs in steady window")
-            if row["pwm"] and sample["heat_cool"] != expected_bit:
+            if sample["heat_cool"] != expected_bit:
                 raise ValueError(f"{row['run_id']}: raw direction differs in steady window")
             if sample["safety"].strip().upper() != "OK":
                 raise ValueError(f"{row['run_id']}: safety is not OK in steady window")
-            if not 10 <= sample["temperature_C"] <= 45:
-                raise ValueError(f"{row['run_id']}: raw T leaves 10–45 °C in steady window")
+            if (not 10 <= sample["temperature_C"] <= 45
+                    and not row["range_exception_approved"]):
+                raise ValueError(f"{row['run_id']}: raw T leaves 10–45 °C without an approved exception")
             expected_heat = row["pwm"] if row["direction"] == "HEAT" else 0
             expected_cool = row["pwm"] if row["direction"] == "COOL" else 0
             if (sample["heat_pwm_firmware"], sample["cool_pwm_firmware"]) != (expected_heat, expected_cool):
                 raise ValueError(f"{row['run_id']}: firmware output PWM differs from the selected command")
-            if (sample["limit_C"], sample["low_limit_C"], sample["operating_high_C"]) != (60, 10, 45):
-                raise ValueError(f"{row['run_id']}: recorded 60/10/45 °C limits are not the expected settings")
+            if sample["limit_C"] != 60:
+                raise ValueError(f"{row['run_id']}: recorded shutdown limit is not 60 °C")
         average = sum(s["temperature_C"] for s in subset) / len(subset)
         difference = abs(average - row["steady_temperature_C"])
-        if difference > 0.5:
-            print(f"CHECK {row['run_id']}: stated steady T differs from raw-window mean by {difference:.2f} °C")
+        if difference > 0.02:
+            raise ValueError(f"{row['run_id']}: stated steady T differs from raw-window mean by {difference:.3f} °C")
+        if row["time_waited_s"] is not None:
+            start = selected_indices[0]
+            while (start > 0 and raw[start - 1]["pwm"] == row["pwm"]
+                   and raw[start - 1]["heat_cool"] == expected_bit):
+                start -= 1
+            observed_wait = row["steady_start_s"] - raw[start]["time_s"]
+            if abs(observed_wait - row["time_waited_s"]) > 0.05:
+                raise ValueError(f"{row['run_id']}: wait time disagrees with the raw PWM segment")
 
 
 def ticks(low, high, count=5):
@@ -145,7 +166,8 @@ def ticks(low, high, count=5):
 
 
 def svg_chart(path, title, xlabel, ylabel, series, xbounds, ybounds, caption,
-              shade=None, fit_lines=None, connect_series=True):
+              shade=None, fit_lines=None, connect_series=True,
+              exception_points=None, dual_zero_baseline=False):
     caption_lines = textwrap.wrap(caption, width=110, break_long_words=False) or [""]
     width, height = 900, 565 + 20 * (len(caption_lines) - 1)
     left, right, top = 95, 45, 65
@@ -182,6 +204,9 @@ def svg_chart(path, title, xlabel, ylabel, series, xbounds, ybounds, caption,
         zero_x = xcoord(0)
         parts.append(f'<line x1="{zero_x:.1f}" y1="{top}" x2="{zero_x:.1f}" y2="{top+plot_h}" stroke="#555" stroke-width="1.6"/>')
     parts.append(f'<rect x="{left}" y="{top}" width="{plot_w}" height="{plot_h}" fill="none" stroke="#333"/>')
+    for name, color, endpoints in fit_lines or []:
+        coordinates = " ".join(f"{xcoord(x):.1f},{ycoord(y):.1f}" for x, y in endpoints)
+        parts.append(f'<polyline points="{coordinates}" fill="none" stroke="{color}" stroke-width="3" stroke-dasharray="9 5"/>')
     for name, color, points in series:
         ordered = sorted(points)
         if not ordered:
@@ -190,10 +215,13 @@ def svg_chart(path, title, xlabel, ylabel, series, xbounds, ybounds, caption,
             coordinates = " ".join(f"{xcoord(x):.1f},{ycoord(y):.1f}" for x, y in ordered)
             parts.append(f'<polyline points="{coordinates}" fill="none" stroke="{color}" stroke-width="2.5"/>')
         for x, y in ordered:
-            parts.append(f'<circle cx="{xcoord(x):.1f}" cy="{ycoord(y):.1f}" r="4.5" fill="{color}"/>')
-    for name, color, endpoints in fit_lines or []:
-        coordinates = " ".join(f"{xcoord(x):.1f},{ycoord(y):.1f}" for x, y in endpoints)
-        parts.append(f'<polyline points="{coordinates}" fill="none" stroke="{color}" stroke-width="3" stroke-dasharray="9 5"/>')
+            open_marker = (exception_points and (x, y) in exception_points)
+            zero_ring = dual_zero_baseline and name == "COOL" and x == 0
+            if open_marker or zero_ring:
+                fill = "white" if open_marker else "none"
+                parts.append(f'<circle cx="{xcoord(x):.1f}" cy="{ycoord(y):.1f}" r="6" fill="{fill}" stroke="{color}" stroke-width="2.5"/>')
+            else:
+                parts.append(f'<circle cx="{xcoord(x):.1f}" cy="{ycoord(y):.1f}" r="4.5" fill="{color}"/>')
     parts.append(f'<text x="{width/2}" y="{top+plot_h+40}" text-anchor="middle" font-family="Arial" font-size="17">{html.escape(xlabel)}</text>')
     parts.append(f'<text transform="translate(26 {top+plot_h/2}) rotate(-90)" text-anchor="middle" font-family="Arial" font-size="17">{html.escape(ylabel)}</text>')
     legend = "   |   ".join(name for name, _, _ in series)
@@ -236,12 +264,20 @@ def create_figures(summary, raw_cache, output_dir, criterion, fit_ranges):
         chosen = [(sign * r["pwm"], r["steady_temperature_C"])
                   for r in group if low <= r["pwm"] <= high]
         slope, intercept = fit_linear(chosen)
+        mean_temperature = sum(y for _, y in chosen) / len(chosen)
+        squared_error = sum((y - (slope * x + intercept)) ** 2 for x, y in chosen)
+        squared_total = sum((y - mean_temperature) ** 2 for _, y in chosen)
+        r_squared = 1 - squared_error / squared_total if squared_total else 1.0
         slopes[direction] = slope
         xlo, xhi = min(x for x, _ in chosen), max(x for x, _ in chosen)
         fitted.append((f"{direction} fit", color,
                        [(xlo, slope * xlo + intercept), (xhi, slope * xhi + intercept)]))
-        print(f"{direction} signed-PWM fitted slope = {slope:.4f} °C/PWM count; magnitude range {low}–{high}")
-        selected = group[-1]
+        print(f"{direction} signed-PWM fitted slope = {slope:.4f} °C/PWM count; "
+              f"magnitude range {low}–{high}; R² = {r_squared:.4f}")
+        # Prefer a substantial, non-exception transition over the short
+        # maximum-search segments that began near their final temperatures.
+        selected = max((r for r in group if r["pwm"] > 0 and not r["range_exception_approved"]),
+                       key=lambda r: abs(r["steady_temperature_C"] - r["start_temperature_C"]))
         raw = raw_cache[selected["source_path"]]
         end = selected["steady_end_s"]
         target_indices = [i for i, s in enumerate(raw)
@@ -256,16 +292,19 @@ def create_figures(summary, raw_cache, output_dir, criterion, fit_ranges):
         if len(trace) < 2:
             raise ValueError(f"{selected['run_id']}: insufficient trace points")
         temperatures = [s["temperature_C"] for s in trace]
-        svg_chart(output_dir / f"{direction.lower()}ing_trace.svg" if direction == "HEAT" else output_dir / "cooling_trace.svg",
+        svg_chart(output_dir / "heating_trace.svg" if direction == "HEAT" else output_dir / "cooling_trace.svg",
                   f"{direction} time trace, PWM {selected['pwm']}", "Arduino time (s)",
                   "Temperature (°C)", [(direction, color, [(s["time_s"], s["temperature_C"]) for s in trace])],
                   (start_time, end), (min(temperatures)-0.5, max(temperatures)+0.5),
-                  f"Green band = selected steady interval; {criterion}",
+                  f"PWM switch at {raw[start]['time_s']:.2f} s; green band = selected steady interval; {criterion}",
                   shade=(selected["steady_start_s"], selected["steady_end_s"]))
     if slopes["COOL"] == 0:
         raise ValueError("COOL fitted slope is zero; slope ratio is undefined")
     ratio = slopes["HEAT"] / abs(slopes["COOL"])
     print(f"Measured r = m_h / |m_c| = {ratio:.4f}")
+    exception_points = {((1 if r["direction"] == "HEAT" else -1) * r["pwm"],
+                         r["steady_temperature_C"])
+                        for r in summary if r["range_exception_approved"]}
     svg_chart(output_dir / "steady_temperature_vs_pwm.svg",
               "Steady TEC temperature vs signed PWM", "Signed PWM (count; COOL < 0, HEAT > 0)",
               "Steady temperature (°C)", series,
@@ -273,8 +312,12 @@ def create_figures(summary, raw_cache, output_dir, criterion, fit_ranges):
                max(r["pwm"] for r in summary if r["direction"] == "HEAT")),
               (ymin, ymax),
               f"Fits: HEAT {fit_ranges['HEAT'][0]}–{fit_ranges['HEAT'][1]}, "
-              f"COOL −{fit_ranges['COOL'][1]} to −{fit_ranges['COOL'][0]}; steady: {criterion}",
-              fit_lines=fitted, connect_series=False)
+              f"COOL {-fit_ranges['COOL'][1]} to {-fit_ranges['COOL'][0]}; steady: {criterion}. "
+              "Open endpoints H4/C4 are instructor-approved 10–45 °C range exceptions; "
+              "H0/C0 overlap at 0 PWM.",
+              fit_lines=fitted, connect_series=False,
+              exception_points=exception_points,
+              dual_zero_baseline=True)
 
 
 def main():
@@ -285,7 +328,7 @@ def main():
                         help="HEAT PWM magnitude range used for its linear fit")
     parser.add_argument("--cool-fit", type=int, nargs=2, metavar=("MIN", "MAX"), required=True,
                         help="COOL PWM magnitude range used for its linear fit")
-    parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "docs/figures/module_04")
+    parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "Module_4/figures")
     args = parser.parse_args()
     summary_path = args.summary if args.summary.is_absolute() else REPO_ROOT / args.summary
     summary = read_summary(summary_path)

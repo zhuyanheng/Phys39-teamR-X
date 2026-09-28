@@ -1,9 +1,13 @@
-# Module 4 A2 figures
+# Module 4 Part 4 figure index
 
-No Part 3 figures exist yet. After supervised measurements and a completed [`steady_state.csv`](../../../data/module_04/README.md), run:
+The generated figure files live in [`Module_4/figures/`](../../../Module_4/figures/), matching the per-module layout used for Modules 1–3. This documentation folder is only an index, not the plot output directory.
+
+The figures were generated from the reviewed ten-row [`steady_state.csv`](../../../data/module_04/steady_state.csv) with:
 
 ```text
-python3 Module_4/python/plot_a2.py data/module_04/steady_state.csv --criterion "<actual steady-state rule>" --heat-fit <heat-min> <heat-max> --cool-fit <cool-min> <cool-max>
+python3 Module_4/python/plot_a2.py data/module_04/steady_state.csv --criterion 'Temperature stopped drifting in one direction and fluctuated within a narrow band; last ~20 s averaged' --heat-fit 0 45 --cool-fit 0 96
 ```
 
-The script creates `heating_trace.svg`, `cooling_trace.svg`, and `steady_temperature_vs_pwm.svg` in this folder. Inspect all three against the raw files and working note before including the **main graph** in A2. Time traces show a chosen nonzero-PWM command interval and shaded steady window; retain them with the class data, but the revised 1–2 page A2 does not require them in the PDF. The main graph uses **negative signed PWM for COOL**, positive for HEAT, red/blue points, dashed fitted lines over the two explicitly supplied approximately linear magnitude ranges, labeled axes/units, and a place for the actual steady-state criterion. The CLI prints the two signed-x slopes in °C/PWM count and `r=m_h/|m_c|`. These are not pre-existing measurements.
+Outputs: [`heating_trace.svg`](../../../Module_4/figures/heating_trace.svg) uses H3; [`cooling_trace.svg`](../../../Module_4/figures/cooling_trace.svg) uses C1. Each shows the command interval and green selected steady window. Retain these as supporting class evidence. The revised 1–2 page A2 PDF needs the [`steady_temperature_vs_pwm.svg`](../../../Module_4/figures/steady_temperature_vs_pwm.svg) graph: negative x for COOL, positive x for HEAT, blue/red measured points, dashed fits, labeled axes/units, and the actual steady criterion. H0/C0 overlap at x=0. Open H4/C4 endpoints mark instructor-approved course-range exceptions, included in the fits and identified in the graph caption.
+
+The 0–45 HEAT and −96–0 COOL points are approximately linear over the observed settings (R² 0.9990 and 0.9991). The signed-x slopes are `m_h = +0.4954 °C/PWM count` and `m_c = +0.1414 °C/PWM count`; `r = m_h/|m_c| = 3.5035`. Positive `m_c` is correct when COOL lies on negative signed x; against nonnegative COOL magnitude its slope is −0.1414. These are fits to the selected data, not manufacturer predictions. Source-window details and caveats remain in the [data note](../../../data/module_04/README.md).

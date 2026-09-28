@@ -6,19 +6,27 @@ The professor's 2026-09-28 revision changed A2 from an instrument/safety note to
 
 ## 1. Experimental graph and measured slopes
 
-Insert the [Part 4 steady-temperature graph](../figures/module_04/README.md): x = **signed PWM count** (COOL negative, HEAT positive), y = steady temperature (°C), blue COOL and red HEAT data, two fitted lines over clearly identified approximately linear ranges, and the actual steady-state criterion in its caption. Do not fit through visibly curved sections without saying so.
+Insert the [Part 4 steady-temperature graph](../../Module_4/figures/steady_temperature_vs_pwm.svg): x = **signed PWM count** (COOL negative, HEAT positive), y = steady temperature (°C), blue COOL and red HEAT data, two fitted lines over clearly identified approximately linear ranges, and the actual steady-state criterion in its caption. Do not fit through visibly curved sections without saying so.
 
 | Quantity | Measured result | Fit range / note |
 | --- | --- | --- |
-| HEAT slope `m_h` | TODO °C/PWM count | TODO: signed x range |
-| COOL slope `m_c` | TODO °C/PWM count | TODO: signed x range and sign convention |
-| Ratio `r=m_h/abs(m_c)` | TODO, dimensionless | TODO: show calculation |
+| HEAT slope `m_h` | +0.4954 °C/PWM count | Signed x = 0–45; all five measured HEAT points |
+| COOL slope `m_c` | +0.1414 °C/PWM count | Signed x = −96–0; all five measured COOL points |
+| Ratio `r=m_h/abs(m_c)` | 3.5035, dimensionless | 0.4954/0.1414 using unrounded fitted slopes |
 
 The plotter prints slopes with respect to **signed x**. If instead calculating COOL's slope against its nonnegative magnitude, that number has the opposite sign; its absolute value must be used consistently in `r`. State exactly which convention and fit range you used.
 
-## 2. PWM averaging and steady-state model — show your derivation
+H4 and C4 came from maximum-search runs. Their selected windows cross the nominal course measurement boundaries, but the instructor accepted those points on 2026-09-28; the graph marks them with open circles and its caption states the exception. They are included in the displayed fits. H0/C0 are distinct raw baseline runs whose plotted temperatures coincide at signed PWM 0. The two selected 20-second window means are each 23.44 °C.
 
-Use duty cycle `D=|PWM|/255`, on-state current `I`, PWM period `τ`, current `I` for `Dτ` and zero for the remainder. Starting from the period integrals, show your steps leading to `⟨I⟩=DI` and `⟨I²⟩=DI²`. Explain why `⟨I²⟩` is **not generally** `⟨I⟩²=D²I²` and how that changes the predicted slope/curvature of temperature versus PWM.
+## 2. PWM averaging and steady-state model
+
+Let `D=|PWM|/255`. During one period `τ`, current is `I` for `Dτ` and zero for `(1−D)τ`. Therefore, starting from the period integrals,
+
+`⟨I⟩ = (1/τ)∫₀^τ I(t)dt = [I(Dτ)+0((1−D)τ)]/τ = DI`,
+
+`⟨I²⟩ = (1/τ)∫₀^τ I²(t)dt = [I²(Dτ)+0((1−D)τ)]/τ = DI²`.
+
+But `⟨I⟩²=D²I²`; their difference is `D(1−D)I²`, positive for `0<D<1`. For fixed on-state current, both the Peltier term (`∝⟨I⟩`) and Joule term (`∝⟨I²⟩`) are linear in duty cycle. Incorrectly using `⟨I⟩²` for Joule heat would make that contribution quadratic in `D`, falsely predicting a duty-dependent susceptibility even in the idealized constant-current model. Our five-point fits are approximately linear (`R²=0.9990` HEAT, `0.9991` COOL); the largest absolute fitted-point residuals are about 0.38 °C and 0.20 °C, respectively. This does not rule out small curvature.
 
 The full object-face TEC heat flow in the [course hardware discussion](https://sethfraden.github.io/Phys39F26-course/hardware/#thermoelectric-cooler) contains Peltier, half the Joule heat, and passive conduction. In the assignment's reduced model, the TEC conduction term and other passive heat leaks are already combined into the effective conductance `G`. **Do not count TEC conduction again** inside the current-dependent `Q̇_TEC`. Start from
 
@@ -28,7 +36,15 @@ At steady state `dT/dt=0` but the individual heat flows need not be zero. With p
 
 `Q̇_TEC,h = D(Q̇_P + Q̇_J)`; `Q̇_TEC,c = D(−Q̇_P + Q̇_J)`.
 
-**TODO: show the algebra in the PDF** for `T_h(D)−T₀`, `T_c(D)−T₀`, both derivatives with respect to `D`, and the ratio. The target relation to verify is `Q̇_J/Q̇_P = (r−1)/(r+1)`; test your algebra with the course check `r=2 → 1/3`. Convert the measured `r` to a numerical ratio only after the measured slopes are available. If data give an unexpected sign/value, discuss the model assumptions rather than hiding the result.
+Set `dT/dt=0`, so `G(T−T₀)=Q̇_TEC`. Substitution and division by `G` give
+
+`T_h(D)−T₀ = D(Q̇_P+Q̇_J)/G`, and `T_c(D)−T₀ = D(−Q̇_P+Q̇_J)/G`.
+
+Thus `dT_h/dD=(Q̇_P+Q̇_J)/G` and `dT_c/dD=(−Q̇_P+Q̇_J)/G`. With signed x-coordinate `x=+255D` for HEAT and `x=−255D` for COOL, the fitted slopes are `m_h=(Q̇_P+Q̇_J)/(255G)` and `m_c=(Q̇_P−Q̇_J)/(255G)` when `Q̇_P>Q̇_J`. Both signed-x slopes are positive even though increasing COOL *magnitude* lowers temperature. Their ratio is
+
+`r=m_h/|m_c|=(Q̇_P+Q̇_J)/(Q̇_P−Q̇_J)`; solving, `Q̇_J/Q̇_P=(r−1)/(r+1)`.
+
+Check: `r=2` gives `1/3`. Using the unrounded fitted slopes gives `r=3.50345048` and **`Q̇_J/Q̇_P=0.5559`**. This is an *inference within the simplified near-room-temperature model*, not a direct calorimetric measurement of either heat rate. Repeating the fit without instructor-approved boundary points H4/C4 gives `r=3.5913` and inferred `Q̇_J/Q̇_P=0.5644`; the small change is a useful fit-range sensitivity check, not a replacement for the stated ten-point graph.
 
 ## 3. Manufacturer data — student must locate values first
 
@@ -41,19 +57,25 @@ Open the course-linked [Laird CP14-127-045 data sheet](https://sethfraden.github
 | Maximum cold-side heat pumping `Q_c,max` at `ΔT=0` | TODO | TODO |
 | Maximum temperature difference `ΔT_max` | TODO | TODO |
 
-At the data-sheet maximum current and `ΔT=0`, calculate `Q̇_J,max = ½ I_max² R_M`, then use `Q_c,max = Q̇_P,max − Q̇_J,max` to find `Q̇_P,max`. Calculate `r_Laird,max = (Q̇_P,max + Q̇_J,max)/(Q̇_P,max − Q̇_J,max)`. Put units on all heat-transfer rates (W). These are **manufacturer maximum-current conditions**, not automatically the lab apparatus's conditions at full PWM duty: actual current also depends on supply voltage/current limit, H-bridge drop, wiring and TEC resistance.
+After the team independently supplies and checks the four data-sheet entries, calculate `Q̇_J,max = ½ I_max² R_M` (W), `Q̇_P,max = Q_c,max + Q̇_J,max` (W), and
+
+`r_Laird,max = (Q̇_P,max+Q̇_J,max)/(Q̇_P,max−Q̇_J,max) = 1+I_max² R_M/Q_c,max`.
+
+The last equality follows from `Q_c,max=Q̇_P,max−Q̇_J,max`; it is dimensionless and provides an independent arithmetic check. **Do not substitute unverified values or label this result complete until the team's own 27 °C entries and table citation are recorded.** These are manufacturer maximum-current conditions, not automatically the lab apparatus's conditions at full PWM duty: actual current also depends on supply voltage/current limit, H-bridge drop, wiring and TEC resistance. `ΔT_max` describes the maximum no-load temperature separation and is contextual data; it is not substituted into the `ΔT=0` heat-rate equation.
 
 ## 4. Interpretation and conclusion
 
-Compare measured `r` with `r_Laird,max` without assuming agreement. Address PWM versus steady DC, finite temperature differences, passive heat paths, changing material properties and fit-range curvature where relevant. Explicitly answer: above room temperature, which way does passive heat flow? Below room temperature, which way? Why can approximately symmetric passive conduction oppose both directions but not by itself explain unequal slope **magnitudes**?
+The measured ratio is `r=3.5035`; the numerical manufacturer comparison remains pending the student-located data-sheet values. Do not assume agreement: `D=1` means the H-bridge is continuously on, **not** that the TEC current equals `I_max`. The supply voltage/current limit, H-bridge and wiring drops, TEC resistance, PWM versus steady DC, finite hot–cold temperature difference, and temperature-dependent properties can all change the operating point. A single linear fit also averages over any small curvature.
 
-**Conclusion (about 100–150 English words): TODO** — state what your measurements imply about Peltier transport, Joule heating and conduction, while separating observed results from model-based interpretation.
+When the object is hotter than room temperature, passive heat flows **out of the object**; when colder, passive heat flows **into the object**. In both cases passive conduction opposes the imposed temperature departure and is represented by `−G(T−T₀)`. If `G` is approximately the same on both sides of `T₀`, it reduces both temperature responses similarly; it does not by itself make the HEAT and COOL slope *magnitudes* unequal. The simple model attributes the asymmetry primarily to Joule heat adding to the heating-direction Peltier term while partially canceling cooling-direction Peltier pumping. Real unequal passive paths could modify this interpretation and are not separately measured here.
+
+**Provisional conclusion (revise after the data-sheet comparison; about 115 English words):** Our open-loop measurements show an approximately linear steady-temperature response to PWM in each direction, with a larger heating susceptibility than cooling susceptibility. The fitted slope ratio is 3.50. Under the simplified near-room-temperature energy balance, that ratio corresponds to object-face Joule heating about 0.56 times the full-on Peltier heat rate. This is a model-based inference, not a direct measurement of either heat flow. Peltier transport reverses with current, while Joule heating keeps the same sign, so their effects add during heating and partly offset during cooling. Passive conduction carries heat away from a hot block and toward a cold one, opposing both departures. Manufacturer maximum-current values describe a different operating condition and must be compared separately.
 
 ## Final PDF check
 
 - [ ] 1–2 pages, legible graph with signed PWM, red/blue points, both fitted lines and ranges.
 - [ ] Both measured slopes in °C/PWM count and dimensionless `r`.
-- [ ] PWM averaging proof, steady-state balance/slope-ratio derivation and numerical measured ratio result.
+- [x] PWM averaging proof, steady-state balance/slope-ratio derivation and numerical measured ratio result in this working draft.
 - [ ] All four cited Laird values with units and conditions, `Q̇_J,max`, `Q̇_P,max`, predicted `r_Laird,max`.
 - [ ] Measured/manufacturer comparison, passive-conduction answer, 100–150-word conclusion.
 - [ ] No old apparatus/safety/code sections; both teammates separately upload the same `A2_Lastname_Lastname.pdf` by 2026-10-05 6:00 PM.
