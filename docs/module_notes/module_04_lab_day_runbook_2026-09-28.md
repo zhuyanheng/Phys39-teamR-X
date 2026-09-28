@@ -8,7 +8,7 @@
 
 - [ ] 在 VS Code 打开此仓库和本页；同时打开[十行数据表](module_04_open_loop_tec.md)。请 agent 从此页开始，现场每做完一步才勾选，并在表中记录数值/文件名。日期、操作者、老师：________。
 - [ ] 确认 TEC 执行器电源开关在 **OFF**、输出未使能；Arduino 只由 USB 连接电脑。不要为了“先看有没有反应”给 TEC 通电。
-- [ ] 确认准备使用的是 [Module 4 Arduino sketch](../../Module_4/arudino/part_1/part_1.ino) 和 [Module 4 Python GUI](../../Module_4/python/part_5_tec_control_gui.py)，不是 Module 3 旧控制程序。当前代码参数应为：软件安全上限 `60 °C`，运行保护下限 `10 °C`、上限 `45 °C`，热方向 `D9`，冷方向 `D10`，串口 `9600`。实际上传版本/commit：________。
+- [ ] 确认准备使用的是 [Module 4 Arduino sketch](../../Module_4/arudino/part_1/part_1.ino) 和 [Module 4 Python GUI](../../Module_4/python/part_5_tec_control_gui.py)，不是 Module 3 旧控制程序。当前源码参数为：固件上限 `60 °C`（原 10–45 °C 固件限制已移除）、热方向 `D9`、冷方向 `D10`、串口 `9600`；课程测量范围仍需单独遵守。实际上传版本/commit：________。
 
 ## 1. 断电状态核对线路；老师批准前不要通电
 
@@ -42,7 +42,8 @@ TEC **不能直接接到 Arduino D9/D10**；这两个针脚只给 H-bridge 逻�
 
 - [ ] 在 Arduino IDE 打开 `Module_4/arudino/part_1/part_1.ino`，选 **Arduino Uno** 和实际串口，先 Verify 再 Upload；不要改回临时 20/30 °C 版本。上传成功后关闭 Serial Monitor/Plotter，避免占用串口。Arduino 端口：________。
 - [x] 在 GUI 文件顶部核对 `SERIAL_PORT` 是否等于实际端口（仓库当前为 `/dev/cu.usbmodem101`）；只有端口变了才改此项。于仓库根目录运行 `.venv/bin/python Module_4/python/part_5_tec_control_gui.py`；若明天不是同一台电脑，先确认相应 Python 环境已经安装 `requirements.txt`。GUI 启动时会发 `PWM 0`，并在 `Module_4/data/` 建立新的带时间戳 CSV。**本次新 CSV：`Module_4/data/module_04_tec_20260928_095700_881845.csv`。**
-- [x] 看到约每 0.5 秒更新的温度和 Arduino time；室温应合理，`Safety: OK`，command PWM=`0`。在运行 GUI 的**终端输出或新 CSV** 中核对 firmware `Heat PWM=0`、`Cool PWM=0`、`Limit=60`、`Low Limit=10`、`Operating High=45`；这些项目并非全都显示在 GUI 顶部标签。**本次启动约 `23.80 °C`，`Safety OK`、固件输出 `0/0`、阈值 `60/10/45`。** **GUI 图的 y 轴可显示到 70 °C，这不是允许操作到 70 °C。**
+- [x] 旧版本启动记录：约每 0.5 秒更新温度与 Arduino time；初始约 `23.80 °C`、`Safety OK`、PWM `0/0`，当时 CSV 报告阈值 `60/10/45`。这是旧运行证据，不能证明新上传的 60 °C-only 固件已生效。
+- [ ] 对新版本重新核对 GUI/新 CSV 的 `Safety=OK`、`Heat PWM=0`、`Cool PWM=0`、`Limit (C)=60.00`，并确认新 CSV 不再有 `low_limit_C` / `operating_high_C` 两列；记新文件名：________。
 - [ ] 给老师看[既有 Part 1 安全证据](../../Module_4/part_1_safety_check.md)：20 °C 断电演示、恢复 60 °C、30 °C 现场演示。只有老师要求时才在断开 TEC 电源的条件下重做；不可故意加热到 60 °C。固件串口的 `0/0` 是软件报告，不等于已用仪表测到 D9/D10 为零。
 
 ## 3. 老师批准后，谨慎通电并选 Part 2 的十个 PWM 值
@@ -51,16 +52,16 @@ TEC **不能直接接到 Arduino D9/D10**；这两个针脚只给 H-bridge 逻�
 - [ ] 按老师批准的方式开启电源；保持 GUI `PWM 0`，先确认热交换器的泵/风扇确实运行、供电电流正常，然后才允许非零 TEC PWM。电源显示电流（PWM 0）：________ A。
 - [ ] GUI 操作：先确保 `PWM command=0`；点方向按钮使其显示红色 `HEAT`；在右侧 PWM 数字框输入**老师认可的低值**（例如 10 只作为历史低 PWM 探索起点，绝非课程指定或保证安全的值），按 Enter/移开焦点使设置生效。看温度是否升高、红色 PWM 曲线及电源电流；记录值与现象：________。然后输入 `0`，确认固件输出 `0/0`。
 - [ ] 在 PWM 0 时点方向按钮切到蓝色 `COOL`（程序切换方向时也会自动归零，但仍要亲眼确认）；用老师认可的低值短测。看温度是否下降、蓝色 PWM 曲线及电源电流；记录值与现象：________。然后回 `0`。若方向不符，立即停机请老师检查接线/标定。
-- [ ] 分别在 HEAT 与 COOL 做**逐步、小幅**探索，每次改 PWM 后观察温度趋势、供电电流、散热器状态；不要把 10/45 °C 当作要碰到的目标，也不要为找最大值突然拨到 255。各自选一个能覆盖有用温差、但仍可安全保持在 10–45 °C 的最大 PWM：`Hmax=____`，`Cmax=____`；写明选择理由和对应最大电流。两个最大值可以不同。
-- [ ] 计算两组准确整数：`HEAT=[0, round(.25 Hmax), round(.50 Hmax), round(.75 Hmax), Hmax]`；`COOL=[0, round(.25 Cmax), round(.50 Cmax), round(.75 Cmax), Cmax]`。把**实际使用**的整数写入十行数据表；若四个非零级别不互异，和老师讨论后调整，不要强填重复点。HEAT：________；COOL：________。
+- [ ] 分别在 HEAT 与 COOL 做**逐步、小幅**探索，每次改 PWM 后观察温度趋势、供电电流、散热器状态；不要把 10/45 °C 当作要碰到的目标，也不要为找最大值突然拨到 255。操作者已选定 `Hmax=45`（报告约 45 ± 0.3 °C；原始 HEAT-45 片段 45.31–45.45 °C）及 `Cmax=96`（报告约 10 °C；原始 COOL-96 片段 9.83–10.17 °C）。两端的正式测量范围适用性仍待确认。
+- [ ] 计算两组准确整数：各取本方向最大 PWM 的约 0/25/50/75/100%。把**实际使用**的整数写入十行数据表；若四个非零级别不互异，和老师讨论后调整，不要强填重复点。HEAT 计划值：`[0, 11, 23, 34, 45]`（0.5 档取 23）；COOL 计划值：`[0, 24, 48, 72, 96]`。
 - [ ] 正式数据前和老师/搭档确认稳态判据并写下：观察窗口 ________ s；允许变化/斜率 ________ °C 或 °C/min；如何取稳态温度（窗口平均或其他）________。课程**没有规定一个固定数值**，此处不能事后为了凑结果改规则。
 
 ## 4. Part 3：正式收集 H0–H4、C0–C4
 
-每一行都按同一套动作走：① 在 PWM 0 或上一安全设置下选方向，**先记录改变 PWM 前**的 start T 与 Arduino time；② 把 PWM 设为上一步确定的准确整数，记下命令生效时的 Arduino time；③ 保持有人观察温度、电流、安全状态；④ 达到已写下的稳态规则后，记录稳态窗口的起止 `time_s`、稳态 T、从改变命令到判稳的等待秒数、备注与 CSV 文件名；⑤ 打开 CSV 核实该窗口 `pwm`、`heat_cool`、`safety=OK`、固件输出和 60/10/45 设置，再给该行打勾。不要因为曲线暂时变平就提前判稳。
+每一行都按同一套动作走：① 在 PWM 0 或上一安全设置下选方向，**先记录改变 PWM 前**的 start T 与 Arduino time；② 把 PWM 设为上一步确定的准确整数，记下命令生效时的 Arduino time；③ 保持有人观察温度、电流、安全状态；④ 达到已写下的稳态规则后，记录稳态窗口的起止 `time_s`、稳态 T、从改变命令到判稳的等待秒数、备注与 CSV 文件名；⑤ 打开 CSV 核实该窗口 `pwm`、`heat_cool`、`safety=OK`、固件输出和新版本 `limit_C=60`，再给该行打勾。不要因为曲线暂时变平就提前判稳。
 
 - [ ] `H0`：在 HEAT 方向、PWM 0 测自己的基线，填[表格 H0](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)。
-- [ ] `H1`：设 HEAT 约 25% Hmax，按上述动作填 H1。
+- [ ] `H1`：HEAT PWM 11 已测得约 28.3 °C；[表格 H1](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)已填候选窗口 218.12–237.97 s（均值 28.31 °C）。稳态判据/电流仍待补或确认，再勾选。
 - [ ] `H2`：设 HEAT 约 50% Hmax，按上述动作填 H2。
 - [ ] `H3`：设 HEAT 约 75% Hmax，按上述动作填 H3。
 - [ ] `H4`：设 HEAT Hmax，按上述动作填 H4；保留至少一段包含指令变化和稳态区间的完整 HEAT 时间曲线。

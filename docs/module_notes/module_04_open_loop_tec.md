@@ -4,7 +4,7 @@ Team: Ricky Huang and Xavier Zhu. Course: Phys 39, Module 4. Use this file as th
 
 ## What is already evidenced (not the Part 3 calibration)
 
-- The current [Arduino sketch](../../Module_4/arudino/part_1/part_1.ino) averages 1000 thermistor ADC readings. It has a 60 °C software safety constant and additional 10–45 °C operating guards. D9 is HEAT; D10 is COOL. The [Python GUI](../../Module_4/python/part_5_tec_control_gui.py) records serial temperature, command, safety state and firmware-reported output PWM.
+- The current [Arduino sketch](../../Module_4/arudino/part_1/part_1.ino) averages 1000 thermistor ADC readings. Its current source stops at 60 °C or an invalid sensor reading; the earlier 10–45 °C firmware guards have been removed. Verify which version was actually uploaded. D9 is HEAT; D10 is COOL. The [Python GUI](../../Module_4/python/part_5_tec_control_gui.py) records serial temperature, command, safety state and firmware-reported output PWM.
 - The [Part 1 safety record](../../Module_4/part_1_safety_check.md) documents the TEC-power-off test with a temporary 20 °C threshold: commanded HEAT and COOL were rejected, both firmware PWM values stayed at 0, and serial reporting continued. It also documents restoring 60 °C. A later instructor-present 30 °C test recorded shutdown after the temperature crossed 30 °C. Neither record independently measured D9/D10 voltage.
 - The [low-PWM cooling check](../../Module_4/cooling_direction_test.md) supports the COOL mapping. The six older [Module 4 GUI CSV files](../../Module_4/data/) are exploratory/safety records, **not** ten steady-state calibration points. In particular, do not import them into the table below merely because a file exists. The 10 °C and 45 °C boundaries have not been physically challenged.
 - The [Module 3 instrument note](module_03_tec_gui.md) records an earlier 12 V setting, 18 AWG high-current wiring, series thermal switch, and instructor check. Record the actual Module 4 supply voltage, current limit, and reinspection here; do not assume they were unchanged. The revised A2 PDF focuses on analysis and no longer repeats apparatus/safety documentation.
@@ -20,8 +20,8 @@ Team: Ricky Huang and Xavier Zhu. Course: Phys 39, Module 4. Use this file as th
 | Power-supply voltage | 待实测 / 待记录 | |
 | Power-supply current limit | 待实测 / 待记录 | |
 | Thermistor plausibility at PWM 0 | 23.80 °C at fresh GUI startup | `Module_4/data/module_04_tec_20260928_095700_881845.csv`; PWM 0, Safety OK, firmware outputs 0/0 |
-| Maximum useful HEAT PWM | 待探索，整数 0–255 | |
-| Maximum useful COOL PWM | 待探索，整数 0–255 | |
+| Maximum useful HEAT PWM | **45**（操作者选定；报告约 45 °C、波动约 0.3 °C） | 2026-09-28 操作者报告；`Module_4/data/module_04_heating_max_pwm45_20260928_100550_571289.csv` 中 HEAT 45 的较长一段为 192.67–240.51 s、45.31–45.45 °C |
+| Maximum useful COOL PWM | **96**（操作者选定；报告约 10 °C 稳定） | 2026-09-28 操作者报告；`Module_4/data/module_04_cooling_max_pwm96_20260928_101439_464642.csv` 中 COOL 96 片段为 461.52–488.47 s、9.83–10.17 °C |
 | Operational steady-state criterion | **待决定并写成可重复规则**；老师没有给固定秒数/阈值 | |
 
 ## Ten formal measurements — fill only from new supervised runs
@@ -31,19 +31,21 @@ After Part 2, replace the four `待定` PWM values in each direction with the ex
 | ID | Direction | PWM magnitude (0–255) | Start T (°C) | Steady T (°C) | Wait (s) | Notes / current | Raw CSV + steady window (s) |
 | --- | --- | ---: | ---: | ---: | ---: | --- | --- |
 | H0 | HEAT | 0 | 待填 | 待填 | 待填 | 待填 | 待填 |
-| H1 | HEAT | 待定≈25% HEAT max | 待填 | 待填 | 待填 | 待填 | 待填 |
-| H2 | HEAT | 待定≈50% HEAT max | 待填 | 待填 | 待填 | 待填 | 待填 |
-| H3 | HEAT | 待定≈75% HEAT max | 待填 | 待填 | 待填 | 待填 | 待填 |
-| H4 | HEAT | 待定=HEAT max | 待填 | 待填 | 待填 | 待填 | 待填 |
+| H1 | HEAT | 11（约 25% × 45） | 21.89 | 28.31（暂定） | 约 210（至窗口开始） | 操作者报告约 28.3 °C 稳定；窗口 40 行均 `Safety=OK`、固件 HEAT PWM=11；稳态判据/电流待补 | `Module_4/data/module_04_heating_25pct_pwm11_20260928_102552_858326.csv`；218.12–237.97 |
+| H2 | HEAT | 23（约 50% × 45，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
+| H3 | HEAT | 34（约 75% × 45，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
+| H4 | HEAT | 45（HEAT max，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
 | C0 | COOL | 0 | 待填 | 待填 | 待填 | 待填 | 待填 |
-| C1 | COOL | 待定≈25% COOL max | 待填 | 待填 | 待填 | 待填 | 待填 |
-| C2 | COOL | 待定≈50% COOL max | 待填 | 待填 | 待填 | 待填 | 待填 |
-| C3 | COOL | 待定≈75% COOL max | 待填 | 待填 | 待填 | 待填 | 待填 |
-| C4 | COOL | 待定=COOL max | 待填 | 待填 | 待填 | 待填 | 待填 |
+| C1 | COOL | 24（25% × 96，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
+| C2 | COOL | 48（50% × 96，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
+| C3 | COOL | 72（75% × 96，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
+| C4 | COOL | 96（COOL max，计划档位） | 待填 | 待填 | 待填 | 待填 | 待填 |
 
 ## Current-session exploratory runs — not formal points
 
-- 2026-09-28 fresh CSV `Module_4/data/module_04_tec_20260928_095700_881845.csv`: operator identifies HEAT PWM 55 as an exploratory test. It begins at Arduino `11.68 s`, `23.77 °C`. At the last checked row (`84.89 s`), PWM is still 55, temperature is `40.83 °C`, `Safety=OK`, and no steady-state conclusion is recorded. Update the end time and final status after the operator changes settings or closes the run. Do not place this segment in H0–H4.
+- 2026-09-28 CSV `Module_4/data/module_04_tec_20260928_095700_881845.csv`: operator identified HEAT PWM 55 as exploratory. It ran from Arduino 11.68 s (23.77 °C) through 128.54 s (44.98 °C); the older firmware reported `Safety=SHUTDOWN` at 45.02 °C and PWM 0 at 129.10 s. Do not place this segment in H0–H4.
+- 2026-09-28 CSV `Module_4/data/module_04_heating_max_pwm45_20260928_100550_571289.csv`: exploratory HEAT maximum search; this file also contains PWM 55, 48 and 47, not only 45. Operator selected HEAT maximum PWM 45 and described a temperature near 45 °C with about 0.3 °C variation. The longer HEAT-45 segment spans Arduino 192.67–240.51 s; its recorded temperatures span 45.31–45.45 °C, with the last ten readings 45.36–45.39 °C and `Safety=OK`. Keep this as max-selection evidence, not a completed H4 formal row: start temperature, wait time, agreed steady window, and course-range eligibility still need to be resolved.
+- 2026-09-28 CSV `Module_4/data/module_04_cooling_max_pwm96_20260928_101439_464642.csv`: exploratory COOL maximum search; this file also contains several other COOL PWM levels. Operator selected COOL maximum PWM 96 and reported stability near 10 °C. Its COOL-96 segment spans Arduino 461.52–488.47 s and 9.83–10.17 °C, with `Safety=OK`. Keep this as max-selection evidence, not a completed C4 formal row until the agreed steady window, wait time, and course-range eligibility are resolved.
 
 ## Reference checklist (use the lab-day runbook for live checkboxes)
 
