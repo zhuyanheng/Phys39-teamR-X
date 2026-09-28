@@ -48,7 +48,7 @@ TEC **不能直接接到 Arduino D9/D10**；这两个针脚只给 H-bridge 逻�
 
 ## 3. 老师批准后，谨慎通电并选 Part 2 的十个 PWM 值
 
-- [ ] 先确认 GUI 仍是 `PWM 0`、温度可信、老师已批准**本次 Module 4**电源电压与电流限制。把实际设置写入[工作记录](module_04_open_loop_tec.md#settings-to-write-down-before-the-first-new-run)：电压 ________ V；限流 ________ A。Module 3 曾记 12 V，但**不能直接假定明天仍是 12 V**。
+- [x] 先确认 GUI 仍是 `PWM 0`、温度可信、老师已批准**本次 Module 4**电源电压与电流限制。把实际设置写入[工作记录](module_04_open_loop_tec.md#settings-to-write-down-before-the-first-new-run)：电压 **12** V；限流 **10** A（原始设定，记录一次即可，老师表示无需逐步记录）。
 - [ ] 按老师批准的方式开启电源；保持 GUI `PWM 0`，先确认热交换器的泵/风扇确实运行、供电电流正常，然后才允许非零 TEC PWM。电源显示电流（PWM 0）：________ A。
 - [ ] GUI 操作：先确保 `PWM command=0`；点方向按钮使其显示红色 `HEAT`；在右侧 PWM 数字框输入**老师认可的低值**（例如 10 只作为历史低 PWM 探索起点，绝非课程指定或保证安全的值），按 Enter/移开焦点使设置生效。看温度是否升高、红色 PWM 曲线及电源电流；记录值与现象：________。然后输入 `0`，确认固件输出 `0/0`。
 - [ ] 在 PWM 0 时点方向按钮切到蓝色 `COOL`（程序切换方向时也会自动归零，但仍要亲眼确认）；用老师认可的低值短测。看温度是否下降、蓝色 PWM 曲线及电源电流；记录值与现象：________。然后回 `0`。若方向不符，立即停机请老师检查接线/标定。
@@ -64,14 +64,14 @@ TEC **不能直接接到 Arduino D9/D10**；这两个针脚只给 H-bridge 逻�
 - [x] `H1`：HEAT PWM 11，[表格 H1](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)已记录 218.12–237.97 s，均值 28.31 °C。
 - [x] `H2`：HEAT PWM 23，[表格 H2](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)已记录 402.29–422.14 s，均值 34.62 °C。文件起始有 3 行 PWM 233，已标记为稳态窗口之外的异常，不删原始记录。
 - [x] `H3`：HEAT PWM 34，[表格 H3](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)已记录 519.31–539.16 s，均值 40.42 °C。
-- [x] `H4`：操作者决定采用最大档位探索 CSV 中 HEAT 45 的末约 20 s 均值 **45.37 °C**；40/40 行高于课程 45 °C 上界。原始曲线和范围例外说明均保留，未记录老师批准；见[表格 H4](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)。
+- [x] `H4`：操作者决定采用最大档位探索 CSV 中 HEAT 45 的末约 20 s 均值 **45.37 °C**；40/40 行高于课程 45 °C 上界。原始曲线和范围例外说明均保留，老师 2026-09-28 已接受；见[表格 H4](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)。
 - [x] `C0`：COOL 方向、PWM 0 基线已记录；末约 20 s 均值 **23.44 °C**，窗口 2.08–21.78 s。回温过程不在这份 CSV 内，实际回温等待时间未记录；见[表格 C0](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)。
 - [x] `C1`：COOL PWM 24，[表格 C1](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)已记录 408.97–428.82 s，均值 20.44 °C。
 - [x] `C2`：COOL PWM 48，[表格 C2](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)已记录 358.90–378.75 s，均值 16.99 °C。
 - [x] `C3`：COOL PWM 72，[表格 C3](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)已记录 336.72–356.57 s，均值 13.40 °C。
-- [x] `C4`：操作者决定采用最大档位探索 CSV 中 COOL 96 的末约 20 s 均值 **9.99 °C**；40 行中有 21 行低于课程 10 °C 下界。原始曲线和范围例外说明均保留，未记录老师批准；见[表格 C4](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)。
+- [x] `C4`：操作者决定采用最大档位探索 CSV 中 COOL 96 的末约 20 s 均值 **9.99 °C**；40 行中有 21 行低于课程 10 °C 下界。原始曲线和范围例外说明均保留，老师 2026-09-28 已接受；见[表格 C4](module_04_open_loop_tec.md#ten-formal-measurements--fill-only-from-new-supervised-runs)。
 
-**课程的测量范围仍为 10–45 °C。** 被 safety shutdown 截断、方向/PWM 与记录不符或未达到稳态的区间不能当正式点。H4/C4 是操作者明确决定采用的超范围例外；不得在分析或提交材料中将它们描述为严格处于课程范围内。若老师不接受该例外，保留原始文件并按老师意见补测。
+**课程的测量范围仍为 10–45 °C。** 被 safety shutdown 截断、方向/PWM 与记录不符或未达到稳态的区间不能当正式点。H4/C4 是操作者明确决定采用的超范围例外，老师 2026-09-28 已接受、无需补测；在分析或提交材料中仍应如实说明它们超出 10–45 °C 范围。
 
 ## 5. 离开实验台之前（不要把核对留到回家）
 
