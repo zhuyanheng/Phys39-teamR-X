@@ -15,11 +15,11 @@ Team: Ricky Huang and Xavier Zhu. Course: Phys 39, Module 4. Use this file as th
 | --- | --- | --- |
 | Lab date and operator(s) | 待填 | |
 | Arduino sketch version / commit | `Module_4/arudino/part_1/part_1.ino` — verify actual upload | |
-| Python GUI version / commit | `Module_4/python/part_5_tec_control_gui.py` — verify actual run | |
-| Board, port, baud | Arduino Uno; `/dev/cu.usbmodem101`; 9600 baud — recheck on lab computer | |
+| Python GUI version / commit | `Module_4/python/part_5_tec_control_gui.py` — fresh run started 2026-09-28; commit not recorded | Program startup output |
+| Board, port, baud | Arduino Uno (prior record); `/dev/cu.usbmodem101`; 9600 baud | Fresh GUI serial connection 2026-09-28 |
 | Power-supply voltage | 待实测 / 待记录 | |
 | Power-supply current limit | 待实测 / 待记录 | |
-| Thermistor plausibility at PWM 0 | 待填 °C | |
+| Thermistor plausibility at PWM 0 | 23.80 °C at fresh GUI startup | `Module_4/data/module_04_tec_20260928_095700_881845.csv`; PWM 0, Safety OK, firmware outputs 0/0 |
 | Maximum useful HEAT PWM | 待探索，整数 0–255 | |
 | Maximum useful COOL PWM | 待探索，整数 0–255 | |
 | Operational steady-state criterion | **待决定并写成可重复规则**；老师没有给固定秒数/阈值 | |
@@ -40,6 +40,10 @@ After Part 2, replace the four `待定` PWM values in each direction with the ex
 | C2 | COOL | 待定≈50% COOL max | 待填 | 待填 | 待填 | 待填 | 待填 |
 | C3 | COOL | 待定≈75% COOL max | 待填 | 待填 | 待填 | 待填 | 待填 |
 | C4 | COOL | 待定=COOL max | 待填 | 待填 | 待填 | 待填 | 待填 |
+
+## Current-session exploratory runs — not formal points
+
+- 2026-09-28 fresh CSV `Module_4/data/module_04_tec_20260928_095700_881845.csv`: operator identifies HEAT PWM 55 as an exploratory test. It begins at Arduino `11.68 s`, `23.77 °C`. At the last checked row (`84.89 s`), PWM is still 55, temperature is `40.83 °C`, `Safety=OK`, and no steady-state conclusion is recorded. Update the end time and final status after the operator changes settings or closes the run. Do not place this segment in H0–H4.
 
 ## Reference checklist (use the lab-day runbook for live checkboxes)
 

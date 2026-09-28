@@ -41,8 +41,8 @@ TEC **不能直接接到 Arduino D9/D10**；这两个针脚只给 H-bridge 逻�
 ## 2. Arduino + GUI 零功率开机检查（执行器电源仍 OFF）
 
 - [ ] 在 Arduino IDE 打开 `Module_4/arudino/part_1/part_1.ino`，选 **Arduino Uno** 和实际串口，先 Verify 再 Upload；不要改回临时 20/30 °C 版本。上传成功后关闭 Serial Monitor/Plotter，避免占用串口。Arduino 端口：________。
-- [ ] 在 GUI 文件顶部核对 `SERIAL_PORT` 是否等于实际端口（仓库当前为 `/dev/cu.usbmodem101`）；只有端口变了才改此项。于仓库根目录运行 `.venv/bin/python Module_4/python/part_5_tec_control_gui.py`；若明天不是同一台电脑，先确认相应 Python 环境已经安装 `requirements.txt`。GUI 启动时会发 `PWM 0`，并在 `Module_4/data/` 建立新的带时间戳 CSV。新 CSV 文件名：________。
-- [ ] 看到约每 0.5 秒更新的温度和 Arduino time；室温应合理，`Safety: OK`，command PWM=`0`。在运行 GUI 的**终端输出或新 CSV** 中核对 firmware `Heat PWM=0`、`Cool PWM=0`、`Limit=60`、`Low Limit=10`、`Operating High=45`；这些项目并非全都显示在 GUI 顶部标签。记下初始温度：________ °C。**GUI 图的 y 轴可显示到 70 °C，这不是允许操作到 70 °C。**
+- [x] 在 GUI 文件顶部核对 `SERIAL_PORT` 是否等于实际端口（仓库当前为 `/dev/cu.usbmodem101`）；只有端口变了才改此项。于仓库根目录运行 `.venv/bin/python Module_4/python/part_5_tec_control_gui.py`；若明天不是同一台电脑，先确认相应 Python 环境已经安装 `requirements.txt`。GUI 启动时会发 `PWM 0`，并在 `Module_4/data/` 建立新的带时间戳 CSV。**本次新 CSV：`Module_4/data/module_04_tec_20260928_095700_881845.csv`。**
+- [x] 看到约每 0.5 秒更新的温度和 Arduino time；室温应合理，`Safety: OK`，command PWM=`0`。在运行 GUI 的**终端输出或新 CSV** 中核对 firmware `Heat PWM=0`、`Cool PWM=0`、`Limit=60`、`Low Limit=10`、`Operating High=45`；这些项目并非全都显示在 GUI 顶部标签。**本次启动约 `23.80 °C`，`Safety OK`、固件输出 `0/0`、阈值 `60/10/45`。** **GUI 图的 y 轴可显示到 70 °C，这不是允许操作到 70 °C。**
 - [ ] 给老师看[既有 Part 1 安全证据](../../Module_4/part_1_safety_check.md)：20 °C 断电演示、恢复 60 °C、30 °C 现场演示。只有老师要求时才在断开 TEC 电源的条件下重做；不可故意加热到 60 °C。固件串口的 `0/0` 是软件报告，不等于已用仪表测到 D9/D10 为零。
 
 ## 3. 老师批准后，谨慎通电并选 Part 2 的十个 PWM 值
