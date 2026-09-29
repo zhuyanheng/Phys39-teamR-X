@@ -1,6 +1,6 @@
-# Module 4 selected steady-state data
+# Module 4 provisional selected-window data
 
-[`steady_state.csv`](steady_state.csv) is the ten-row Part 3 summary used for the Part 4 graph. Its grain is one selected steady window per direction/PWM setting (H0–H4 and C0–C4), not one raw sensor sample. Each window contains 40 raw samples over approximately 20 seconds. The timestamped, unchanged source CSVs remain in [`Module_4/data/`](../../Module_4/data/); `source_csv` and the inclusive Arduino-time window identify the exact samples without duplicating raw files here. The [working note](../../docs/module_notes/module_04_open_loop_tec.md) records the collection history and exceptions.
+[`steady_state.csv`](steady_state.csv) is the ten-row **provisional** Part 3 summary used for the preliminary Part 4 graph. Its grain is one selected window per direction/PWM setting (H0–H4 and C0–C4), not one raw sensor sample. Each window contains 40 raw samples over approximately 20 seconds. The professor's revised Part 3 rule requires waiting about three time constants and observing one further minute; a 20-second averaging window does not itself prove this. See the [protocol audit](../../docs/module_notes/module_04_open_loop_tec.md#revised-steady-state-protocol-audit) before treating these values as final. The timestamped, unchanged source CSVs remain in [`Module_4/data/`](../../Module_4/data/); `source_csv` and the inclusive Arduino-time window identify the exact samples without duplicating raw files here.
 
 The summary header is:
 

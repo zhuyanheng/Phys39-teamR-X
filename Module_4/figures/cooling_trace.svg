@@ -874,6 +874,6 @@
 <text x="450.0" y="485" text-anchor="middle" font-family="Arial" font-size="17">Arduino time (s)</text>
 <text transform="translate(26 255.0) rotate(-90)" text-anchor="middle" font-family="Arial" font-size="17">Temperature (°C)</text>
 <text x="450.0" y="513" text-anchor="middle" font-family="Arial" font-size="14">COOL</text>
-<text x="450.0" y="540" text-anchor="middle" font-family="Arial" font-size="12">PWM switch at 4.60 s; green band = selected steady interval; Temperature stopped drifting in one direction and</text>
-<text x="450.0" y="560" text-anchor="middle" font-family="Arial" font-size="12">fluctuated within a narrow band; last ~20 s averaged</text>
+<text x="450.0" y="540" text-anchor="middle" font-family="Arial" font-size="12">PWM switch at 4.60 s; green band = selected steady interval; Provisional 20-s means; revised 3tau + 1-min</text>
+<text x="450.0" y="560" text-anchor="middle" font-family="Arial" font-size="12">steady test pending</text>
 </svg>

@@ -221,6 +221,9 @@ class TecControlWindow(QMainWindow):
         plot.setLabel("bottom", "Arduino Time", units="s")
         plot.setLabel("left", "Temperature", units="C")
         plot.setXRange(0, WINDOW_DURATION_S)
+        # Keep the rolling time window, but let the temperature scale follow
+        # the visible data so small late-time drift is discernible.
+        plot.enableAutoRange(axis="y", enable=True)
 
         self.temperature_curve = plot.plot(
             [],

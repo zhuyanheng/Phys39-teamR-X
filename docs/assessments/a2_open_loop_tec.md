@@ -1,6 +1,6 @@
 # A2 — TEC Heating and Cooling Analysis (optional working draft)
 
-Ricky Huang and Xavier Zhu · Phys 39 · Module 4 · **not yet ready for submission**
+Ricky Huang and Xavier Zhu · Phys 39 · Module 4 · **working draft only; measurements require revalidation under the revised Part 3 rule**
 
 The professor's 2026-09-28 revision changed A2 from an instrument/safety note to a **1–2 page analysis PDF due Monday, 2026-10-05 at 6:00 PM**. No repository version or new Git checkpoint is required. This Markdown file is only a private drafting aid; submit `A2_Lastname_Lastname.pdf` to Moodle separately for each teammate. Keep the [ten-run lab record](../module_notes/module_04_open_loop_tec.md), raw data and code for later modules, but **do not repeat C2/C3 circuit sketches, apparatus description, safety demonstration or code documentation in the A2 PDF**.
 
@@ -14,7 +14,7 @@ Insert the [Part 4 steady-temperature graph](../../Module_4/figures/steady_tempe
 | COOL slope `m_c` | +0.1414 °C/PWM count | Signed x = −96–0; all five measured COOL points |
 | Ratio `r=m_h/abs(m_c)` | 3.5035, dimensionless | 0.4954/0.1414 using unrounded fitted slopes |
 
-The plotter prints slopes with respect to **signed x**. If instead calculating COOL's slope against its nonnegative magnitude, that number has the opposite sign; its absolute value must be used consistently in `r`. State exactly which convention and fit range you used.
+The plotter prints slopes with respect to **signed x**. Thus the assignment's ratio is `r=m_h/m_c` (both positive); the absolute-value notation above is redundant but numerically equivalent. If instead calculating COOL's slope against its nonnegative magnitude, that number has the opposite sign. State exactly which convention and fit range you used. **These fits are provisional:** the 2026-09-28 revised Part 3 requires approximately `3τ` after a step plus one additional minute of low-drift observation. The present 20-second averaging windows do not establish that rule for every point; see the [audit](../module_notes/module_04_open_loop_tec.md#revised-steady-state-protocol-audit).
 
 H4 and C4 came from maximum-search runs. Their selected windows cross the nominal course measurement boundaries, but the instructor accepted those points on 2026-09-28; the graph marks them with open circles and its caption states the exception. They are included in the displayed fits. H0/C0 are distinct raw baseline runs whose plotted temperatures coincide at signed PWM 0. The two selected 20-second window means are each 23.44 °C.
 
@@ -32,17 +32,21 @@ The full object-face TEC heat flow in the [course hardware discussion](https://s
 
 `C dT/dt = Q̇_TEC − G(T−T₀)`.
 
-At steady state `dT/dt=0` but the individual heat flows need not be zero. With positive full-on Peltier and object-face Joule heat rates `Q̇_P` and `Q̇_J`, use the assignment's signed expressions:
+At steady state `dT/dt=0` but the individual heat flows need not be zero. With positive full-on Peltier and object-face Joule heat rates `Q̇_P` and `Q̇_J`, define signed duty `d=u/255` and magnitude `D=|d|`. The revised assignment's combined expression is
 
-`Q̇_TEC,h = D(Q̇_P + Q̇_J)`; `Q̇_TEC,c = D(−Q̇_P + Q̇_J)`.
+`Q̇_TEC = d Q̇_P + |d| Q̇_J`.
+
+It becomes, branch by branch,
+
+`Q̇_TEC,h = d(Q̇_P + Q̇_J)` for `d>0`; `Q̇_TEC,c = d(Q̇_P − Q̇_J)` for `d<0`.
 
 Set `dT/dt=0`, so `G(T−T₀)=Q̇_TEC`. Substitution and division by `G` give
 
-`T_h(D)−T₀ = D(Q̇_P+Q̇_J)/G`, and `T_c(D)−T₀ = D(−Q̇_P+Q̇_J)/G`.
+`T_h(d)−T₀ = d(Q̇_P+Q̇_J)/G`, and `T_c(d)−T₀ = d(Q̇_P−Q̇_J)/G`.
 
-Thus `dT_h/dD=(Q̇_P+Q̇_J)/G` and `dT_c/dD=(−Q̇_P+Q̇_J)/G`. With signed x-coordinate `x=+255D` for HEAT and `x=−255D` for COOL, the fitted slopes are `m_h=(Q̇_P+Q̇_J)/(255G)` and `m_c=(Q̇_P−Q̇_J)/(255G)` when `Q̇_P>Q̇_J`. Both signed-x slopes are positive even though increasing COOL *magnitude* lowers temperature. Their ratio is
+Thus `dT_h/dd=(Q̇_P+Q̇_J)/G` and `dT_c/dd=(Q̇_P−Q̇_J)/G`. Because `d=u/255`, the fitted signed-PWM slopes are `m_h=(Q̇_P+Q̇_J)/(255G)` and `m_c=(Q̇_P−Q̇_J)/(255G)` when `Q̇_P>Q̇_J`. Both are positive even though increasing COOL *magnitude* lowers temperature. Their ratio is
 
-`r=m_h/|m_c|=(Q̇_P+Q̇_J)/(Q̇_P−Q̇_J)`; solving, `Q̇_J/Q̇_P=(r−1)/(r+1)`.
+`r=m_h/m_c=(Q̇_P+Q̇_J)/(Q̇_P−Q̇_J)`; solving, `Q̇_J/Q̇_P=(r−1)/(r+1)`.
 
 Check: `r=2` gives `1/3`. Using the unrounded fitted slopes gives `r=3.50345048` and **`Q̇_J/Q̇_P=0.5559`**. This is an *inference within the simplified near-room-temperature model*, not a direct calorimetric measurement of either heat rate. Repeating the fit without instructor-approved boundary points H4/C4 gives `r=3.5913` and inferred `Q̇_J/Q̇_P=0.5644`; the small change is a useful fit-range sensitivity check, not a replacement for the stated ten-point graph.
 
