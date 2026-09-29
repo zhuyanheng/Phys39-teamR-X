@@ -5,13 +5,17 @@ in the 27 C hot-side data-sheet table, as the assignment requires.
 """
 
 import csv
+import io
+import re
 from pathlib import Path
 
+from PIL import Image as PILImage, ImageDraw, ImageFont
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
+from reportlab.lib.utils import ImageReader
 from reportlab.platypus import (
     Flowable, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle,
 )
@@ -22,6 +26,7 @@ SOURCE = ROOT / "data/module_04/steady_state.csv"
 OUTPUT = ROOT / "output/pdf/A2_Huang_Zhu.pdf"
 HEAT = colors.HexColor("#C62828")
 COOL = colors.HexColor("#1565C0")
+MATH_FONT = "/System/Library/Fonts/Supplemental/STIXGeneral.otf"
 
 
 def fit(points):
@@ -95,6 +100,90 @@ class TemperatureChart(Flowable):
         c.drawString(147, 202, "dashed = fit")
 
 
+class MathFormula(Flowable):
+    """Render real math glyphs and scripts at high resolution, then embed in PDF."""
+
+    def __init__(self, expression):
+        super().__init__()
+        scale = 4
+        base = ImageFont.truetype(MATH_FONT, 12 * scale)
+        script = ImageFont.truetype(MATH_FONT, 8 * scale)
+        integral = ImageFont.truetype(MATH_FONT, 19 * scale)
+        canvas = PILImage.new("RGBA", (2800, 140), (255, 255, 255, 0))
+        draw = ImageDraw.Draw(canvas)
+        x, baseline, index = 0.0, 82, 0
+
+        def put(value, font, y):
+            nonlocal x
+            draw.text((x, y), value, font=font, fill="black", anchor="ls")
+            x += draw.textlength(value, font=font)
+
+        while index < len(expression):
+            if expression.startswith("∫_{", index):
+                match = re.match(r"∫_\{([^}]*)\}\^\{([^}]*)\}", expression[index:])
+                if match is None:
+                    raise ValueError(f"Invalid integral notation: {expression}")
+                left = x
+                put("∫", integral, baseline + 3)
+                # STIX's integral overhangs its advance width. Put the limits
+                # outside the actual glyph bounds so neither is hidden by it.
+                limit_x = left + 46
+                draw.text((limit_x, baseline + 33), match.group(1), font=script,
+                          fill="black", anchor="ls")
+                draw.text((limit_x, baseline - 31), match.group(2), font=script,
+                          fill="black", anchor="ls")
+                x = max(x, limit_x + max(draw.textlength(match.group(1), font=script),
+                                         draw.textlength(match.group(2), font=script))) + 12
+                index += len(match.group(0))
+            elif expression.startswith("_{", index) or expression.startswith("^{", index):
+                match = re.match(r"([_\^])\{([^}]*)\}", expression[index:])
+                if match is None:
+                    raise ValueError(f"Invalid math script: {expression}")
+                put(match.group(2), script, baseline + (16 if match.group(1) == "_" else -24))
+                index += len(match.group(0))
+            else:
+                stop = index + 1
+                while stop < len(expression) and not any(
+                    expression.startswith(marker, stop) for marker in ("∫_{", "_{", "^{")
+                ):
+                    stop += 1
+                put(expression[index:stop], base, baseline)
+                index = stop
+
+        visible = canvas.getbbox()
+        if visible is None:
+            raise ValueError("Empty formula")
+        canvas = canvas.crop((0, max(0, visible[1] - 5), min(2800, visible[2] + 5),
+                              min(140, visible[3] + 5)))
+        stream = io.BytesIO()
+        canvas.save(stream, format="PNG")
+        stream.seek(0)
+        self.reader = ImageReader(stream)
+        natural_width = canvas.width / scale
+        natural_height = canvas.height / scale
+        factor = min(1.0, 500 / natural_width)
+        self.image_width = natural_width * factor
+        self.image_height = natural_height * factor
+        self.width = self.image_width + 2
+        self.height = max(18, self.image_height + 3)
+
+    def draw(self):
+        self.canv.drawImage(self.reader, 0, (self.height - self.image_height) / 2,
+                            width=self.image_width, height=self.image_height, mask="auto")
+
+
+def math_pair(left, right):
+    row = Table([[MathFormula(left), MathFormula(right)]], colWidths=[263, 263])
+    row.setStyle(TableStyle([
+        ("LEFTPADDING", (0, 0), (-1, -1), 8),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+        ("TOPPADDING", (0, 0), (-1, -1), 0),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+    ]))
+    return row
+
+
 def page_number(canvas, doc):
     canvas.setFillColor(colors.white)
     canvas.rect(0, 0, letter[0], letter[1], fill=1, stroke=0)
@@ -156,9 +245,18 @@ def main():
     ]))
     story += [slope_table,
               Paragraph("PWM averaging and steady-state energy balance", section),
-              Paragraph("During one period, on-state current I flows for D times the period and zero current for the rest, where D=|u|/255. Direct integration gives &lt;I&gt;=DI and &lt;I<super>2</super>&gt;=DI<super>2</super>. In general &lt;I<super>2</super>&gt; is not &lt;I&gt;<super>2</super>=D<super>2</super>I<super>2</super>; the difference is D(1-D)I<super>2</super>. Consequently, for fixed on-state current, both Peltier transport and Joule heating scale linearly with PWM duty, consistent with the nearly linear measured branches.", body),
-              Paragraph("Let d=u/255 be signed duty and let Q<sub>P</sub> and Q<sub>J</sub> be positive full-on Peltier and object-face Joule heat rates. The reduced balance is C dT/dt = Q<sub>TEC</sub> - G(T-T<sub>0</sub>), with Q<sub>TEC</sub>=dQ<sub>P</sub>+|d|Q<sub>J</sub>. TEC conduction and other passive leaks are included once in G. At steady state the individual heat flows sum to zero: G(T-T<sub>0</sub>)=Q<sub>TEC</sub>.", body),
-              Paragraph("Thus T<sub>h</sub>-T<sub>0</sub>=d(Q<sub>P</sub>+Q<sub>J</sub>)/G and T<sub>c</sub>-T<sub>0</sub>=d(Q<sub>P</sub>-Q<sub>J</sub>)/G. Both signed-PWM slopes are positive: m<sub>h</sub>=(Q<sub>P</sub>+Q<sub>J</sub>)/(255G), m<sub>c</sub>=(Q<sub>P</sub>-Q<sub>J</sub>)/(255G). Their ratio gives Q<sub>J</sub>/Q<sub>P</sub>=(r-1)/(r+1)=" + f"{joule_peltier:.4f}." , body),
+              Paragraph("During one PWM period, the signed on-state current flows for fraction D of the period and is zero otherwise. Here D is the magnitude of signed PWM divided by 255. Evaluating the two period integrals gives:", body),
+              math_pair("⟨I⟩ = (1/τ) ∫_{0}^{τ} I(t) dt = [I(Dτ) + 0(1-D)τ]/τ = DI",
+                        "⟨I^{2}⟩ = (1/τ) ∫_{0}^{τ} I(t)^{2} dt = [I^{2}(Dτ)]/τ = DI^{2}"),
+              MathFormula("⟨I^{2}⟩ - ⟨I⟩^{2} = D(1-D)I^{2}"),
+              Paragraph("The last expression is nonzero for duty cycles strictly between zero and one. Using the square of the mean current instead of the mean squared current would incorrectly make Joule heating quadratic in duty. The measured branches are approximately linear.", body),
+              Paragraph("Let signed duty equal signed PWM divided by 255. The reduced heat balance counts TEC conduction and other passive leaks once in the effective conductance:", body),
+              math_pair("C dT/dt = Q_{TEC} - G(T-T_{0});   Q_{TEC} = dQ_{P} + |d|Q_{J}",
+                        "dT/dt = 0:   G(T-T_{0}) = Q_{TEC}"),
+              Paragraph("The Peltier term reverses between heating and cooling; the Joule term does not. Solving both branches and differentiating with respect to signed PWM gives:", body),
+              math_pair("T_{h}-T_{0}=d(Q_{P}+Q_{J})/G;   T_{c}-T_{0}=d(Q_{P}-Q_{J})/G",
+                        "m_{h}=(Q_{P}+Q_{J})/(255G);   m_{c}=(Q_{P}-Q_{J})/(255G)"),
+              MathFormula(f"r=m_{{h}}/m_{{c}};   Q_{{J}}/Q_{{P}}=(r-1)/(r+1)={joule_peltier:.4f}"),
               PageBreak(),
               Paragraph("Manufacturer comparison and interpretation", title),
               Paragraph("Laird CP14-127-045  |  hot-side temperature 27 deg C", subtitle),
@@ -168,17 +266,17 @@ def main():
 
     sheet_table = Table([
         ["Specification", "Meaning and operating condition", "Value"],
-        [Paragraph("R<sub>M</sub>", cell), "Module electrical resistance at 27 deg C hot side", "________ ohm"],
-        [Paragraph("I<sub>max</sub>", cell), "Maximum specified current at 27 deg C hot side", "________ A"],
-        [Paragraph("Q<sub>c,max</sub>", cell), "Maximum cold-side pumping at Delta T = 0", "________ W"],
-        [Paragraph("Delta T<sub>max</sub>", cell), "Maximum no-load face temperature difference", "________ deg C"],
+        [MathFormula("R_{M}"), "Module electrical resistance at 27 deg C hot side", "________ ohm"],
+        [MathFormula("I_{max}"), "Maximum specified current at 27 deg C hot side", "________ A"],
+        [MathFormula("Q_{c,max}"), "Maximum cold-side pumping at Delta T = 0", "________ W"],
+        [MathFormula("ΔT_{max}"), "Maximum no-load face temperature difference", "________ deg C"],
     ], colWidths=[104, 318, 104])
     sheet_table.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#EAF0F7")),
         ("GRID", (0, 0), (-1, -1), 0.35, colors.HexColor("#CBD5E1")),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("TOPPADDING", (0, 0), (-1, -1), 7),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
         ("FONTSIZE", (0, 0), (-1, -1), 8),
         ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
     ]))
@@ -186,11 +284,14 @@ def main():
               Spacer(1, 5),
               Paragraph("Source: Laird, <i>CP14-127-045 Thermoelectric Cooler</i>, 27 deg C hot-side specifications: https://sethfraden.github.io/Phys39F26-course/references/laird-tec-cp14-127-045.pdf", small),
               Paragraph("Maximum-current calculation", section),
-              Paragraph("At Delta T=0, passive TEC conduction vanishes. In the symmetric model, the object face receives half the total Joule heat. Therefore Q<sub>J,max</sub>=0.5 I<sub>max</sub><super>2</super> R<sub>M</sub> = __________ W; Q<sub>P,max</sub>=Q<sub>c,max</sub>+Q<sub>J,max</sub> = __________ W; and r<sub>Laird,max</sub>=(Q<sub>P,max</sub>+Q<sub>J,max</sub>)/(Q<sub>P,max</sub>-Q<sub>J,max</sub>) = 1+I<sub>max</sub><super>2</super>R<sub>M</sub>/Q<sub>c,max</sub> = __________.", body),
+              Paragraph("At zero face-temperature difference, passive TEC conduction vanishes. The symmetric model assigns half the total Joule heat to the object face:", body),
+              math_pair("Q_{J,max}=(1/2)(I_{max})^{2}R_{M}=__________ W",
+                        "Q_{P,max}=Q_{c,max}+Q_{J,max}=__________ W"),
+              MathFormula("r_{Laird,max}=1+(I_{max})^{2}R_{M}/Q_{c,max}=__________"),
               Paragraph("Comparison", section),
-              Paragraph(f"The measured ratio is {ratio:.4f}; the manufacturer's maximum-current prediction is __________. Their difference is __________. Full PWM duty means continuously applying the H-bridge drive, not necessarily I=I<sub>max</sub>. Actual current depends on the supply settings, H-bridge and wiring drops, and module resistance. PWM rather than steady DC, finite face temperature difference, temperature-dependent properties, other passive paths, and fitting slightly curved data with one slope can also affect the comparison.", body),
+              Paragraph(f"The measured ratio is {ratio:.4f}; the manufacturer's maximum-current prediction is __________. Their difference is __________. Full PWM duty means continuously applying the H-bridge drive, not necessarily reaching the specified maximum current. Actual current depends on the supply settings, H-bridge and wiring drops, and module resistance. PWM rather than steady DC, finite face temperature difference, temperature-dependent properties, other passive paths, and fitting slightly curved data with one slope can also affect the comparison.", body),
               Paragraph("Passive conduction", section),
-              Paragraph("When the block is hotter than room temperature, passive heat flows out; when colder, it flows in. The term -G(T-T<sub>0</sub>) therefore opposes both excursions. If G is approximately symmetric, conduction reduces both responses but does not by itself explain why the HEAT slope magnitude exceeds the COOL slope magnitude. Reversing current reverses Peltier transport, whereas Joule heating keeps the same sign.", body),
+              Paragraph("When the block is hotter than room temperature, passive heat flows out; when colder, it flows in. The passive-conductance term therefore opposes both excursions. If that conductance is approximately symmetric, it reduces both responses but does not by itself explain why the HEAT slope magnitude exceeds the COOL slope magnitude. Reversing current reverses Peltier transport, whereas Joule heating keeps the same sign.", body),
               Paragraph("Conclusion", section),
               Paragraph("Our open-loop measurements show an approximately linear steady-temperature response to PWM in each direction, with a larger heating susceptibility than cooling susceptibility. The fitted slope ratio is 3.50. Under the simplified near-room-temperature energy balance, that ratio corresponds to object-face Joule heating about 0.56 times the full-on Peltier heat rate. This is a model-based inference, not a direct measurement of either heat flow. Peltier transport reverses with current, while Joule heating keeps the same sign, so their effects add during heating and partly offset during cooling. Passive conduction carries heat away from a hot block and toward a cold one, opposing both departures. Manufacturer maximum-current values describe a different operating condition from our PWM-driven apparatus and should be compared on that basis.", body),
     ]
