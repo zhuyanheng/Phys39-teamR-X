@@ -2,7 +2,7 @@
 
 Used the existing Module 4 Arduino firmware (60 °C upper shutdown threshold) and Python GUI. Changed COOL PWM from 0 to 10, observed a falling temperature, then returned PWM to 0. No steady-state claim is made.
 
-Source: [GUI CSV](data/module_04_tec_20260923_114300_656698.csv).
+Source: [GUI CSV](../data/module_04_tec_20260923_114300_656698.csv).
 
 - Before command: approximately 22.35 °C, COOL, PWM 0.
 - Arduino time 288.21 s: 22.34 °C, COOL PWM 10, firmware heat/cool outputs 0/10, Safety OK.

@@ -1,9 +1,18 @@
 import csv
 import math
+import os
 import sys
 import time
 from datetime import datetime
 from pathlib import Path
+
+# Running the file with macOS /usr/bin/python3 is common from an editor, but
+# this project's GUI dependencies live in .venv. Switch before importing them.
+if __name__ == "__main__":
+    project_venv = Path(__file__).resolve().parents[2] / ".venv"
+    project_python = project_venv / "bin" / "python"
+    if project_python.is_file() and Path(sys.prefix) != project_venv:
+        os.execv(str(project_python), [str(project_python), *sys.argv])
 
 import pyqtgraph as pg
 import serial
@@ -227,32 +236,70 @@ class TecControlWindow(QMainWindow):
         self.setpoint_input.setValidator(QDoubleValidator(10.0, 45.0, 2, self))
         self.gain_input = QLineEdit("0.25")
         self.gain_input.setValidator(QDoubleValidator(0.0, 1000.0, 3, self))
+        self.setpoint_input.textEdited.connect(self.mark_p_settings_pending)
+        self.gain_input.textEdited.connect(self.mark_p_settings_pending)
+        self.setpoint_input.returnPressed.connect(self.apply_p_settings)
+        self.gain_input.returnPressed.connect(self.apply_p_settings)
+        self.apply_p_button = QPushButton("Apply setpoint / Kp")
+        self.apply_p_button.setEnabled(False)
+        self.apply_p_button.clicked.connect(self.apply_p_settings)
         self.start_p_button = QPushButton("Start P control")
         self.start_p_button.clicked.connect(self.start_p_control)
         self.stop_p_button = QPushButton("Stop: PWM 0")
         self.stop_p_button.clicked.connect(self.stop_p_control)
+        self.settings_label = QLabel("Setpoint and Kp will be applied when P control starts")
         self.error_label = QLabel("Error: -- C | Signed PWM: --")
         layout.addWidget(QLabel("Setpoint (C)"), 0, 0)
         layout.addWidget(self.setpoint_input, 0, 1)
         layout.addWidget(QLabel("Kp (PWM/C)"), 0, 2)
         layout.addWidget(self.gain_input, 0, 3)
-        layout.addWidget(self.start_p_button, 0, 4)
-        layout.addWidget(self.stop_p_button, 0, 5)
-        layout.addWidget(self.error_label, 1, 0, 1, 6)
+        layout.addWidget(self.apply_p_button, 0, 4)
+        layout.addWidget(self.start_p_button, 0, 5)
+        layout.addWidget(self.stop_p_button, 0, 6)
+        layout.addWidget(self.settings_label, 1, 0, 1, 7)
+        layout.addWidget(self.error_label, 2, 0, 1, 7)
         return group
+
+    def read_p_settings(self):
+        setpoint = float(self.setpoint_input.text())
+        gain = float(self.gain_input.text())
+        if not 10.0 <= setpoint <= 45.0 or not 0.0 <= gain <= 1000.0:
+            raise ValueError("Setpoint or gain is outside its allowed range")
+        return setpoint, gain
+
+    def require_fresh_safe_measurement(self):
+        if (self.latest_temperature_c is None
+                or self.last_measurement_at is None
+                or time.monotonic() - self.last_measurement_at > 2.0
+                or not math.isfinite(self.latest_temperature_c)
+                or not MIN_PLAUSIBLE_TEMPERATURE_C <= self.latest_temperature_c <= MAX_PLAUSIBLE_TEMPERATURE_C
+                or self.latest_safety != "OK"):
+            raise ValueError("Wait for a recent, plausible temperature and Safety: OK")
+
+    def mark_p_settings_pending(self):
+        if self.p_control_active:
+            self.settings_label.setText("Pending change: press Apply setpoint / Kp")
+
+    def apply_p_settings(self):
+        if not self.p_control_active:
+            return
+        try:
+            setpoint, gain = self.read_p_settings()
+            self.require_fresh_safe_measurement()
+        except ValueError as error:
+            QMessageBox.warning(self, "Cannot apply P settings", str(error))
+            return
+        self.p_setpoint_c = setpoint
+        self.p_gain = gain
+        self.update_p_command(self.latest_temperature_c)
+        self.settings_label.setText(
+            f"Applied: setpoint {setpoint:.2f} C, Kp {gain:.3f} PWM/C"
+        )
 
     def start_p_control(self):
         try:
-            setpoint = float(self.setpoint_input.text())
-            gain = float(self.gain_input.text())
-            if not 10.0 <= setpoint <= 45.0 or not 0.0 <= gain <= 1000.0:
-                raise ValueError("Setpoint or gain is outside its allowed range")
-            if (self.latest_temperature_c is None
-                    or self.last_measurement_at is None
-                    or time.monotonic() - self.last_measurement_at > 2.0
-                    or not MIN_PLAUSIBLE_TEMPERATURE_C <= self.latest_temperature_c <= MAX_PLAUSIBLE_TEMPERATURE_C
-                    or self.latest_safety != "OK"):
-                raise ValueError("Wait for a plausible temperature and Safety: OK")
+            setpoint, gain = self.read_p_settings()
+            self.require_fresh_safe_measurement()
         except ValueError as error:
             QMessageBox.warning(self, "Cannot start P control", str(error))
             return
@@ -263,10 +310,12 @@ class TecControlWindow(QMainWindow):
         self.direction_button.setEnabled(False)
         self.pwm_slider.setEnabled(False)
         self.pwm_input.setEnabled(False)
-        self.setpoint_input.setEnabled(False)
-        self.gain_input.setEnabled(False)
+        self.apply_p_button.setEnabled(True)
         self.start_p_button.setEnabled(False)
-        self.statusBar().showMessage("P control active; stop before changing settings")
+        self.settings_label.setText(
+            f"Applied: setpoint {setpoint:.2f} C, Kp {gain:.3f} PWM/C"
+        )
+        self.statusBar().showMessage("P control active; edit settings and press Apply")
 
     def stop_p_control(self):
         self.p_control_active = False
@@ -274,15 +323,26 @@ class TecControlWindow(QMainWindow):
         self.direction_button.setEnabled(True)
         self.pwm_slider.setEnabled(True)
         self.pwm_input.setEnabled(True)
-        self.setpoint_input.setEnabled(True)
-        self.gain_input.setEnabled(True)
+        self.apply_p_button.setEnabled(False)
         self.start_p_button.setEnabled(True)
         self.pwm_slider.blockSignals(True)
         self.pwm_slider.setValue(0)
         self.pwm_slider.blockSignals(False)
         self.pwm_input.setText("0")
         self.update_command_display()
+        self.settings_label.setText("P control stopped; settings will apply at next start")
         self.statusBar().showMessage("P control stopped; PWM 0 requested")
+
+    def update_p_command(self, temperature_c):
+        error_c, signed_pwm, command_pwm, command_heat = p_command(
+            self.p_setpoint_c, temperature_c, self.p_gain
+        )
+        self.send_command(command_pwm, command_heat)
+        self.error_label.setText(
+            f"Error: {error_c:+.2f} C | Signed PWM: {signed_pwm:+.2f} | "
+            f"Command: {command_pwm} {'HEAT' if command_heat else 'COOL'}"
+        )
+        return error_c, signed_pwm
 
     def create_measurement_group(self):
         group = QGroupBox("Arduino Measurements")
@@ -496,14 +556,7 @@ class TecControlWindow(QMainWindow):
         error_c = None
         signed_pwm = None
         if self.p_control_active:
-            error_c, signed_pwm, command_pwm, command_heat = p_command(
-                self.p_setpoint_c, temperature_c, self.p_gain
-            )
-            self.send_command(command_pwm, command_heat)
-            self.error_label.setText(
-                f"Error: {error_c:+.2f} C | Signed PWM: {signed_pwm:+.2f} | "
-                f"Command: {command_pwm} {'HEAT' if command_heat else 'COOL'}"
-            )
+            error_c, signed_pwm = self.update_p_command(temperature_c)
         else:
             self.error_label.setText("Error: -- C | Signed PWM: --")
 

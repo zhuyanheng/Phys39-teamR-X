@@ -152,7 +152,9 @@ steady-temperature-versus-signed-PWM comparison.
 
 - [Ten selected HEAT/COOL measurements](data/module_04/steady_state.csv)
 - [Raw experimental CSVs and safety-test logs](Module_4/data/)
-- [Part 1 safety-test record](Module_4/part_1_safety_check.md)
+- [Part 1 safety-test record](Module_4/check/part_1_safety_check.md)
+- [Part 1 HEAT high-current diagram](Module_4/Diagram/heating_high_current.png)
+- [Part 1 COOL high-current diagram](Module_4/Diagram/cooling_high_current.png)
 - [HEAT time trace](Module_4/figures/heating_trace.svg)
 - [COOL time trace](Module_4/figures/cooling_trace.svg)
 - [Steady temperature versus signed PWM](Module_4/figures/steady_temperature_vs_pwm.svg)
@@ -162,6 +164,8 @@ The ten-point analysis and A2 PDF are provisional. The professor's revised
 Part 3 steady-state rule requires about three step-response time constants
 followed by one additional minute of observation. See the Module 4 lab record
 for the measurements that need review or longer recordings before submission.
+The two Part 1 diagrams are historical illustrations, not verified as-built
+wiring records; inspect the actual thermal-switch path with the instructor.
 
 ## Hardware
 
