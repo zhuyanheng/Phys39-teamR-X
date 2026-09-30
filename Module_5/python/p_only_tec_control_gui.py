@@ -147,7 +147,7 @@ class TecControlWindow(QMainWindow):
 
     def open_csv_file(self):
         script_directory = Path(__file__).resolve().parent
-        data_directory = script_directory.parents[1] / "data" / "module_05"
+        data_directory = script_directory.parent / "data"
         data_directory.mkdir(parents=True, exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
         self.csv_path = data_directory / f"{CSV_FILENAME}_{timestamp}.csv"
@@ -307,7 +307,8 @@ class TecControlWindow(QMainWindow):
         self.p_gain = gain
         self.send_command(0, self.heat_mode)
         self.p_control_active = True
-        self.direction_button.setEnabled(False)
+        # Keep the colored direction indicator visible, but prevent manual toggles.
+        self.direction_button.setCheckable(False)
         self.pwm_slider.setEnabled(False)
         self.pwm_input.setEnabled(False)
         self.apply_p_button.setEnabled(True)
@@ -320,7 +321,11 @@ class TecControlWindow(QMainWindow):
     def stop_p_control(self):
         self.p_control_active = False
         self.send_command(0, self.heat_mode)
-        self.direction_button.setEnabled(True)
+        self.direction_button.blockSignals(True)
+        self.direction_button.setCheckable(True)
+        self.direction_button.setChecked(self.heat_mode)
+        self.direction_button.blockSignals(False)
+        self.update_direction_button_style()
         self.pwm_slider.setEnabled(True)
         self.pwm_input.setEnabled(True)
         self.apply_p_button.setEnabled(False)
@@ -338,6 +343,11 @@ class TecControlWindow(QMainWindow):
             self.p_setpoint_c, temperature_c, self.p_gain
         )
         self.send_command(command_pwm, command_heat)
+        self.heat_mode = command_heat
+        self.update_direction_button_style()
+        self.command_label.setText(
+            f"P command: PWM {command_pwm}, {'HEAT' if command_heat else 'COOL'}"
+        )
         self.error_label.setText(
             f"Error: {error_c:+.2f} C | Signed PWM: {signed_pwm:+.2f} | "
             f"Command: {command_pwm} {'HEAT' if command_heat else 'COOL'}"
