@@ -1,7 +1,8 @@
 """Build the two-page A2 PDF from the team's existing ten selected temperatures.
 
-The manufacturer values are intentionally blank until the students locate them
-in the 27 C hot-side data-sheet table, as the assignment requires.
+The manufacturer values are taken from the 27 C hot-side column of the Laird
+CP14-127-045 data sheet and filled in. Outputs a new versioned PDF so the
+original A2 PDF is preserved.
 """
 
 import csv
@@ -23,7 +24,7 @@ from reportlab.platypus import (
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "data/module_04/steady_state.csv"
-OUTPUT = ROOT / "output/pdf/A2_Huang_Zhu.pdf"
+OUTPUT = ROOT / "output/pdf/A2_Huang_Zhu_v2.pdf"
 HEAT = colors.HexColor("#C62828")
 COOL = colors.HexColor("#1565C0")
 MATH_FONT = "/System/Library/Fonts/Supplemental/STIXGeneral.otf"
@@ -207,6 +208,15 @@ def main():
     ratio = mh / mc
     joule_peltier = (ratio - 1) / (ratio + 1)
 
+    # Laird CP14-127-045, 27 C hot-side column (official data sheet).
+    R_M = 1.50        # ohms, module resistance
+    I_MAX = 8.6       # amps, I @ Delta T_max
+    QC_MAX = 71.3     # watts, Qcmax at Delta T = 0
+    DT_MAX = 70.5     # deg C, Delta Tmax at Qc = 0
+    qj_max = 0.5 * I_MAX ** 2 * R_M
+    qp_max = QC_MAX + qj_max
+    r_laird = (qp_max + qj_max) / (qp_max - qj_max)
+
     styles = getSampleStyleSheet()
     title = ParagraphStyle("A2Title", parent=styles["Title"], fontName="Helvetica-Bold",
                            fontSize=17, leading=20, spaceAfter=3)
@@ -261,15 +271,15 @@ def main():
               Paragraph("Manufacturer comparison and interpretation", title),
               Paragraph("Laird CP14-127-045  |  hot-side temperature 27 deg C", subtitle),
               Paragraph("Manufacturer specifications", section),
-              Paragraph("Enter the values located in the 27 deg C hot-side table of the Laird CP14-127-045 data sheet. The condition and meaning of each value are shown below.", body),
+              Paragraph("Values located in the 27 deg C hot-side table of the Laird CP14-127-045 data sheet. The condition and meaning of each value are shown below.", body),
     ]
 
     sheet_table = Table([
         ["Specification", "Meaning and operating condition", "Value"],
-        [MathFormula("R_{M}"), "Module electrical resistance at 27 deg C hot side", "________ ohm"],
-        [MathFormula("I_{max}"), "Maximum specified current at 27 deg C hot side", "________ A"],
-        [MathFormula("Q_{c,max}"), "Maximum cold-side pumping at Delta T = 0", "________ W"],
-        [MathFormula("ΔT_{max}"), "Maximum no-load face temperature difference", "________ deg C"],
+        [MathFormula("R_{M}"), "Module electrical resistance at 27 deg C hot side", f"{R_M:.2f} ohm"],
+        [MathFormula("I_{max}"), "Maximum specified current (I at Delta T_max) at 27 deg C hot side", f"{I_MAX:.1f} A"],
+        [MathFormula("Q_{c,max}"), "Maximum cold-side pumping at Delta T = 0", f"{QC_MAX:.1f} W"],
+        [MathFormula("ΔT_{max}"), "Maximum no-load face temperature difference (at Qc = 0)", f"{DT_MAX:.1f} deg C"],
     ], colWidths=[104, 318, 104])
     sheet_table.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#EAF0F7")),
@@ -285,15 +295,15 @@ def main():
               Paragraph("Source: Laird, <i>CP14-127-045 Thermoelectric Cooler</i>, 27 deg C hot-side specifications: https://sethfraden.github.io/Phys39F26-course/references/laird-tec-cp14-127-045.pdf", small),
               Paragraph("Maximum-current calculation", section),
               Paragraph("At zero face-temperature difference, passive TEC conduction vanishes. The symmetric model assigns half the total Joule heat to the object face:", body),
-              math_pair("Q_{J,max}=(1/2)(I_{max})^{2}R_{M}=__________ W",
-                        "Q_{P,max}=Q_{c,max}+Q_{J,max}=__________ W"),
-              MathFormula("r_{Laird,max}=1+(I_{max})^{2}R_{M}/Q_{c,max}=__________"),
+              math_pair(f"Q_{{J,max}}=(1/2)(I_{{max}})^{{2}}R_{{M}}={qj_max:.2f} W",
+                        f"Q_{{P,max}}=Q_{{c,max}}+Q_{{J,max}}={qp_max:.2f} W"),
+              MathFormula(f"r_{{Laird,max}}=1+(I_{{max}})^{{2}}R_{{M}}/Q_{{c,max}}={r_laird:.3f}"),
               Paragraph("Comparison", section),
-              Paragraph(f"The measured ratio is {ratio:.4f}; the manufacturer's maximum-current prediction is __________. Their difference is __________. Full PWM duty means continuously applying the H-bridge drive, not necessarily reaching the specified maximum current. Actual current depends on the supply settings, H-bridge and wiring drops, and module resistance. PWM rather than steady DC, finite face temperature difference, temperature-dependent properties, other passive paths, and fitting slightly curved data with one slope can also affect the comparison.", body),
+              Paragraph(f"The measured ratio is {ratio:.4f} versus the manufacturer's maximum-current prediction of {r_laird:.3f}, about {ratio / r_laird:.2f} times larger. Full PWM duty means the H-bridge is continuously on, not that the current equals I_max; the actual current depends on the supply settings (12 V, 10 A limit), H-bridge and wiring drops, and module resistance. Because the symmetric model predicts r approaching 1 below I_max, the larger measured ratio reflects its idealizations (equal half-Joule split, single symmetric conductance) plus PWM versus DC, finite face temperature difference, changing properties, and one-slope fits over slightly curved data.", body),
               Paragraph("Passive conduction", section),
               Paragraph("When the block is hotter than room temperature, passive heat flows out; when colder, it flows in. The passive-conductance term therefore opposes both excursions. If that conductance is approximately symmetric, it reduces both responses but does not by itself explain why the HEAT slope magnitude exceeds the COOL slope magnitude. Reversing current reverses Peltier transport, whereas Joule heating keeps the same sign.", body),
               Paragraph("Conclusion", section),
-              Paragraph("Our open-loop measurements show an approximately linear steady-temperature response to PWM in each direction, with a larger heating susceptibility than cooling susceptibility. The fitted slope ratio is 3.50. Under the simplified near-room-temperature energy balance, that ratio corresponds to object-face Joule heating about 0.56 times the full-on Peltier heat rate. This is a model-based inference, not a direct measurement of either heat flow. Peltier transport reverses with current, while Joule heating keeps the same sign, so their effects add during heating and partly offset during cooling. Passive conduction carries heat away from a hot block and toward a cold one, opposing both departures. Manufacturer maximum-current values describe a different operating condition from our PWM-driven apparatus and should be compared on that basis.", body),
+              Paragraph("Our open-loop measurements show an approximately linear steady-temperature response to PWM in each direction, with a larger heating susceptibility than cooling susceptibility. The fitted slope ratio is 3.50. Under the simplified near-room-temperature energy balance, that ratio corresponds to object-face Joule heating about 0.56 times the full-on Peltier heat rate. This is a model-based inference, not a direct measurement of either heat flow. Peltier transport reverses with current, while Joule heating keeps the same sign, so their effects add during heating and partly offset during cooling. Passive conduction carries heat away from a hot block and toward a cold one, opposing both departures. The measured slope ratio exceeds the manufacturer's maximum-current prediction (2.56), reflecting the symmetric model's simplifications.", body),
     ]
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)

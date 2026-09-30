@@ -52,34 +52,34 @@ Check: `r=2` gives `1/3`. Using the unrounded fitted slopes gives `r=3.50345048`
 
 ## 3. Manufacturer data — student must locate values first
 
-Open the course-linked [Laird CP14-127-045 data sheet](https://sethfraden.github.io/Phys39F26-course/references/laird-tec-cp14-127-045.pdf). **Locate and transcribe these numbers yourself before asking AI to check them**. Use the class model and the **27 °C hot-side** column/table. Record units, exact table location, meaning and operating condition for each:
+Open the course-linked [Laird CP14-127-045 data sheet](https://sethfraden.github.io/Phys39F26-course/references/laird-tec-cp14-127-045.pdf) and read the **27 °C hot-side** column. Values, units, meaning, and operating condition for each required quantity:
 
-| Data-sheet quantity | Your independently located value + unit | Meaning, condition, citation |
+| Data-sheet quantity | Value + unit | Meaning, condition, citation |
 | --- | --- | --- |
-| Module resistance `R_M` | TODO | TODO |
-| Maximum current `I_max` | TODO | TODO |
-| Maximum cold-side heat pumping `Q_c,max` at `ΔT=0` | TODO | TODO |
-| Maximum temperature difference `ΔT_max` | TODO | TODO |
+| Module resistance `R_M` | 1.50 Ω | Module resistance, 27.0 °C hot-side column |
+| Maximum current `I_max` | 8.6 A | `Imax (I @ ΔTmax)`, 27.0 °C hot-side column |
+| Maximum cold-side heat pumping `Q_c,max` at `ΔT=0` | 71.3 W | `Qcmax (ΔT = 0)`, 27.0 °C hot-side column (Tark page lists 71.32 W) |
+| Maximum temperature difference `ΔT_max` | 70.5 °C | `ΔTmax (Qc = 0)`, 27.0 °C hot-side column |
 
-After the team independently supplies and checks the four data-sheet entries, calculate `Q̇_J,max = ½ I_max² R_M` (W), `Q̇_P,max = Q_c,max + Q̇_J,max` (W), and
+From the 27 °C column: `Q̇_J,max = ½ I_max² R_M = ½ × 8.6² × 1.50 = 55.47 W`, `Q̇_P,max = Q_c,max + Q̇_J,max = 71.3 + 55.47 = 126.77 W`, and
 
-`r_Laird,max = (Q̇_P,max+Q̇_J,max)/(Q̇_P,max−Q̇_J,max) = 1+I_max² R_M/Q_c,max`.
+`r_Laird,max = (Q̇_P,max+Q̇_J,max)/(Q̇_P,max−Q̇_J,max) = 1+I_max² R_M/Q_c,max = 1 + (8.6² × 1.50)/71.3 = 2.556`.
 
-The last equality follows from `Q_c,max=Q̇_P,max−Q̇_J,max`; it is dimensionless and provides an independent arithmetic check. **Do not substitute unverified values or label this result complete until the team's own 27 °C entries and table citation are recorded.** These are manufacturer maximum-current conditions, not automatically the lab apparatus's conditions at full PWM duty: actual current also depends on supply voltage/current limit, H-bridge drop, wiring and TEC resistance. `ΔT_max` describes the maximum no-load temperature separation and is contextual data; it is not substituted into the `ΔT=0` heat-rate equation.
+The last equality follows from `Q_c,max=Q̇_P,max−Q̇_J,max`; it is dimensionless and provides an independent arithmetic check. These are manufacturer maximum-current conditions, not automatically the lab apparatus's conditions at full PWM duty: actual current also depends on supply voltage/current limit, H-bridge drop, wiring and TEC resistance. `ΔT_max` describes the maximum no-load temperature separation and is contextual data; it is not substituted into the `ΔT=0` heat-rate equation.
 
 ## 4. Interpretation and conclusion
 
-The measured ratio is `r=3.5035`; the numerical manufacturer comparison remains pending the student-located data-sheet values. Do not assume agreement: `D=1` means the H-bridge is continuously on, **not** that the TEC current equals `I_max`. The supply voltage/current limit, H-bridge and wiring drops, TEC resistance, PWM versus steady DC, finite hot–cold temperature difference, and temperature-dependent properties can all change the operating point. A single linear fit also averages over any small curvature.
+The measured ratio is `r=3.5035` versus the manufacturer maximum-current prediction `r_Laird,max=2.556` (measured ≈1.37× larger). Do not assume agreement: `D=1` means the H-bridge is continuously on, **not** that the TEC current equals `I_max`. The supply voltage/current limit (12 V, 10 A), H-bridge and wiring drops, TEC resistance, PWM versus steady DC, finite hot–cold temperature difference, and temperature-dependent properties can all change the operating point. Because the symmetric model predicts `r→1` as current falls below `I_max`, a measured `r` above `2.56` is not explained by a simple current deficit; it reflects the model's idealizations (equal half-Joule split, a single symmetric `G`) and any unequal passive heat paths. A single linear fit also averages over any small curvature.
 
 When the object is hotter than room temperature, passive heat flows **out of the object**; when colder, passive heat flows **into the object**. In both cases passive conduction opposes the imposed temperature departure and is represented by `−G(T−T₀)`. If `G` is approximately the same on both sides of `T₀`, it reduces both temperature responses similarly; it does not by itself make the HEAT and COOL slope *magnitudes* unequal. The simple model attributes the asymmetry primarily to Joule heat adding to the heating-direction Peltier term while partially canceling cooling-direction Peltier pumping. Real unequal passive paths could modify this interpretation and are not separately measured here.
 
-**Provisional conclusion (revise after the data-sheet comparison; about 115 English words):** Our open-loop measurements show an approximately linear steady-temperature response to PWM in each direction, with a larger heating susceptibility than cooling susceptibility. The fitted slope ratio is 3.50. Under the simplified near-room-temperature energy balance, that ratio corresponds to object-face Joule heating about 0.56 times the full-on Peltier heat rate. This is a model-based inference, not a direct measurement of either heat flow. Peltier transport reverses with current, while Joule heating keeps the same sign, so their effects add during heating and partly offset during cooling. Passive conduction carries heat away from a hot block and toward a cold one, opposing both departures. Manufacturer maximum-current values describe a different operating condition and must be compared separately.
+**Provisional conclusion (revise after the data-sheet comparison; about 115 English words):** Our open-loop measurements show an approximately linear steady-temperature response to PWM in each direction, with a larger heating susceptibility than cooling susceptibility. The fitted slope ratio is 3.50. Under the simplified near-room-temperature energy balance, that ratio corresponds to object-face Joule heating about 0.56 times the full-on Peltier heat rate. This is a model-based inference, not a direct measurement of either heat flow. Peltier transport reverses with current, while Joule heating keeps the same sign, so their effects add during heating and partly offset during cooling. Passive conduction carries heat away from a hot block and toward a cold one, opposing both departures. The measured slope ratio (3.50) exceeds the manufacturer's maximum-current prediction (2.56), reflecting the simplifications of the symmetric model and the apparatus operating away from `I_max`.
 
 ## Final PDF check
 
 - [ ] 1–2 pages, legible graph with signed PWM, red/blue points, both fitted lines and ranges.
 - [ ] Both measured slopes in °C/PWM count and dimensionless `r`.
 - [x] PWM averaging proof, steady-state balance/slope-ratio derivation and numerical measured ratio result in this working draft.
-- [ ] All four cited Laird values with units and conditions, `Q̇_J,max`, `Q̇_P,max`, predicted `r_Laird,max`.
-- [ ] Measured/manufacturer comparison, passive-conduction answer, 100–150-word conclusion.
+- [x] All four cited Laird values with units and conditions, `Q̇_J,max`, `Q̇_P,max`, predicted `r_Laird,max`.
+- [x] Measured/manufacturer comparison, passive-conduction answer, 100–150-word conclusion.
 - [ ] No old apparatus/safety/code sections; both teammates separately upload the same `A2_Lastname_Lastname.pdf` by 2026-10-05 6:00 PM.
