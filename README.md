@@ -127,6 +127,42 @@ seconds, the active PWM command, and direction (`1` = heat, `0` = cool).
 - [Part 7 Cooling](Module_3/figures/part_7_cooling.jpg)
 - [Part 7 Heating](Module_3/figures/part_7_heating.jpg)
 
+## Module 4: Open-Loop TEC Heating and Cooling
+
+This repository contains the Arduino and Python programs, raw temperature
+records, figures, and A2 analysis for Module 4: software temperature shutdown,
+open-loop heating and cooling at five PWM levels per direction, and a
+steady-temperature-versus-signed-PWM comparison.
+
+- [Module 4 documentation](Module_4/README.md)
+- [Module 4 selected-data documentation](data/module_04/README.md)
+- [Module 4 lab record and steady-state protocol audit](docs/module_notes/module_04_open_loop_tec.md)
+
+### Module 4 Arduino Sketch
+
+- [Part 1: TEC Control and Temperature Safety](Module_4/arudino/part_1/part_1.ino)
+
+### Module 4 Python Scripts
+
+- [TEC Control GUI and CSV Logger](Module_4/python/part_5_tec_control_gui.py)
+- [Part 4 Data Validation and Figures](Module_4/python/plot_a2.py)
+- [A2 PDF Builder](Module_4/python/build_a2_existing_data.py)
+
+### Module 4 Data and Figures
+
+- [Ten selected HEAT/COOL measurements](data/module_04/steady_state.csv)
+- [Raw experimental CSVs and safety-test logs](Module_4/data/)
+- [Part 1 safety-test record](Module_4/part_1_safety_check.md)
+- [HEAT time trace](Module_4/figures/heating_trace.svg)
+- [COOL time trace](Module_4/figures/cooling_trace.svg)
+- [Steady temperature versus signed PWM](Module_4/figures/steady_temperature_vs_pwm.svg)
+- [A2 two-page PDF candidate](Module_4/A2_Huang_Zhu.pdf)
+
+The ten-point analysis and A2 PDF are provisional. The professor's revised
+Part 3 steady-state rule requires about three step-response time constants
+followed by one additional minute of observation. See the Module 4 lab record
+for the measurements that need review or longer recordings before submission.
+
 ## Hardware
 
 - Arduino Uno
@@ -167,6 +203,8 @@ The team uploaded and tested the Module 1, Module 2, and Module 3 programs on an
 - Module 3 Part 5 built a functional Python GUI with synchronized slider and text box.
 - Module 3 Part 6 enabled serial-command control of PWM and direction from Python.
 - Module 3 Part 7 completed integrated manual-control testing with real-time plotting and CSV logging.
+- Module 4 software-safety tests recorded temperature-limit shutdown and continuing serial reports; the Part 1 record distinguishes firmware reports from independent electrical measurements.
+- Module 4 collected ten selected HEAT/COOL PWM points and generated provisional time traces, fitted slopes, and an A2 PDF. Compliance with the revised steady-state rule remains to be established.
 
 ## How to Run a Sketch
 
@@ -177,6 +215,7 @@ The team uploaded and tested the Module 1, Module 2, and Module 3 programs on an
 5. Click **Upload**.
 6. Open Serial Monitor or Serial Plotter at `9600 baud` when required.
 7. For Module 3 Python scripts, ensure the Serial Monitor is closed before running the GUI.
+8. For the Module 4 GUI, also set its `SERIAL_PORT` to the connected Arduino and close Serial Monitor before launch; see the [Module 4 documentation](Module_4/README.md).
 
 ### Running the Module 3 Python Programs
 
@@ -210,7 +249,12 @@ the C3 oral explanation are the measurement conversion, serial format, GUI
 synchronization, command path, and plot updates; each team member must be able
 to explain them without relying on the AI transcript.
 
-The remaining uncertainty is the final fail-safe behavior for invalid
-temperature, broken serial communication, and over-temperature conditions.
-Those behaviors require documented hardware testing before they can be marked
-complete.
+For Module 4, AI also assisted with CSV validation, plotting, and the draft A2
+analysis. The selected steady-state windows and physical checks remain subject
+to the team's and instructor's review; generated figures are not a substitute
+for the revised measurement protocol.
+
+The Module 4 temperature-limit shutdown has serial-log evidence, but actual
+output-pin voltage, disconnected-sensor behavior, and broken-serial behavior
+have not been independently verified in the cited test record. The ten-point
+steady-state analysis also requires review against the revised Part 3 rule.

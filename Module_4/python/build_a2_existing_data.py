@@ -1,8 +1,8 @@
 """Build the two-page A2 PDF from the team's existing ten selected temperatures.
 
 The manufacturer values are taken from the 27 C hot-side column of the Laird
-CP14-127-045 data sheet and filled in. Outputs the Module 4 submission PDF;
-earlier drafts are retained separately in Module_4/archive/a2_drafts/.
+CP14-127-045 data sheet and filled in. Outputs the Module 4 submission PDF.
+Earlier drafts can be recovered from Git history if needed.
 """
 
 import csv
