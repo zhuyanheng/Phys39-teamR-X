@@ -1,0 +1,6 @@
+source_csv,setpoint_C,kp_pwm_per_C,ambient_reference_C,ambient_source_csv,chi_heat_C_per_pwm,final_window_start_s,final_window_end_s,final_window_samples,mean_temperature_C,mean_final_pwm,measured_droop_C,predicted_droop_C,measured_minus_predicted_C
+module_05_p_control_20260930_110723_090850.csv,30.0,0.25,23.1885,module_05_p_control_20260930_110723_090850.csv,0.4954,259.51,279.3,40,24.0,1.7,6.0,6.0609,-0.0609
+module_05_p_control_20260930_111214_398504.csv,30.0,0.5,23.1885,module_05_p_control_20260930_110723_090850.csv,0.4954,370.62,390.41,40,24.77,3.0,5.23,5.4593,-0.2293
+module_05_p_control_20260930_112131_559827.csv,30.0,1.0,23.1885,module_05_p_control_20260930_110723_090850.csv,0.4954,301.6,321.38,40,25.4977,4.275,4.5023,4.555,-0.0527
+module_05_p_control_20260930_112429_084527.csv,30.0,2.0,23.1885,module_05_p_control_20260930_110723_090850.csv,0.4954,268.19,287.97,40,26.7695,6.0,3.2305,3.4215,-0.191
+module_05_p_control_20260930_112955_213490.csv,30.0,4.0,23.1885,module_05_p_control_20260930_110723_090850.csv,0.4954,258.28,278.06,40,27.74,9.0,2.26,2.2845,-0.0245
