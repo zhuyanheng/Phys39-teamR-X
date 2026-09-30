@@ -1,8 +1,8 @@
 """Build the two-page A2 PDF from the team's existing ten selected temperatures.
 
 The manufacturer values are taken from the 27 C hot-side column of the Laird
-CP14-127-045 data sheet and filled in. Outputs a new versioned PDF so the
-original A2 PDF is preserved.
+CP14-127-045 data sheet and filled in. Outputs the Module 4 submission PDF;
+earlier drafts are retained separately in Module_4/archive/a2_drafts/.
 """
 
 import csv
@@ -24,7 +24,7 @@ from reportlab.platypus import (
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "data/module_04/steady_state.csv"
-OUTPUT = ROOT / "output/pdf/A2_Huang_Zhu_v2.pdf"
+OUTPUT = ROOT / "Module_4/A2_Huang_Zhu.pdf"
 HEAT = colors.HexColor("#C62828")
 COOL = colors.HexColor("#1565C0")
 MATH_FONT = "/System/Library/Fonts/Supplemental/STIXGeneral.otf"
