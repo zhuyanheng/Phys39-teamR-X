@@ -78,7 +78,7 @@ The measured droop decreases with gain and is 0.02–0.23 °C below the predicti
 
 - Reproducible calculation: `Module_5/python/plot_droop_comparison.py`
 - Calculated values and provenance: `Module_5/data/part_04_droop_comparison.csv`
-- Comparison plot: `docs/figures/module_05/part_04_measured_vs_predicted_droop.svg` (also `.png`)
+- Comparison plot: `Module_5/figures/part_04_measured_vs_predicted_droop.svg` (also `.png`)
 
 ## Part 5: high-gain response, preliminary assessment
 

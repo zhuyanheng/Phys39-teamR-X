@@ -195,7 +195,7 @@ Module 4 susceptibility model.
 
 - [Raw P-control CSVs](Module_5/data/)
 - [Part 4 droop summary](Module_5/data/part_04_droop_comparison.csv)
-- [Measured vs predicted droop](docs/figures/module_05/part_04_measured_vs_predicted_droop.svg)
+- [Measured vs predicted droop](Module_5/figures/part_04_measured_vs_predicted_droop.svg)
 - [Low-gain strip-chart trace (Kp = 0.25)](Module_5/figures/low_gain_kp0.25_trace.svg)
 - [High-gain strip-chart trace (Kp = 4)](Module_5/figures/high_gain_kp4_trace.svg)
 

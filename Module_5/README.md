@@ -22,7 +22,7 @@ This directory contains the Arduino and Python control programs, raw temperature
 
 ## Figures
 
-- [Measured vs predicted droop](../docs/figures/module_05/part_04_measured_vs_predicted_droop.svg) (also [PNG](../docs/figures/module_05/part_04_measured_vs_predicted_droop.png)).
+- [Measured vs predicted droop](figures/part_04_measured_vs_predicted_droop.svg) (also [PNG](figures/part_04_measured_vs_predicted_droop.png)).
 - [Low-gain strip-chart trace (Kp = 0.25)](figures/low_gain_kp0.25_trace.svg)
 - [High-gain strip-chart trace (Kp = 4)](figures/high_gain_kp4_trace.svg)
 

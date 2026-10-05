@@ -15,7 +15,7 @@ from PySide6.QtWidgets import QApplication
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "Module_5" / "data"
-FIGURE_DIR = ROOT / "docs" / "figures" / "module_05"
+FIGURE_DIR = ROOT / "Module_5" / "figures"
 SETPOINT_C = 30.0
 # Provisional Module 4 heating slope; update after the Module 4 calibration audit.
 CHI_HEAT_C_PER_PWM = 0.4954
