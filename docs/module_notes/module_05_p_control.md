@@ -97,3 +97,57 @@ The highest recorded gain in the 2026-09-30 sweep is `Kp = 4 PWM/°C` (`L ≈ 1.
 At the lowest gain, `Kp = 0.25 PWM/°C`, the temperature rises gradually and ends near 24.00 °C; its final-20-s PWM alternates between 1 and 2. Thus the highest recorded gain uses a larger PWM command and has smaller droop, with no observed saturation. These runs start at different block temperatures, so their absolute rise times are not a controlled settling-time comparison.
 
 The assignment says to continue only through the **instructor-approved** gain range. If `Kp=4` is the approved maximum, report it as the highest tested gain and state that sustained oscillations did not appear. If the instructor has approved higher gains, collect additional runs under supervision, stopping and setting PWM to zero if oscillations grow or the run becomes unsafe. Approval of a higher range is not documented in the present records.
+
+## Part 6: interpretation — one-lump model, loop gain, and transients
+
+### Steady droop from the one-lump balance
+
+Treat the TEC, block, and thermistor as one object at uniform temperature `T` with thermal capacity `C = dU/dT ≈ m c_p` (J/°C). Under P-only control the energy balance is
+
+`C dT/dt = P_u Kp (T_set − T) − H (T − T_amb)`,
+
+where `P_u` is the TEC power per signed PWM count (W/PWM count) and `H` is the lump's total passive conductance to the room (W/°C). Setting `dT/dt = 0` gives
+
+`H (T − T_amb) = P_u Kp (T_set − T)`.
+
+Collecting the `T` terms and solving,
+
+`T_set − T = H (T_set − T_amb) / (H + P_u Kp) = (T_set − T_amb) / (1 + Kp P_u/H)`.
+
+This is identical to Part 4's `e_pred = (T_set − T_amb)/(1 + Kp χ_h)` provided `χ_h = P_u/H`. The agreement requires the one-lump idealizations: one uniform temperature, linear passive heat loss (`H` constant), instantaneous measurement and actuation, no PWM saturation, and `P_u` approximately constant over the tested PWM/temperature range.
+
+### Susceptibility is `P_u/H`, not a thermal capacity
+
+Open the loop (`u` an independent input). At steady state `0 = P_u u − H(T − T_amb)`, so `T − T_amb = (P_u/H) u` and
+
+`χ_{T,u} = dT/du = P_u/H`,  units `(W/PWM)/(W/°C) = °C/PWM`.
+
+- `P_u` doubles → `χ` doubles (same `H`).
+- `H` doubles → `χ` halves.
+- `C` alone doubles → `χ` and the steady droop are unchanged; only the closed-loop time constant `τ_cl = C/(H + P_u Kp)` doubles.
+
+So `C` controls how fast the lump moves but does not enter the steady droop, which is a balance between actuator strength per count and passive coupling. This is why the Part 4 susceptibility model (which has no `C`) predicts droop correctly.
+
+### Loop gain and fractional droop
+
+With `χ_h = 0.4954 °C/PWM` and `T_set − T_amb = 6.8115 °C`, the loop gain is `L = Kp χ_h` and the predicted fractional droop is `1/(1+L)`. Measured fractional droop is `(measured droop)/(T_set − T_amb)`.
+
+| Kp (PWM/°C) | L | 1/(1+L) | measured fractional droop | measured − model |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.25 | 0.124 | 0.890 | 0.881 | −0.009 |
+| 0.5 | 0.248 | 0.801 | 0.768 | −0.034 |
+| 1 | 0.495 | 0.669 | 0.661 | −0.008 |
+| 2 | 0.991 | 0.502 | 0.474 | −0.028 |
+| 4 | 1.982 | 0.335 | 0.332 | −0.004 |
+
+The measured fractional droop tracks `1/(1+L)` closely, falling from about 0.88 at `L≈0.12` to about 0.33 at `L≈2.0`. Only `Kp=0.25` and `Kp=0.5` (`L≈0.12`, `0.25`) genuinely qualify as small gain (`L≪1`); `Kp=1` has `L≈0.5`, and `Kp=2` (`L≈1`) and `Kp=4` (`L≈2`) are comparable and strong feedback. The measured droop is consistently a little below the prediction (the block settles slightly closer to the setpoint), consistent with `χ_h = P_u/H` being a local approximation: the Module 4 heating slope spans 0–45 PWM, whereas these runs use only about 2–19 PWM near 24–28 °C, so `P_u` and `H` are not exactly constant. A heating setpoint uses `χ_h = 0.4954`; a cooling setpoint would instead use the cooling magnitude `0.1414 °C/PWM`, so this comparison is specific to the heating branch. Different starting temperatures also prevent a controlled settling-time comparison.
+
+### First-order (transient) expectation
+
+The algebraic model gives only the steady droop. For time dependence, define `θ = T − T_ss`. The one-lump P-only model gives
+
+`dθ/dt = −θ/τ_cl`,  `τ_cl = C/(H + P_u Kp)`,
+
+so `θ(t) = θ(0) e^(−t/τ_cl)`: the response approaches steady state exponentially and cannot sustain an oscillation. The 2026-09-30 sweep shows no sustained oscillation up to `Kp=4` (`L≈1.98`), consistent with this picture. Had oscillation appeared, the one-lump model would be missing physics or implementation detail — candidates are thermal delay between the TEC and thermistor, a second thermal mass, discrete sampling, sensor noise, or PWM saturation.
+
+This derivation is preserved for the A3 feedback-and-model memo.
