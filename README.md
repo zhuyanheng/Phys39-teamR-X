@@ -167,6 +167,43 @@ for the measurements that need review or longer recordings before submission.
 The two Part 1 diagrams are historical illustrations, not verified as-built
 wiring records; inspect the actual thermal-switch path with the instructor.
 
+## Module 5: P-Only Temperature Control
+
+This repository contains the Arduino and Python programs, raw temperature
+records, figures, and analysis for Module 5: closing the TEC feedback loop with
+proportional control. Python computes the signed PWM `u = Kp (T_set − T)`,
+sends the direction and magnitude to the Arduino, and the Arduino keeps its
+independent 60 °C shutdown. The team verified the feedback signs, swept five
+gains at a 30 °C heating setpoint, and compared measured droop with the
+Module 4 susceptibility model.
+
+- [Module 5 documentation](Module_5/README.md)
+- [Module 5 lab note and Part 6 derivation](docs/module_notes/module_05_p_control.md)
+
+### Module 5 Arduino Sketch
+
+- [P-only TEC sketch](Module_5/arduino/p_only_tec/p_only_tec.ino)
+
+### Module 5 Python Scripts
+
+- [P-control GUI and CSV logger](Module_5/python/p_only_tec_control_gui.py)
+- [Part 4 droop comparison](Module_5/python/plot_droop_comparison.py)
+- [Strip-chart traces](Module_5/python/plot_strip_chart_traces.py)
+- [Controller tests](Module_5/python/test_p_only_tec_control_gui.py)
+
+### Module 5 Data and Figures
+
+- [Raw P-control CSVs](Module_5/data/)
+- [Part 4 droop summary](Module_5/data/part_04_droop_comparison.csv)
+- [Measured vs predicted droop](docs/figures/module_05/part_04_measured_vs_predicted_droop.svg)
+- [Low-gain strip-chart trace (Kp = 0.25)](Module_5/figures/low_gain_kp0.25_trace.svg)
+- [High-gain strip-chart trace (Kp = 4)](Module_5/figures/high_gain_kp4_trace.svg)
+
+The gain sweep and droop analysis use the provisional Module 4 heating slope
+(`χ_h = 0.4954 °C/PWM`) pending the Module 4 steady-state revalidation. The
+instructor-approved gain range and the Part 2 cooling target are not yet
+recorded in the note.
+
 ## Hardware
 
 - Arduino Uno
@@ -209,6 +246,7 @@ The team uploaded and tested the Module 1, Module 2, and Module 3 programs on an
 - Module 3 Part 7 completed integrated manual-control testing with real-time plotting and CSV logging.
 - Module 4 software-safety tests recorded temperature-limit shutdown and continuing serial reports; the Part 1 record distinguishes firmware reports from independent electrical measurements.
 - Module 4 collected ten selected HEAT/COOL PWM points and generated provisional time traces, fitted slopes, and an A2 PDF. Compliance with the revised steady-state rule remains to be established.
+- Module 5 verified the low-gain HEAT and COOL feedback signs, swept five proportional gains at a 30 °C setpoint, measured droop versus gain, and compared measured droop with the Module 4 susceptibility prediction (no oscillation up to Kp = 4).
 
 ## How to Run a Sketch
 
@@ -262,3 +300,10 @@ The Module 4 temperature-limit shutdown has serial-log evidence, but actual
 output-pin voltage, disconnected-sensor behavior, and broken-serial behavior
 have not been independently verified in the cited test record. The ten-point
 steady-state analysis also requires review against the revised Part 3 rule.
+
+For Module 5, AI helped draft and debug the P-control GUI, the droop
+comparison and strip-chart plotting scripts, and the Part 6 one-lump
+derivation. The measured droop, gain values, and the provisional Module 4
+heating slope used in the prediction remain subject to the team's and
+instructor's review; generated figures do not replace the physical runs or the
+instructor-approved gain range.
