@@ -1,3 +1,3 @@
 # Module 5 figures
 
-Save measured and predicted droop plots and representative low- and high-gain traces here after data collection.
+Measured and predicted droop plots and representative low- and high-gain traces for Module 5 are saved here. See `../../module_notes/module_05_p_control.md` for source CSVs, calculations, and limitations.

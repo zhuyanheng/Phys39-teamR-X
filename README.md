@@ -196,13 +196,13 @@ Module 4 susceptibility model.
 - [Raw P-control CSVs](Module_5/data/)
 - [Part 4 droop summary](Module_5/data/part_04_droop_comparison.csv)
 - [Measured vs predicted droop](docs/figures/module_05/part_04_measured_vs_predicted_droop.svg)
-- [Low-gain strip-chart trace (Kp = 0.25)](Module_5/figures/low_gain_kp0.25_trace.svg)
-- [High-gain strip-chart trace (Kp = 4)](Module_5/figures/high_gain_kp4_trace.svg)
+- [Low-gain strip-chart trace (Kp = 0.25)](docs/figures/module_05/low_gain_kp0.25_trace.svg)
+- [High-gain strip-chart trace (Kp = 4)](docs/figures/module_05/high_gain_kp4_trace.svg)
 
-The gain sweep and droop analysis use the provisional Module 4 heating slope
-(`χ_h = 0.4954 °C/PWM`) pending the Module 4 steady-state revalidation. The
-instructor-approved gain range and the Part 2 cooling target are not yet
-recorded in the note.
+The team selected `Kp = 0.25–4 PWM/°C` and accepts the Module 5 comparison
+using the provisional Module 4 heating slope (`χ_h = 0.4954 °C/PWM`). The
+underlying Module 4 steady-state limitation remains documented. Instructor
+approval for the gain range and the Part 2 cooling target is not recorded.
 
 ## Hardware
 

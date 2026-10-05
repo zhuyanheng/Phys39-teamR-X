@@ -16,6 +16,8 @@
 - [x] Start with PWM 0 and confirm both firmware outputs report 0 (`module_05_p_control_20260930_105823_730888.csv`, 0.56–11.16 s; firmware reports 0/0 and `Safety=OK`).
 - [x] Low-gain HEAT and COOL feedback signs (Part 2); see the raw-data assessment below. Stop if temperature moves the wrong way in any future run.
 
+Operator update, 2026-10-05: the team selected `Kp = 0.25–4 PWM/°C` as the Module 5 test range. The operator reports the original power-supply output setup as **12 V, 10 A, 120 W**. This reports the setup values; it does not independently verify the current-limit setting during each run, measured TEC current, instructor approval, wiring, or the uploaded firmware version. The team considers the existing Module 5 temperature records and provisional susceptibility sufficient for the Module 5 comparison; the Module 4 steady-state caveat remains part of the interpretation.
+
 The initial implementation checks above were software-only; the subsequent physical observations are recorded below.
 
 ## Part 2: low-gain sign test, 2026-09-30
@@ -32,7 +34,7 @@ The earlier record, `module_05_p_control_20260930_104014_764248.csv`, shows the 
 
 ## Part 3: original droop-versus-gain plan
 
-Use one heating setpoint of 30 °C and a fresh PWM-0 ambient baseline before the gain sweep. With the current 23.283 °C baseline and provisional heating susceptibility `χ_h = 0.4954 °C/PWM`, the estimated open-loop PWM needed for the 6.717 °C change is `P_required ≈ 6.717/0.4954 = 13.56`. For each candidate, `P0 = Kp × 6.717`; recalculate if the actual ambient baseline changes. The following is a **candidate range requiring instructor approval before powered runs**, not recorded measurements:
+Use one heating setpoint of 30 °C and a fresh PWM-0 ambient baseline before the gain sweep. With the earlier 23.283 °C baseline and provisional heating susceptibility `χ_h = 0.4954 °C/PWM`, the estimated open-loop PWM needed for the 6.717 °C change is `P_required ≈ 6.717/0.4954 = 13.56`. For each candidate, `P0 = Kp × 6.717`; recalculate if the actual ambient baseline changes. The following was the **pre-run candidate calculation** for the range the team ultimately selected. Instructor approval before the powered sweep is not documented:
 
 | Candidate Kp (PWM/°C) | Predicted initial P0 (PWM) | Estimated loop gain L=Kpχ_h | Relative to P_required |
 | ---: | ---: | ---: | --- |
@@ -56,7 +58,7 @@ The five new runs used a 30 °C heating setpoint and separate P-control starts. 
 | 2 | 26.7695 | 3.2305 | 6.000 | `module_05_p_control_20260930_112429_084527.csv` |
 | 4 | 27.7400 | 2.2600 | 9.000 | `module_05_p_control_20260930_112955_213490.csv` |
 
-The last-20-s temperature change was about 0.01–0.02 °C per run. That supports using these windows for a preliminary comparison; a longer documented steady-state criterion would be needed to establish true equilibrium. Instructor approval for the gain range is not recorded in these files.
+The last-20-s temperature change was about 0.01–0.02 °C per run. The team accepts these windows for the Module 5 comparison. A longer documented steady-state criterion would be needed to establish true equilibrium. The operator confirmed `Kp=0.25–4` as the team's selected range on 2026-10-05; instructor approval is not recorded in these files.
 
 ## Part 4: predicted versus measured droop
 
@@ -79,6 +81,7 @@ The measured droop decreases with gain and is 0.02–0.23 °C below the predicti
 - Reproducible calculation: `Module_5/python/plot_droop_comparison.py`
 - Calculated values and provenance: `Module_5/data/part_04_droop_comparison.csv`
 - Comparison plot: `docs/figures/module_05/part_04_measured_vs_predicted_droop.svg` (also `.png`)
+- Representative strip charts: `docs/figures/module_05/low_gain_kp0.25_trace.svg` and `docs/figures/module_05/high_gain_kp4_trace.svg`
 
 ## Part 5: high-gain response, preliminary assessment
 
@@ -96,7 +99,7 @@ The highest recorded gain in the 2026-09-30 sweep is `Kp = 4 PWM/°C` (`L ≈ 1.
 
 At the lowest gain, `Kp = 0.25 PWM/°C`, the temperature rises gradually and ends near 24.00 °C; its final-20-s PWM alternates between 1 and 2. Thus the highest recorded gain uses a larger PWM command and has smaller droop, with no observed saturation. These runs start at different block temperatures, so their absolute rise times are not a controlled settling-time comparison.
 
-The assignment says to continue only through the **instructor-approved** gain range. If `Kp=4` is the approved maximum, report it as the highest tested gain and state that sustained oscillations did not appear. If the instructor has approved higher gains, collect additional runs under supervision, stopping and setting PWM to zero if oscillations grow or the run becomes unsafe. Approval of a higher range is not documented in the present records.
+The team selected `Kp=4` as the top of its range, so it is the highest tested gain; sustained oscillations did not appear. The assignment calls for instructor approval of the range, but that approval is not documented in the present records. Any additional powered runs would need a separately approved range and supervision.
 
 ## Part 6: interpretation — one-lump model, loop gain, and transients
 

@@ -18,13 +18,13 @@ This directory contains the Arduino and Python control programs, raw temperature
 
 - [Raw P-control CSVs](data/) preserve every 2026-09-30 run, including the low-gain sign test and the five-gain droop sweep. Each file records time, temperature, commanded PWM, direction, safety state, the P-active flag, setpoint, and gain.
 - [Part 4 droop summary](data/part_04_droop_comparison.csv) lists measured and predicted droop per gain and the source CSV for each point.
-- [Module 5 lab note](../docs/module_notes/module_05_p_control.md) contains the Part 2 sign test, the Part 3 gain-sweep table, the Part 4 droop comparison, the Part 5 high-gain assessment, and the Part 6 one-lump derivation. The comparison uses the provisional Module 4 heating slope `χ_h = 0.4954 °C/PWM`, pending the Module 4 steady-state revalidation; instructor approval for the gain range and the 15 °C cooling target is not yet recorded.
+- [Module 5 lab note](../docs/module_notes/module_05_p_control.md) contains the Part 2 sign test, the selected Part 3 gain range and sweep table, the Part 4 droop comparison, the Part 5 high-gain assessment, and the Part 6 one-lump derivation. The team accepts the comparison using the provisional Module 4 heating slope `χ_h = 0.4954 °C/PWM` for Module 5; its underlying Module 4 steady-state limitation remains documented. Instructor approval for the gain range and the 15 °C cooling target is not recorded.
 
 ## Figures
 
 - [Measured vs predicted droop](../docs/figures/module_05/part_04_measured_vs_predicted_droop.svg) (also [PNG](../docs/figures/module_05/part_04_measured_vs_predicted_droop.png)).
-- [Low-gain strip-chart trace (Kp = 0.25)](figures/low_gain_kp0.25_trace.svg)
-- [High-gain strip-chart trace (Kp = 4)](figures/high_gain_kp4_trace.svg)
+- [Low-gain strip-chart trace (Kp = 0.25)](../docs/figures/module_05/low_gain_kp0.25_trace.svg)
+- [High-gain strip-chart trace (Kp = 4)](../docs/figures/module_05/high_gain_kp4_trace.svg)
 
 ## Running the Programs
 

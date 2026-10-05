@@ -3,7 +3,7 @@
 Each figure shows measured temperature versus time with the setpoint as a
 reference line (left axis) and the commanded PWM magnitude versus time (right
 axis), matching the live GUI strip chart. Pure-stdlib SVG output; no GUI or
-third-party packages are required. Outputs go to Module_5/figures/.
+third-party packages are required. Outputs go to docs/figures/module_05/.
 """
 
 import csv
@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "Module_5" / "data"
-FIGURE_DIR = ROOT / "Module_5" / "figures"
+FIGURE_DIR = ROOT / "docs" / "figures" / "module_05"
 
 RUNS = {
     "low_gain_kp0.25": "module_05_p_control_20260930_110723_090850.csv",
