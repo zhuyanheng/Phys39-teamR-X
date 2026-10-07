@@ -102,7 +102,7 @@ The chosen integer levels are 0/11/23/34/45 for HEAT and 0/24/48/72/96 for COOL.
 
 ### D. Analysis and A2 handoff (Parts 4–6; after class)
 
-- [x] Create the **provisional** ten-row [`steady_state.csv`](../../data/module_04/steady_state.csv) with source-file paths and 20-second windows; retain the selected raw time series unchanged in `Module_4/data/`. Mark H4/C4 as instructor-approved course-range exceptions. Revalidate rows against the revised Part 3 rule.
+- [x] Create the **provisional** ten-row [`steady_state.csv`](../../Module_4/data/steady_state.csv) with source-file paths and 20-second windows; retain the selected raw time series unchanged in `Module_4/data/`. Mark H4/C4 as instructor-approved course-range exceptions. Revalidate rows against the revised Part 3 rule.
 - [ ] Inspect the generated heating trace, cooling trace, and red/blue steady-T-vs-**signed PWM** [figures](../../Module_4/figures/) visually before placing the main graph in A2. Files and axis labels/fits exist; this visual-review step is still open.
 - [x] Calculate **provisional** HEAT and COOL χ_T from stated signed-PWM ranges: +0.4954 and +0.1414 °C/PWM count; `r=m_h/m_c=3.5035`. Recalculate after Part 3 revalidation or repeats.
 - [x] In the [A2 analysis draft](../assessments/a2_open_loop_tec.md), calculate the measured slopes/ratio, derive PWM current averages and the steady-state slope relation, infer `Q̇_J/Q̇_P=0.5559` within the simplified model, and explain passive conduction. Draft a 100–150-word conclusion.

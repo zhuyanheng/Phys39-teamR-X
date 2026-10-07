@@ -322,7 +322,7 @@ def create_figures(summary, raw_cache, output_dir, criterion, fit_ranges):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("summary", type=Path, help="Completed data/module_04/steady_state.csv")
+    parser.add_argument("summary", type=Path, help="Completed Module_4/data/steady_state.csv")
     parser.add_argument("--criterion", required=True, help="The actual recorded steady-state rule")
     parser.add_argument("--heat-fit", type=int, nargs=2, metavar=("MIN", "MAX"), required=True,
                         help="HEAT PWM magnitude range used for its linear fit")

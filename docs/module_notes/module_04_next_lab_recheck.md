@@ -18,7 +18,7 @@ This list implements the [current Part 3 instructions](https://sethfraden.github
 
 ## Once measurements are accepted
 
-- [ ] Update only changed rows in [`steady_state.csv`](../../data/module_04/steady_state.csv), noting which raw file and averaging window now support each final value.
+- [ ] Update only changed rows in [`steady_state.csv`](../../Module_4/data/steady_state.csv), noting which raw file and averaging window now support each final value.
 - [ ] Regenerate the [three figures](../../Module_4/figures/) with a caption that states the *actual* accepted 3τ-plus-minute criterion. Refit slopes, ratio, and inferred `Q̇_J/Q̇_P`; update the [A2 draft](../assessments/a2_open_loop_tec.md) and [C4 answers](../assessments/c4_module_04_oral_prep.md) if numbers change.
 - [ ] Each student independently finds the four values in the **27 °C hot-side** Laird table before asking AI to verify them. This is intentionally deferred; the A2 manufacturer comparison cannot be completed until then.
 - [ ] Produce and inspect a 1–2-page `A2_Lastname_Lastname.pdf` only after the measured data and Laird values are complete. Each teammate uploads it separately before Monday, October 5, 6:00 PM.

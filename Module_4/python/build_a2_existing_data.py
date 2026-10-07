@@ -23,7 +23,7 @@ from reportlab.platypus import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "data/module_04/steady_state.csv"
+SOURCE = ROOT / "Module_4" / "data" / "steady_state.csv"
 OUTPUT = ROOT / "Module_4/A2_Huang_Zhu.pdf"
 HEAT = colors.HexColor("#C62828")
 COOL = colors.HexColor("#1565C0")

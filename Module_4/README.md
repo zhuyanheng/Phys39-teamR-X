@@ -16,7 +16,7 @@ This directory contains the Arduino and Python control programs, raw temperature
 ## Experimental Data and Notes
 
 - [Raw GUI CSVs and safety-test serial logs](data/) are preserved, including exploratory runs that are **not** ten-point calibration measurements.
-- [Ten selected measurements](../data/module_04/steady_state.csv) identify each direction, PWM, temperature, source CSV, and averaging window. See the [data documentation](../data/module_04/README.md) for column definitions and limitations.
+- [Ten selected measurements](data/steady_state.csv) identify each direction, PWM, temperature, source CSV, and averaging window. See the [Module 4 lab record](../docs/module_notes/module_04_open_loop_tec.md) for column definitions and limitations.
 - [Part 1 software safety-test record](check/part_1_safety_check.md) links the shutdown and recovery evidence.
 - [Low-PWM cooling-direction check](check/cooling_direction_test.md) documents the direction test, not a steady-state point.
 - [Module 4 lab record](../docs/module_notes/module_04_open_loop_tec.md) contains the ten-point table and the revised-protocol audit. H0, H1, H4, C0, and C4 need longer or new records; the other five points need review against the one-minute noise criterion.

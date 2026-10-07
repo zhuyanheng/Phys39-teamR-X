@@ -135,7 +135,7 @@ open-loop heating and cooling at five PWM levels per direction, and a
 steady-temperature-versus-signed-PWM comparison.
 
 - [Module 4 documentation](Module_4/README.md)
-- [Module 4 selected-data documentation](data/module_04/README.md)
+- [Module 4 selected measurements](Module_4/data/steady_state.csv)
 - [Module 4 lab record and steady-state protocol audit](docs/module_notes/module_04_open_loop_tec.md)
 
 ### Module 4 Arduino Sketch
@@ -150,7 +150,7 @@ steady-temperature-versus-signed-PWM comparison.
 
 ### Module 4 Data and Figures
 
-- [Ten selected HEAT/COOL measurements](data/module_04/steady_state.csv)
+- [Ten selected HEAT/COOL measurements](Module_4/data/steady_state.csv)
 - [Raw experimental CSVs and safety-test logs](Module_4/data/)
 - [Part 1 safety-test record](Module_4/check/part_1_safety_check.md)
 - [Part 1 HEAT high-current diagram](Module_4/Diagram/heating_high_current.png)
