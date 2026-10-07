@@ -21,11 +21,11 @@ SETPOINT_C = 30.0
 CHI_HEAT_C_PER_PWM = 0.4954
 FINAL_WINDOW_S = 20.0
 RUNS = {
-    0.25: "module_05_p_control_20260930_110723_090850.csv",
-    0.5: "module_05_p_control_20260930_111214_398504.csv",
-    1.0: "module_05_p_control_20260930_112131_559827.csv",
-    2.0: "module_05_p_control_20260930_112429_084527.csv",
-    4.0: "module_05_p_control_20260930_112955_213490.csv",
+    0.25: "20260930_110723_droop_kp0p25.csv",
+    0.5: "20260930_111214_droop_kp0p5.csv",
+    1.0: "20260930_112131_droop_kp1.csv",
+    2.0: "20260930_112429_droop_kp2.csv",
+    4.0: "20260930_112955_droop_kp4.csv",
 }
 
 

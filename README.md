@@ -158,7 +158,7 @@ steady-temperature-versus-signed-PWM comparison.
 - [HEAT time trace](Module_4/figures/part_4_heating_trace.png)
 - [COOL time trace](Module_4/figures/part_4_cooling_trace.png)
 - [Steady temperature versus signed PWM](Module_4/figures/part_4_steady_temperature_vs_pwm.png)
-- [A2 two-page PDF candidate](Module_4/A2_Huang_Zhu.pdf)
+- A2 two-page PDF candidate: not present in this checkout; see the Module 4 analysis files above.
 
 The ten-point analysis and A2 PDF are provisional. The professor's revised
 Part 3 steady-state rule requires about three step-response time constants
@@ -176,6 +176,8 @@ sends the direction and magnitude to the Arduino, and the Arduino keeps its
 independent 60 °C shutdown. The team verified the feedback signs, swept five
 gains at a 30 °C heating setpoint, and compared measured droop with the
 Module 4 susceptibility model.
+Three later October 7 trials tested higher gains; the fixed `Kp=250` run
+overshot and oscillated around 30 °C after cooling near 20 °C.
 
 - [Module 5 documentation](Module_5/README.md)
 - [Module 5 lab note and Part 6 derivation](docs/module_notes/module_05_p_control.md)
@@ -189,15 +191,20 @@ Module 4 susceptibility model.
 - [P-control GUI and CSV logger](Module_5/python/p_only_tec_control_gui.py)
 - [Part 4 droop comparison](Module_5/python/plot_droop_comparison.py)
 - [Strip-chart traces](Module_5/python/plot_strip_chart_traces.py)
+- [Kp=250 oscillation plotting script](Module_5/python/plot_kp250_oscillation.py)
 - [Controller tests](Module_5/python/test_p_only_tec_control_gui.py)
 
 ### Module 5 Data and Figures
 
-- [Raw P-control CSVs](Module_5/data/)
+- [Module 5 raw-data index](Module_5/data/README.md)
+- [October 7 Kp=32 short trial](Module_5/data/20261007_104314_kp32_short_of_30c.csv)
+- [October 7 mixed-gain exploration](Module_5/data/20261007_104346_mixed_kp_setpoint_exploration.csv)
+- [October 7 Kp=250 oscillation CSV](Module_5/data/20261007_105005_kp250_20to30c_oscillation.csv)
 - [Part 4 droop summary](Module_5/data/part_04_droop_comparison.csv)
 - [Measured vs predicted droop](docs/figures/module_05/part_04_measured_vs_predicted_droop.png)
 - [Low-gain strip-chart trace (Kp = 0.25)](docs/figures/module_05/low_gain_kp0.25_trace.png)
 - [High-gain strip-chart trace (Kp = 4)](docs/figures/module_05/high_gain_kp4_trace.png)
+- [Kp=250 oscillation: temperature and signed PWM](docs/figures/module_05/kp250_20to30c_oscillation.png)
 
 The team selected `Kp = 0.25–4 PWM/°C` and accepts the Module 5 comparison
 using the provisional Module 4 heating slope (`χ_h = 0.4954 °C/PWM`). The
@@ -274,7 +281,7 @@ The team uploaded and tested the Module 1, Module 2, and Module 3 programs on an
 - Module 3 Part 7 completed integrated manual-control testing with real-time plotting and CSV logging.
 - Module 4 software-safety tests recorded temperature-limit shutdown and continuing serial reports; the Part 1 record distinguishes firmware reports from independent electrical measurements.
 - Module 4 collected ten selected HEAT/COOL PWM points and generated provisional time traces, fitted slopes, and an A2 PDF. Compliance with the revised steady-state rule remains to be established.
-- Module 5 verified the low-gain HEAT and COOL feedback signs, swept five proportional gains at a 30 °C setpoint, measured droop versus gain, and compared measured droop with the Module 4 susceptibility prediction (no oscillation up to Kp = 4).
+- Module 5 verified the low-gain HEAT and COOL feedback signs, swept five proportional gains at a 30 °C setpoint, measured droop versus gain, and compared measured droop with the Module 4 susceptibility prediction (no oscillation up to Kp = 4 in the September sweep). An October 7 exploratory run at Kp = 250 overshot the setpoint and showed repeated oscillation.
 
 ## How to Run a Sketch
 

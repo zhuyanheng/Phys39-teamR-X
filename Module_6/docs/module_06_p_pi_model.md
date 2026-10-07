@@ -171,7 +171,7 @@ The sole eigenvalue is \(\lambda=-(H+P_uK_p)/C\), real and negative for positive
 
 ![Measured and simulated P transient](../figures/05_p_transient.png)
 
-The Kp=2 transient starts from the first P-active measurement, with the same measured starting temperature for its simulation. Firmware PWM is delayed relative to the newly computed Python command and is integer-rounded; v3 applies a continuous-valued command. This explains why the two PWM traces should not match sample by sample. The existing record says no oscillation was observed through Kp=4. Do not infer an instability threshold or oscillation frequency from these stable runs; the current Module 5 onset-evidence requirement remains incomplete.
+The Kp=2 transient starts from the first P-active measurement, with the same measured starting temperature for its simulation. Firmware PWM is delayed relative to the newly computed Python command and is integer-rounded; v3 applies a continuous-valued command. This explains why the two PWM traces should not match sample by sample. The September sweep shows no oscillation through Kp=4. A separate October 7 [Kp=250 run](../../Module_5/data/20261007_105005_kp250_20to30c_oscillation.csv) does show repeated oscillation after a 20.90→30 °C command, with period about 6.89 s and frequent PWM saturation ([plot](../../docs/figures/module_05/kp250_20to30c_oscillation.png)). The onset threshold is not established because the initial conditions and tested gains differ; the simple unsaturated one-lump model does not reproduce this high-gain behavior.
 
 ## Part 7: matched simulated P/PI comparison
 
@@ -225,14 +225,14 @@ From the repository root:
 
 The first analysis command produces all numerical tables and seven PNG/SVG figures using the official v3 computation core. The GUI command is separate; no screenshot of a GUI experiment is claimed. A companion executed notebook is `Module_6/python/analysis/module_06_analysis.ipynb`. Numerical validation is recorded in [`numerical_checks.csv`](../data/numerical_checks.csv). Simulation CSVs preserve solver outputs at 0.5 s export cadence, with solver dt=0.1 s; `StepResult` reports post-step temperature alongside the command used over the preceding Euler step.
 
-This local checkpoint has not yet been committed or pushed. Before submission, commit the completed evidence, push it, and replace this status with a verified GitHub commit permalink. The draft [A3 memo](a3_feedback_model.md) remains incomplete until physical P/PI and required onset evidence are supplied.
+This local checkpoint has not yet been committed or pushed. Before submission, commit the completed evidence, push it, and replace this status with a verified GitHub commit permalink. The draft [A3 memo](a3_feedback_model.md) remains incomplete until matched physical P/PI evidence and an adequate interpretation of the October 7 high-gain record are supplied.
 
 ## What the team still needs to do
 
 - Review/extend Module 4 calibration where required by the existing steady-state audit.
 - Explain the derivation and the selected parameters without relying on the AI transcript.
 - Prepare and review the physical PI controller with the instructor; collect matched P/PI evidence and tune gains.
-- Obtain instructor-approved Module 5 instability/onset evidence or document an accepted limitation; no threshold is inferred here.
+- Review the October 7 `Kp=250` oscillation evidence with the instructor; the approved gain range and onset threshold are not documented or established here.
 - Insert physical results, verify the Git checkpoint, and produce `A3_Huang_Zhu.pdf`. Each teammate separately uploads the team PDF to Moodle by Wednesday, October 21, 2026, 6:00 PM.
 
 AI assisted with data checks, numerical modeling, plotting and drafting. The team remains responsible for validating experimental provenance, physically testing the controller and explaining the analysis.

@@ -13,7 +13,7 @@
 ## Still to verify on the physical apparatus
 
 - [ ] Instructor-approved wiring, current limit, live sensor reading, and firmware version.
-- [x] Start with PWM 0 and confirm both firmware outputs report 0 (`module_05_p_control_20260930_105823_730888.csv`, 0.56–11.16 s; firmware reports 0/0 and `Safety=OK`).
+- [x] Start with PWM 0 and confirm both firmware outputs report 0 (`20260930_105823_sign_test_heat_cool_confirmed.csv`, 0.56–11.16 s; firmware reports 0/0 and `Safety=OK`).
 - [x] Low-gain HEAT and COOL feedback signs (Part 2); see the raw-data assessment below. Stop if temperature moves the wrong way in any future run.
 
 Operator update, 2026-10-05: the team selected `Kp = 0.25–4 PWM/°C` as the Module 5 test range. The operator reports the original power-supply output setup as **12 V, 10 A, 120 W**. This reports the setup values; it does not independently verify the current-limit setting during each run, measured TEC current, instructor approval, wiring, or the uploaded firmware version. The team considers the existing Module 5 temperature records and provisional susceptibility sufficient for the Module 5 comparison; the Module 4 steady-state caveat remains part of the interpretation.
@@ -22,7 +22,7 @@ The initial implementation checks above were software-only; the subsequent physi
 
 ## Part 2: low-gain sign test, 2026-09-30
 
-Primary raw record: `Module_5/data/module_05_p_control_20260930_105823_730888.csv`. All 432 serial rows report `Safety=OK`. The first 22 PWM-0 samples average 23.283 °C (range 23.26–23.30 °C). The provisional Module 4 slopes are 0.4954 °C/PWM for heating and 0.1414 °C/PWM in cooling magnitude, so at `Kp=0.5 PWM/°C` the estimated loop gains are about 0.248 and 0.071, respectively; the slopes still need Module 4 steady-state revalidation.
+Primary raw record: `Module_5/data/20260930_105823_sign_test_heat_cool_confirmed.csv`. All 432 serial rows report `Safety=OK`. The first 22 PWM-0 samples average 23.283 °C (range 23.26–23.30 °C). The provisional Module 4 slopes are 0.4954 °C/PWM for heating and 0.1414 °C/PWM in cooling magnitude, so at `Kp=0.5 PWM/°C` the estimated loop gains are about 0.248 and 0.071, respectively; the slopes still need Module 4 steady-state revalidation.
 
 | Segment | Setpoint, Kp | Firmware direction/PWM | Temperature observation | Assessment |
 | --- | --- | --- | --- | --- |
@@ -30,7 +30,7 @@ Primary raw record: `Module_5/data/module_05_p_control_20260930_105823_730888.cs
 | PWM 0, 60.27–72.91 s | — | Both outputs 0 | 24.56 → 24.28 °C | The block cooled naturally while above ambient. |
 | Cooling, 73.92–218.94 s | 15 °C, 0.5 PWM/°C | COOL, PWM 4–5 | 24.26 → 22.95 °C | Negative-error command and active cooling supported: 140 samples from 148.43 s onward were below the 23.26 °C minimum of the initial PWM-0 baseline; the final 20 samples averaged 22.961 °C. |
 
-The earlier record, `module_05_p_control_20260930_104014_764248.csv`, shows the same command directions but did not establish active cooling below ambient. The new run supplies that missing evidence. The 15 °C target remains farther below ambient than the assignment's “slightly below room temperature” instruction; instructor approval for that choice is not recorded here. **Part 2 physical direction result: both HEAT and COOL supported.** Confirm the cooling-setpoint choice with the instructor if strict adherence to “slightly below” is required.
+The earlier record, `20260930_104014_sign_test_preliminary.csv`, shows the same command directions but did not establish active cooling below ambient. The new run supplies that missing evidence. The 15 °C target remains farther below ambient than the assignment's “slightly below room temperature” instruction; instructor approval for that choice is not recorded here. **Part 2 physical direction result: both HEAT and COOL supported.** Confirm the cooling-setpoint choice with the instructor if strict adherence to “slightly below” is required.
 
 ## Part 3: original droop-versus-gain plan
 
@@ -52,11 +52,11 @@ The five new runs used a 30 °C heating setpoint and separate P-control starts. 
 
 | Kp (PWM/°C) | Last-20-s mean T (°C) | Measured droop (°C) | Last-20-s mean PWM | Raw CSV |
 | ---: | ---: | ---: | ---: | --- |
-| 0.25 | 24.0000 | 6.0000 | 1.700 | `module_05_p_control_20260930_110723_090850.csv` |
-| 0.5 | 24.7700 | 5.2300 | 3.000 | `module_05_p_control_20260930_111214_398504.csv` |
-| 1 | 25.4977 | 4.5023 | 4.275 | `module_05_p_control_20260930_112131_559827.csv` |
-| 2 | 26.7695 | 3.2305 | 6.000 | `module_05_p_control_20260930_112429_084527.csv` |
-| 4 | 27.7400 | 2.2600 | 9.000 | `module_05_p_control_20260930_112955_213490.csv` |
+| 0.25 | 24.0000 | 6.0000 | 1.700 | `20260930_110723_droop_kp0p25.csv` |
+| 0.5 | 24.7700 | 5.2300 | 3.000 | `20260930_111214_droop_kp0p5.csv` |
+| 1 | 25.4977 | 4.5023 | 4.275 | `20260930_112131_droop_kp1.csv` |
+| 2 | 26.7695 | 3.2305 | 6.000 | `20260930_112429_droop_kp2.csv` |
+| 4 | 27.7400 | 2.2600 | 9.000 | `20260930_112955_droop_kp4.csv` |
 
 The last-20-s temperature change was about 0.01–0.02 °C per run. The team accepts these windows for the Module 5 comparison. A longer documented steady-state criterion would be needed to establish true equilibrium. The operator confirmed `Kp=0.25–4` as the team's selected range on 2026-10-05; instructor approval is not recorded in these files.
 
@@ -83,9 +83,9 @@ The measured droop decreases with gain and is 0.02–0.23 °C below the predicti
 - Comparison plot: `docs/figures/module_05/part_04_measured_vs_predicted_droop.png`
 - Representative strip charts: `docs/figures/module_05/low_gain_kp0.25_trace.png` and `docs/figures/module_05/high_gain_kp4_trace.png`
 
-## Part 5: high-gain response, preliminary assessment
+## Part 5: high-gain response
 
-The recorded runs give the following Part 5 summary. “Near flat” describes the last 20 s only; it is not proof of full thermal equilibrium. No run approached the PWM limit of 255.
+The original September 30 gain sweep gives the following Part 5 summary. “Near flat” describes the last 20 s only; it is not proof of full thermal equilibrium. None of these five runs approached the PWM limit of 255.
 
 | Kp (PWM/°C) | Last-20-s mean T (°C) | Last-20-s T range (°C) | Maximum active PWM | Saturation? | Response observation |
 | ---: | ---: | --- | ---: | --- | --- |
@@ -95,11 +95,27 @@ The recorded runs give the following Part 5 summary. “Near flat” describes t
 | 2 | 26.7695 | 26.75–26.79 | 10 | No | Heating; near-flat end |
 | 4 | 27.7400 | 27.73–27.75 | 19 | No | Heating; near-flat end, no sustained oscillation evident |
 
-The highest recorded gain in the 2026-09-30 sweep is `Kp = 4 PWM/°C` (`L ≈ 1.98` using the provisional Module 4 heating slope). Its active-control trace lasts about 273 s. Temperature rises from approximately 25.24 °C to 27.74 °C and stays within 27.73–27.75 °C in the final 20 s. The active-run PWM is at most 19 and stays at 9 in the final 20 s; the 255-count limit is never reached. The file reports `Safety=OK` throughout. No sustained temperature oscillation is evident in this record. Since none was observed, amplitude, period, and frequency are not applicable for this tested range.
+The highest gain in the 2026-09-30 sweep was `Kp = 4 PWM/°C` (`L ≈ 1.98` using the provisional Module 4 heating slope). Its active-control trace lasts about 273 s. Temperature rises from approximately 25.24 °C to 27.74 °C and stays within 27.73–27.75 °C in the final 20 s. The active-run PWM is at most 19 and stays at 9 in the final 20 s; the 255-count limit is never reached. The file reports `Safety=OK` throughout. No sustained temperature oscillation is evident in this record.
 
 At the lowest gain, `Kp = 0.25 PWM/°C`, the temperature rises gradually and ends near 24.00 °C; its final-20-s PWM alternates between 1 and 2. Thus the highest recorded gain uses a larger PWM command and has smaller droop, with no observed saturation. These runs start at different block temperatures, so their absolute rise times are not a controlled settling-time comparison.
 
-The team selected `Kp=4` as the top of its range, so it is the highest tested gain; sustained oscillations did not appear. The assignment calls for instructor approval of the range, but that approval is not documented in the present records. Any additional powered runs would need a separately approved range and supervision.
+The team initially selected `Kp=4` as the top of that sweep. The assignment calls for instructor approval of the gain range, but approval is not documented in the present records. The later October 7 exploratory trials extend well beyond this range; approval of those gains is also not documented here.
+
+### October 7 exploratory trials and setpoint crossing
+
+The three later CSVs are indexed in [`Module_5/data/README.md`](../../Module_5/data/README.md). They are separate from the five-run droop comparison and must not be pooled with it:
+
+| Trial | Raw record | Active settings | Observation |
+| --- | --- | --- | --- |
+| 1 | [`20261007_104314_kp32_short_of_30c.csv`](../../Module_5/data/20261007_104314_kp32_short_of_30c.csv) | 30 °C; `Kp=32` | Temperature reached 29.67 °C at most and ended at 29.59 °C during only about 22 s of P control. This record shows that 30 °C was not reached **during this short trial**; it does not establish an unreachable steady state. |
+| 2 | [`20261007_104346_mixed_kp_setpoint_exploration.csv`](../../Module_5/data/20261007_104346_mixed_kp_setpoint_exploration.csv) | `Kp=64, 128, 50, 250`; setpoints 20 and 30 °C | Multiple live changes of setpoint and gain, with heating, cooling, a maximum of 32.49 °C, and PWM saturation. This is exploratory behavior, not one controlled gain comparison. |
+| 3 | [`20261007_105005_kp250_20to30c_oscillation.csv`](../../Module_5/data/20261007_105005_kp250_20to30c_oscillation.csv) | Pre-cooled near 20 °C; then 30 °C at fixed `Kp=250` | P mode begins at 20.90 °C (57.94 s), overshoots, and continues oscillating around the target. All 270 rows report `Safety=OK`. |
+
+In trial 3 the temperature first exceeds 30 °C at 63.55 s (30.37 °C). The calculated error has then become negative, so the controller requests cooling. The firmware still reports the preceding HEAT command in that same serial row; at 64.06 s it reports COOL. **Reversing the command does not reverse the block's temperature instantly:** the temperature keeps rising to its first peak of **32.46 °C at 65.08 s**, an overshoot of **2.46 °C**, while COOL is already reported. It then falls below the setpoint and the controller requests HEAT again. The repeated direction changes and thermal response produce the observed oscillation. The CSV's `signed_pwm` is calculated from the *current* temperature, whereas the firmware PWM fields report the command already in effect; comparing them on the same row requires this one-report timing distinction.
+
+Using local temperature peaks after 90 s (seven peaks from 93.12 to 134.48 s), the mean peak-to-peak period is **6.89 s** (frequency about **0.145 Hz**). Seven late peaks average **31.65 °C** and seven late troughs average **29.19 °C**. Define oscillation amplitude here as **half their mean peak-to-trough difference**, about **1.23 °C**; peak-to-peak is **2.46 °C**. The active record contains **64 of 157 samples at the PWM magnitude limit of 255**. These are descriptive measurements of the late observed cycles, not a claim that the oscillation will persist indefinitely. [Temperature and signed PWM plot](../figures/module_05/kp250_20to30c_oscillation.png); reproducible plotting script: [`plot_kp250_oscillation.py`](../../Module_5/python/plot_kp250_oscillation.py).
+
+The much larger gain and repeated saturation distinguish trial 3 from the September sweep. Thermal lag between the TEC and sensor, other thermal masses, discrete sampling, and saturation are plausible contributors; the record alone does not isolate one cause. Do not extend the gain further without the instructor's approved range and supervision.
 
 ## Part 6: interpretation — one-lump model, loop gain, and transients
 
@@ -151,6 +167,6 @@ The algebraic model gives only the steady droop. For time dependence, define `θ
 
 `dθ/dt = −θ/τ_cl`,  `τ_cl = C/(H + P_u Kp)`,
 
-so `θ(t) = θ(0) e^(−t/τ_cl)`: the response approaches steady state exponentially and cannot sustain an oscillation. The 2026-09-30 sweep shows no sustained oscillation up to `Kp=4` (`L≈1.98`), consistent with this picture. Had oscillation appeared, the one-lump model would be missing physics or implementation detail — candidates are thermal delay between the TEC and thermistor, a second thermal mass, discrete sampling, sensor noise, or PWM saturation.
+so `θ(t) = θ(0) e^(−t/τ_cl)`: under its assumptions, the response approaches steady state exponentially and cannot sustain an oscillation. The 2026-09-30 sweep shows no sustained oscillation up to `Kp=4` (`L≈1.98`), consistent with this picture. The October 7 `Kp=250` run **does** oscillate, so this simple model is insufficient for that run. It assumes instantaneous, unsaturated actuation and a single uniform temperature; the observed PWM clipping and possible thermal or measurement delay violate or may violate those assumptions. The data show the model's limitation but do not by themselves identify a unique mechanism.
 
 This derivation is preserved for the A3 feedback-and-model memo.

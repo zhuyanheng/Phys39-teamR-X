@@ -16,8 +16,8 @@ DATA_DIR = ROOT / "Module_5" / "data"
 FIGURE_DIR = ROOT / "docs" / "figures" / "module_05"
 
 RUNS = {
-    "low_gain_kp0.25": "module_05_p_control_20260930_110723_090850.csv",
-    "high_gain_kp4": "module_05_p_control_20260930_112955_213490.csv",
+    "low_gain_kp0.25": "20260930_110723_droop_kp0p25.csv",
+    "high_gain_kp4": "20260930_112955_droop_kp4.csv",
 }
 SETPOINT_C = 30.0
 TEMP_COLOR = "#235f9e"

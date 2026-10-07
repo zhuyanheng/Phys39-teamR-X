@@ -2,7 +2,7 @@
 
 Ricky Huang and Xavier Zhu · Phys 39 · 2026-10-07
 
-**This is a draft for completing the assignment, not a submission-ready paper.** No matched physical PI data or verified instability threshold is available. Calibration values retain their documented provisional status. Final PDF: `A3_Huang_Zhu.pdf`; each student separately submits to Moodle by October 21, 2026, 6:00 PM.
+**This is a draft for completing the assignment, not a submission-ready paper.** No matched physical PI data or verified instability-onset threshold is available. A separate October 7 high-gain P run now provides observed oscillation evidence. Calibration values retain their documented provisional status. Final PDF: `A3_Huang_Zhu.pdf`; each student separately submits to Moodle by October 21, 2026, 6:00 PM.
 
 ## 1. P feedback and the thermal model
 
@@ -20,7 +20,7 @@ The provisional Module 4 fits give χh=0.49545 and χc=0.14142 °C/PWM. The heat
 
 ![P droop comparison](../figures/04_p_droop.png)
 
-Measured final-20-s droop decreases from 6.00 to 2.26 °C as Kp rises from 0.25 to 4 PWM/°C. Model deviations are approximately 0.025–0.229 °C. Local susceptibility, integer PWM, ambient variation and incomplete settling can contribute. The record reports no oscillation up to Kp=4; it does not establish an onset gain or oscillation frequency. **Required instability evidence remains to be added or its absence accepted by the instructor.**
+Measured final-20-s droop decreases from 6.00 to 2.26 °C as Kp rises from 0.25 to 4 PWM/°C. Model deviations are approximately 0.025–0.229 °C. Local susceptibility, integer PWM, ambient variation and incomplete settling can contribute. Those September runs show no oscillation through Kp=4. A separate [October 7 fixed-Kp=250 run](../../Module_5/data/20261007_105005_kp250_20to30c_oscillation.csv) shows a first 2.46 °C overshoot and late cycles of about 6.89 s period and 2.46 °C peak-to-peak temperature range ([figure](../../docs/figures/module_05/kp250_20to30c_oscillation.png)). PWM frequently saturates. These different-condition runs establish an observed high-gain oscillation, but do not locate a verified onset threshold; instructor approval of the higher gain is not documented in the files.
 
 ## 2. Time constant and open-loop comparison
 
