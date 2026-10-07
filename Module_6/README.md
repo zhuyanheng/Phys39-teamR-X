@@ -17,7 +17,7 @@
 2. 打开 [P／PI 模拟图](figures/06_p_pi_simulation.png)：P 留有误差，PI 可以逐渐接近目标；Ki 增大时，这组模型响应更快但出现超调。
 3. 阅读 [详细英文实验记录](docs/module_06_p_pi_model.md)，尤其 Part 2 的三个解释题、Part 3 的 τ 估计和 Part 8 的 windup。
 4. 打开 [A3 草稿](docs/a3_feedback_model.md)：已有数据和模拟结果已经填入，缺少的实物实验留有明确位置。
-5. 对照 [Module 5 原始数据索引](../Module_5/data/README.md) 和 [Kp=250 的实测振荡图](../docs/figures/module_05/kp250_20to30c_oscillation.png)：这条高增益实测曲线与本模块的理想一阶模型不同。
+5. 对照 [Module 5 原始数据索引](../Module_5/data/README.md) 和 [Kp=250 的实测振荡图](../Module_5/figures/kp250_20to30c_oscillation.png)：这条高增益实测曲线与本模块的理想一阶模型不同。
 
 ## 在课堂中操作 v3 模拟
 

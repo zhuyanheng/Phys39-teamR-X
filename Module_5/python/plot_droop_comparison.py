@@ -8,14 +8,14 @@ from pathlib import Path
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 import pyqtgraph as pg
-from pyqtgraph.exporters import ImageExporter, SVGExporter
+from pyqtgraph.exporters import ImageExporter
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QApplication
 
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "Module_5" / "data"
-FIGURE_DIR = ROOT / "docs" / "figures" / "module_05"
+FIGURE_DIR = ROOT / "Module_5" / "figures"
 SETPOINT_C = 30.0
 # Provisional Module 4 heating slope; update after the Module 4 calibration audit.
 CHI_HEAT_C_PER_PWM = 0.4954
@@ -138,17 +138,15 @@ def save_figure(ambient_c, summary):
         name="Measured: final 20 s",
     )
     app.processEvents()
-    svg_path = FIGURE_DIR / "part_04_measured_vs_predicted_droop.svg"
     png_path = FIGURE_DIR / "part_04_measured_vs_predicted_droop.png"
-    SVGExporter(plot.plotItem).export(str(svg_path))
     image_exporter = ImageExporter(plot.plotItem)
     image_exporter.parameters()["width"] = 1400
     image_exporter.export(str(png_path))
     plot.close()
-    return svg_path, png_path
+    return png_path
 
 
 if __name__ == "__main__":
     ambient, rows = build_summary()
     print(save_summary(rows))
-    print(*save_figure(ambient, rows), sep="\n")
+    print(save_figure(ambient, rows))

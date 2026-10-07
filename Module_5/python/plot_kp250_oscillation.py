@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "Module_5/data/20261007_105005_kp250_20to30c_oscillation.csv"
-OUTPUT = ROOT / "docs/figures/module_05/kp250_20to30c_oscillation"
+OUTPUT = ROOT / "Module_5/figures/kp250_20to30c_oscillation"
 
 
 def extrema(active, setpoint):
@@ -104,9 +104,8 @@ def main():
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT.with_suffix(".png"), dpi=180)
-    fig.savefig(OUTPUT.with_suffix(".svg"))
     plt.close(fig)
-    print(f"{OUTPUT.with_suffix('.png')}\n{OUTPUT.with_suffix('.svg')}")
+    print(OUTPUT.with_suffix(".png"))
     print(f"late period={period:.3f} s; late peak-to-peak={peak_to_peak:.3f} °C")
 
 

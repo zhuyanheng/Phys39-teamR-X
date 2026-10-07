@@ -201,10 +201,10 @@ overshot and oscillated around 30 °C after cooling near 20 °C.
 - [October 7 mixed-gain exploration](Module_5/data/20261007_104346_mixed_kp_setpoint_exploration.csv)
 - [October 7 Kp=250 oscillation CSV](Module_5/data/20261007_105005_kp250_20to30c_oscillation.csv)
 - [Part 4 droop summary](Module_5/data/part_04_droop_comparison.csv)
-- [Measured vs predicted droop](docs/figures/module_05/part_04_measured_vs_predicted_droop.png)
-- [Low-gain strip-chart trace (Kp = 0.25)](docs/figures/module_05/low_gain_kp0.25_trace.png)
-- [High-gain strip-chart trace (Kp = 4)](docs/figures/module_05/high_gain_kp4_trace.png)
-- [Kp=250 oscillation: temperature and signed PWM](docs/figures/module_05/kp250_20to30c_oscillation.png)
+- [Measured vs predicted droop](Module_5/figures/part_04_measured_vs_predicted_droop.png)
+- [Low-gain strip-chart trace (Kp = 0.25)](Module_5/figures/low_gain_kp0.25_trace.png)
+- [High-gain strip-chart trace (Kp = 4)](Module_5/figures/high_gain_kp4_trace.png)
+- [Kp=250 oscillation: temperature and signed PWM](Module_5/figures/kp250_20to30c_oscillation.png)
 
 The team selected `Kp = 0.25–4 PWM/°C` and accepts the Module 5 comparison
 using the provisional Module 4 heating slope (`χ_h = 0.4954 °C/PWM`). The

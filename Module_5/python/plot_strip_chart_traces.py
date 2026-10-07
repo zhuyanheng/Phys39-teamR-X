@@ -2,18 +2,22 @@
 
 Each figure shows measured temperature versus time with the setpoint as a
 reference line (left axis) and the commanded PWM magnitude versus time (right
-axis), matching the live GUI strip chart. Pure-stdlib SVG output; no GUI or
-third-party packages are required. Outputs go to docs/figures/module_05/.
+axis), matching the live GUI strip chart. PNG output goes to
+Module_5/figures/; PySide6 renders the chart in memory.
 """
 
 import csv
 import math
 from pathlib import Path
 
+from PySide6.QtCore import QByteArray
+from PySide6.QtGui import QColor, QGuiApplication, QImage, QPainter
+from PySide6.QtSvg import QSvgRenderer
+
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "Module_5" / "data"
-FIGURE_DIR = ROOT / "docs" / "figures" / "module_05"
+FIGURE_DIR = ROOT / "Module_5" / "figures"
 
 RUNS = {
     "low_gain_kp0.25": "20260930_110723_droop_kp0p25.csv",
@@ -119,6 +123,21 @@ def build_svg(rows, gain, title):
     return "\n".join(s)
 
 
+def save_png(svg_text, path):
+    app = QGuiApplication.instance() or QGuiApplication([])
+    renderer = QSvgRenderer(QByteArray(svg_text.encode("utf-8")))
+    if not renderer.isValid():
+        raise ValueError("Could not render strip chart")
+    image = QImage(WIDTH * 2, HEIGHT * 2, QImage.Format.Format_ARGB32)
+    image.fill(QColor("white"))
+    painter = QPainter(image)
+    painter.scale(2, 2)
+    renderer.render(painter)
+    painter.end()
+    if not image.save(str(path)):
+        raise OSError(f"Could not save {path}")
+
+
 def main():
     FIGURE_DIR.mkdir(parents=True, exist_ok=True)
     for label, filename in RUNS.items():
@@ -126,8 +145,8 @@ def main():
         active = [r for r in rows if r["p_active"] == "1"]
         gain = float(active[0]["Kp_pwm_per_C"]) if active else 0.0
         title = f"P-only strip chart, Kp = {gain:g} PWM/°C, setpoint 30 °C (final {rows[-1]['temperature_C']} °C)"
-        out = FIGURE_DIR / f"{label}_trace.svg"
-        out.write_text(build_svg(rows, gain, title), encoding="utf-8")
+        out = FIGURE_DIR / f"{label}_trace.png"
+        save_png(build_svg(rows, gain, title), out)
         print(out)
 
 

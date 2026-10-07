@@ -80,8 +80,8 @@ The measured droop decreases with gain and is 0.02–0.23 °C below the predicti
 
 - Reproducible calculation: `Module_5/python/plot_droop_comparison.py`
 - Calculated values and provenance: `Module_5/data/part_04_droop_comparison.csv`
-- Comparison plot: `docs/figures/module_05/part_04_measured_vs_predicted_droop.png`
-- Representative strip charts: `docs/figures/module_05/low_gain_kp0.25_trace.png` and `docs/figures/module_05/high_gain_kp4_trace.png`
+- Comparison plot: `Module_5/figures/part_04_measured_vs_predicted_droop.png`
+- Representative strip charts: `Module_5/figures/low_gain_kp0.25_trace.png` and `Module_5/figures/high_gain_kp4_trace.png`
 
 ## Part 5: high-gain response
 
@@ -113,7 +113,7 @@ The three later CSVs are indexed in [`Module_5/data/README.md`](../../Module_5/d
 
 In trial 3 the temperature first exceeds 30 °C at 63.55 s (30.37 °C). The calculated error has then become negative, so the controller requests cooling. The firmware still reports the preceding HEAT command in that same serial row; at 64.06 s it reports COOL. **Reversing the command does not reverse the block's temperature instantly:** the temperature keeps rising to its first peak of **32.46 °C at 65.08 s**, an overshoot of **2.46 °C**, while COOL is already reported. It then falls below the setpoint and the controller requests HEAT again. The repeated direction changes and thermal response produce the observed oscillation. The CSV's `signed_pwm` is calculated from the *current* temperature, whereas the firmware PWM fields report the command already in effect; comparing them on the same row requires this one-report timing distinction.
 
-Using local temperature peaks after 90 s (seven peaks from 93.12 to 134.48 s), the mean peak-to-peak period is **6.89 s** (frequency about **0.145 Hz**). Seven late peaks average **31.65 °C** and seven late troughs average **29.19 °C**. Define oscillation amplitude here as **half their mean peak-to-trough difference**, about **1.23 °C**; peak-to-peak is **2.46 °C**. The active record contains **64 of 157 samples at the PWM magnitude limit of 255**. These are descriptive measurements of the late observed cycles, not a claim that the oscillation will persist indefinitely. [Temperature and signed PWM plot](../figures/module_05/kp250_20to30c_oscillation.png); reproducible plotting script: [`plot_kp250_oscillation.py`](../../Module_5/python/plot_kp250_oscillation.py).
+Using local temperature peaks after 90 s (seven peaks from 93.12 to 134.48 s), the mean peak-to-peak period is **6.89 s** (frequency about **0.145 Hz**). Seven late peaks average **31.65 °C** and seven late troughs average **29.19 °C**. Define oscillation amplitude here as **half their mean peak-to-trough difference**, about **1.23 °C**; peak-to-peak is **2.46 °C**. The active record contains **64 of 157 samples at the PWM magnitude limit of 255**. These are descriptive measurements of the late observed cycles, not a claim that the oscillation will persist indefinitely. [Temperature and signed PWM plot](../../Module_5/figures/kp250_20to30c_oscillation.png); reproducible plotting script: [`plot_kp250_oscillation.py`](../../Module_5/python/plot_kp250_oscillation.py).
 
 The much larger gain and repeated saturation distinguish trial 3 from the September sweep. Thermal lag between the TEC and sensor, other thermal masses, discrete sampling, and saturation are plausible contributors; the record alone does not isolate one cause. Do not extend the gain further without the instructor's approved range and supervision.
 

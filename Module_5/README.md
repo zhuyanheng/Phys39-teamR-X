@@ -10,7 +10,7 @@ This directory contains the Arduino and Python control programs, raw temperature
 
 - [P-control GUI and CSV logger](python/p_only_tec_control_gui.py) reads serial temperature, computes `e = T_set − T`, `u = Kp e`, sends direction and rounded/clamped PWM, and stops P mode (PWM 0) on a safety fault, temperature outside 10–45 °C, or a measurement gap over 2 seconds. Each launch writes a timestamped CSV in [`data/`](data/).
 - [Part 4 droop comparison](python/plot_droop_comparison.py) computes measured and predicted droop `(T_set − T_amb)/(1 + Kp χ_h)`, writes [`part_04_droop_comparison.csv`](data/part_04_droop_comparison.csv), and produces the comparison figure.
-- [Strip-chart traces](python/plot_strip_chart_traces.py) draws representative low- and high-gain temperature/PWM traces with a pure-stdlib SVG generator (no GUI dependency).
+- [Strip-chart traces](python/plot_strip_chart_traces.py) draws representative low- and high-gain temperature/PWM PNGs using the installed PySide6 dependency.
 - [Kp=250 oscillation plot](python/plot_kp250_oscillation.py) reproduces the October 7 temperature and signed applied-PWM figure from its raw CSV.
 - [Controller tests](python/test_p_only_tec_control_gui.py) check the signed-command logic, saturation, and safety stop without hardware.
 - [GUI launcher](run_gui.command) is a convenience script for starting the GUI.
@@ -26,10 +26,10 @@ This directory contains the Arduino and Python control programs, raw temperature
 
 ## Figures
 
-- [Measured vs predicted droop](../docs/figures/module_05/part_04_measured_vs_predicted_droop.png).
-- [Low-gain strip-chart trace (Kp = 0.25)](../docs/figures/module_05/low_gain_kp0.25_trace.png)
-- [High-gain strip-chart trace (Kp = 4)](../docs/figures/module_05/high_gain_kp4_trace.png)
-- [Kp=250: 20 °C to 30 °C oscillation, temperature and signed PWM](../docs/figures/module_05/kp250_20to30c_oscillation.png) ([SVG](../docs/figures/module_05/kp250_20to30c_oscillation.svg)).
+- [Measured vs predicted droop](figures/part_04_measured_vs_predicted_droop.png).
+- [Low-gain strip-chart trace (Kp = 0.25)](figures/low_gain_kp0.25_trace.png)
+- [High-gain strip-chart trace (Kp = 4)](figures/high_gain_kp4_trace.png)
+- [Kp=250: 20 °C to 30 °C oscillation, temperature and signed PWM](figures/kp250_20to30c_oscillation.png).
 
 ## Running the Programs
 
