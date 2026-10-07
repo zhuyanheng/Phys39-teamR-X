@@ -153,11 +153,11 @@ steady-temperature-versus-signed-PWM comparison.
 - [Ten selected HEAT/COOL measurements](Module_4/data/steady_state.csv)
 - [Raw experimental CSVs and safety-test logs](Module_4/data/)
 - [Part 1 safety-test record](Module_4/check/part_1_safety_check.md)
-- [Part 1 HEAT high-current diagram](Module_4/Diagram/heating_high_current.png)
-- [Part 1 COOL high-current diagram](Module_4/Diagram/cooling_high_current.png)
-- [HEAT time trace](Module_4/figures/heating_trace.svg)
-- [COOL time trace](Module_4/figures/cooling_trace.svg)
-- [Steady temperature versus signed PWM](Module_4/figures/steady_temperature_vs_pwm.svg)
+- [Part 1 HEAT high-current diagram](Module_4/figures/part_1_heating_high_current.png)
+- [Part 1 COOL high-current diagram](Module_4/figures/part_1_cooling_high_current.png)
+- [HEAT time trace](Module_4/figures/part_4_heating_trace.svg)
+- [COOL time trace](Module_4/figures/part_4_cooling_trace.svg)
+- [Steady temperature versus signed PWM](Module_4/figures/part_4_steady_temperature_vs_pwm.svg)
 - [A2 two-page PDF candidate](Module_4/A2_Huang_Zhu.pdf)
 
 The ten-point analysis and A2 PDF are provisional. The professor's revised

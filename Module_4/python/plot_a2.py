@@ -292,7 +292,7 @@ def create_figures(summary, raw_cache, output_dir, criterion, fit_ranges):
         if len(trace) < 2:
             raise ValueError(f"{selected['run_id']}: insufficient trace points")
         temperatures = [s["temperature_C"] for s in trace]
-        svg_chart(output_dir / "heating_trace.svg" if direction == "HEAT" else output_dir / "cooling_trace.svg",
+        svg_chart(output_dir / "part_4_heating_trace.svg" if direction == "HEAT" else output_dir / "part_4_cooling_trace.svg",
                   f"{direction} time trace, PWM {selected['pwm']}", "Arduino time (s)",
                   "Temperature (°C)", [(direction, color, [(s["time_s"], s["temperature_C"]) for s in trace])],
                   (start_time, end), (min(temperatures)-0.5, max(temperatures)+0.5),
@@ -305,7 +305,7 @@ def create_figures(summary, raw_cache, output_dir, criterion, fit_ranges):
     exception_points = {((1 if r["direction"] == "HEAT" else -1) * r["pwm"],
                          r["steady_temperature_C"])
                         for r in summary if r["range_exception_approved"]}
-    svg_chart(output_dir / "steady_temperature_vs_pwm.svg",
+    svg_chart(output_dir / "part_4_steady_temperature_vs_pwm.svg",
               "Steady TEC temperature vs signed PWM", "Signed PWM (count; COOL < 0, HEAT > 0)",
               "Steady temperature (°C)", series,
               (-max(r["pwm"] for r in summary if r["direction"] == "COOL"),

@@ -25,7 +25,7 @@ The 60 °C production firmware was then uploaded. Five measurements reported `Sa
 
 The user subsequently requested a 30 °C temporary threshold with the instructor present and then reported completion. The GUI recorded a heating command and an actual threshold crossing in [the 30 °C test CSV](../data/module_04_tec_20260923_114043_802804.csv). The earlier external-power-off statement applies to the initial test only; the later physical power configuration was not independently observed.
 
-The [GUI screenshot after the 30 °C limit test](../figures/gui_after_30c_limit_test_20260923.png) shows the temperature trace recovering with PWM at zero. At the instant of this screenshot the display reads 29.36 °C and `Safety: OK`; it is **not** a screenshot of the `SHUTDOWN` state. The CSV and serial records below are the shutdown evidence.
+The [GUI screenshot after the 30 °C limit test](../figures/part_1_gui_after_30c_limit_test.png) shows the temperature trace recovering with PWM at zero. At the instant of this screenshot the display reads 29.36 °C and `Safety: OK`; it is **not** a screenshot of the `SHUTDOWN` state. The CSV and serial records below are the shutdown evidence.
 
 | Arduino time (s) | Temperature (°C) | Commanded PWM | Safety | Firmware heat/cool PWM |
 | --- | --- | --- | --- | --- |
