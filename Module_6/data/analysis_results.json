@@ -437,7 +437,7 @@
     }
   ],
   "source_sha256": {
-    "data/module_04/steady_state.csv": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
+    "Module_4/data/steady_state.csv": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
     "Module_5/data/part_04_droop_comparison.csv": "65f80080348d3cc7e7bb440da997bdedd6555e91fca6d823f9b74dc1a305fe98",
     "Module_4/data/module_04_heating_0pct_pwm0_20260928_112039_906848.csv": "14579f26174f8b12373d337a1650a1a69b18177fd3a9fb2a0a4bedf1d31c95b4",
     "Module_4/data/module_04_heating_25pct_pwm11_20260928_102552_858326.csv": "b4b32a75d556271e03ddd08641797123015788e43c84fe9ff071d68727509de4",

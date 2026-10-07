@@ -18,7 +18,7 @@ The provisional Module 4 fits give χh=0.49545 and χc=0.14142 °C/PWM. The heat
 | 2.0000 | 0.9909 | 3.2305 | 3.4213 | 0.4743 | 0.5023 | 36.6807 |
 | 4.0000 | 1.9818 | 2.2600 | 2.2844 | 0.3318 | 0.3354 | 24.4912 |
 
-![P droop comparison](../figures/module_06/04_p_droop.png)
+![P droop comparison](../figures/04_p_droop.png)
 
 Measured final-20-s droop decreases from 6.00 to 2.26 °C as Kp rises from 0.25 to 4 PWM/°C. Model deviations are approximately 0.025–0.229 °C. Local susceptibility, integer PWM, ambient variation and incomplete settling can contribute. The record reports no oscillation up to Kp=4; it does not establish an onset gain or oscillation frequency. **Required instability evidence remains to be added or its absence accepted by the instructor.**
 
@@ -33,7 +33,7 @@ Only C/H and Pu/H are measured. H=1 W/°C is an arbitrary equivalent simulation 
 | H3 | 34 | 40.2852 | 40.4205 | 0.1802 |
 | C1 | -24 | 20.0460 | 20.4428 | 0.4451 |
 
-![Open-loop comparison](../figures/module_06/03_open_loop_comparison.png)
+![Open-loop comparison](../figures/03_open_loop_comparison.png)
 
 H3 supplied τ, so its transient comparison reuses calibration. C1 tests transfer of that common τ, although its endpoint contributes to the cooling slope. Residual cooling mismatch illustrates full-range linear calibration and common-time-constant limitations. The existing Module 4 approximately 3τ plus one-minute steady-state audit remains unresolved for several calibration points.
 
@@ -49,7 +49,7 @@ The official v3 one-lump simulations use identical initial conditions, q(0)=0, K
 | PI_overdamped | 0.0100 | 1.6549 | 0.0234 | 0.0000 | 575.0448 | 1164.2000 |
 | PI_underdamped | 0.0800 | 0.5851 | -0.0000 | 0.8960 | 62.3313 | 225.7000 |
 
-![Simulated P/PI](../figures/module_06/06_p_pi_simulation.png)
+![Simulated P/PI](../figures/06_p_pi_simulation.png)
 
 All entries above are simulated. Errors are endpoints after 1800 s. Target rise time uses 10–90% of the initial setpoint offset; target settling uses ±0.13623 °C with every subsequent sample inside. P does not reach those targets. The larger Ki responds faster but overshoots by about 0.896 °C. These settings guide supervised exploration and are not verified hardware gains. Halving dt changes the main simulated temperatures by less than 0.004 °C.
 
@@ -72,15 +72,15 @@ A simulation-only unreachable-setpoint test (60 °C to 30 °C at 400 s, limit 15
 
 ## 6. Reproducibility and checkpoint
 
-- [Detailed derivation, methods and remaining work](../module_notes/module_06_p_pi_model.md)
-- [Unchanged official v3 program](../../python/Lab_6_7_modeling_tec_v3.py)
-- [Analysis script](../../python/analysis/module_06_analysis.py)
-- [Executed notebook](../../python/analysis/module_06_analysis.ipynb)
-- [Exact model settings, numeric results and input hashes](../../data/module_06/analysis_results.json)
-- [Module 4 input summary](../../data/module_04/steady_state.csv)
+- [Detailed derivation, methods and remaining work](module_06_p_pi_model.md)
+- [Unchanged official v3 program](../python/Lab_6_7_modeling_tec_v3.py)
+- [Analysis script](../python/analysis/module_06_analysis.py)
+- [Executed notebook](../python/analysis/module_06_analysis.ipynb)
+- [Exact model settings, numeric results and input hashes](../data/analysis_results.json)
+- [Module 4 input summary](../../Module_4/data/steady_state.csv)
 - [Module 5 input summary](../../Module_5/data/part_04_droop_comparison.csv)
 - GitHub modeling checkpoint: **pending commit, push and verification**.
 
-Run from repository root: `.venv/bin/python python/analysis/module_06_analysis.py`.
+Run from repository root: `.venv/bin/python Module_6/python/analysis/module_06_analysis.py`.
 
 AI assisted with calculations, plots and draft writing. The team must review the reasoning and supply actual physical-controller evidence before final submission.

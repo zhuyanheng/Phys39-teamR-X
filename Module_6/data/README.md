@@ -1,6 +1,6 @@
 # Module 6 derived analysis
 
-These files are derived from unchanged Module 4 and 5 data. Reproduce with `.venv/bin/python python/analysis/module_06_analysis.py` from repository root.
+These files are derived from unchanged Module 4 and 5 data. Reproduce with `.venv/bin/python Module_6/python/analysis/module_06_analysis.py` from repository root.
 
 - `susceptibility.csv`: two provisional directional fits and endpoint sensitivity.
 - `time_constants.csv`: six 63.2% estimates and endpoint sensitivity (not confidence intervals).

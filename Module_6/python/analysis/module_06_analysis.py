@@ -1,6 +1,6 @@
 """Reproduce Module 6 analysis from unchanged Module 4/5 CSVs and official v3.
 
-Run from the repository root: .venv/bin/python python/analysis/module_06_analysis.py
+Run from the repository root: .venv/bin/python Module_6/python/analysis/module_06_analysis.py
 This program has no serial or hardware connection.
 """
 from __future__ import annotations
@@ -19,10 +19,11 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "data/module_06"
-FIG = ROOT / "docs/figures/module_06"
-V3_PATH = ROOT / "python/Lab_6_7_modeling_tec_v3.py"
+MODULE_ROOT = Path(__file__).resolve().parents[2]
+ROOT = MODULE_ROOT.parent
+OUT = MODULE_ROOT / "data"
+FIG = MODULE_ROOT / "figures"
+V3_PATH = MODULE_ROOT / "python/Lab_6_7_modeling_tec_v3.py"
 spec = importlib.util.spec_from_file_location("official_tec_v3", V3_PATH)
 v3 = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = v3
@@ -144,7 +145,7 @@ def transient_metrics(config, results, mode):
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     FIG.mkdir(parents=True, exist_ok=True)
-    summary = read_csv(ROOT / "data/module_04/steady_state.csv")
+    summary = read_csv(ROOT / "Module_4/data/steady_state.csv")
     slopes = {}
     slope_rows = []
     fig, ax = plt.subplots()
@@ -368,7 +369,7 @@ def main():
             "slopes":slope_rows,"steps":tau_rows,"open_loop":open_rows,"p_comparison":p_rows,
             "simulation_metrics":metrics,"numerical_checks":checks,"windup":windup,
             "source_sha256":{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in
-                [ROOT/'data/module_04/steady_state.csv',ROOT/'Module_5/data/part_04_droop_comparison.csv']+
+                [ROOT/'Module_4/data/steady_state.csv',ROOT/'Module_5/data/part_04_droop_comparison.csv']+
                 [ROOT/r['source_csv'] for r in summary]+[ROOT/'Module_5/data'/r['source_csv'] for r in droop_source]}}
     (OUT/"analysis_results.json").write_text(json.dumps(result,indent=2,allow_nan=False)+"\n")
     print(json.dumps({k:result[k] for k in ['chi_heat_C_per_PWM','chi_cool_C_per_PWM','tau_s','tau_run_range_s','simulation_metrics','numerical_checks']},indent=2))

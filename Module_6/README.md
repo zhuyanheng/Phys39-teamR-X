@@ -13,17 +13,17 @@
 
 ## 你现在可以先阅读什么
 
-1. 打开 [P droop 图](../figures/module_06/04_p_droop.png)：看 Kp 越大，稳态误差越小。
-2. 打开 [P／PI 模拟图](../figures/module_06/06_p_pi_simulation.png)：P 留有误差，PI 可以逐渐接近目标；Ki 增大时，这组模型响应更快但出现超调。
-3. 阅读 [详细英文实验记录](module_06_p_pi_model.md)，尤其 Part 2 的三个解释题、Part 3 的 τ 估计和 Part 8 的 windup。
-4. 打开 [A3 草稿](../assessments/a3_feedback_model.md)：已有数据和模拟结果已经填入，缺少的实物实验留有明确位置。
+1. 打开 [P droop 图](figures/04_p_droop.png)：看 Kp 越大，稳态误差越小。
+2. 打开 [P／PI 模拟图](figures/06_p_pi_simulation.png)：P 留有误差，PI 可以逐渐接近目标；Ki 增大时，这组模型响应更快但出现超调。
+3. 阅读 [详细英文实验记录](docs/module_06_p_pi_model.md)，尤其 Part 2 的三个解释题、Part 3 的 τ 估计和 Part 8 的 windup。
+4. 打开 [A3 草稿](docs/a3_feedback_model.md)：已有数据和模拟结果已经填入，缺少的实物实验留有明确位置。
 
 ## 在课堂中操作 v3 模拟
 
 从项目根目录运行：
 
 ```bash
-.venv/bin/python python/Lab_6_7_modeling_tec_v3.py
+.venv/bin/python Module_6/python/Lab_6_7_modeling_tec_v3.py
 ```
 
 选择 one-lump 和直接输入物理参数的模式。以下是同一组测量比值的一种等效参数化：
@@ -58,4 +58,14 @@
 
 A3 目前是**不完整草稿**，还不能直接提交。补齐实物结果后，检查图、数据链接和解释，commit、push，并填写可验证的 GitHub checkpoint 链接。生成 `A3_Huang_Zhu.pdf`，每位组员分别上传相同团队 PDF 至 Moodle；截止 2026 年 10 月 21 日（周三）下午 6 点。
 
-本次分析保留了原始数据及 Module 5 控制程序。新分析文件和文稿目前只在本地，尚未 commit／push。
+本次分析保留了原始数据及 Module 5 控制程序。新分析文件和文稿目前只在本地，本次整理尚未 commit／push。
+
+## 本文件夹结构
+
+- `README.md`：中文指南，从这里开始。
+- `docs/`：完整英文分析记录和 A3 不完整草稿。
+- `python/`：老师的 v3 模拟程序；`analysis/` 中是分析脚本、notebook 和依赖清单。
+- `data/`：计算表格、模拟数据、完整参数与原始数据校验信息。
+- `figures/`：七组 PNG／SVG 图。
+
+Module 4、5 的原始数据继续保存在它们原来的文件夹中，分析会读取这些文件。
