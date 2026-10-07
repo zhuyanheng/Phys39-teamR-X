@@ -1,0 +1,3 @@
+run_id,source_csv,ambient_C,signed_pwm,predicted_final_C,measured_final_20s_C,measured_minus_predicted_C,trace_RMSE_C
+H3,Module_4/data/module_04_heating_75pct_pwm34_20260928_103941_134734.csv,23.44,34,40.285173817726275,40.420500000000004,0.1353261822737295,0.1801883335485719
+C1,Module_4/data/module_04_cooling_25pct_pwm24_20260928_104957_896611.csv,23.44,-24,20.046000000000003,20.44275,0.39674999999999727,0.4451096017986858

@@ -1,0 +1,458 @@
+{
+  "source_status": "provisional Module 4 endpoint calibration; no physical PI data",
+  "v3_source_url": "https://sethfraden.github.io/Phys39F26-course/downloads/Lab_6_7_modeling_tec_v3.py",
+  "v3_sha256": "1510a9e08c5cefa45c4716e438cd1ceed9c42f77421373cefceb7e5c933b1327",
+  "chi_heat_C_per_PWM": 0.4954462887566552,
+  "chi_cool_C_per_PWM": 0.14141666666666655,
+  "heating_cooling_ratio": 3.503450480306345,
+  "reference_tau_run": "H3",
+  "tau_s": 73.02742568302986,
+  "tau_run_range_s": [
+    60.858518670302765,
+    75.50134642037388
+  ],
+  "H_is_arbitrary_normalization_not_measured": true,
+  "base_config": {
+    "ambient_c": 23.188461538461542,
+    "initial_c": 23.188461538461542,
+    "setpoint_c": 30.0,
+    "total_capacitance_j_per_c": 73.02742568302986,
+    "tec_capacitance_fraction": 0.35,
+    "coupling_w_per_c": 2.0,
+    "heat_loss_w_per_c": 1.0,
+    "tec_power_w_per_pwm": 0.14141666666666655,
+    "heating_to_cooling_ratio": 3.503450480306345,
+    "measured_cooling_chi_c_per_pwm": 0.14141666666666655,
+    "measured_heating_chi_c_per_pwm": 0.4954462887566552,
+    "measured_tau_s": 73.02742568302986,
+    "tec_voltage_v": 10.0,
+    "tec_resistance_ohm": 1.5,
+    "open_loop_pwm": 100.0,
+    "kp_pwm_per_c": 2.0,
+    "ki_pwm_per_c_s": 0.01,
+    "pwm_limit": 255.0,
+    "dt_s": 0.1,
+    "window_s": 180.0,
+    "simulation_speed": 10.0,
+    "anti_windup": true
+  },
+  "simulation_configs": {
+    "P": {
+      "ambient_c": 23.188461538461542,
+      "initial_c": 23.188461538461542,
+      "setpoint_c": 30.0,
+      "total_capacitance_j_per_c": 73.02742568302986,
+      "tec_capacitance_fraction": 0.35,
+      "coupling_w_per_c": 2.0,
+      "heat_loss_w_per_c": 1.0,
+      "tec_power_w_per_pwm": 0.14141666666666655,
+      "heating_to_cooling_ratio": 3.503450480306345,
+      "measured_cooling_chi_c_per_pwm": 0.14141666666666655,
+      "measured_heating_chi_c_per_pwm": 0.4954462887566552,
+      "measured_tau_s": 73.02742568302986,
+      "tec_voltage_v": 10.0,
+      "tec_resistance_ohm": 1.5,
+      "open_loop_pwm": 100.0,
+      "kp_pwm_per_c": 2.0,
+      "ki_pwm_per_c_s": 0,
+      "pwm_limit": 255.0,
+      "dt_s": 0.1,
+      "window_s": 180.0,
+      "simulation_speed": 10.0,
+      "anti_windup": true
+    },
+    "PI_overdamped": {
+      "ambient_c": 23.188461538461542,
+      "initial_c": 23.188461538461542,
+      "setpoint_c": 30.0,
+      "total_capacitance_j_per_c": 73.02742568302986,
+      "tec_capacitance_fraction": 0.35,
+      "coupling_w_per_c": 2.0,
+      "heat_loss_w_per_c": 1.0,
+      "tec_power_w_per_pwm": 0.14141666666666655,
+      "heating_to_cooling_ratio": 3.503450480306345,
+      "measured_cooling_chi_c_per_pwm": 0.14141666666666655,
+      "measured_heating_chi_c_per_pwm": 0.4954462887566552,
+      "measured_tau_s": 73.02742568302986,
+      "tec_voltage_v": 10.0,
+      "tec_resistance_ohm": 1.5,
+      "open_loop_pwm": 100.0,
+      "kp_pwm_per_c": 2.0,
+      "ki_pwm_per_c_s": 0.01,
+      "pwm_limit": 255.0,
+      "dt_s": 0.1,
+      "window_s": 180.0,
+      "simulation_speed": 10.0,
+      "anti_windup": true
+    },
+    "PI_underdamped": {
+      "ambient_c": 23.188461538461542,
+      "initial_c": 23.188461538461542,
+      "setpoint_c": 30.0,
+      "total_capacitance_j_per_c": 73.02742568302986,
+      "tec_capacitance_fraction": 0.35,
+      "coupling_w_per_c": 2.0,
+      "heat_loss_w_per_c": 1.0,
+      "tec_power_w_per_pwm": 0.14141666666666655,
+      "heating_to_cooling_ratio": 3.503450480306345,
+      "measured_cooling_chi_c_per_pwm": 0.14141666666666655,
+      "measured_heating_chi_c_per_pwm": 0.4954462887566552,
+      "measured_tau_s": 73.02742568302986,
+      "tec_voltage_v": 10.0,
+      "tec_resistance_ohm": 1.5,
+      "open_loop_pwm": 100.0,
+      "kp_pwm_per_c": 2.0,
+      "ki_pwm_per_c_s": 0.08,
+      "pwm_limit": 255.0,
+      "dt_s": 0.1,
+      "window_s": 180.0,
+      "simulation_speed": 10.0,
+      "anti_windup": true
+    }
+  },
+  "slopes": [
+    {
+      "direction": "HEAT",
+      "chi_C_per_PWM": 0.4954462887566552,
+      "fit_intercept_C": 23.234913874099608,
+      "n_points": 5,
+      "chi_excluding_max_endpoint_C_per_PWM": 0.5023384615384605,
+      "status": "provisional endpoint-window calibration"
+    },
+    {
+      "direction": "COOL",
+      "chi_C_per_PWM": 0.14141666666666655,
+      "fit_intercept_C": 23.639999999999993,
+      "n_points": 5,
+      "chi_excluding_max_endpoint_C_per_PWM": 0.1398749999999999,
+      "status": "provisional endpoint-window calibration"
+    }
+  ],
+  "steps": [
+    {
+      "run_id": "H1",
+      "source_csv": "Module_4/data/module_04_heating_25pct_pwm11_20260928_102552_858326.csv",
+      "signed_pwm": 11,
+      "segment_start_arduino_s": 8.13,
+      "duration_s": 229.84,
+      "initial_C": 21.89,
+      "final_20s_mean_C": 28.3105,
+      "target_63_2_C": 25.948530047958755,
+      "tau_interpolated_s": 68.29750324458966,
+      "endpoint_sensitivity_min_s": 61.470743930524854,
+      "endpoint_sensitivity_max_s": 70.02873408458497,
+      "final_20s_min_C": 28.03,
+      "final_20s_max_C": 28.44,
+      "median_sample_interval_s": 0.5099999999999909,
+      "has_3tau_plus_60s_duration": false
+    },
+    {
+      "run_id": "H2",
+      "source_csv": "Module_4/data/module_04_heating_50pct_pwm23_20260928_103051_243607.csv",
+      "signed_pwm": 23,
+      "segment_start_arduino_s": 26.86,
+      "duration_s": 395.28,
+      "initial_C": 26.04,
+      "final_20s_mean_C": 34.620000000000005,
+      "target_63_2_C": 31.463594394749027,
+      "tau_interpolated_s": 60.859929934362846,
+      "endpoint_sensitivity_min_s": 60.2588812457274,
+      "endpoint_sensitivity_max_s": 61.70840718573766,
+      "final_20s_min_C": 34.55,
+      "final_20s_max_C": 34.67,
+      "median_sample_interval_s": 0.5099999999999909,
+      "has_3tau_plus_60s_duration": true
+    },
+    {
+      "run_id": "H3",
+      "source_csv": "Module_4/data/module_04_heating_75pct_pwm34_20260928_103941_134734.csv",
+      "signed_pwm": 34,
+      "segment_start_arduino_s": 39.49,
+      "duration_s": 499.66999999999996,
+      "initial_C": 25.1,
+      "final_20s_mean_C": 40.420500000000004,
+      "target_63_2_C": 34.784403021532924,
+      "tau_interpolated_s": 73.02742568302986,
+      "endpoint_sensitivity_min_s": 72.4867504147263,
+      "endpoint_sensitivity_max_s": 73.74916230131637,
+      "final_20s_min_C": 40.33,
+      "final_20s_max_C": 40.5,
+      "median_sample_interval_s": 0.5099999999999909,
+      "has_3tau_plus_60s_duration": true
+    },
+    {
+      "run_id": "C1",
+      "source_csv": "Module_4/data/module_04_cooling_25pct_pwm24_20260928_104957_896611.csv",
+      "signed_pwm": -24,
+      "segment_start_arduino_s": 4.6,
+      "duration_s": 424.21999999999997,
+      "initial_C": 29.34,
+      "final_20s_mean_C": 20.44275,
+      "target_63_2_C": 23.715865357962613,
+      "tau_interpolated_s": 75.50134642037388,
+      "endpoint_sensitivity_min_s": 75.14952327422671,
+      "endpoint_sensitivity_max_s": 77.11484126538213,
+      "final_20s_min_C": 20.4,
+      "final_20s_max_C": 20.5,
+      "median_sample_interval_s": 0.5099999999999909,
+      "has_3tau_plus_60s_duration": true
+    },
+    {
+      "run_id": "C2",
+      "source_csv": "Module_4/data/module_04_cooling_50pct_pwm48_20260928_105744_249371.csv",
+      "signed_pwm": -48,
+      "segment_start_arduino_s": 48.09,
+      "duration_s": 330.65999999999997,
+      "initial_C": 22.61,
+      "final_20s_mean_C": 16.98875,
+      "target_63_2_C": 19.05669230868497,
+      "tau_interpolated_s": 65.75623075235552,
+      "endpoint_sensitivity_min_s": 63.60548705328156,
+      "endpoint_sensitivity_max_s": 68.56232413049068,
+      "final_20s_min_C": 16.87,
+      "final_20s_max_C": 17.12,
+      "median_sample_interval_s": 0.5099999999999909,
+      "has_3tau_plus_60s_duration": true
+    },
+    {
+      "run_id": "C3",
+      "source_csv": "Module_4/data/module_04_cooling_75pct_pwm72_20260928_110449_677478.csv",
+      "signed_pwm": -72,
+      "segment_start_arduino_s": 3.59,
+      "duration_s": 352.98,
+      "initial_C": 17.67,
+      "final_20s_mean_C": 13.4025,
+      "target_63_2_C": 14.97242551519913,
+      "tau_interpolated_s": 60.858518670302765,
+      "endpoint_sensitivity_min_s": 60.78296050975529,
+      "endpoint_sensitivity_max_s": 60.92400240944391,
+      "final_20s_min_C": 13.37,
+      "final_20s_max_C": 13.44,
+      "median_sample_interval_s": 0.5099999999999909,
+      "has_3tau_plus_60s_duration": true
+    }
+  ],
+  "open_loop": [
+    {
+      "run_id": "H3",
+      "source_csv": "Module_4/data/module_04_heating_75pct_pwm34_20260928_103941_134734.csv",
+      "ambient_C": 23.44,
+      "signed_pwm": 34,
+      "predicted_final_C": 40.285173817726275,
+      "measured_final_20s_C": 40.420500000000004,
+      "measured_minus_predicted_C": 0.1353261822737295,
+      "trace_RMSE_C": 0.1801883335485719
+    },
+    {
+      "run_id": "C1",
+      "source_csv": "Module_4/data/module_04_cooling_25pct_pwm24_20260928_104957_896611.csv",
+      "ambient_C": 23.44,
+      "signed_pwm": -24,
+      "predicted_final_C": 20.046000000000003,
+      "measured_final_20s_C": 20.44275,
+      "measured_minus_predicted_C": 0.39674999999999727,
+      "trace_RMSE_C": 0.4451096017986858
+    }
+  ],
+  "p_comparison": [
+    {
+      "source_csv": "Module_5/data/module_05_p_control_20260930_110723_090850.csv",
+      "Kp": 0.25,
+      "ambient_C": 23.188461538461542,
+      "chi_heat_C_per_PWM": 0.4954462887566552,
+      "loop_gain": 0.1238615721891638,
+      "measured_droop_C": 6.0,
+      "predicted_droop_C": 6.060834029826555,
+      "simulated_final_droop_C": 6.060834746936994,
+      "measured_minus_predicted_C": -0.06083402982655528,
+      "measured_fractional_droop": 0.8808582721626205,
+      "predicted_fractional_droop": 0.8897892985629052,
+      "closed_loop_tau_s": 64.97902187435783
+    },
+    {
+      "source_csv": "Module_5/data/module_05_p_control_20260930_111214_398504.csv",
+      "Kp": 0.5,
+      "ambient_C": 23.188461538461542,
+      "chi_heat_C_per_PWM": 0.4954462887566552,
+      "loop_gain": 0.2477231443783276,
+      "measured_droop_C": 5.23,
+      "predicted_droop_C": 5.45917457108025,
+      "simulated_final_droop_C": 5.45917485109927,
+      "measured_minus_predicted_C": -0.2291745710802493,
+      "measured_fractional_droop": 0.7678147939017509,
+      "predicted_fractional_droop": 0.8014598466859773,
+      "closed_loop_tau_s": 58.528549391792716
+    },
+    {
+      "source_csv": "Module_5/data/module_05_p_control_20260930_112131_559827.csv",
+      "Kp": 1.0,
+      "ambient_C": 23.188461538461542,
+      "chi_heat_C_per_PWM": 0.4954462887566552,
+      "loop_gain": 0.4954462887566552,
+      "measured_droop_C": 4.5022499999999965,
+      "predicted_droop_C": 4.55485329881136,
+      "simulated_final_droop_C": 4.554853320748492,
+      "measured_minus_predicted_C": -0.05260329881136361,
+      "measured_fractional_droop": 0.6609740259740259,
+      "predicted_fractional_droop": 0.6686967011241979,
+      "closed_loop_tau_s": 48.833198645834585
+    },
+    {
+      "source_csv": "Module_5/data/module_05_p_control_20260930_112429_084527.csv",
+      "Kp": 2.0,
+      "ambient_C": 23.188461538461542,
+      "chi_heat_C_per_PWM": 0.4954462887566552,
+      "loop_gain": 0.9908925775133104,
+      "measured_droop_C": 3.2304999999999993,
+      "predicted_droop_C": 3.421349066480669,
+      "simulated_final_droop_C": 3.4213490665530806,
+      "measured_minus_predicted_C": -0.1908490664806699,
+      "measured_fractional_droop": 0.47426877470355744,
+      "predicted_fractional_droop": 0.5022872711942261,
+      "closed_loop_tau_s": 36.68074636866822
+    },
+    {
+      "source_csv": "Module_5/data/module_05_p_control_20260930_112955_213490.csv",
+      "Kp": 4.0,
+      "ambient_C": 23.188461538461542,
+      "chi_heat_C_per_PWM": 0.4954462887566552,
+      "loop_gain": 1.9817851550266208,
+      "measured_droop_C": 2.2600000000000016,
+      "predicted_droop_C": 2.284382712837554,
+      "simulated_final_droop_C": 2.2843827128379885,
+      "measured_minus_predicted_C": -0.024382712837552223,
+      "measured_fractional_droop": 0.33178994918125393,
+      "predicted_fractional_droop": 0.33536956823137454,
+      "closed_loop_tau_s": 24.491176220366516
+    }
+  ],
+  "simulation_metrics": [
+    {
+      "controller": "p",
+      "Kp": 2.0,
+      "Ki": 0,
+      "zeta": null,
+      "final_droop_C": 3.4213490664813193,
+      "rise_10_to_90_s": null,
+      "settling_2pct_of_initial_offset_s": null,
+      "overshoot_C": 0.0,
+      "saturation_duration_s": 0.0,
+      "anti_windup": true,
+      "duration_s": 1800.0999999994583,
+      "case": "P"
+    },
+    {
+      "controller": "pi",
+      "Kp": 2.0,
+      "Ki": 0.01,
+      "zeta": 1.6549182538450151,
+      "final_droop_C": 0.02341090832971915,
+      "rise_10_to_90_s": 575.044779441146,
+      "settling_2pct_of_initial_offset_s": 1164.2000000000367,
+      "overshoot_C": 0.0,
+      "saturation_duration_s": 0.0,
+      "anti_windup": true,
+      "duration_s": 1800.0999999994583,
+      "case": "PI_overdamped"
+    },
+    {
+      "controller": "pi",
+      "Kp": 2.0,
+      "Ki": 0.08,
+      "zeta": 0.5851019598016053,
+      "final_droop_C": -1.2469314469853998e-10,
+      "rise_10_to_90_s": 62.3313342080566,
+      "settling_2pct_of_initial_offset_s": 225.69999999999146,
+      "overshoot_C": 0.8959683500933338,
+      "saturation_duration_s": 0.0,
+      "anti_windup": true,
+      "duration_s": 1800.0999999994583,
+      "case": "PI_underdamped"
+    }
+  ],
+  "numerical_checks": [
+    {
+      "case": "open_loop_H3",
+      "max_error_to_analytic_C": 0.0038269890060007583,
+      "max_dt_halving_difference_C": 0.0019140407587627806
+    },
+    {
+      "case": "open_loop_C1",
+      "max_error_to_analytic_C": 0.002342287039226676,
+      "max_dt_halving_difference_C": 0.0011714778524023473
+    },
+    {
+      "case": "P_Kp_0.25",
+      "max_error_to_analytic_C": 0.00021264239969553955,
+      "max_dt_halving_difference_C": 0.00010635532039415807
+    },
+    {
+      "case": "P_Kp_0.5",
+      "max_error_to_analytic_C": 0.0004253149972974768,
+      "max_dt_halving_difference_C": 0.00021273325974746626
+    },
+    {
+      "case": "P_Kp_1.0",
+      "max_error_to_analytic_C": 0.0008507503877162037,
+      "max_dt_halving_difference_C": 0.0004255568664746079
+    },
+    {
+      "case": "P_Kp_2.0",
+      "max_error_to_analytic_C": 0.0017019814556356039,
+      "max_dt_halving_difference_C": 0.0008514747747625506
+    },
+    {
+      "case": "P_Kp_4.0",
+      "max_error_to_analytic_C": 0.0034058919848156677,
+      "max_dt_halving_difference_C": 0.0017043962585781003
+    },
+    {
+      "case": "P",
+      "max_error_to_analytic_C": null,
+      "max_dt_halving_difference_C": 0.0008514747747625506
+    },
+    {
+      "case": "PI_overdamped",
+      "max_error_to_analytic_C": null,
+      "max_dt_halving_difference_C": 0.0012165428202131068
+    },
+    {
+      "case": "PI_underdamped",
+      "max_error_to_analytic_C": null,
+      "max_dt_halving_difference_C": 0.003395851741693434
+    }
+  ],
+  "windup": [
+    {
+      "anti_windup": true,
+      "integral_PWM_at_switch": 0.0,
+      "peak_temperature_after_switch_C": 30.589206233017315,
+      "final_temperature_C": 30.00000185335632
+    },
+    {
+      "anti_windup": false,
+      "integral_PWM_at_switch": 983.3915988204934,
+      "peak_temperature_after_switch_C": 30.62015583517163,
+      "final_temperature_C": 30.62015583517163
+    }
+  ],
+  "source_sha256": {
+    "data/module_04/steady_state.csv": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
+    "Module_5/data/part_04_droop_comparison.csv": "65f80080348d3cc7e7bb440da997bdedd6555e91fca6d823f9b74dc1a305fe98",
+    "Module_4/data/module_04_heating_0pct_pwm0_20260928_112039_906848.csv": "14579f26174f8b12373d337a1650a1a69b18177fd3a9fb2a0a4bedf1d31c95b4",
+    "Module_4/data/module_04_heating_25pct_pwm11_20260928_102552_858326.csv": "b4b32a75d556271e03ddd08641797123015788e43c84fe9ff071d68727509de4",
+    "Module_4/data/module_04_heating_50pct_pwm23_20260928_103051_243607.csv": "091ce4b771ef7a5ac4eea95452eef661c3d5c6851627847c66ee72861206db3c",
+    "Module_4/data/module_04_heating_75pct_pwm34_20260928_103941_134734.csv": "0d89c907dd90e1bc12d5ef6a077092644e9742245f06393ec3868d6c76104dab",
+    "Module_4/data/module_04_heating_max_pwm45_20260928_100550_571289.csv": "5f90d20d3f7092aa441985fb279bb96a65162d7ba5652d684f5767ee92fc065c",
+    "Module_4/data/module_04_cooling_0pct_pwm0_20260928_112013_141346.csv": "62e45569f1638be09ea4f6b85095f0f114e3c1b79da923eb72e9efa8197ee022",
+    "Module_4/data/module_04_cooling_25pct_pwm24_20260928_104957_896611.csv": "de4d643b8479bb59e7327794b61603b2a8cb0080ef4cf8ae312efad9309c7408",
+    "Module_4/data/module_04_cooling_50pct_pwm48_20260928_105744_249371.csv": "7f8095b40fb810d22509f368db554a877d96e82a0cf8bd3dc259939b686c4c6c",
+    "Module_4/data/module_04_cooling_75pct_pwm72_20260928_110449_677478.csv": "2766c32c7a00c601f5845c69ca8e1e230148af51764f6eab1578cc9fdef66d89",
+    "Module_4/data/module_04_cooling_max_pwm96_20260928_101439_464642.csv": "68e1baf5600199ac401290f35094a36dfebdebfaf18416d728994bc165326ad2",
+    "Module_5/data/module_05_p_control_20260930_110723_090850.csv": "59c28dda5287dc826d16ce16d6bfe32e93c33b37e9d65c32d472a9b87562e074",
+    "Module_5/data/module_05_p_control_20260930_111214_398504.csv": "6bda4efbaaec2448e0f29ea56729345383c414c623bb1c03d114c535171463f2",
+    "Module_5/data/module_05_p_control_20260930_112131_559827.csv": "8035b5b7f9d42c1fbf5fce617e039cef602704d75257b01f3f83522acef48425",
+    "Module_5/data/module_05_p_control_20260930_112429_084527.csv": "7b8106a8e14ba9bd98f9e344864fd22bf9869a1f9e552e678a1f5794010130bb",
+    "Module_5/data/module_05_p_control_20260930_112955_213490.csv": "46370bf9b94580d2b9d8fed3d0bc0987d82aeaa36b0c793a6fb9cb5aec74953d"
+  }
+}

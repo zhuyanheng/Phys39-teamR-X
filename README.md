@@ -204,6 +204,34 @@ using the provisional Module 4 heating slope (`χ_h = 0.4954 °C/PWM`). The
 underlying Module 4 steady-state limitation remains documented. Instructor
 approval for the gain range and the Part 2 cooling target is not recorded.
 
+## Module 6: P/PI Control and Lumped Modeling
+
+The Module 6 analysis uses unchanged Module 4/5 CSVs and the official v3
+simulation core. It estimates directional susceptibility and thermal time
+constants, checks open-loop/P predictions, and compares simulated P/PI and
+windup. Calibration remains provisional; matched physical PI and instability
+onset evidence are still required before A3 is submission-ready.
+
+- [Module 6 detailed analysis and derivation](docs/module_notes/module_06_p_pi_model.md)
+- [Module 6 Chinese guide and next steps](docs/module_notes/module_06_next_steps_zh.md)
+- [A3 incomplete draft](docs/assessments/a3_feedback_model.md)
+- [Executed analysis notebook](python/analysis/module_06_analysis.ipynb)
+- [Reproducible analysis script](python/analysis/module_06_analysis.py)
+- [Official v3 simulation](python/Lab_6_7_modeling_tec_v3.py)
+- [Derived data and provenance](data/module_06/README.md)
+
+From the repository root:
+
+```text
+.venv/bin/python -m pip install -r python/analysis/requirements.txt
+.venv/bin/python python/analysis/module_06_analysis.py
+.venv/bin/python python/Lab_6_7_modeling_tec_v3.py
+```
+
+The analysis does not connect to hardware. Simulated PI gains have not been
+validated on the physical TEC. The Markdown draft, figures and notebook are
+local work and have not yet been committed or pushed.
+
 ## Hardware
 
 - Arduino Uno
