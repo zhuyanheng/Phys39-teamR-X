@@ -6,7 +6,7 @@ The professor's 2026-09-28 revision changed A2 from an instrument/safety note to
 
 ## 1. Experimental graph and measured slopes
 
-Insert the [Part 4 steady-temperature graph](../../Module_4/figures/part_4_steady_temperature_vs_pwm.svg): x = **signed PWM count** (COOL negative, HEAT positive), y = steady temperature (°C), blue COOL and red HEAT data, two fitted lines over clearly identified approximately linear ranges, and the actual steady-state criterion in its caption. Do not fit through visibly curved sections without saying so.
+Insert the [Part 4 steady-temperature graph](../../Module_4/figures/part_4_steady_temperature_vs_pwm.png): x = **signed PWM count** (COOL negative, HEAT positive), y = steady temperature (°C), blue COOL and red HEAT data, two fitted lines over clearly identified approximately linear ranges, and the actual steady-state criterion in its caption. Do not fit through visibly curved sections without saying so.
 
 | Quantity | Measured result | Fit range / note |
 | --- | --- | --- |

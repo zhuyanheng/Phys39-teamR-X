@@ -67,8 +67,8 @@ Existing oscilloscope evidence:
 
 - [Arduino digital-input oscilloscope video](../../Module_3/figures/part_3_oscilloscope_on_digitals.mp4)
 - [H-bridge M+/M- oscilloscope video](../../Module_3/figures/part_3_oscilloscope_on_M+-.mp4)
-- [Part 7 heating oscilloscope photograph](../../Module_3/figures/part_7_heating.jpg)
-- [Part 7 cooling oscilloscope photograph](../../Module_3/figures/part_7_cooling.jpg)
+- [Part 7 heating oscilloscope photograph](../../Module_3/figures/part_7_heating.png)
+- [Part 7 cooling oscilloscope photograph](../../Module_3/figures/part_7_cooling.png)
 
 The pin `9`/`10` checks were completed with TEC actuator power off. The M+/M-
 low-PWM checks were completed after instructor approval. The observed active

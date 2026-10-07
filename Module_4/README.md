@@ -23,9 +23,9 @@ This directory contains the Arduino and Python control programs, raw temperature
 
 ## Figures and A2
 
-- [Part 4 HEAT time trace](figures/part_4_heating_trace.svg)
-- [Part 4 COOL time trace](figures/part_4_cooling_trace.svg)
-- [Part 4 steady temperature versus signed PWM](figures/part_4_steady_temperature_vs_pwm.svg)
+- [Part 4 HEAT time trace](figures/part_4_heating_trace.png)
+- [Part 4 COOL time trace](figures/part_4_cooling_trace.png)
+- [Part 4 steady temperature versus signed PWM](figures/part_4_steady_temperature_vs_pwm.png)
 - [Part 1 HEAT high-current diagram](figures/part_1_heating_high_current.png) and [Part 1 COOL high-current diagram](figures/part_1_cooling_high_current.png) are earlier illustrations, **not** verified as-built wiring records. Check the actual series thermal-switch location and switch state with the instructor before relying on them.
 - [Part 1 GUI after the temporary 30 °C limit test](figures/part_1_gui_after_30c_limit_test.png): shows recovery at PWM 0, **not** the instant of shutdown. The [Part 1 record](check/part_1_safety_check.md) identifies the actual shutdown samples.
 - [Two-page A2 PDF candidate](A2_Huang_Zhu.pdf): contains the current graph and manufacturer comparison. Its selected temperatures and old 20-second steady-state description must be reviewed and updated before final submission.

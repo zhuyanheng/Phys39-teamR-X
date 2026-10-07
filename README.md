@@ -124,8 +124,8 @@ seconds, the active PWM command, and direction (`1` = heat, `0` = cool).
 - [Part 6 TEC Control Using GUI 2](Module_3/figures/part_6_TEC_control_using_GUI_2.png)
 - [Part 7 GUI](Module_3/figures/part_7_GUI.png)
 - [Part 7 Labeled Heat/Cool Record](Module_3/figures/part_7_heat_cool_record.png)
-- [Part 7 Cooling](Module_3/figures/part_7_cooling.jpg)
-- [Part 7 Heating](Module_3/figures/part_7_heating.jpg)
+- [Part 7 Cooling](Module_3/figures/part_7_cooling.png)
+- [Part 7 Heating](Module_3/figures/part_7_heating.png)
 
 ## Module 4: Open-Loop TEC Heating and Cooling
 
@@ -155,9 +155,9 @@ steady-temperature-versus-signed-PWM comparison.
 - [Part 1 safety-test record](Module_4/check/part_1_safety_check.md)
 - [Part 1 HEAT high-current diagram](Module_4/figures/part_1_heating_high_current.png)
 - [Part 1 COOL high-current diagram](Module_4/figures/part_1_cooling_high_current.png)
-- [HEAT time trace](Module_4/figures/part_4_heating_trace.svg)
-- [COOL time trace](Module_4/figures/part_4_cooling_trace.svg)
-- [Steady temperature versus signed PWM](Module_4/figures/part_4_steady_temperature_vs_pwm.svg)
+- [HEAT time trace](Module_4/figures/part_4_heating_trace.png)
+- [COOL time trace](Module_4/figures/part_4_cooling_trace.png)
+- [Steady temperature versus signed PWM](Module_4/figures/part_4_steady_temperature_vs_pwm.png)
 - [A2 two-page PDF candidate](Module_4/A2_Huang_Zhu.pdf)
 
 The ten-point analysis and A2 PDF are provisional. The professor's revised
@@ -195,9 +195,9 @@ Module 4 susceptibility model.
 
 - [Raw P-control CSVs](Module_5/data/)
 - [Part 4 droop summary](Module_5/data/part_04_droop_comparison.csv)
-- [Measured vs predicted droop](docs/figures/module_05/part_04_measured_vs_predicted_droop.svg)
-- [Low-gain strip-chart trace (Kp = 0.25)](docs/figures/module_05/low_gain_kp0.25_trace.svg)
-- [High-gain strip-chart trace (Kp = 4)](docs/figures/module_05/high_gain_kp4_trace.svg)
+- [Measured vs predicted droop](docs/figures/module_05/part_04_measured_vs_predicted_droop.png)
+- [Low-gain strip-chart trace (Kp = 0.25)](docs/figures/module_05/low_gain_kp0.25_trace.png)
+- [High-gain strip-chart trace (Kp = 4)](docs/figures/module_05/high_gain_kp4_trace.png)
 
 The team selected `Kp = 0.25–4 PWM/°C` and accepts the Module 5 comparison
 using the provisional Module 4 heating slope (`χ_h = 0.4954 °C/PWM`). The
