@@ -24,8 +24,16 @@
 从项目根目录运行：
 
 ```bash
-.venv/bin/python Module_6/python/Lab_6_7_modeling_tec_v3.py
+./Module_6/run_gui.command
 ```
+
+也可以直接双击本文件夹中的 `run_gui.command`。模拟窗口使用
+`Module_6/.venv` 内的 Python 3.12／Tk 9 环境；其他模块和原有分析仍使用项目根目录
+的 `.venv`。旧系统 Tk 8.5 曾出现 PNG 读取失败及空白窗口，所以不要直接用系统
+`python3` 直接使用旧 Tk。兼容入口是 `python/run_simulation.py`；老师文件的直接执行入口
+现在也会自动切换到这个兼容入口，因此编辑器选中了项目根目录的旧 Python 仍可启动。
+老师程序只调整了启动入口，模型方程和数值计算未修改。
+图形环境的依赖记录在 `python/requirements-gui.txt`。
 
 选择 one-lump 和直接输入物理参数的模式。以下是同一组测量比值的一种等效参数化：
 

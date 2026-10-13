@@ -1,0 +1,5 @@
+# GUI environment: Python 3.12 with modern Tk (tested with Tk 9.0).
+# Keep the root analysis environment separate for its existing pinned versions.
+matplotlib==3.11.2
+numpy==2.5.4
+pillow==12.3.0

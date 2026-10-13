@@ -36,6 +36,26 @@ No Arduino is needed. This is a mathematical model, not a hardware controller.
 
 from __future__ import annotations
 
+# Direct execution (including an editor's Run button) must use the GUI runtime.
+# Imports by the analysis script and compatibility launcher skip this block.
+if __name__ == "__main__":
+    import os as _launch_os
+    from pathlib import Path as _LaunchPath
+    import sys as _launch_sys
+
+    _launch_dir = _LaunchPath(__file__).resolve().parent
+    _launch_python = _launch_dir.parent / ".venv" / "bin" / "python"
+    _launch_script = _launch_dir / "run_simulation.py"
+    if not _launch_python.is_file() or not _launch_script.is_file():
+        raise SystemExit(
+            "Module 6 GUI environment is missing. Restore Module_6/.venv "
+            "and Module_6/python/run_simulation.py; system Tk 8.5 is unsupported."
+        )
+    _launch_os.execv(
+        str(_launch_python),
+        [str(_launch_python), str(_launch_script), *_launch_sys.argv[1:]],
+    )
+
 import argparse
 import base64
 from dataclasses import dataclass, replace
