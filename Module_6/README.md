@@ -55,8 +55,13 @@
 
 ## 仍需补齐的实验
 
+实物 P／PI 控制程序已准备好，尚未连接真实 TEC 验证。
+双击 [run_pi_control.command](run_pi_control.command) 启动；
+先阅读 [实物 PI 操作说明](docs/physical_pi_control_zh.md)。
+它与数学模拟器 `run_gui.command` 分开，默认不连接 Arduino。
+
 - 按已有 Module 4 审查记录，与老师确认哪些稳态点需延长或重测。
-- 在已有 Module 5 控制器上准备 PI、积分清零和条件积分 anti-windup，并保留 Arduino 温度保护、PWM 限幅。
+- 实物 PI、积分清零和条件积分 anti-windup 已实现；下一步让老师检查，并验证与现有 Arduino 的通信和保护。
 - 10 月 14 日通电前，向老师展示 e、q、P 项、I 项和实际限幅输出的计算代码。
 - 先记录 Ki=0 的 P 基准，再记录初始条件相近的 PI。改变模式或清零积分前，先将 PWM 设为零。
 - 保存实际采样间隔、设定值、初始温度、Kp、Ki、PWM 限制、anti-windup 状态和原始曲线。
@@ -71,6 +76,7 @@ A3 目前是**不完整草稿**，还不能直接提交。补齐实物结果后�
 
 ## 本文件夹结构
 
+- `ardunio/`：从 Module 4／5 原样复制的 Arduino 串口控制和温度保护程序；见 [说明](ardunio/README.md)。
 - `README.md`：中文指南，从这里开始。
 - `docs/`：完整英文分析记录和 A3 不完整草稿。
 - `python/`：老师的 v3 模拟程序；`analysis/` 中是分析脚本、notebook 和依赖清单。

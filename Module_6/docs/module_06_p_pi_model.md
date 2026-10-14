@@ -196,6 +196,12 @@ Rise time means the elapsed time between first reaching 10% and 90% of the **ini
 
 ### Physical PI implementation and matched measurements — pending
 
+Update 2026-10-14: the physical PI controller is implemented in
+[`pi_tec_control_gui.py`](../python/pi_tec_control_gui.py) with a separate
+[`pi_controller.py`](../python/pi_controller.py) arithmetic core and sixteen
+passing hardware-free tests. [Operator instructions](physical_pi_control_zh.md).
+Instructor review, actual Arduino communication and matched physical measurements remain pending.
+
 No physical PI CSV is present in the project as of 2026-10-07. Simulated PI results cannot fill that evidence requirement. Before actuator power, the instructor must review e, q, uP, uI and the clamped command. Start from the existing Module 5 controller, retain its Arduino independent shutdown and signed-output clamp, use actual accepted-measurement elapsed time for q updates, log requested and applied outputs, and provide integral reset. For conditional integration, skip accumulation if the error would drive the requested output farther beyond its limit. Set PWM=0 before mode changes or integral reset.
 
 On October 14, record Ki=0 baseline and small-positive-Ki PI from comparable conditions. Document Kp, Ki, setpoint, initial temperature, sample intervals, limits, anti-windup, and temperature/PWM/error/P/I traces. Compare rise time, overshoot, settling time, steady error, and saturation. Continue supervised tuning on October 19. Stop and set PWM=0 for wrong-direction response, frozen display, unexpected persistent saturation or growing oscillation, as required by the assignment.

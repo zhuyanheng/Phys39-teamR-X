@@ -55,6 +55,11 @@ All entries above are simulated. Errors are endpoints after 1800 s. Target rise 
 
 ## 4. Matched experimental P/PI — REQUIRED, PENDING
 
+The [physical P/PI controller](../python/pi_tec_control_gui.py) and
+[arithmetic core](../python/pi_controller.py) were prepared on 2026-10-14.
+Sixteen hardware-free tests pass; no real serial connection or powered TEC
+validation was performed. See the [operator guide](physical_pi_control_zh.md).
+
 Insert matched **physical** P and PI temperature/PWM traces here. Both should use documented comparable initial conditions and setpoints. Record Kp, Ki, reset integral state, actual sample interval, limits, anti-windup and requested/applied commands. Existing Module 5 P recordings are reference evidence, not automatically a matched baseline for a future PI run.
 
 | Physical case | Kp | Ki | Initial T | Setpoint | Limits / sample interval | Anti-windup | Rise / overshoot / settling / steady error / saturation | Source CSV |
