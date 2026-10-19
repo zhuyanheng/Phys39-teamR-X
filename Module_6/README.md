@@ -1,5 +1,12 @@
 # Module 6：目前已经做完什么，接下来怎么做
 
+## 10月19日实物实验分析
+
+按用户决定复用 Module 5 的 P 数据，并与当天 Ki=0.1、0.2、0.5、固定 Kp=20 的 PI 数据比较。
+见[实物实验分析](docs/retained_experiment_analysis_20261019.md)、[PI 对齐比较图](figures/retained_analysis/PI_aligned_comparison.png)
+和[指标表](data/retained_analysis/step_metrics.csv)。分析脚本为 `python/analysis/analyze_retained_experiments.py`。
+原始 CSV 未修改；历史 P 缺少匹配的降温记录及与 PI 相同的 Kp 条件，限制已写入分析。
+
 ## 已完成的数据分析
 
 - 从 Module 4 五个加热点、五个制冷点重新拟合斜率：χh = 0.49545、χc = 0.14142 °C/PWM；比值约 3.50345。
