@@ -1,0 +1,22 @@
+{
+  "source_sha256": {
+    "Module_6/python/Lab_6_7_modeling_tec_v3.py": "5821449dc609cb1a9544697ad53fd54c85af94889282d5afef56dbb9b6fa91ba",
+    "Module_5/data/20260930_110723_droop_kp0p25.csv": "59c28dda5287dc826d16ce16d6bfe32e93c33b37e9d65c32d472a9b87562e074",
+    "Module_5/data/20260930_111214_droop_kp0p5.csv": "6bda4efbaaec2448e0f29ea56729345383c414c623bb1c03d114c535171463f2",
+    "Module_5/data/20260930_112131_droop_kp1.csv": "8035b5b7f9d42c1fbf5fce617e039cef602704d75257b01f3f83522acef48425",
+    "Module_5/data/20260930_112429_droop_kp2.csv": "7b8106a8e14ba9bd98f9e344864fd22bf9869a1f9e552e678a1f5794010130bb",
+    "Module_5/data/20260930_112955_droop_kp4.csv": "46370bf9b94580d2b9d8fed3d0bc0987d82aeaa36b0c793a6fb9cb5aec74953d",
+    "Module_5/data/20261007_105005_kp250_20to30c_oscillation.csv": "56074f6c09e4def6f165534c8a4b781fbe19cb7bd045d673d3a123e9b4494d02",
+    "Module_6/data/physical/pi_kp_20_ki_0p1_20261019_093424_268559.csv": "3261849200bede102736cb8dc74daae6cfe895507de124df72e613dd983d4486",
+    "Module_6/data/physical/pi_kp_20_ki_0p2_20261019_095648_364327.csv": "28a3655e09ba244daaebeb6899e376b359349e57f5a1525207ed7d03320cdcbe",
+    "Module_6/data/physical/pi_kp_20_ki_0p5_20261019_101544_769937.csv": "e6167350247f87baceef133c3ba7c5364f001c65f087f5b0acbb2efb5cb9c59a",
+    "Module_6/figures/gui/two_lump/p_kp_0p25.png": "36f3aadd96f82862f615a2a451d86775f0d382474e0f383b9fbba655b300ab1f",
+    "Module_6/figures/gui/two_lump/p_kp_4.png": "e95d60f654c1bdecd5fb4786dadc175bff93e94aac90faa0c2b9b9fc26000007",
+    "Module_6/figures/gui/two_lump/p_kp_100.png": "307d559baa2343378abd895c6982597ae8cb2c67fadb35ba416f3c5d26dee6bb",
+    "Module_6/figures/gui/two_lump/pi_kp_20_ki_0p1.png": "26528997335107357589896ef5047b7a824559fa39819dd1a166c25cd5af4e93",
+    "Module_6/figures/gui/two_lump/pi_kp_20_ki_0p2.png": "b6c31697bb129bfca98c66c438707f319c543121365a5dae81e1e836f5399d1d",
+    "Module_6/figures/gui/two_lump/pi_kp_20_ki_0p5.png": "b04c37557e8b111b15891041515796b390ff91aea7e2b45a661cb98fe1b69b2a"
+  },
+  "timing": "initial20:0-300s; target30:300-1000s; target20:1000-1500s; q reset only at t=0",
+  "origin": "New standardized numerical reproductions, not extracted screenshot trajectories"
+}

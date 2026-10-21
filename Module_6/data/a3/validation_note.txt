@@ -1,0 +1,1 @@
+Verified 6 P equilibrium predictions within 0.005 C; PI poles cross the boundary at rho=1 on both heating/cooling branches; source hashes unchanged. All 12 PDF pages rendered and visually inspected; final affected pages rechecked after edits.

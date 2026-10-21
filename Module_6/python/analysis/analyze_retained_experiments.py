@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from file_naming import experiment_stem
 
 os.environ.setdefault('MPLCONFIGDIR', '/private/tmp/phys39_analysis_mpl')
 import numpy as np
@@ -16,9 +17,9 @@ import matplotlib.pyplot as plt
 
 M = Path(__file__).resolve().parents[2]
 ROOT = M.parent
-OUT = M / 'data/retained_analysis'
-FIG = M / 'figures/retained_analysis'
-DOC = M / 'docs/retained_experiment_analysis_20261019.md'
+OUT = M / 'data/experiment_analysis'
+FIG = M / 'figures/experiment_analysis'
+DOC = M / 'docs/experiment_analysis_2026-10-19.md'
 PFILES = {
     .25: '20260930_110723_droop_kp0p25.csv',
     .5: '20260930_111214_droop_kp0p5.csv',
@@ -28,9 +29,9 @@ PFILES = {
     250: '20261007_105005_kp250_20to30c_oscillation.csv',
 }
 PIFILES = {
-    .1: ('module_06_pi_20261019_093424_268559.csv', '3'),
-    .2: ('module_06_pi_20261019_095648_364327.csv', '2'),
-    .5: ('module_06_pi_20261019_101544_769937.csv', '3'),
+    .1: ('pi_kp_20_ki_0p1_20261019_093424_268559.csv', '3'),
+    .2: ('pi_kp_20_ki_0p2_20261019_095648_364327.csv', '2'),
+    .5: ('pi_kp_20_ki_0p5_20261019_101544_769937.csv', '3'),
 }
 COLORS = ['#2166ac', '#d17a15', '#a5243d']
 plt.rcParams.update({'font.size': 10, 'axes.spines.top': False,
@@ -146,7 +147,7 @@ def main():
         ax[0].set_ylabel('Temperature (°C)'); ax[0].legend(loc='best')
         ax[1].step(t,u,where='pre',color=COLORS[1]); ax[1].set_ylabel('Reported signed PWM')
         ax[1].set_xlabel('Time from first active measurement (s)')
-        savefig(fig, f'P_kp{kp:g}'.replace('.','p'))
+        savefig(fig, experiment_stem(kp))
     for ki,rows in pis.items():
         t,T=arrays(rows); target=np.array([float(r['setpoint_C']) for r in rows])
         fig,ax=plt.subplots(4,1,sharex=True,figsize=(11,9),layout='constrained')
@@ -160,7 +161,7 @@ def main():
             a.set_ylabel('PWM');a.legend(loc='best',ncol=2)
         ax[3].plot(t,target-T,color=COLORS[0]);ax[3].axhspan(-.2,.2,color='green',alpha=.12)
         ax[3].set_ylabel('Target − T (°C)');ax[3].set_xlabel('Time from initial 20°C conditioning (s)')
-        savefig(fig, f'PI_ki{ki:g}'.replace('.','p'))
+        savefig(fig, experiment_stem(20, ki))
     fig,ax=plt.subplots(2,2,figsize=(12,7),layout='constrained')
     fig.suptitle('PI comparison | Kp=20, PWM limit=255 | steps aligned separately')
     for ki,color in zip(PIFILES,COLORS):
@@ -177,7 +178,7 @@ def main():
             ax[row,col].axhline(target,color='black',ls='--');ax[row,col].axhspan(target-.2,target+.2,color='green',alpha=.12)
             ax[row,col].set_ylabel('Temperature (°C)');ax[row,col].legend()
         ax[1,col].set_ylim(target-1.25,target+1.05);ax[1,col].set_xlabel('Time after step (s)')
-    savefig(fig,'PI_aligned_comparison')
+    savefig(fig,'pi_aligned_comparison')
 
     # Historical high-gain period: same explicit late-time peak criterion used
     # by Module 5 analysis, with Arduino t>=90 s and peak >30.5°C.
@@ -188,8 +189,8 @@ def main():
     period=float(np.mean(np.diff(peaks))) if len(peaks)>=2 else None
     with (OUT/'step_metrics.csv').open('w',newline='') as f:
         w=csv.DictWriter(f,fieldnames=list(result[0]));w.writeheader();w.writerows(result)
-    payload=dict(input_sha256=manifest,metrics=result,P_kp250_late_peak_times_arduino_s=peaks,
-                 P_kp250_late_period_s=period,
+    payload=dict(input_sha256=manifest,metrics=result,exp_p_kp_250_late_peak_times_arduino_s=peaks,
+                 exp_p_kp_250_late_period_s=period,
                  settling_definition='Within target ±0.2 C through record end, >=60 s observed after settling',
                  rise_definition='First 10%-to-90% crossings of target minus first post-step measured T; interpolated',
                  tail_definition='Final 60 s; historical P droop comparison also includes final 20 s')
@@ -227,8 +228,8 @@ def main():
               '- 为图示选择P Kp=0.25、4、250作为低、稳定示例、高增益；Kp=4不是已验证的最佳中增益，PI Kp=20也不满足“略低于4”的匹配关系。按用户决定复用数据，但这一课程协议差异必须保留。',
               '- P与PI的Kp不同，不能把跨组的全部速度差异单独归因于积分项。三组PI内部只改变Ki，比较依据更充分。','',
               '## 产物与下一步','',
-              '- data/retained_analysis/step_metrics.csv：12段记录的指标；analysis_results.json：定义、来源SHA256和计算结果。',
-              '- figures/retained_analysis/：三张历史P、三张PI完整轨迹，以及一张PI对齐比较图；均有PNG与SVG。',
+              '- data/experiment_analysis/step_metrics.csv：12段记录的指标；analysis_results.json：定义、来源SHA256和计算结果。',
+              '- figures/experiment_analysis/：三张历史P、三张PI完整轨迹，以及一张PI对齐比较图；均有PNG与SVG。',
               '- 下一步是六组对应的two-lump模拟与实验比较，再将理论、图表、参数选择和协议限制整理进A3。本脚本没有运行新的模拟。','']
     DOC.write_text('\n'.join(lines))
     print(DOC)

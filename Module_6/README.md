@@ -1,93 +1,72 @@
-# Module 6：目前已经做完什么，接下来怎么做
+# Module 6：P / PI 温度控制与热模型
 
-## 10月19日实物实验分析
+## 常用入口
 
-按用户决定复用 Module 5 的 P 数据，并与当天 Ki=0.1、0.2、0.5、固定 Kp=20 的 PI 数据比较。
-见[实物实验分析](docs/retained_experiment_analysis_20261019.md)、[PI 对齐比较图](figures/retained_analysis/PI_aligned_comparison.png)
-和[指标表](data/retained_analysis/step_metrics.csv)。分析脚本为 `python/analysis/analyze_retained_experiments.py`。
-原始 CSV 未修改；历史 P 缺少匹配的降温记录及与 PI 相同的 Kp 条件，限制已写入分析。
+- [A3 最终 PDF](output/pdf/A3_Huang_Zhu.pdf)
+- [A3 可编辑英文报告](docs/a3_feedback_model.md)
+- [实验数据分析](docs/experiment_analysis_2026-10-19.md)
+- [PI 三组对照图](figures/experiment_analysis/pi_aligned_comparison.png)
+- [实物控制程序说明](docs/pi_controller_guide_zh.md)
+- [数据说明](data/README.md)、[图片说明](figures/README.md)、[文档索引](docs/README.md)
 
-## 已完成的数据分析
+## 目录结构
 
-- 从 Module 4 五个加热点、五个制冷点重新拟合斜率：χh = 0.49545、χc = 0.14142 °C/PWM；比值约 3.50345。
-- 从六条原始阶跃曲线估计时间常数，约 60.86–75.50 秒。H3 加热曲线作为主要例子，τ = 73.03 秒。
-- 使用老师原版 v3 程序的计算核心，对照实测开环曲线和 Module 5 的 P 控制数据。
-- 在 Kp=2 时，预测 droop 约 3.421 °C，实测约 3.231 °C。
-- 完成 P、过阻尼 PI、欠阻尼 PI 的模拟，以及打开／关闭 anti-windup 的模拟比较。
-- 写好可复算的 notebook、详细推导和 A3 草稿，并保存数值表格、参数和七组图。
+```text
+Module_6/
+├── run_gui.command                  数学模拟器入口
+├── run_pi_control.command           实物 P / PI 控制入口
+├── arduino/                         Arduino sketch 与说明
+├── python/                          老师程序、控制器、测试
+│   └── analysis/                    分析、绘图、报告脚本及 notebook
+├── data/
+│   ├── physical/                    原始实物 CSV
+│   ├── experiment_analysis/         实测指标与来源校验
+│   ├── model_baseline/              标定、one-lump 基础分析
+│   └── a3/                          标准化 two-lump 模拟与验证
+├── figures/
+│   ├── gui/one_lump/                手动保存的 one-lump 截图
+│   ├── gui/two_lump/                手动保存的六组 two-lump 截图
+│   ├── model_baseline/              基础分析图
+│   ├── experiment_analysis/         实测详细图
+│   └── a3/                          报告用图及公式
+├── docs/                            报告、方法、实验记录、整理清单
+└── output/pdf/                      A3_Huang_Zhu.pdf
+```
 
-重要限制：Module 4 部分稳态记录尚未满足老师更新后的观测要求，所以斜率仍是暂定值。时间常数的不同运行范围不是统计置信区间。模拟中的 H=1 是任意归一化，不能写成“实测散热系数”。现有 Arduino 源码使用 1000 次电压平均，但 CSV 没有记录当时上传的固件版本。
+`.venv/` 是模拟器本地 Python / Tk 环境，不是提交数据，不要移动。Module 4、5 原始数据仍在原文件夹，本模块会读取。
 
-## 你现在可以先阅读什么
+## 命名约定
 
-1. 打开 [P droop 图](figures/04_p_droop.png)：看 Kp 越大，稳态误差越小。
-2. 打开 [P／PI 模拟图](figures/06_p_pi_simulation.png)：P 留有误差，PI 可以逐渐接近目标；Ki 增大时，这组模型响应更快但出现超调。
-3. 阅读 [详细英文实验记录](docs/module_06_p_pi_model.md)，尤其 Part 2 的三个解释题、Part 3 的 τ 估计和 Part 8 的 windup。
-4. 打开 [A3 草稿](docs/a3_feedback_model.md)：已有数据和模拟结果已经填入，缺少的实物实验留有明确位置。
-5. 对照 [Module 5 原始数据索引](../Module_5/data/README.md) 和 [Kp=250 的实测振荡图](../Module_5/figures/kp250_20to30c_oscillation.png)：这条高增益实测曲线与本模块的理想一阶模型不同。
+常规文件用小写与下划线；小数点写成 `p`，例如 `0p25` 表示0.25。
 
-## 在课堂中操作 v3 模拟
+- 实测图：`exp_pi_kp_20_ki_0p2.png`。
+- 模拟图与数据：`sim_two_lump_pi_kp_20_ki_0p2.png/.csv`。
+- GUI 截图由目录表明模型：`figures/gui/two_lump/p_kp_100.png`。
+- 已归档实物 CSV 写明增益并保留原时间戳。新采集仍按连接时间命名，因为一次连接可能包含多组设置；以 CSV 内参数和 `run_id` 为准。
+- 老师程序保留 `Lab_6_7_modeling_tec_v3.py` 原名；Arduino sketch 保持同名目录与 `.ino`；最终 PDF 保留课程要求的姓名格式。
+- 改名前后路径与原始 SHA256 见[整理清单](docs/file_organization_2026-10-21.json)。原始实物 CSV、截图内容不因整理改变。
 
-从项目根目录运行：
+## 启动和复算
+
+从项目根目录执行，也可双击两个启动文件：
 
 ```bash
 ./Module_6/run_gui.command
+./Module_6/run_pi_control.command
 ```
 
-也可以直接双击本文件夹中的 `run_gui.command`。模拟窗口使用
-`Module_6/.venv` 内的 Python 3.12／Tk 9 环境；其他模块和原有分析仍使用项目根目录
-的 `.venv`。旧系统 Tk 8.5 曾出现 PNG 读取失败及空白窗口，所以不要直接用系统
-`python3` 直接使用旧 Tk。兼容入口是 `python/run_simulation.py`；老师文件的直接执行入口
-现在也会自动切换到这个兼容入口，因此编辑器选中了项目根目录的旧 Python 仍可启动。
-老师程序只调整了启动入口，模型方程和数值计算未修改。
-图形环境的依赖记录在 `python/requirements-gui.txt`。
+模拟器使用 `Module_6/.venv`，实物界面与分析使用项目根目录 `.venv`。老师程序保留启动兼容修补；本次整理未改变数学方程、增益或保护逻辑。固件见[arduino/README.md](arduino/README.md)。
 
-选择 one-lump 和直接输入物理参数的模式。以下是同一组测量比值的一种等效参数化：
+```bash
+.venv/bin/python Module_6/python/analysis/analyze_model_baseline.py
+.venv/bin/python Module_6/python/analysis/analyze_retained_experiments.py
+.venv/bin/python Module_6/python/analysis/prepare_a3_evidence.py
+```
 
-| 参数 | 值 | 意义 |
-| --- | --- | --- |
-| H | 1 W/°C | 任意归一化，未独立测量 |
-| 总 C | 73.02743 J/°C | 设置 C/H = τ |
-| 制冷 Pu,c | 0.14141667 W/PWM | 设置 Pu,c/H = χc |
-| 加热／制冷比 r | 3.50345048 | χh/χc |
-| 初始温度、环境温度 | 23.1885 °C | Module 5 比较的参考值 |
-| 设定温度 | 30 °C | 与已有 P 数据一致 |
-| Kp | 2 PWM/°C | 已有实测比较的例子 |
-| Ki | 0、0.01、0.08 PWM/(°C·s) | 分别看 P、过阻尼 PI、欠阻尼 PI |
-| 时间步长 | 0.1 s | 数值检查已与 0.05 s 比较 |
-| PWM 上限 | 255 | 仅为本组模拟设置 |
-| anti-windup | 开启 | 条件积分 |
+最后用装有 ReportLab、Pillow、pypdf 的 Python 运行 `Module_6/python/analysis/build_a3_report.py`，更新 PDF 和 Markdown。详见[脚本说明](python/analysis/README.md)。这些分析脚本不连接硬件。
 
-每次比较前重置相同初始条件并清零积分。数值文件中的精确设置优先于本表的显示精度。上表 Ki 是模拟探索值，不是已经验证的实物增益。windup 演示中的 60 °C 仅为不可达目标的数学模拟，不能照搬到实物操作。
+## 当前状态与限制
 
-## 仍需补齐的实验
+A3 包含问题1–5、六组实测图和六组标准化模拟图。历史 P 缺少降温，高增益实物250与模拟100不同，PI 的 Kp=20 与历史稳定 P 示例4也不匹配；这些限制已写入报告，不能声称严格满足完整匹配协议。
 
-实物 P／PI 控制程序已准备好，尚未连接真实 TEC 验证。
-双击 [run_pi_control.command](run_pi_control.command) 启动；
-先阅读 [实物 PI 操作说明](docs/physical_pi_control_zh.md)。
-它与数学模拟器 `run_gui.command` 分开，默认不连接 Arduino。
-
-- 按已有 Module 4 审查记录，与老师确认哪些稳态点需延长或重测。
-- 实物 PI、积分清零和条件积分 anti-windup 已实现；下一步让老师检查，并验证与现有 Arduino 的通信和保护。
-- 10 月 14 日通电前，向老师展示 e、q、P 项、I 项和实际限幅输出的计算代码。
-- 先记录 Ki=0 的 P 基准，再记录初始条件相近的 PI。改变模式或清零积分前，先将 PWM 设为零。
-- 保存实际采样间隔、设定值、初始温度、Kp、Ki、PWM 限制、anti-windup 状态和原始曲线。
-- 10 月 19 日继续在老师监督下调参，量化上升时间、超调、稳定时间、稳态误差和饱和。
-- 9 月的 Kp≤4 记录未出现振荡；10 月 7 日的 [Kp=250 原始记录](../Module_5/data/20261007_105005_kp250_20to30c_oscillation.csv)出现反复振荡。两组初始条件不同，仍不能据此确定振荡起始增益；还需和老师核对该高增益实验的批准范围及证据解释。
-
-## 最后提交
-
-A3 目前是**不完整草稿**，还不能直接提交。补齐实物结果后，检查图、数据链接和解释，commit、push，并填写可验证的 GitHub checkpoint 链接。生成 `A3_Huang_Zhu.pdf`，每位组员分别上传相同团队 PDF 至 Moodle；截止 2026 年 10 月 21 日（周三）下午 6 点。
-
-本次分析保留了原始数据及 Module 5 控制程序。新分析文件和文稿目前只在本地，本次整理尚未 commit／push。
-
-## 本文件夹结构
-
-- `ardunio/`：从 Module 4／5 原样复制的 Arduino 串口控制和温度保护程序；见 [说明](ardunio/README.md)。
-- `README.md`：中文指南，从这里开始。
-- `docs/`：完整英文分析记录和 A3 不完整草稿。
-- `python/`：老师的 v3 模拟程序；`analysis/` 中是分析脚本、notebook 和依赖清单。
-- `data/`：计算表格、模拟数据、完整参数与原始数据校验信息。
-- `figures/`：七组 PNG／SVG 图。
-
-Module 4、5 的原始数据继续保存在它们原来的文件夹中，分析会读取这些文件。
+标定仍是暂定结果；基础模型 H=1 是任意归一化，A3 常数则以假设电压、电阻推导，二者不应混用。提交前仍需团队审阅、GitHub checkpoint 和 Moodle 上传；本次整理未代为提交。

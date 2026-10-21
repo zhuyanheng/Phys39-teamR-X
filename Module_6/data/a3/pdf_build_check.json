@@ -1,0 +1,18 @@
+{
+  "pages": 12,
+  "planned_sections": [
+    "2. Experimental responses and metrics",
+    "2. Experimental evidence: P control",
+    "2. Experimental evidence: PI control",
+    "3. Two-lump model and derivation",
+    "3. Stability calculations and classifications",
+    "3. Standardized two-lump simulations: P",
+    "3. Standardized two-lump simulations: PI",
+    "3. Experiment-model comparison",
+    "4. PI steady state, assumptions and windup",
+    "5. Model limits and gain selection",
+    "Evidence, reproducibility and limitations"
+  ],
+  "source_hashes_verified": true,
+  "extracted_characters": 22436
+}

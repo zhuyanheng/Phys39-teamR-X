@@ -219,11 +219,11 @@ constants, checks open-loop/P predictions, and compares simulated P/PI and
 windup. Calibration remains provisional; matched physical PI and instability
 onset evidence are still required before A3 is submission-ready.
 
-- [Module 6 detailed analysis and derivation](Module_6/docs/module_06_p_pi_model.md)
+- [Module 6 detailed analysis and derivation](Module_6/docs/one_lump_model_notes.md)
 - [Module 6 Chinese guide and next steps](Module_6/README.md)
 - [A3 incomplete draft](Module_6/docs/a3_feedback_model.md)
-- [Executed analysis notebook](Module_6/python/analysis/module_06_analysis.ipynb)
-- [Reproducible analysis script](Module_6/python/analysis/module_06_analysis.py)
+- [Executed analysis notebook](Module_6/python/analysis/model_baseline_analysis.ipynb)
+- [Reproducible analysis script](Module_6/python/analysis/analyze_model_baseline.py)
 - [Official v3 simulation](Module_6/python/Lab_6_7_modeling_tec_v3.py)
 - [Derived data and provenance](Module_6/data/README.md)
 
@@ -231,7 +231,7 @@ From the repository root:
 
 ```text
 .venv/bin/python -m pip install -r Module_6/python/analysis/requirements.txt
-.venv/bin/python Module_6/python/analysis/module_06_analysis.py
+.venv/bin/python Module_6/python/analysis/analyze_model_baseline.py
 .venv/bin/python Module_6/python/Lab_6_7_modeling_tec_v3.py
 ```
 
