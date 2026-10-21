@@ -1,0 +1,13 @@
+{
+  "new_raw_P_sha256": "3 unchanged",
+  "independent_metrics": "12 segments checked",
+  "PI_metrics": "unchanged in all 6 segments",
+  "Module5_sources_in_current_A3": 0,
+  "links_checked": 82,
+  "broken_links": 0,
+  "short_high_P_tails": "null, not full-record averages",
+  "pdf_pages": 12,
+  "pdf_visual_review": "all 12 rendered pages inspected",
+  "current_pdf_no_superseded_P_claims": true,
+  "current_provenance_sha256": "all verified"
+}

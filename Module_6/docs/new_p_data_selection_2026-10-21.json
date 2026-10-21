@@ -1,0 +1,31 @@
+{
+  "new_p_files": [
+    {
+      "old": "module_06_pi_20261021_103204_751306.csv",
+      "new": "p_kp_0p25_20261021_103204_751306.csv",
+      "sha256": "a4b4110c6b737a19a7b28abb329dff8e29822b61f3418902fb28052da1f6c9ab",
+      "Kp": 0.25,
+      "mode": "P",
+      "run_id": "1"
+    },
+    {
+      "old": "module_06_pi_20261021_103836_296838.csv",
+      "new": "p_kp_4_20261021_103836_296838.csv",
+      "sha256": "c299bd1763e53f98e446ae8d103b496ccd61e2493ef979e165a8497f775a3b71",
+      "Kp": 4,
+      "mode": "P",
+      "run_id": "1"
+    },
+    {
+      "old": "module_06_pi_20261021_105056_326633.csv",
+      "new": "p_kp_100_20261021_105056_326633.csv",
+      "sha256": "691a5d44d198024cd76442f9b4ad8bd2de63c9fc046ad8cef65f21c661c16038",
+      "Kp": 100,
+      "mode": "P",
+      "run_id": "1"
+    }
+  ],
+  "supersedes": "Module 5 P evidence in A3",
+  "previous_report_archive": "archive/2026-10-21_pre_new_p",
+  "raw_contents_unchanged": true
+}

@@ -2,10 +2,12 @@
 
 | 文件夹 | 内容 | 生成脚本 |
 |---|---|---|
-| [physical/](physical/README.md) | 10月19日三组原始实物 PI CSV | 实物 GUI；按 CSV 内 run_id 筛选 |
-| experiment_analysis/ | step_metrics.csv、analysis_results.json：实测指标和输入 SHA256 | analyze_retained_experiments.py |
-| model_baseline/ | 标定、时间常数、P droop、one-lump 模拟 | analyze_model_baseline.py |
-| a3/ | 标准化 two-lump CSV、稳定性、步长和报告验证 | prepare_a3_evidence.py、build_a3_report.py |
+| [physical/](physical/README.md) | 10月19日 PI 及21日 P，合计六组原始 CSV | 实物 GUI；按 CSV 内 run_id 筛选 |
+| [experiment_analysis/](experiment_analysis/) | 当前实测指标与输入 SHA256 | [analyze_retained_experiments.py](../python/analysis/analyze_retained_experiments.py) |
+| [model_baseline/](model_baseline/) | 历史基础分析：标定、时间常数、旧 P droop、one-lump 模拟 | [analyze_model_baseline.py](../python/analysis/analyze_model_baseline.py) |
+| [a3/](a3/) | 当前标准化 two-lump CSV、稳定性、步长和报告验证 | [prepare_a3_evidence.py](../python/analysis/prepare_a3_evidence.py)、[build_a3_report.py](../python/analysis/build_a3_report.py) |
+
+当前 [step_metrics.csv](experiment_analysis/step_metrics.csv) 有12个升降温段，来源为本模块三组 P（0.25、4、100）和三组 PI（Kp=20，Ki=0.1、0.2、0.5）。筛选与 SHA256 见 [analysis_results.json](experiment_analysis/analysis_results.json)。
 
 ## model_baseline
 
@@ -21,6 +23,8 @@
 - simulation_step_metrics.csv：升降温指标。
 - shared_model.json、stability.json：共同参数、阻尼、临界增益与 PI 稳定性。
 - timestep_checks.csv：0.05 / 0.025秒比较。
-- provenance.json：来源 SHA256；pdf_build_check.json、validation_note.txt：验证记录。
+- [provenance.json](a3/provenance.json)：当前模型、原始数据和截图的来源 SHA256，无 Module 5 P 输入。
+- [new_p_validation.json](a3/new_p_validation.json)：替换新 P 后的原始数据、12段指标、PI一致性与 PDF 检查。
+- [pdf_build_check.json](a3/pdf_build_check.json)：最近一次 PDF 生成检查；validation_note.txt 保留较早的模型数值检查。
 
-Module 5 的 P 原始数据仍在 `../../Module_5/data/`，本模块只读取。
+Module 5 P仍保留在原目录，但当前A3不再读取；旧基础分析与旧报告只作历史资料。

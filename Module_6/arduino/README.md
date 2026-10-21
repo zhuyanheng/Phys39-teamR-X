@@ -1,7 +1,6 @@
 # Module 6 Arduino 程序
 
-[p_only_tec.ino](p_only_tec/p_only_tec.ino) 从 Module 5 原样复制，与 Module 4 的
-`arudino/part_1/part_1.ino` 逐字节一致，未修改控制或保护逻辑。
+[p_only_tec.ino](p_only_tec/p_only_tec.ino) 从 [Module 5 固件](../../Module_5/arduino/p_only_tec/p_only_tec.ino)原样复制，与 [Module 4 固件](../../Module_4/arudino/part_1/part_1.ino)逐字节一致，未修改控制或保护逻辑。
 
 虽然历史文件名是 `p_only_tec`，它也适用于 Module 6 的 PI 实验：
 P／PI 计算在 Python 中执行，Arduino 负责测温、接收串口 PWM／方向命令和独立温度关断。
@@ -12,4 +11,4 @@ P／PI 计算在 Python 中执行，Arduino 负责测温、接收串口 PWM／�
 
 原有设置：9600 baud、1000 次 ADC 电压平均、约 500 ms 报告间隔、
 D9 HEAT／D10 COOL、60 °C 独立软件温度关断及无效传感器关断。
-实际上传版本、接线与保护仍需现场核对；本次只复制源码，未上传或操作硬件。
+本目录说明源码的来源与职责，不单凭文件副本推断每次实验实际上传的固件版本。Module 6 的实测记录与运行说明分别见[原始数据索引](../data/physical/README.md)和[控制器指南](../docs/pi_controller_guide_zh.md)。

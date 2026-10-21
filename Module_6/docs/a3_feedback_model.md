@@ -5,9 +5,9 @@ Lumped-Model Memo
 
 Ricky Huang and Xavier Zhu | Phys 39 | 21 October 2026
 
-**Result.** Historical P data show decreasing droop with gain and sustained high-gain oscillation. Three new PI runs remove most residual error; increasing Ki speeds the final heating correction but increases overshoot. A two-lump model explains internal lag and decaying ringing, but does not reproduce the sustained experimental P oscillation. Kp=20, Ki=0.2 is a moderate-overshoot choice among the tested PI settings, not a proven optimum.
+**Result.** New Module 6 P measurements show large low-gain droop and decaying high-gain ringing. Three PI runs remove most residual error; increasing Ki speeds final heating correction but increases overshoot. The two-lump model captures these qualitative trends, while its quantitative excursions and branch-dependent speeds remain imperfect. Kp=20, Ki=0.2 is a moderate-overshoot choice among the tested PI settings, not a proven optimum.
 
-**Evidence scope.** We reuse Module 5 P records as directed and retain the three physical PI runs from 19 October. The P records are not matched bidirectional runs, and their stable example Kp=4 is below the PI Kp=20. The high P experiment uses Kp=250, while the saved GUI simulation uses 100. These departures limit direct causal and protocol comparisons; missing measurements are not fabricated. Six original GUI screenshots are preserved, and six newly computed, standardized simulations provide numerical results.
+**Evidence scope.** P evidence is now exclusively from 21 October Module 6 measurements at Kp=0.25, 4 and 100; the earlier P evidence is excluded. PI evidence remains the three 19 October Module 6 runs. All six have target 20-30-20 and limit ±255, and the P simulation gains now match the P experiments. High-P segments last only 45/56 s, so they cannot confirm a 60-s settling criterion. Days, conditioning and room temperature are not fully matched, and PI Kp=20 is above the middle P gain4. Six operator screenshots are preserved separately from the standardized numerical simulations.
 
 ## 1. One-lump model and P predictions
 
@@ -27,28 +27,25 @@ $$
 e_{ss}=\frac{T_{set}-T_{amb}}{1+\chi K_p},\quad \tau_{cl}=\frac{\tau}{1+\chi K_p},\quad L=\chi K_p
 $$
 
-L is dimensionless. Increasing Kp reduces the required error for a sustaining command and shortens the one-lump response time. The provisional Module 4 estimates are chi_h=0.49545, chi_c=0.14142 °C/PWM and tau=73.03 s. For Kp=4, Tamb=23.1885°C and Tset=30°C, predicted droop is 2.284°C versus the measured final-20-s 2.260°C; predicted tau_cl is 24.49 s. This agreement supports the static heating relation, not the entire transient model.
+L is dimensionless. Increasing Kp reduces P droop and shortens the ideal one-lump response time. Provisional Module 4 estimates are chi_h=0.49545, chi_c=0.14142 °C/PWM and tau=73.03 s. A Module 4 example supplies the requested prediction comparison: at +34 PWM, nominal Tamb=23.44°C gives Tss=23.44+34(0.495446)=40.285°C versus measured final-20-s 40.421°C. Trace RMSE is 0.180°C, but the time constant is calibrated from that same H3 trace, so this is calibration reuse, not independent transient validation.
 
-| Kp | Measured droop / °C | Predicted droop / °C | Predicted tau_cl / s |
+| New P Kp | Heating tail20 error / °C | Cooling tail20 error / °C | Nominal tau_cl heat / s |
 | --- | --- | --- | --- |
-| 0.25 | 6.000 | 6.061 | 64.98 |
-| 0.5 | 5.230 | 5.459 | 58.53 |
-| 1 | 4.502 | 4.555 | 48.83 |
-| 2 | 3.230 | 3.421 | 36.68 |
-| 4 | 2.260 | 2.284 | 24.49 |
+| 0.25 | 7.819 | -1.739 | 64.98 |
+| 4 | 2.864 | -1.220 | 24.49 |
 
-Calibration caveat: some Module 4 endpoints were too short to establish the stricter late steady-state criterion. The 60.86-75.50 s range across six fitted steps is run-to-run variation, not a confidence interval. Only Pu/H and C/H follow directly from these thermal data.
+Tail20 values describe the finite new records, not proven infinite-time droop. The high-gain transient is evaluated separately. The 23.19°C model room temperature is a nominal reference, not a new room measurement. Lower low-gain temperatures than the model predicts cannot be attributed uniquely to an incorrect gain or susceptibility. Some Module 4 endpoints are short; the 60.86-75.50 s range of fitted time constants is run variation, not a confidence interval.
 
 ## 2. Experimental responses and metrics
 
-Three historical P examples use Kp=0.25, 4 and 250; three physical PI runs use Kp=20 and Ki=0.1, 0.2 and 0.5. PI retained run IDs are 3, 2 and 3 in the chronological files, respectively; short preliminary starts are excluded. Each PI run includes initial conditioning toward 20°C, an upward 30°C step and a return to 20°C. Integral memory is reset only before each run, then retained across target changes.
+P gains are 0.25, 4 and 100, with Ki=0 and retained run_id=1 in each new file. PI uses Kp=20 and Ki=0.1, 0.2, 0.5 with retained run IDs 3, 2, 3. Short PI preliminary starts are excluded. Each retained run includes target 20 conditioning, target 30, then target 20. PI integral memory is reset before the run and retained across target steps; P has no active integral.
 
-**Definitions.** Rise/fall time is the first 10%-to-90% traversal of the actual starting-temperature-to-target step, using linear interpolation. Overshoot is excursion beyond target divided by that step amplitude. Settling requires remaining within target ±0.2°C to record end with at least 60 s of later observations. Error means target minus measured temperature. Tail error uses the last 60 s; historical droop above uses 20 s. NR means not reached or not confirmed in the finite record; NA means unavailable.
+**Definitions.** Rise/fall time is the interpolated first 10%-to-90% traversal from actual post-step starting temperature toward target. Overshoot is excursion beyond target divided by that amplitude. Settling requires all remaining samples within target ±0.2°C and at least 60 s of later observations. NR means not reached/confirmed; NA means unavailable. Error is target minus measurement. Tail60 is reported only for segments >=60 s; otherwise it is NA. Tail20 is a short-record endpoint average, never assumed to be equilibrium.
 
-| Case | Step | 10-90% / s | Overshoot / % | Settle / s | Tail error / °C |
+| Case | Step | 10-90% / s | Overshoot / % | Settle / s | Tail60 error / °C |
 | --- | --- | --- | --- | --- | --- |
-| P 250 | up | 3.48 | 27.03 | NR | -0.441 |
-| P 250 | down | NA | NA | NA | NA |
+| P 100 | up | 5.89 | 32.56 | NR | NA |
+| P 100 | down | 13.49 | 2.30 | NR | NA |
 | PI 0.1 | up | 10.46 | 0.10 | 401.35 | 0.069 |
 | PI 0.1 | down | 50.51 | 0.00 | 127.43 | -0.028 |
 | PI 0.2 | up | 9.62 | 0.30 | 138.04 | 0.002 |
@@ -56,19 +53,21 @@ Three historical P examples use Kp=0.25, 4 and 250; three physical PI runs use K
 | PI 0.5 | up | 8.80 | 8.19 | 27.51 | -0.038 |
 | PI 0.5 | down | 25.42 | 10.78 | 168.67 | 0.033 |
 
-Largest P: initial T=20.90°C, maximum 32.46°C, 2.46°C overshoot (27.03% of its 9.10°C step), and no confirmed settling. Late positive peaks at Arduino time >=90 s give a mean period of 6.89 s. The record has 64/157 active measurements at full-scale reported PWM. Its tail average is not a stable equilibrium. No fixed-gain downward step was recorded, so downward metrics cannot be recovered.
+Largest P: heating starts at 20.14°C, reaches 33.21°C and overshoots by 3.21°C (32.56%); 10-90% rise is 5.89 s. Cooling starts at 30.01°C, reaches 19.77°C (0.23°C undershoot, 2.30%), with 13.49 s fall. Records last 44.79/56.07 s, so confirmed settling and full 60-s tail means are unavailable. Last 20-s errors are +0.061/-0.227°C up/down; the full transient average is not a steady-state error.
 
-Largest PI: Ki=0.5 has maxima/minima of 30.82/18.92°C. A single dominant excursion and recovery does not support a robust repeated-cycle period; its oscillation period is NA. The Ki=0.1 and 0.2 heating excursions of 0.01/0.03°C are small relative to the reported resolution and should not be treated as substantial overshoot.
+The two prominent heating peaks 33.21 and 30.58°C are 17.81 s apart, with troughs 29.01 then 29.53°C: observed oscillations decay. This single peak interval is only a rough transient-period estimate. Cooling lacks enough prominent repeated cycles for a period. Full-scale applied samples are 25/89 heating and 30/111 cooling, so saturation affects the transient.
 
-All retained PI measurements report Safety=OK and no calculated output saturation. Median measurement interval is approximately 0.51 s. Event rows lack Arduino timestamps, so step origin has about one sample of uncertainty. Each recorded firmware PWM refers to the command active before that measurement; the next calculated command has a one-report offset. Firmware reporting does not measure electrical current.
+Largest PI remains Ki=0.5: peak 30.82°C, minimum 18.92°C. Its single dominant excursion does not support a repeated-cycle period. All PI measurements report no calculated saturation. Across all six retained runs Safety=OK and median sampling is about 0.51 s. P low-gain initial conditioning lasts only 25.79 s, and its final cooling record is still drifting; both limitations remain visible.
+
+Event rows lack Arduino timestamps, so step origins have about one-sample uncertainty. Firmware PWM was active before the measurement; next-sent PWM has a one-report offset. Firmware reporting does not measure actual electrical current.
 
 ## 2. Experimental evidence: P control
 
-![Figure E1. Historical P, Kp=0.25, Ki=0. Final-20-s temperature 24.00°C at a 30°C target: large droop. No downward target step is available.](../figures/a3/exp_p_kp_0p25.png)
+![Figure E1. New Module 6 P, Kp=0.25, Ki=0. Targets 20-30-20°C; large droop. Initial conditioning is short and the final cooling tail drifts. Finite-record errors are not certified equilibria.](../figures/a3/exp_p_kp_0p25.png)
 
-![Figure E2. Historical P, Kp=4, Ki=0. Final-20-s temperature 27.74°C: smaller droop without observed ringing. This is a stable example, not a verified optimum.](../figures/a3/exp_p_kp_4.png)
+![Figure E2. New Module 6 P, Kp=4, Ki=0. Both directions recorded. Heating final 60-s mean 27.134°C; cooling 21.233°C. Response is smooth with persistent target error.](../figures/a3/exp_p_kp_4.png)
 
-![Figure E3. Historical P, Kp=250, Ki=0. Overshoot and sustained late oscillations; frequent full-scale output. The steady target is 30°C; no return target step is present.](../figures/a3/exp_p_kp_250.png)
+![Figure E3. New Module 6 P, Kp=100, Ki=0. Overshoot and decaying ringing, with transient clipping. The high-gain matches the simulation 100; its short segments cannot confirm 60-s settling.](../figures/a3/exp_p_kp_100.png)
 
 ## 2. Experimental evidence: PI control
 
@@ -110,7 +109,7 @@ $$
 
 All coefficients are positive, so the ideal two-lump P poles have negative real parts for positive gains. The threshold Kp,crit marks critical damping, not loss of stability: below it the response is overdamped; above it a complex pair produces decaying ringing. These statements assume no saturation, a fixed Pu branch and no extra delay.
 
-**Shared simulation settings.** All six numerical runs use Tamb=23.19°C, both initial temperatures=23.0°C, chi_c=0.14142 and chi_h=0.49545 °C/PWM, tau=73.03 s, G=2 W/K, CT/C=0.35, assumed on-state VTEC=10 V and RM=1.50 ohm, PWM limit ±255, dt=0.05 s, and conditional anti-windup ON. Only controller gains change. The schedule is target20 for 0-300 s, target30 for 300-1000 s, then target20 for 1000-1500 s; q starts at zero and is retained at both steps. A fixed conditioning duration does not guarantee identical starting temperatures: those are recorded separately.
+**Shared simulation settings.** All six numerical runs use Tamb=23.19°C, both initial temperatures=23.0°C, chi_c=0.14142 and chi_h=0.49545 °C/PWM, tau=73.03 s, G=2 W/K, CT/C=0.35, assumed on-state VTEC=10 V and RM=1.50 ohm, PWM limit ±255, dt=0.05 s, and conditional anti-windup ON. Only controller gains change. The schedule is target 20 for 0-300 s, target 30 for 300-1000 s, then target 20 for 1000-1500 s; q starts at zero and is retained at both steps. A fixed conditioning duration does not guarantee identical starting temperatures: those are recorded separately.
 
 The assumed electrical values and measured-mode inversion yield C=53.9299 J/K, H=0.738463 W/K, Pu,c=0.104433 W/PWM, r=3.50339; CT=18.8755 and Cm=35.0544 J/K. These are model estimates conditional on VTEC and RM, not independent calorimetry. G and the capacitance division are unresolved structural estimates, not fitted measurements.
 
@@ -158,7 +157,7 @@ As an independent arithmetic check, roots of each characteristic polynomial were
 
 ![Figure S2. P, Kp=4, Ki=0. zeta_2L,P=1.128 heating / 1.557 cooling. Stable overdamped response with nonzero droop; the block need not reach either target.](../figures/a3/sim_two_lump_p_kp_4.png)
 
-![Figure S3. P, Kp=100, Ki=0. zeta_2L,P=0.274 heating / 0.501 cooling. Stable decaying ringing; transient clipping occurs. This Kp=100 simulation is not an equal-gain match to the Kp=250 experiment.](../figures/a3/sim_two_lump_p_kp_100.png)
+![Figure S3. P, Kp=100, Ki=0. zeta_2L,P=0.274 heating / 0.501 cooling. Stable decaying ringing; transient clipping occurs. Kp=100 now matches the new high-gain experiment; observation windows and starting states still differ.](../figures/a3/sim_two_lump_p_kp_100.png)
 
 ## 3. Standardized two-lump simulations: PI
 
@@ -170,29 +169,31 @@ As an independent arithmetic check, roots of each characteristic polynomial were
 
 ## 3. Experiment-model comparison
 
-The six simulations above are newly computed with the teacher v3 core and a reproducible common schedule, not numerical traces extracted from screenshots. The six operator GUI screenshots remain source evidence. Five use chi_h=0.49545; the Kp=100 screenshot displays 0.495. Recalculation standardizes that small mismatch. Different GUI switch times and finite conditioning also prevent exact screenshot-to-recalculation timing identity. Experimental plots retain their native time and temperature ranges to resolve the short P oscillation and longer PI recovery; compare axis labels and aligned step metrics, not apparent slopes across differently scaled panels.
+The six curves above are new calculations using the teacher v3 core and a common schedule, not numerical traces extracted from screenshots. The P gains 0.25, 4, 100 now exactly match the new experiments. One original screenshot has chi_h=0.495 instead of0.49545; recalculation standardizes this. Room temperature and actual starting states were not independently matched across 21 October P, 19 October PI and the nominal model. Compare axis labels and aligned metrics, not differently scaled apparent slopes.
 
-| Ki | Step | Overshoot °C
+| Case | Step | Overshoot °C
 exp / sim | Settle s
 exp / sim | 10-90% s
 exp / sim |
 | --- | --- | --- | --- | --- |
-| 0.1 | up | 0.01/0.00 | 401.35/374.35 | 10.46/14.44 |
-| 0.1 | down | 0.00/0.00 | 127.43/251.95 | 50.51/46.63 |
-| 0.2 | up | 0.03/0.15 | 138.04/173.25 | 9.62/13.98 |
-| 0.2 | down | 0.27/0.28 | 199.19/153.05 | 37.78/37.12 |
-| 0.5 | up | 0.82/1.39 | 27.51/44.00 | 8.80/12.06 |
-| 0.5 | down | 1.08/1.73 | 168.67/152.80 | 25.42/27.18 |
+| P100 | up | 3.21/2.94 | NR/55.90 | 5.89/7.52 |
+| P100 | down | 0.23/0.38 | NR/NR | 13.49/18.71 |
+| PI 0.1 | up | 0.01/0.00 | 401.35/374.35 | 10.46/14.44 |
+| PI 0.1 | down | 0.00/0.00 | 127.43/251.95 | 50.51/46.63 |
+| PI 0.2 | up | 0.03/0.15 | 138.04/173.25 | 9.62/13.98 |
+| PI 0.2 | down | 0.27/0.28 | 199.19/153.05 | 37.78/37.12 |
+| PI 0.5 | up | 0.82/1.39 | 27.51/44.00 | 8.80/12.06 |
+| PI 0.5 | down | 1.08/1.73 | 168.67/152.80 | 25.42/27.18 |
 
 ### Four comparison answers
 
-**1. Closest examples.** P Kp=4 reproduces static droop well: simulation 2.284°C versus measurement 2.260°C. PI Ki=0.2 approximately reproduces cooling rise/fall time (37.78 versus 37.12 s) and undershoot (0.27 versus 0.28°C). No single PI run matches all rise, overshoot and settling metrics; Ki=0.1 heating settling is relatively close, while its cooling recovery is too slow in the model.
+**1. Closest examples.** P100 reproduces overshoot and decaying ringing: measured/model heating peaks 33.21/32.94°C, with rise 5.89/7.52 s. Cooling undershoot is 0.23/0.38°C, with fall 13.49/18.71 s. Exact settling cannot be compared because the physical windows are too short. PI 0.2 approximately reproduces cooling fall 37.78/37.12 s and undershoot 0.27/0.28°C, but no setting matches every metric.
 
-**2. P ordering.** Decreasing zeta as Kp crosses Kp,crit organizes the simulations from strongly damped droop to faster decaying ringing. Kp=100 is not interchangeable with experimental 250. The latter has sustained late oscillation; the ideal linear P model cannot reproduce that classification at any positive gain.
+**2. P ordering.** The low and middle gains are below both Kp,crit values, while 100 is above both. The model transitions from overdamped droop to stable underdamped ringing; new high-P peak/trough amplitudes also decrease. The new record provides no evidence of sustained or growing oscillation. It is too short to establish long-time asymptotic behavior.
 
-**3. PI ordering.** rhoI increases with Ki, while Ki,crit stays fixed at a given branch and Kp. All three are stable locally. The larger-Ki run has stronger integral memory and greater overshoot. Cooling settling is not monotonic with Ki, so a faster first crossing alone is not evidence of better regulation.
+**3. PI ordering.** rhoI grows with Ki while Ki,crit remains fixed. All three are locally stable. Larger integral memory increases excursion and shortens final heating correction, but cooling settling is not monotonic. Overshoot alone is not instability.
 
-**4. Agreement and disagreement.** Both model and experiment show smaller P droop with gain and increased PI excursion with Ki. The Ki=0.5 model overpredicts excursions: 1.39/1.73°C versus measured 0.82/1.08°C up/down. Its heating rise is also slower. Sustained experimental P oscillation remains a larger qualitative disagreement, with omitted sampling delay and additional thermal dynamics plausible explanations rather than demonstrated causes.
+**4. Agreement and disagreement.** Qualitative P damping and PI trends agree. Quantitatively, the nominal model predicts P4 heating final 27.716°C versus measured tail 27.134°C, and P0.25 predicts 23.941°C versus 22.151°C. A changed room temperature is plausible but unmeasured; finite conditioning and coefficient transfer also matter. PI 0.5 overpredicts excursions 1.39/1.73°C versus 0.82/1.08°C. These mismatches prevent a claim of complete quantitative validation.
 
 ## 4. PI steady state, assumptions and windup
 
@@ -250,15 +251,15 @@ At Tm=30°C the shared model predicts T-Tm≈2.51°C; at 20°C it predicts about
 
 ### Selected gains within the tested set
 
-**P reference:** Kp=4 is the best stable P example among the three selected historical gains: it reduces droop without the sustained ringing at 250. Its model zeta is 1.128 heating and 1.557 cooling, both above 1; Kp=4 is below both critical-damping gains. Its 2.26°C droop is still unacceptable for precise target regulation. There is no systematic stable-gain sweep between 4 and 250, so the optimum P gain is not known.
+**P reference:** Kp=4 is the conservative low-overshoot example among the three tested gains. Model zeta=1.128 heating/1.557 cooling, with4 below both critical gains. New heating tail60 error is2.866°C, so this is not precise target regulation. Kp=100 approaches faster and has small late errors, but its 3.21°C heating overshoot and short records are disadvantages. A gain between4 and100 was not measured; the optimum P compromise is unresolved.
 
 **PI working choice:** Kp=20, Ki=0.2 balances the tested heating speed and limited excursions. rhoI=0.0493/0.0401 heating/cooling indicates a wide local model margin; the equivalent P-only Kp=20 exceeds the heating critical-damping threshold, which permits transient ringing without implying instability. Measured heating settles in 138 s, and cooling undershoot is 0.27°C. Ki=0.5 is preferable only if faster heating is worth 0.82°C upward and 1.08°C downward excursions; Ki=0.1 has the gentlest cooling but slower final heating correction.
 
-This is a preference for moderate overshoot, not a mathematical optimum or proof of robust stability. The PI Kp is not slightly below the historical P reference; therefore the P-to-PI speed change cannot be attributed only to integral action.
+This is a preference for moderate overshoot, not a mathematical optimum or robust-stability proof. The PI Kp=20 is not slightly below the middle P gain4, and P/PI were measured on different days. Their speed difference cannot be attributed only to integral action. Matched gain values between experiment and simulation do not remove unmatched initial-state and environmental conditions.
 
 ### What a better model should add
 
-A useful next extension is explicit sample-and-hold and sensor/transport delay: approximately 0.51 s updates, ADC averaging, serial latency and additional thermal states can materially affect high-gain stability. Direction-dependent or temperature-dependent heat transfer, an extra TEC-to-room path, and nonideal contacts may also improve the excursion mismatch. The current G and capacitance split were assumed, not uniquely identified. None of these mechanisms is singled out by the present data.
+A useful next extension is explicit sample-and-hold and sensor/transport delay: approximately 0.51 s updates, ADC averaging, serial latency and additional thermal states can materially affect high-gain stability. Direction-dependent or temperature-dependent heat transfer, an extra TEC-to-room path, and nonideal contacts may also improve the excursion mismatch. Integer hardware PWM, unlike continuous simulated PWM, can round small low-gain requests to zero. The current G and capacitance split were assumed, not uniquely identified. None of these mechanisms is singled out by the present data.
 
 ## Evidence, reproducibility and limitations
 
@@ -266,11 +267,11 @@ A useful next extension is explicit sample-and-hold and sensor/transport delay: 
 
 Repository: https://github.com/zhuyanheng/Phys39-teamR-X . All paths below are relative to its root. The paper is supported by the retained local files, not a claim that they have already been published remotely.
 
-P Kp=0.25: Module_5/data/20260930_110723_droop_kp0p25.csv
+P Kp=0.25: Module_6/data/physical/p_kp_0p25_20261021_103204_751306.csv
 
-P Kp=4: Module_5/data/20260930_112955_droop_kp4.csv
+P Kp=4: Module_6/data/physical/p_kp_4_20261021_103836_296838.csv
 
-P Kp=250: Module_5/data/20261007_105005_kp250_20to30c_oscillation.csv
+P Kp=100: Module_6/data/physical/p_kp_100_20261021_105056_326633.csv
 
 PI Ki=0.1: Module_6/data/physical/pi_kp_20_ki_0p1_20261019_093424_268559.csv
 
@@ -278,7 +279,9 @@ PI Ki=0.2: Module_6/data/physical/pi_kp_20_ki_0p2_20261019_095648_364327.csv
 
 PI Ki=0.5: Module_6/data/physical/pi_kp_20_ki_0p5_20261019_101544_769937.csv
 
-Additional P droop points: Module_5/data/20260930_111214_droop_kp0p5.csv, 20260930_112131_droop_kp1.csv and 20260930_112429_droop_kp2.csv. Calibration: Module_4/data/steady_state.csv and Module_6/data/model_baseline/time_constants.csv. Original screenshots are in Module_6/figures/gui/two_lump/: p_kp_0p25.png, p_kp_4.png, p_kp_100.png, and pi_kp_20_ki_0p1.png, pi_kp_20_ki_0p2.png, pi_kp_20_ki_0p5.png.
+P retained run_id=1 in each 21 October file; PI retained IDs=3,2,3 in chronological order. Earlier P records are superseded and absent from current A3 source hashes. Module 4 calibration inputs include Module_4/data/steady_state.csv and module_04_heating_75pct_pwm34_20260928_103941_134734.csv. Baseline susceptibility, time_constants and open_loop_comparison summaries are used only for Module 4 calibration, not for their old P comparisons.
+
+Original screenshots: Module_6/figures/gui/two_lump/ (p_kp_0p25.png, p_kp_4.png, p_kp_100.png, pi_kp_20_ki_0p1.png, pi_kp_20_ki_0p2.png, pi_kp_20_ki_0p5.png). Standardized numerical curves are separate generated evidence. Raw file naming/hashes: Module_6/docs/new_p_data_selection_2026-10-21.json. The previous report is archived under Module_6/archive/2026-10-21_pre_new_p/ and is not current evidence.
 
 ### Reproduction
 
@@ -298,6 +301,6 @@ PDF generation: bundled Python runs Module_6/python/analysis/build_a3_report.py.
 
 ### Readiness and evidence gaps
 
-The analysis addresses Questions 1-5 with available evidence and twelve clearly labeled plots, but it is not a fully matched six-run experimental study. Missing historical P downward steps, unequal experimental P/PI Kp, unequal high-gain P experiment/simulation values, unmeasured electrical assumptions and nonidentical conditioning remain explicit limitations. Exact instability-onset thresholds and globally optimal gains were not measured. No instructor approval record, remote Git checkpoint, Moodle upload or repeat-run uncertainty estimate is asserted.
+The analysis addresses Questions 1-5 with six bidirectional Module6 runs and six gain-matched simulations. Remaining limitations are short high-P windows, insufficient low-P preconditioning, P/PI Kp pairing, different-day environment and unmatched actual initial states, assumed electrical inputs and unresolved internal structure. No exact instability onset, global optimum, repeat-run uncertainty, instructor approval record, remote checkpoint or Moodle submission is asserted.
 
 AI assisted with code, calculations, figures and writing. Numerical simulation results are distinguished from measured data and operator screenshots. The team should review the interpretation and assignment deviations before submission.

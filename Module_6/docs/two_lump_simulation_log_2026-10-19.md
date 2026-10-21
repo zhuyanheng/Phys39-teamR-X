@@ -1,5 +1,6 @@
 # Two-lump simulation screenshots — received 2026-10-19
 
+> Update 2026-10-21: new Module 6 P measurements use Kp=0.25, 4, 100 and replace the earlier P evidence. The old 250/100 mismatch described below is historical and no longer applies to current A3.
 All six screenshots were visually inspected. They are GUI observations, not
 raw numerical exports; exact rise/settling times and peak values cannot be
 claimed from them alone. Preserve the images unchanged.

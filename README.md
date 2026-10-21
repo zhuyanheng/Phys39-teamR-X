@@ -9,6 +9,16 @@ Team members:
 
 [Phys39 Team R&X GitHub Repository](https://github.com/zhuyanheng/Phys39-teamR-X)
 
+### Quick navigation
+
+- [Module 1: Arduino measurements](Module_1/arduino/README.md)
+- [Module 2: Instrument pieces](Module_2/arduino/README.md)
+- [Module 3: Manual TEC and Python GUI](Module_3/python/README.md)
+- [Module 4: Open-loop TEC](Module_4/README.md)
+- [Module 5: P control](Module_5/README.md)
+- [Module 6: P/PI control and thermal models](Module_6/README.md)
+- [Current A3 PDF](Module_6/output/pdf/A3_Huang_Zhu.pdf)
+
 ## Module 1: Arduino Measurements
 
 This repository contains the Arduino sketches, experimental data, figures,
@@ -213,31 +223,70 @@ approval for the gain range and the Part 2 cooling target is not recorded.
 
 ## Module 6: P/PI Control and Lumped Modeling
 
-The Module 6 analysis uses unchanged Module 4/5 CSVs and the official v3
-simulation core. It estimates directional susceptibility and thermal time
-constants, checks open-loop/P predictions, and compares simulated P/PI and
-windup. Calibration remains provisional; matched physical PI and instability
-onset evidence are still required before A3 is submission-ready.
+Module 6 data analysis and the A3 report are complete using the retained
+measurements: three P runs collected on October 21 (`Kp=0.25, 4, 100`, `Ki=0`)
+and three PI runs collected on October 19 (`Kp=20`, `Ki=0.1, 0.2, 0.5`).
+All six include the target sequence `20 -> 30 -> 20 °C` and a PWM limit of
+255. The current A3 uses these Module 6 measurements and Module 4 calibration;
+Module 5 P records remain historical evidence for Module 5 and are no longer
+used in the current A3.
 
-- [Module 6 detailed analysis and derivation](Module_6/docs/one_lump_model_notes.md)
-- [Module 6 Chinese guide and next steps](Module_6/README.md)
-- [A3 incomplete draft](Module_6/docs/a3_feedback_model.md)
-- [Executed analysis notebook](Module_6/python/analysis/model_baseline_analysis.ipynb)
-- [Reproducible analysis script](Module_6/python/analysis/analyze_model_baseline.py)
-- [Official v3 simulation](Module_6/python/Lab_6_7_modeling_tec_v3.py)
-- [Derived data and provenance](Module_6/data/README.md)
+The 12-page report covers Questions 1-5, six experimental plots, six
+standardized two-lump simulation plots, step-response metrics, damping and PI
+stability calculations, windup, and gain selection. The simulations use the
+teacher's v3 calculation core. Physical records, operator GUI screenshots,
+and newly computed model trajectories are distinguished. Measurement and
+model qualifications are recorded in the report. Repository publication and
+Moodle submission are separate from completing the analysis.
 
-From the repository root:
+### Module 6 report and evidence
 
-```text
-.venv/bin/python -m pip install -r Module_6/python/analysis/requirements.txt
-.venv/bin/python Module_6/python/analysis/analyze_model_baseline.py
-.venv/bin/python Module_6/python/Lab_6_7_modeling_tec_v3.py
+- [Module 6 guide and directory map](Module_6/README.md)
+- [Current A3 PDF](Module_6/output/pdf/A3_Huang_Zhu.pdf)
+- [Current A3 Markdown](Module_6/docs/a3_feedback_model.md)
+- [Current experimental analysis](Module_6/docs/experiment_analysis_2026-10-21.md)
+- [Six raw measurements and retained run IDs](Module_6/data/physical/README.md)
+- [Measured step-response metrics](Module_6/data/experiment_analysis/step_metrics.csv)
+- [Data and provenance index](Module_6/data/README.md)
+- [Figures index](Module_6/figures/README.md)
+- [P comparison](Module_6/figures/experiment_analysis/p_aligned_comparison.png)
+- [PI comparison](Module_6/figures/experiment_analysis/pi_aligned_comparison.png)
+- [Analysis scripts and PDF reproduction](Module_6/python/analysis/README.md)
+- [Earlier one-lump notes](Module_6/docs/one_lump_model_notes.md)
+- [Earlier executed baseline notebook](Module_6/python/analysis/model_baseline_analysis.ipynb)
+
+### Module 6 programs
+
+- [Simulation launcher](Module_6/run_gui.command) and [teacher v3 source](Module_6/python/Lab_6_7_modeling_tec_v3.py)
+- [Physical P/PI launcher](Module_6/run_pi_control.command) and [operator guide](Module_6/docs/pi_controller_guide_zh.md)
+- [Arduino sketch and serial protocol](Module_6/arduino/README.md)
+
+On the team's macOS setup, launch from the repository root or double-click
+the appropriate `.command` file:
+
+```bash
+./Module_6/run_gui.command
+./Module_6/run_pi_control.command
 ```
 
-The analysis does not connect to hardware. Simulated PI gains have not been
-validated on the physical TEC. The Markdown draft, figures and notebook are
-local work and have not yet been committed or pushed.
+The mathematical simulator uses `Module_6/.venv` with modern Python/Tk;
+the physical GUI and numerical analysis use the repository `.venv`.
+These ignored local environments must be installed on a new checkout;
+see the [Module 6 setup instructions](Module_6/README.md#首次配置环境).
+The simulator never connects to the Arduino. The physical GUI connects only
+when the operator requests it.
+
+To recompute the current experimental analysis and numerical simulations:
+
+```bash
+.venv/bin/python Module_6/python/analysis/analyze_retained_experiments.py
+.venv/bin/python Module_6/python/analysis/prepare_a3_evidence.py
+```
+
+These scripts do not access hardware. See the analysis README for PDF
+dependencies and the final build command. Earlier Module 5-based analysis and
+superseded A3 outputs are identified as historical, with the prior report in
+`Module_6/archive/2026-10-21_pre_new_p/`.
 
 ## Hardware
 
@@ -282,6 +331,8 @@ The team uploaded and tested the Module 1, Module 2, and Module 3 programs on an
 - Module 4 software-safety tests recorded temperature-limit shutdown and continuing serial reports; the Part 1 record distinguishes firmware reports from independent electrical measurements.
 - Module 4 collected ten selected HEAT/COOL PWM points and generated provisional time traces, fitted slopes, and an A2 PDF. Compliance with the revised steady-state rule remains to be established.
 - Module 5 verified the low-gain HEAT and COOL feedback signs, swept five proportional gains at a 30 °C setpoint, measured droop versus gain, and compared measured droop with the Module 4 susceptibility prediction (no oscillation up to Kp = 4 in the September sweep). An October 7 exploratory run at Kp = 250 overshot the setpoint and showed repeated oscillation.
+- Module 6 collected three P and three PI runs, with temperature, target, signed PWM, P/I terms and error logging. The retained high-gain P run uses Kp=100 and shows decaying ringing. The three PI gains trade final heating speed against overshoot.
+- Module 6 completed six two-lump GUI simulations and reproducible numerical calculations, checked the P damping and PI stability criteria, and generated the current A3 report. The control software has 16 hardware-free tests, and the simulator's six model/controller combinations passed startup checks.
 
 ## How to Run a Sketch
 
@@ -293,6 +344,7 @@ The team uploaded and tested the Module 1, Module 2, and Module 3 programs on an
 6. Open Serial Monitor or Serial Plotter at `9600 baud` when required.
 7. For Module 3 Python scripts, ensure the Serial Monitor is closed before running the GUI.
 8. For the Module 4 GUI, also set its `SERIAL_PORT` to the connected Arduino and close Serial Monitor before launch; see the [Module 4 documentation](Module_4/README.md).
+9. Module 6 uses the same serial-command firmware family. Close other applications using the port, select the port in its physical GUI, and follow the [P/PI operator guide](Module_6/docs/pi_controller_guide_zh.md). Uploading firmware and connecting the mathematical simulator are different operations; the simulator requires no board.
 
 ### Running the Module 3 Python Programs
 
@@ -342,3 +394,10 @@ derivation. The measured droop, gain values, and the provisional Module 4
 heating slope used in the prediction remain subject to the team's and
 instructor's review; generated figures do not replace the physical runs or the
 instructor-approved gain range.
+
+For Module 6, AI assisted with P/PI software, raw-data checks, reproducible
+analysis, two-lump stability calculations, plots, file organization, and A3
+writing/PDF generation. Experimental CSVs are the team's measurements;
+computed model data are labeled separately. The current A3 excludes the
+superseded Module 5 P evidence. Each team member remains responsible for
+understanding the equations, data selection, and interpretation.

@@ -130,12 +130,10 @@ def main():
     (OUT/'stability.json').write_text(json.dumps(stability,indent=2))
     (OUT/'shared_model.json').write_text(json.dumps(asdict(cfg),indent=2))
     measured=json.loads((M/'data/experiment_analysis/analysis_results.json').read_text())
-    for kp in [.25,4,250]:
-        rows=[r for r in ret.read(ROOT/'Module_5/data'/ret.PFILES[kp]) if r['p_active']=='1']
-        figure(rows,f'Experiment: historical P | Kp={kp:g}',experiment_stem(kp))
-    for ki,(file,run) in ret.PIFILES.items():
-        rows=[r for r in ret.read(M/'data/physical'/file) if r['event']=='measurement' and r['control_active']=='1' and r['run_id']==run]
-        figure(rows,f'Experiment: PI | Kp=20, Ki={ki:g}',experiment_stem(20,ki))
+    for run in ret.selected_runs():
+        kp,ki=run['Kp'],run['Ki']
+        figure(run['rows'],f"Experiment: {run['mode']} | Kp={kp:g}, Ki={ki:g}",
+               experiment_stem(kp,ki if run['mode']=='PI' else None))
     equations={
         'one_lump':r'C\dot{T}=P_u u-H(T-T_{amb}),\qquad \tau=C/H,\quad \chi=P_u/H',
         'measured':r'\tau\dot{T}=\chi u-(T-T_{amb})',
@@ -160,6 +158,12 @@ def main():
         fig.savefig(EQ/(name+'.png'),dpi=220,bbox_inches='tight',pad_inches=.04);plt.close(fig)
     sources={str(SOURCE.relative_to(ROOT)):hashlib.sha256(SOURCE.read_bytes()).hexdigest()}
     sources.update(measured['input_sha256'])
+    # Only Module 4 contributes calibration evidence; Module 5 P is excluded.
+    for p in [ROOT/'Module_4/data/steady_state.csv',
+              ROOT/'Module_4/data/module_04_heating_75pct_pwm34_20260928_103941_134734.csv',
+              M/'data/model_baseline/susceptibility.csv',M/'data/model_baseline/time_constants.csv',
+              M/'data/model_baseline/open_loop_comparison.csv']:
+        sources[str(p.relative_to(ROOT))]=hashlib.sha256(p.read_bytes()).hexdigest()
     for file in ['gui/two_lump/p_kp_0p25.png','gui/two_lump/p_kp_4.png','gui/two_lump/p_kp_100.png','gui/two_lump/pi_kp_20_ki_0p1.png','gui/two_lump/pi_kp_20_ki_0p2.png','gui/two_lump/pi_kp_20_ki_0p5.png']:
         p=M/'figures'/file;sources[str(p.relative_to(ROOT))]=hashlib.sha256(p.read_bytes()).hexdigest()
     (OUT/'provenance.json').write_text(json.dumps(dict(source_sha256=sources,
