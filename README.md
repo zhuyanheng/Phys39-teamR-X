@@ -17,6 +17,7 @@ Team members:
 - [Module 4: Open-loop TEC](Module_4/README.md)
 - [Module 5: P control](Module_5/README.md)
 - [Module 6: P/PI control and thermal models](Module_6/README.md)
+- [Module 7: Aluminum rod instrument and stationary fin](Module_7/README.md)
 - [Current A3 PDF](Module_6/output/pdf/A3_Huang_Zhu.pdf)
 
 ## Module 1: Arduino Measurements
@@ -287,6 +288,37 @@ These scripts do not access hardware. See the analysis README for PDF
 dependencies and the final build command. Earlier Module 5-based analysis and
 superseded A3 outputs are identified as historical, with the prior report in
 `Module_6/archive/2026-10-21_pre_new_p/`.
+
+## Module 7: Aluminum Rod, Step Response, and Stationary Fin
+
+Module 7 replaces the one- and two-temperature lumped descriptions with a
+position-dependent temperature field `T(x, t)`. The three course parts build
+one model-testing chain: Part I derives the heat equation and the Biot test,
+Part II derives the stationary finite-rod profile and its semi-infinite limit,
+and Part III builds the six-channel rod instrument and measures the step
+response and stationary profile.
+
+- [Module 7 plan and requirements](Module_7/README.md)
+- [Module 7 lab-day runbook, S16 → S17](docs/module_notes/module_07_lab_day_runbook_2026-10-26.md)
+- Due Wednesday, October 28 at 9:05 AM: individual A4, submitted as
+  `docs/assessments/a4_finite_length_biot.md` and `A4_Lastname.pdf`
+- Due Wednesday, October 28 at 11:55 AM: C5 rod-instrument checkoff receipt
+  citing the pushed acquisition-code and evidence commit
+
+The governing equations used throughout are
+
+```text
+∂θ/∂t = α ∂²θ/∂x² − νθ,     α = k/(ρc),   ν = hP/(ρcA)
+d²θ/dx² − m²θ = 0,          m² = hP/(kA)
+Θ(x) = cosh[m(L − x)]/cosh(mL)   (insulated tip)
+Θ∞(x) = e^(−mx)                  (semi-infinite limit)
+Bi⊥ = hR/(2k) = (mR/2)²          (radius check)
+```
+
+Module 7 keeps the Module 6 Arduino sketch and Python GUI unchanged as a
+working checkpoint and adds new Module 7 copies for six-channel acquisition.
+Raw rod data, calibration coefficients, and corrected data are stored
+separately so that measured values are never overwritten.
 
 ## Hardware
 
