@@ -187,12 +187,22 @@ Module_7/run_rod_acquisition.command --preview   # 不碰串口，检查界面
 Module_7/run_rod_acquisition.command             # 实测：选端口 → Connect (PWM 0) → Start P / PI
 ```
 
+上机第一次通电的每一步见 [Step 1 现场操作单](../docs/module_notes/module_07_step1_integration_check.md)（接线图、每个温度对应的期望电压、逐通道指纹表、故障注入、排查表）。
+
 **Stage 3 — 相对标定分析（独立脚本）**
 
-- 只读原始 CSV，不改采集程序。逐杆通道拟合 `T_TEC = a_i + b_i T_i`。
-- 画 `T_i` vs `T_TEC`（含 identity 线与拟合线）和修正后残差 `(a_i + b_i T_i) − T_TEC` vs `T_TEC`。
-- 输出标定表（通道、`a_i`、`b_i`、点数、温度范围、残差均值/标准差/最大绝对值）到单独 CSV。
-- 另存"原始列 + `rod1_corrected_C`…`rod5_corrected_C`"的修正数据 CSV，原始列不改。
+```bash
+.venv/bin/python Module_7/python/analysis/module_07_calibration.py \
+    Module_7/data/raw/module_07_rod_20261026_141500_123456.csv      # 不给文件则取 raw/ 里最新的一份
+```
+
+- 只读原始 CSV（`raw/` 里的文件字节不变，有测试守着），逐杆通道拟合 `T_TEC = a_i + b_i T_i`，默认只用 `event=measurement` 且 `tec_C`/该杆通道都有限的 240 行级别样本。
+- 画 `T_i` vs `T_TEC`（含 identity 线与拟合线）和修正后残差 `(a_i + b_i T_i) − T_TEC` vs `T_TEC`，图写到 `figures/calibration/<raw 文件名>_fit.png`。
+- 输出标定表到 `data/calibration/module_07_calibration_<raw 文件名>.csv`：通道、`a_i`、`b_i`、点数、温度范围、残差均值/标准差/最大绝对值、`before`（未修正前平均偏差）、三项判据与总判定。
+- 另存"原始列 + `rod1_corrected_C`…`rod5_corrected_C`"到 `data/calibration/<raw 文件名>_corrected.csv`，原始列不改；`nan` 在修正列里仍是 `nan`。
+- 判据（与 runbook 一致，可用 `--criterion-*` 改）：`|残差均值| ≤ 0.2 °C`、`残差曲率 ≤ 0.2 °C`、`max|残差| ≤ 0.2 °C`。任一通道不达标时退出码为 2，并提示重做浸泡。
+- **判据的正确读法**：拟合带截距，所以残差均值按构造恒为 0（它只是"截距解对了"的自检）；残差的**直线倾斜**也被 `b` 吃掉，所以"趋势"用**曲率**（中间半段均值 − 两端四分之一均值）来量；真正判别探头滞后/失去接触的是 `max|残差|` 与曲率两项。
+- 参考本身是未标定的 A0 探头（β=4540 K 标称值，β 差 1 % ≈ 0.6 °C），所以它做的是**相对一致性**标定，不是绝对精度标定——这一点必须写进报告。
 
 **Stage 4 — 标定前集成检查**
 
@@ -249,12 +259,13 @@ Module_7/
 │   ├── module_07_rod_acquisition_gui.py          Stage 2（Module 6 GUI 的拷贝）
 │   ├── rod_protocol.py                           串口格式与解析（Qt-free，可单测）
 │   ├── test_rod_protocol.py                      19 个无硬件测试
+│   ├── test_module_07_calibration.py             24 个无硬件测试（合成六通道数据）
 │   └── analysis/
-│       ├── module_07_calibration.py              Stage 3 交叉标定（待写）
+│       ├── module_07_calibration.py              Stage 3 交叉标定（标准库即可；图需 matplotlib）
 │       └── module_07_stationary_fin_fit.py       Part 3 finite/semi-infinite 拟合（待写）
 ├── data/
 │   ├── raw/                                      原始 CSV（永不覆盖）
-│   ├── calibration/                              标定系数表 + 修正数据 CSV（Stage 3 建）
+│   ├── calibration/                              标定系数表 + 修正数据 CSV（Stage 3 写入）
 │   ├── processed/                                拟合结果（Part 3 建）
 │   └── README.md                                 数据目录规则
 ├── figures/                                      Part 1–3 的图（脚本运行时生成）

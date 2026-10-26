@@ -19,6 +19,8 @@
 
 ## 1. 先做：六通道测量链（TEC 断电状态下即可验证）
 
+> **现场操作单**：[module_07_step1_integration_check.md](module_07_step1_integration_check.md) —— 接线、分压期望电压、上传命令、逐通道指纹表、故障注入、排查表。本节只是清单摘要。
+
 - [ ] 清点探头：确认有 **6 个**可用热敏电阻，其中至少 5 个能装进杆孔、TEC base 用的那个能固定。不够就先焊线 + 热缩管绝缘，标签 `TEC`、`1`–`5` 贴牢并保持到学期末。
 - [x] 复制而非修改 Module 6（2026-10-26 完成）：`Module_6/arduino/p_only_tec/p_only_tec.ino` → `Module_7/arduino/module_07_rod_controller/module_07_rod_controller.ino`；`Module_6/python/pi_tec_control_gui.py` → `Module_7/python/module_07_rod_acquisition_gui.py`。**Module 6 的两个文件保持原样**，作为可工作的 checkpoint。
 - [x] 通道映射：`A0` = TEC base，`A1`–`A5` = rod 1–5。`A0` 仍是唯一的 PI 反馈与软件温度上限来源；5 个杆通道只测量，不进入控制律。
