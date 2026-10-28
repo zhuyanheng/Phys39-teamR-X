@@ -113,7 +113,16 @@ def _optional_float(text: str) -> Optional[float]:
 
 def _optional_int(text: str) -> Optional[int]:
     value = _optional_float(text)
-    return None if value is None else int(value)
+    if value is None or not math.isfinite(value) or not value.is_integer():
+        return None
+    return int(value)
+
+
+def _required_int(text: str) -> int:
+    value = float(text)
+    if not math.isfinite(value) or not value.is_integer():
+        raise ValueError("Expected a finite integer")
+    return int(value)
 
 
 def parse_data_line(line: str) -> Optional[RodSample]:
@@ -136,9 +145,9 @@ def parse_data_line(line: str) -> Optional[RodSample]:
         time_s = float(values["time_s"])
         tec_c = float(values["tec_C"])
         rods_c = tuple(float(values[f"{channel}_C"]) for channel in ROD_CHANNELS)
-        pwm = int(float(values["pwm"]))
-        heat_cool = int(float(values["heat_cool"]))
-        rod_ok = int(float(values["rod_ok"]))
+        pwm = _required_int(values["pwm"])
+        heat_cool = _required_int(values["heat_cool"])
+        rod_ok = _required_int(values["rod_ok"])
     except (ValueError, KeyError):
         return None
 

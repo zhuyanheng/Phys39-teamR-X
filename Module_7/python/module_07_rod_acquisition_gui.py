@@ -241,7 +241,7 @@ class RodAcquisitionWindow(QMainWindow):
     def change_mode(self,*_):
         self.stop_control("Mode selected")
 
-    def fresh_safe(self):
+    def fresh_safe(self,require_zero=True):
         if self.serial_port is None or not self.serial_port.is_open:
             raise ValueError("Serial port is not open. Select the Arduino USB port above, "
                              "then click Connect (PWM 0) before Start P / PI.")
@@ -250,7 +250,7 @@ class RodAcquisitionWindow(QMainWindow):
         _t,tec,pwm,_direction,safety,*_=self.latest
         if not math.isfinite(tec) or not 10<=tec<=45 or safety!="OK":
             raise ValueError("Need a plausible 10-45 C TEC reading and Safety: OK")
-        if pwm != 0:
+        if require_zero and pwm != 0:
             raise ValueError("Wait for firmware-reported PWM 0")
 
     def start_control(self):
@@ -270,7 +270,7 @@ class RodAcquisitionWindow(QMainWindow):
 
     def apply_setpoint(self):
         if not self.active:return
-        try:self.fresh_safe()
+        try:self.fresh_safe(require_zero=False)
         except ValueError as exc:self.stop_control(str(exc));return
         self.controller.setpoint=self.target.value()
         self.log("setpoint_step",note="Integral retained for a within-run setpoint step")

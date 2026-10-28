@@ -119,6 +119,24 @@ class ParseTests(unittest.TestCase):
         self.assertIsNone(parse_data_line(line().replace(",23.40,", ",abc,", 1)))
         self.assertIsNone(parse_data_line(line().replace(",120,1,", ",x,1,", 1)))
 
+    def test_nonfinite_and_fractional_required_integers_are_rejected(self):
+        for field in ("pwm", "heat_cool", "rod_ok"):
+            for value in ("inf", "-inf", "nan", "1e999", "0.5"):
+                with self.subTest(field=field, value=value):
+                    cells = line().split(",")
+                    cells[1 + FIELD_NAMES.index(field)] = value
+                    self.assertIsNone(parse_data_line(",".join(cells)))
+
+    def test_invalid_optional_integer_does_not_break_the_stream(self):
+        for field in ("heat_pwm", "cool_pwm"):
+            for value in ("inf", "-inf", "nan", "1e999", "0.5", "bad"):
+                with self.subTest(field=field, value=value):
+                    cells = line().split(",")
+                    cells[1 + FIELD_NAMES.index(field)] = value
+                    sample = parse_data_line(",".join(cells))
+                    self.assertIsNotNone(sample)
+                    self.assertIsNone(getattr(sample, field))
+
     def test_out_of_range_fields_are_rejected(self):
         self.assertIsNone(parse_data_line(line(pwm=300)))
         self.assertIsNone(parse_data_line(line(pwm=-5)))
