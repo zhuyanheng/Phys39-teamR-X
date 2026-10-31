@@ -1,0 +1,174 @@
+{
+  "source": "/Users/wherearetheavocados/Desktop/GIT/Phys39 teamR&X/Module_7/data/raw/module_07_rod_20261030_152300_037075.csv",
+  "source_sha256": "60d4d496d4735a296d96cb2b2bfa30c97cba14dea3e44de590218dcaf814cd65",
+  "measurement_rows": 774,
+  "duration_s": 399.21,
+  "largest_gap_s": 0.5200000000000387,
+  "nonadvancing_timestamps": 0,
+  "positions_cm_from_hole2": [
+    0,
+    3.85,
+    8.95,
+    14.05,
+    19.15
+  ],
+  "analysis_length_m": 0.2715,
+  "events": [
+    {
+      "host_time": "2026-10-30T15:23:00.043467-04:00",
+      "event": "connect",
+      "setpoint_C": "",
+      "note": "Connected with zero output; control remains OFF"
+    },
+    {
+      "host_time": "2026-10-30T15:23:26.441053-04:00",
+      "event": "stop",
+      "setpoint_C": "",
+      "note": "Mode selected"
+    },
+    {
+      "host_time": "2026-10-30T15:24:03.871783-04:00",
+      "event": "start",
+      "setpoint_C": "20.0",
+      "note": "Integral zero; first accepted sample uses dt=0"
+    },
+    {
+      "host_time": "2026-10-30T15:26:47.519360-04:00",
+      "event": "setpoint_step",
+      "setpoint_C": "30.0",
+      "note": "Integral retained for a within-run setpoint step"
+    },
+    {
+      "host_time": "2026-10-30T15:28:06.447537-04:00",
+      "event": "setpoint_step",
+      "setpoint_C": "20.0",
+      "note": "Integral retained for a within-run setpoint step"
+    },
+    {
+      "host_time": "2026-10-30T15:29:40.494042-04:00",
+      "event": "stop",
+      "setpoint_C": "20.0",
+      "note": "Operator stop"
+    },
+    {
+      "host_time": "2026-10-30T15:29:41.931784-04:00",
+      "event": "stop",
+      "setpoint_C": "20.0",
+      "note": "Disconnected"
+    },
+    {
+      "host_time": "2026-10-30T15:29:41.934744-04:00",
+      "event": "disconnect",
+      "setpoint_C": "20.0",
+      "note": "Serial closed"
+    }
+  ],
+  "status": {
+    "safety": {
+      "OK": 774
+    },
+    "rod_ok": {
+      "5": 774
+    },
+    "control_active": {
+      "0": 123,
+      "1": 651
+    },
+    "backlog_sample": {
+      "0": 774
+    }
+  },
+  "channels": {
+    "tec_C": {
+      "valid_rows": 774,
+      "invalid_rows": 0,
+      "first_C": 22.38,
+      "last_C": 20.2,
+      "minimum": [
+        207.97,
+        20.1
+      ],
+      "maximum": [
+        305.15,
+        29.24
+      ],
+      "last60_slope_C_per_min": -1.300703721115753
+    },
+    "rod1_C": {
+      "valid_rows": 774,
+      "invalid_rows": 0,
+      "first_C": 22.21,
+      "last_C": 21.74,
+      "minimum": [
+        227.09,
+        20.9
+      ],
+      "maximum": [
+        308.26,
+        24.85
+      ],
+      "last60_slope_C_per_min": -1.5636663087358826
+    },
+    "rod2_C": {
+      "valid_rows": 774,
+      "invalid_rows": 0,
+      "first_C": 21.93,
+      "last_C": 21.96,
+      "minimum": [
+        235.38,
+        20.99
+      ],
+      "maximum": [
+        322.76,
+        23.33
+      ],
+      "last60_slope_C_per_min": -1.137717630292759
+    },
+    "rod3_C": {
+      "valid_rows": 774,
+      "invalid_rows": 0,
+      "first_C": 22.08,
+      "last_C": 22.29,
+      "minimum": [
+        246.23,
+        21.44
+      ],
+      "maximum": [
+        337.75,
+        22.66
+      ],
+      "last60_slope_C_per_min": -0.3885149923499108
+    },
+    "rod4_C": {
+      "valid_rows": 774,
+      "invalid_rows": 0,
+      "first_C": 22.13,
+      "last_C": 22.15,
+      "minimum": [
+        251.4,
+        21.56
+      ],
+      "maximum": [
+        371.86,
+        22.25
+      ],
+      "last60_slope_C_per_min": 0.02293051615537024
+    },
+    "rod5_C": {
+      "valid_rows": 774,
+      "invalid_rows": 0,
+      "first_C": 21.92,
+      "last_C": 21.77,
+      "minimum": [
+        274.65,
+        21.42
+      ],
+      "maximum": [
+        0.55,
+        21.92
+      ],
+      "last60_slope_C_per_min": 0.16585340482683783
+    }
+  },
+  "raw_unchanged": true
+}

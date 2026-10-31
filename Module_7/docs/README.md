@@ -15,7 +15,7 @@
 | 文件 | 内容 | 状态 |
 | --- | --- | --- |
 | `docs/module_notes/module_07_lab_day_runbook_2026-10-26.md` | 实验日步骤：软件 → 几何 → 标定 → 阶跃 → 稳态 | 已有 |
-| `docs/module_notes/module_07_rod_instrument.md` | 传感器地图、标定记录、几何、baseline/阶跃、运行元数据 | 待写（做完 Part 2 后填） |
+| `docs/module_notes/module_07_rod_instrument.md` | 传感器地图、同温检查记录、几何、baseline/阶跃、运行元数据 | 已记录 2026-10-30 所选孔 2、5、7、8、9 与距离；其余待补 |
 | `docs/module_notes/module_07_stationary_fin.md` | 形成性稳态肋片分析 | 待写（Part 3 之后） |
 | `docs/assessments/a4_finite_length_biot.md` | A4 四部分正文 | 已有 |
 
