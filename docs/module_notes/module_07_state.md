@@ -34,7 +34,7 @@ Run the whole hardware-free suite after touching any script (no Arduino, serial 
 
 | Path | State |
 | --- | --- |
-| `Module_7/data/raw/` | Eight runs: six from 2026-10-30 and two from 2026-11-02, the latter tagged `..._T20C.csv` and `..._T20C_trip45C_T40C.csv` (setpoint tags, rows untouched); never modified or overwritten |
+| `Module_7/data/raw/` | Four runs, every name tagged with its chronological setpoint sequence: `..._20261030_152300_037075_T20C_T30C_T20C`, `..._20261102_100034_422916_T20C`, `..._20261102_100448_913799_T20C_trip45C_T40C`, `..._20261102_111341_355018_T40C` (the last one is still being written, so it is not committed yet). The seven few-second UI-check runs and one uncontrolled 2-minute passive record were deleted on 2026-11-02; rows are never modified or overwritten |
 | `Module_7/data/calibration/` | **Empty by decision** — the soak cross-calibration was skipped; the cost is quantified in the [rod instrument record](module_07_rod_instrument.md) |
 | `Module_7/data/processed/pilot_checks/` | Three `<raw stem>_quality.json`, one per checked run (2026-10-30 pilot and both 2026-11-02 runs) |
 | `Module_7/data/processed/` | No `<raw stem>_stationary_fit.json` — both 2026-11-02 runs were **refused** by the steady-state criteria (exit 2); see [stationary fin note §9](module_07_stationary_fin.md) |

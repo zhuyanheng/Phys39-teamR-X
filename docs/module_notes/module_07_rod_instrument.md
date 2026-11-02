@@ -74,12 +74,15 @@ confirmed to be the physical bottom end.
 
 ## 2026-10-30 15:23–15:29: short 20 → 30 → 20 °C trial
 
-Raw data: `Module_7/data/raw/module_07_rod_20261030_152300_037075.csv`.
+Raw data: `Module_7/data/raw/module_07_rod_20261030_152300_037075_T20C_T30C_T20C.csv`. The tag was added on
+2026-11-02 together with the others: `T20C → T30C → T20C` is the commanded setpoint sequence, the timestamp
+is still the moment the GUI opened the file, and the rows and bytes are untouched (the SHA-256 in the quality
+JSON below was recomputed from the renamed file and matches the pre-rename value).
 Check script: `Module_7/python/analysis/pilot_run_check.py`; the numerical check and the SHA-256 of the
 source file are stored in
-`Module_7/data/processed/pilot_checks/module_07_rod_20261030_152300_037075_quality.json`; the
+`Module_7/data/processed/pilot_checks/module_07_rod_20261030_152300_037075_T20C_T30C_T20C_quality.json`; the
 temperature traces are in
-`Module_7/figures/pilot_checks/module_07_rod_20261030_152300_037075_temperatures.png`.
+`Module_7/figures/pilot_checks/module_07_rod_20261030_152300_037075_T20C_T30C_T20C_temperatures.png`.
 
 - 774 measurement rows, Arduino time 0.55–399.76 s (about 6 min 39 s), largest sampling interval 0.52 s,
   no duplicate or non-monotonic timestamps.

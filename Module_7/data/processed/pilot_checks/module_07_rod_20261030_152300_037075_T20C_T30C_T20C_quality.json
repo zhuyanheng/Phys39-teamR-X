@@ -1,6 +1,6 @@
 {
-  "source": "/Users/wherearetheavocados/Desktop/GIT/Phys39 teamR&X/Module_7/data/raw/module_07_rod_20261030_152300_037075.csv",
-  "source_sha256": "60d4d496d4735a296d96cb2b2bfa30c97cba14dea3e44de590218dcaf814cd65",
+  "source": "/Users/xianruohuang/Documents/GitHub/Phys39-teamR-X/Module_7/data/raw/module_07_rod_20261030_152300_037075_T20C_T30C_T20C.csv",
+  "source_sha256": "31cd3639f4d3257fcd30673e703fb06796f3a920713ebc2976f20157afbb2398",
   "measurement_rows": 774,
   "duration_s": 399.21,
   "largest_gap_s": 0.5200000000000387,
@@ -107,7 +107,7 @@
         308.26,
         24.85
       ],
-      "last60_slope_C_per_min": -1.5636663087358826
+      "last60_slope_C_per_min": -1.5636663087358822
     },
     "rod2_C": {
       "valid_rows": 774,
@@ -137,7 +137,7 @@
         337.75,
         22.66
       ],
-      "last60_slope_C_per_min": -0.3885149923499108
+      "last60_slope_C_per_min": -0.38851499234991077
     },
     "rod4_C": {
       "valid_rows": 774,
@@ -152,7 +152,7 @@
         371.86,
         22.25
       ],
-      "last60_slope_C_per_min": 0.02293051615537024
+      "last60_slope_C_per_min": 0.02293051615537025
     },
     "rod5_C": {
       "valid_rows": 774,
@@ -167,7 +167,7 @@
         0.55,
         21.92
       ],
-      "last60_slope_C_per_min": 0.16585340482683783
+      "last60_slope_C_per_min": 0.16585340482683775
     }
   },
   "raw_unchanged": true
