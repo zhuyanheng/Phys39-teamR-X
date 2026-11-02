@@ -585,7 +585,7 @@ def write_profile_csv(path, profile):
                "theta_finite_model_C", "theta_semi_model_C",
                "residual_finite_C", "residual_semi_C")
     with Path(path).open("w", newline="") as stream:
-        writer = csv.writer(stream)
+        writer = csv.writer(stream, lineterminator="\n")
         writer.writerow(columns)
         for row in profile:
             writer.writerow([row[column] for column in columns])

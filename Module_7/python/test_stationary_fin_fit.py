@@ -284,6 +284,9 @@ class CommandLineTests(unittest.TestCase):
                 rows = list(csv.DictReader(stream))
             self.assertEqual(len(rows), len(XS))
             self.assertEqual(rows[0]["label"], "rod1")
+            # LF only: a checkout under text=auto must equal what a rerun writes,
+            # otherwise the committed CSV shows up as modified after every run.
+            self.assertNotIn(b"\r", csv_path.read_bytes())
 
     def test_refusal_exits_two_and_writes_nothing(self):
         def drifting(time_s):

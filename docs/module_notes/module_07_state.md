@@ -109,6 +109,11 @@ The ordered checklist with deadlines is [README §8](../../Module_7/README.md#8-
 - Raw CSV line endings are mixed: the two 2026-11-02 files are CRLF (the GUI then used the `csv` default), later
   ones will be LF (`lineterminator='\n'`). `Module_7/data/raw/**` is marked `-text` in `.gitattributes`, so every
   raw file is checked out byte for byte and the SHA-256 in its quality JSON stays valid; do not drop that rule.
+- The **processed** CSVs are written **LF-only** (`stationary_fin_fit.py` passes `lineterminator="\n"`, with a
+  test). They are not marked `-text`, so `* text=auto` normalises them on commit; CRLF from the `csv` default
+  would therefore make every rerun show the committed file as modified. Keep new writers LF-only for the same
+  reason, and keep the two kinds of CSV distinct: raw = evidence (byte-exact, `-text`), processed = regenerable
+  (normalised, LF).
 - `stationary_fin_fit.py` deliberately writes repository-relative paths. Keep that behaviour when editing it,
   and keep the portability test green.
 
