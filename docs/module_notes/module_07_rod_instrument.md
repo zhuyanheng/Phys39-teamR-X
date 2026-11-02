@@ -69,8 +69,12 @@ confirmed to be the physical bottom end.
   direction.
 - The same-temperature check over a temperature *span*: the 2026-10-30 and 2026-11-02 records give 0.48 °C
   agreement at one temperature only, which constrains an offset but never a gain.
-- A stationary profile at a setpoint the interlock allows (40 °C, at most 43 °C — see the 2026-11-02 entry) and
-  long enough for the far probes (≈ 30 min of hold, not 300 s).
+- A stationary profile long enough for the far probes. The 2026-11-02 31-minute attempt (see the entry below) still
+  failed the criterion by 2.6×, so the target is now **≈ 45 min of holding at 40 °C**, the highest setpoint the
+  interlock allows (43 °C).
+- An **independent** room-temperature reading. `T∞ = 23.95 °C` is self-read: no separate thermometer was placed
+  beside the rod, so the ambient comes from the probes' own reading before the heater acts, and its 1 °C
+  uncertainty is what drives the largest single systematic on the stationary fit (+7.6 % on `m` per 1 °C).
 
 ## 2026-10-30 15:23–15:29: short 20 → 30 → 20 °C trial
 
@@ -205,6 +209,37 @@ of the five probes decay as follows (C/min, six blocks from 362 s to 751 s):
 **Planning figure: budget ≈ 30 min of hold after the step at 40 °C**, i.e. 4–5× what these two runs recorded.
 The decay fit above was made outside the repository (log-linear regression of the 60 s block slopes); it is a
 planning estimate, not a committed result — see the open item in `module_07_state.md`.
+
+### 2026-11-02 11:13–11:44: the 31-minute 40 °C confirmation run
+
+Raw data: `Module_7/data/raw/module_07_rod_stationary_40C.csv` — 3578 measurement rows, Arduino time
+0.55–1849.33 s, `Kp = 100`, `Ki = 0.3`, 40 °C commanded at 11:14:02 and the operator stopped at 11:44:23, so the
+hold lasts **30.3 min**, i.e. exactly the budget the paragraph above asked for. No `_quality.json` exists for this
+file (the pilot check was applied to the three earlier runs only); the fit scripts verify its SHA-256
+(`70aaaec4…`, `raw_unchanged: true`) themselves.
+
+- `stationary_fin_fit.py`, pre-registered criterion: **refuses, exit code 2**. The closest 600 s window is
+  rejected because `rod5_C` still moves at **0.052 °C/min** (2.6 × the 0.02 °C/min limit) and its first/last-third
+  means differ by **0.340 °C** (3.4 × the 0.1 °C budget). The base is settled, not the rod: `tec_C` averages
+  39.98 °C with a 0.30 °C standard deviation over the trailing window and stays 0.02 °C below setpoint.
+- Why the numbers above are quoted from the 600 s diagnostics window and not from the fit JSON: the relaxed fit
+  window of 674 s passes its generous budget by 0.00007 °C (`worst_drift_C = 0.39993` against `0.40`) and by
+  0.005 °C/min on the slope (`0.0550` against `0.06`). A window that grazes a relaxed threshold is a demonstration
+  that the threshold is arbitrary, not a steady-state profile — which is exactly why the relaxed fit is labelled
+  `criterion.relaxed: true` and never quoted as the Part 3 result.
+- So the ≈ 30 min planning figure was slightly optimistic. From the fitted time constant of the tip probe
+  (`τ = 591 s`, from the exponential approach of each probe, rms 0.068 °C) the slope still has to fall by 2.6×
+  (`τ·ln 2.6 ≈ 9 min`) and the drift by 3.4× (`τ·ln 3.4 ≈ 12 min`) — **≈ 15 min of additional holding, ≈ 45 min in
+  total**.
+- Trailing-window means (674 s): 39.98 / 36.16 / 34.16 / 32.63 / 31.50 / 30.50 °C for `tec_C`, `rod1_C … rod5_C`.
+  The ordering is still monotone and the far probe carries `θ₅/θ₁ = 0.54`, above the `1/e = 0.37` the semi-infinite
+  control would like.
+- Because the run is refused, what it produces is committed **as a diagnostic**: `_stationary_fit.json`
+  (`criterion.relaxed: true`), `_stationary_profile.csv`, `figures/part_03_stationary_profile.png` and
+  `_stationary_diagnostics.json`, all explained in
+  [stationary fin note §10](module_07_stationary_fin.md). Everything the part-3 table wants — certified `m`,
+  `σ_m`, `1/m`, `Θ_tip`, `Bi∥`, `Bi⊥`, the `h` inversion, the residual maxima — therefore stays **`to fill in`**
+  here.
 
 ## Decision: skip the six-probe soak cross-calibration
 

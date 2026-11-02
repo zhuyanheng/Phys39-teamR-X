@@ -171,6 +171,12 @@ to show:
 
 **Part 3 — stationary fin profile**
 
+> **Outcome on the actual hardware (2026-11-02):** items 1–4 below are implemented and were exercised on three
+> runs; the setpoint of item 2 could only be 40 °C, because a 45 °C command trips the firmware's thermal
+> interlock. All three runs were **refused** by step 3's criterion — the longest, a 31-minute hold at 40 °C, still
+> had `rod5_C` at 0.052 °C/min. No certified `m` exists; the committed `part_03` figure and the two JSONs beside it
+> are a labelled diagnostic. Full numbers: [stationary note §9–§10](../docs/module_notes/module_07_stationary_fin.md).
+
 1. Before the run, write down the predicted profile shape and the steady-state criterion (starting
    criterion: every probe with `|dT_i/dt| < 0.02 °C/min` for ≥ 10 min). The script implements **two
    simultaneous** conditions: a whole-window least-squares slope ≤ 0.02 °C/min and a first-third vs
@@ -339,13 +345,42 @@ expected voltage at each temperature, per-channel fingerprint table, fault injec
     theta_C` plus both model values and residuals;
   - `Module_7/figures/part_03_stationary_profile.png` — profile, both models and both residual sets
     (rename with `--figure-name`).
+- **Status on the measured data (2026-11-02):** all three recorded runs are refused (exit 2), so there is no
+  certified fit in `data/processed/`. The committed `part_03_stationary_profile.png` and the
+  `_stationary_fit.json` next to it are the **relaxed diagnostic** window, and `m` stays `to fill in` in the
+  report — see [stationary note §9–§10](../docs/module_notes/module_07_stationary_fin.md).
 - The default geometry is the hole layout from the
   [field record](../docs/module_notes/module_07_rod_instrument.md) (`x = 0, 3.85, 8.95, 14.05, 19.15 cm`,
   `L = 27.15 cm`), overridable with `--positions` / `--length`; add `--diameter-is-measured` only after the
   diameter has really been measured, otherwise the output states that the diameter is nominal.
-- 20 hardware-free tests: `.venv/bin/python Module_7/python/test_stationary_fin_fit.py` (recovering a known
+- 22 hardware-free tests: `.venv/bin/python Module_7/python/test_stationary_fin_fit.py` (recovering a known
   `m` from a synthetic profile, the semi-infinite bias, the closed-form `ε_T`, the refusal logic, an unchanged
   raw-file hash, strict and portable JSON).
+
+`--slope-limit` / `--drift-budget` relax the criterion for a **diagnosis**; the output then writes
+`criterion.relaxed: true`, prints `*** CRITERION RELAXED` and puts `CRITERION RELAXED` in the figure title. A
+relaxed fit is never the Part 3 result.
+
+**Part 3 systematics — companion to the fit (standard library only)**
+
+```bash
+.venv/bin/python Module_7/python/analysis/stationary_diagnostics.py \
+    Module_7/data/raw/<run>.csv --ambient <self-read ambient, °C>
+```
+
+It fits the trailing `--window 600` s and then varies one thing at a time — sliding 600 s windows back through the
+hold in 100 s steps (`window_slide`), extrapolating each probe's exponential approach to its own asymptote and
+fitting that profile (`extrapolation`), `T∞ ± 0.25/0.5/1.0 °C` (`ambient`), ±1 mm in `L` / all `x` / the tip probe
+(`geometry`), and rod2 as the origin (`origin_swap`, the substitute check of the stationary note's §6) — writing
+`data/processed/<run>_stationary_diagnostics.json` with `source_sha256`, `raw_unchanged` and
+`worst_change_percent`. `--ambient` is **required** here, because a fitted `T∞` is exactly what a drifting record
+corrupts. 11 hardware-free tests: `Module_7/python/test_stationary_diagnostics.py`.
+
+**Parts 1 and 2 figures** (`python/analysis/sensor_map_figure.py`, `python/analysis/step_response_figure.py`;
+11 shared tests in `Module_7/python/test_module_figures.py`). The sensor map draws the ruler geometry and states
+in-figure that `d = 12.7 mm` is nominal; the step-response figure reads a raw CSV, shades the commanded regions,
+places event rows on the Arduino axis through their `host_time` offset, and measures the 40 °C hold's PI limit
+cycle (period and amplitude) from the trace instead of quoting a number.
 
 **Stage 4 — pre-calibration integration check**
 
@@ -436,17 +471,25 @@ Module_7/
 │   ├── test_rod_protocol.py              21 hardware-free tests
 │   ├── test_rod_acquisition_gui.py        12 hardware-free tests (fake serial port, offscreen Qt)
 │   ├── test_cross_calibration_fit.py     24 hardware-free tests (synthetic six-channel data)
-│   ├── test_stationary_fin_fit.py        20 hardware-free tests (synthetic profile, refusal, portability)
+│   ├── test_stationary_fin_fit.py        22 hardware-free tests (synthetic profile, refusal, portability)
+│   ├── test_stationary_diagnostics.py    11 hardware-free tests (asymptote recovery, systematics, strict JSON)
+│   ├── test_module_figures.py            11 hardware-free tests (sensor map, step-response figure, offscreen)
 │   └── analysis/
 │       ├── cross_calibration_fit.py      Stage 3 cross-calibration (standard library; matplotlib for figures)
 │       ├── stationary_fin_fit.py         Part 3 fit: steady criteria + finite/semi-infinite + residuals + uncertainty
+│       ├── stationary_diagnostics.py     Part 3 systematics of a drifting record (window slide, extrapolation, ambient, geometry, origin swap)
+│       ├── sensor_map_figure.py          Part 1 figure from the ruler geometry
+│       ├── step_response_figure.py       Part 2 figure from a raw CSV (events, commanded regions, limit cycle)
 │       └── pilot_run_check.py            quality check of a pilot run (not a fit)
 ├── data/
 │   ├── raw/                              raw CSV (never overwritten)
 │   ├── calibration/                      calibration table + corrected data CSV (empty: the soak was skipped)
-│   ├── processed/                        fit results (Part 3: `<run>_stationary_fit.json`, `<run>_stationary_profile.csv`)
+│   ├── processed/                        fit results (Part 3: `<run>_stationary_fit.json`, `<run>_stationary_profile.csv`,
+│   │                                     `<run>_stationary_diagnostics.json`; the fit JSON currently holds a relaxed,
+│   │                                     diagnostic window only, `criterion.relaxed: true`)
 │   └── README.md                         data directory rules
-├── figures/                              Parts 1–3 figures (written when the scripts run)
+├── figures/                              Parts 1–3 figures: part_01_sensor_map.png, part_02_step_response.png,
+│                                         part_03_stationary_profile.png (the last is titled CRITERION RELAXED)
 └── docs/
     └── README.md                         documentation index
 ```
@@ -459,13 +502,16 @@ Evidence files the course asks for live in `docs/module_notes/`, like the notes 
   the open items
 - `docs/assessments/a4_finite_length_biot.md` — the four A4 parts
 
-**Hardware-free tests (run all four after touching any script; no Qt window, serial port or Arduino needed)**
+**Hardware-free tests (run all six after touching any script; no Qt window, serial port or Arduino needed)**
 
 ```bash
 .venv/bin/python Module_7/python/test_rod_protocol.py             # 21: parser = firmware header
 .venv/bin/python Module_7/python/test_rod_acquisition_gui.py      # 12: GUI with a fake serial port
 .venv/bin/python Module_7/python/test_cross_calibration_fit.py    # 24: synthetic six-channel calibration
-.venv/bin/python Module_7/python/test_stationary_fin_fit.py       # 20: steady criteria, fit recovery, portability
+.venv/bin/python Module_7/python/test_stationary_fin_fit.py       # 22: steady criteria, fit recovery, portability
+.venv/bin/python Module_7/python/test_stationary_diagnostics.py   # 11: asymptote recovery, systematics, strict JSON
+.venv/bin/python Module_7/python/test_module_figures.py           # 11: sensor map + step-response figure
+.venv/bin/python -m unittest discover -s Module_7/python -t Module_7/python   # all 101
 ```
 
 ## 8. Action list (in priority order)
@@ -490,10 +536,20 @@ Evidence files the course asks for live in `docs/module_notes/`, like the notes 
 
 **P2 — in class, S17, and before the deadlines**
 
-- [ ] Fix the five rod probe positions (`θ₅ ≤ θ₁/e`)
-- [ ] Complete the `20 → 45 °C` step into steady state
-- [ ] Run both fits (finite and semi-infinite) with residuals
-- [ ] Write `module_07_rod_instrument.md` and `module_07_stationary_fin.md`
+- [x] Fix the five rod probe positions at holes 2, 5, 7, 8, 9 (`x = 0, 3.85, 8.95, 14.05, 19.15 cm` — 3.85 cm from
+      the base face, then 5.10 cm spacing).
+      The measured `θ₅/θ₁ = 0.54` is **above** the `1/e = 0.37` target, so the far probe is inside the region where
+      the semi-infinite exponential is no longer valid (§5 predicts 27 % error there) — that is a property of the
+      drilled layout, not something a rerun can fix, and it is why the finite cosh is the primary model
+- [ ] Complete the `20 → 45 °C` step into steady state — **45 °C is unreachable** (firmware interlock); the 40 °C
+      hold needs ≈ 15 min more than the 31 min already recorded, see
+      [stationary note §9](../docs/module_notes/module_07_stationary_fin.md)
+- [x] Run both fits (finite and semi-infinite) with residuals — on the **diagnostic** trailing window only; no
+      certified steady profile exists yet, so `m` stays `to fill in`
+- [x] Write `module_07_rod_instrument.md` and `module_07_stationary_fin.md` (both current; the certified numbers
+      are the missing part)
+- [x] Parts 1–3 figures: `part_01_sensor_map.png`, `part_02_step_response.png`, `part_03_stationary_profile.png`,
+      each regenerated by its committed script
 - [ ] Demonstrate C5 and submit the receipt before 11:55, citing pushed commits
 
 **Suggested division of labour (two people):** the four A4 parts are individual work, but you can check each

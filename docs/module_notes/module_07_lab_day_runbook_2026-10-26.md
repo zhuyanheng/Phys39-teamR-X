@@ -189,7 +189,9 @@ are pure theory and depend on none of today's data.
       baseline, step traces, run metadata, code file names and commit hash.
 - [ ] Run `Module_7/python/analysis/stationary_fin_fit.py`, fill `m`, `σ_m`, `1/m`, `Θ_tip`, `Bi∥`, `Bi⊥`
       and both residual maxima into §8 of [module_07_stationary_fin.md](module_07_stationary_fin.md), and run
-      `Module_7/python/test_stationary_fin_fit.py` (20 hardware-free tests).
+      `Module_7/python/test_stationary_fin_fit.py` (22 hardware-free tests) and
+      `Module_7/python/analysis/stationary_diagnostics.py` (11 more) for the systematics of a record that does not
+      reach steady state.
 - [ ] C5 rehearsal: each member explains one link of the measurement chain plus **one dominant
       uncertainty** (candidates: sensor position, contact resistance, room-temperature drift, residual
       calibration offset, the fitting uncertainty of `m`). Be ready to answer "why is the boundary

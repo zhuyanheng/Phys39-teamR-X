@@ -6,7 +6,7 @@ Only **measured** things live here, never derived things. The subdirectories nev
 | --- | --- | --- |
 | `raw/` | Raw CSV written straight by the GUI, which opens it as `module_07_rod_<YYYYmmdd_HHMMSS_microseconds>.csv` — a scratch name. Once a run is written up the file is renamed to its **purpose name** `module_07_rod_<role>_<programme>.csv`, e.g. `module_07_rod_stationary_40C.csv` | `Module_7/python/rod_acquisition_gui.py` (opened in `'x'` mode, never overwritten); the rename is by hand when a run is written up |
 | `calibration/` | Cross-calibration coefficient table (`a_i`, `b_i`, temperature range, residual statistics) + corrected data CSV | `python/analysis/cross_calibration_fit.py` |
-| `processed/` | Stationary-profile and step-response fits (`m`, `1/m`, chi-squared, criterion table): `<run>_stationary_fit.json` + `<run>_stationary_profile.csv` | `python/analysis/stationary_fin_fit.py` (figure goes to `figures/part_03_stationary_profile.png`) |
+| `processed/` | Stationary-profile and step-response fits (`m`, `1/m`, chi-squared, criterion table): `<run>_stationary_fit.json` + `<run>_stationary_profile.csv`; and the systematics of a drifting record — `<run>_stationary_diagnostics.json` (`window_slide`, `extrapolation`, `ambient`, `geometry`, `origin_swap`, `worst_change_percent`) | `python/analysis/stationary_fin_fit.py` (figure goes to `figures/part_03_stationary_profile.png`) and `python/analysis/stationary_diagnostics.py` |
 | `processed/pilot_checks/` | Quality check of one pilot run (row counts, gaps, per-channel slopes): `<run>_quality.json` | `python/analysis/pilot_run_check.py` |
 
 Rules:
