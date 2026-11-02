@@ -15,8 +15,8 @@
 | 文件 | 内容 | 状态 |
 | --- | --- | --- |
 | `docs/module_notes/module_07_lab_day_runbook_2026-10-26.md` | 实验日步骤：软件 → 几何 → 标定 → 阶跃 → 稳态 | 已有 |
-| `docs/module_notes/module_07_rod_instrument.md` | 传感器地图、同温检查记录、几何、baseline/阶跃、运行元数据 | 已记录 2026-10-30 所选孔 2、5、7、8、9 与距离；其余待补 |
-| `docs/module_notes/module_07_stationary_fin.md` | 形成性稳态肋片分析 | 待写（Part 3 之后） |
+| `docs/module_notes/module_07_rod_instrument.md` | 传感器地图、同温检查记录、几何、baseline/阶跃、运行元数据；含"跳过浸泡标定"的决定与代价 | 已记录 2026-10-30 所选孔 2、5、7、8、9 与距离；σ、残差、`h` 反演待回填 |
+| `docs/module_notes/module_07_stationary_fin.md` | Part 3 稳态拟合的方法、稳态判据、两套模型、不确定度两层、实测几何下的预期与待回填项 | 方法与脚本已完成（20 个测试通过）；等正式稳态 run 回填数字 |
 | `docs/assessments/a4_finite_length_biot.md` | A4 四部分正文 | 仅骨架：四部分与提交头仍为 `TODO`，待写 |
 
 ## 图

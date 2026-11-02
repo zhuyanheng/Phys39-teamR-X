@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | `raw/` | GUI 直接落盘的原始 CSV，文件名 `module_07_rod_<YYYYmmdd_HHMMSS_微秒>.csv` | `module_07_rod_acquisition_gui.py`（`'x'` 模式，绝不覆盖） |
 | `calibration/` | 交叉标定系数表（`a_i`、`b_i`、温度范围、残差统计）+ 修正后的数据 CSV | `python/analysis/module_07_calibration.py` |
-| `processed/` | 稳态剖面、阶跃响应的拟合结果（`m`、`1/m`、`χ²`、判据表） | `python/analysis/module_07_stationary_fin_fit.py` |
+| `processed/` | 稳态剖面、阶跃响应的拟合结果（`m`、`1/m`、`χ²`、判据表）：`<run>_stationary_fit.json` + `<run>_stationary_profile.csv` | `python/analysis/module_07_stationary_fin_fit.py`（图写到 `figures/part_03_stationary_profile.png`） |
 
 规则：
 

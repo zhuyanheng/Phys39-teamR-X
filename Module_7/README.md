@@ -123,6 +123,11 @@ Bi∥ = hPL²/(kA) = (mL)²
 6. 原始数据永不覆盖；修正系数单独存文件，分析时再套用。
 7. 把 rod 1 装进第一个孔并定义该孔为 `x = 0`；量其余 4 个位置和杆尖（`x = L`），记录每个位置与 `L` 的不确定度；画/拍传感器标签、通道、坐标方向、位置图。
 
+> **跳过说明：上面第 3–5 步的浸泡标定已决定不做**（探头已永久装入 TEC base 与杆孔，安装后六路温差已在 1 °C 以内）。
+> 代价已量化：任一探头偏 0.5 °C 会把 `m` 推 5.1 %（基温探头最敏感），所以报告里 `m` 必须带"未标定偏置 ≈5 %"这一项，
+> 并用 [现场记录](../docs/module_notes/module_07_rod_instrument.md) 里列出的替代检查（换基准重拟合、两个温度点的无量纲形状比较）。
+> `Module_7/python/analysis/module_07_calibration.py` 与 `data/calibration/` 因此保持空位，等以后真做浸泡时再用。
+
 **Part 2 选位置 + 阶跃响应**
 
 1. 先用 `T_set = 45 °C` 做稳态试探（更快但温差小；更高温差大但更慢、漏热多；**不得超过 55 °C**）。
@@ -135,10 +140,10 @@ Bi∥ = hPL²/(kA) = (mL)²
 
 **Part 3 稳态肋片剖面**
 
-1. 开跑前先记录预测的剖面形状和稳态判据（起始判据：所有探头 `|dT_i/dt| < 0.02 °C/min` 持续 ≥ 10 min）。
+1. 开跑前先记录预测的剖面形状和稳态判据（起始判据：所有探头 `|dT_i/dt| < 0.02 °C/min` 持续 ≥ 10 min）。判据在脚本里的实现是**两条同时满足**：整窗最小二乘斜率 ≤ 0.02 °C/min，且首末三分之一窗口均值差 ≤ 0.1 °C（防止"窗口起点落在瞬态里"被整窗斜率放过）。
 2. 直接用上面 `20 → 45 °C` 阶跃的最后稳态段，**不需要另做一次加热**。
-3. 判据满足后取一段合理区间平均（起始建议 5 min）。
-4. 画 `θ` vs `x`（带误差棒），**同时**拟合 finite（cosh）与 semi-infinite（指数），画两套残差，报告 `m`（1/m）与不确定度、`1/m`（m）。
+3. 判据满足后取**尾部**最长合格窗口平均：脚本自动把窗口起点选在最后一个瞬态之后，窗口内逐通道求均值 ± 标准差并写进 `_stationary_profile.csv`；不达标的 run 直接拒绝（退出码 2，不写任何结果）。
+4. 画 `θ` vs `x`（带误差棒），**同时**拟合 finite（cosh）与 semi-infinite（指数），画两套残差，报告 `m`（1/m）与不确定度、`1/m`（m）。一键命令见 §5 的"Part 3 分析"。
 5. 报告忽略有限端后 `m` 变了多少，并与拟合不确定度比较。
 6. 讨论传感器位置误差、室温漂移、接触不良、以及端部边界条件的实测证据。
 7. 与预测记录对照：哪些假设被支持、哪个模型更合适、剩下什么无法解释的偏差。
@@ -172,7 +177,7 @@ DATA,12.50,23.41,23.38,23.36,23.34,23.31,23.29,120,1,120,0,60.00,OK,5
 文件：`Module_7/python/module_07_rod_acquisition_gui.py`（Module 6 GUI 的拷贝）+ `Module_7/python/rod_protocol.py`（Qt-free 解析器）+ `Module_7/run_rod_acquisition.command`。
 
 - `PIController` 直接从 `Module_6/python/` 导入，**不复制**控制律——与 Module 6 复用 Module 5 `parse_measurement` 是同一做法，控制算术只有一份实现。
-- 解析器与固件表头由 `Module_7/python/test_rod_protocol.py` 交叉校验（19 个测试，`python3 Module_7/python/test_rod_protocol.py`，无需 Qt/串口/Arduino）。
+- 解析器与固件表头由 `Module_7/python/test_rod_protocol.py` 交叉校验（21 个测试，`python3 Module_7/python/test_rod_protocol.py`，无需 Qt/串口/Arduino）。
 - CSV：`Module_7/data/raw/module_07_rod_<时间戳>.csv`。前 14 个测量列与 `DATA` 行**同名同序**（`time_s, tec_C, rod1_C, rod2_C, rod3_C, rod4_C, rod5_C, pwm, heat_cool, heat_pwm, cool_pwm, limit_C, safety, rod_ok`，由 `rod_protocol.py` 生成，手改列名会让测试失败），其后追加控制列（`setpoint_C`、`error_C`、`p_term_pwm`、`i_term_pwm`、`sent_signed_pwm`…），所以一行 CSV 仍然能解释当时的执行器命令。
 - 4 张图：6 通道温度 + 设定值（TEC 加粗、每通道固定颜色）、signed PWM、P/I 项、误差。默认窗口 900 s，可勾 `Show whole run`——杆的响应是几十分钟量级，Module 6 的 180 s 窗口不够用。
 - 坏行跳过不崩并计数（`rows ok/bad`）；`#` 开头的行不计为坏行；`'x'` 模式打开文件，绝不覆盖；每行 flush。
@@ -202,7 +207,26 @@ Module_7/run_rod_acquisition.command             # 实测：选端口 → Connec
 - 另存"原始列 + `rod1_corrected_C`…`rod5_corrected_C`"到 `data/calibration/<raw 文件名>_corrected.csv`，原始列不改；`nan` 在修正列里仍是 `nan`。
 - 判据（与 runbook 一致，可用 `--criterion-*` 改）：`|残差均值| ≤ 0.2 °C`、`残差曲率 ≤ 0.2 °C`、`max|残差| ≤ 0.2 °C`。任一通道不达标时退出码为 2，并提示重做浸泡。
 - **判据的正确读法**：拟合带截距，所以残差均值按构造恒为 0（它只是"截距解对了"的自检）；残差的**直线倾斜**也被 `b` 吃掉，所以"趋势"用**曲率**（中间半段均值 − 两端四分之一均值）来量；真正判别探头滞后/失去接触的是 `max|残差|` 与曲率两项。
-- 参考本身是未标定的 A0 探头（β=4540 K 标称值，β 差 1 % ≈ 0.6 °C），所以它做的是**相对一致性**标定，不是绝对精度标定——这一点必须写进报告。
+- 参考本身是未标定的 A0 探头（β=4540 K 标称值，β 差 1 % ≈ 0.6 °C），所以它做的是**相对一致性**标定，不是绝对精度标定——这一点必须写进报告。**本模块已决定不做浸泡标定**（见 §4 Part 1 的跳过说明与 [现场记录](../docs/module_notes/module_07_rod_instrument.md)），所以这个脚本在本次只作为补做工具保留。
+
+**Part 3 分析 — 稳态剖面拟合（独立脚本，只依赖标准库 + matplotlib 画图）**
+
+```bash
+.venv/bin/python Module_7/python/analysis/module_07_stationary_fin_fit.py \
+    Module_7/data/raw/<run>.csv --ambient <远离装置的室温 °C>
+```
+
+- 判据先行：脚本先找**尾部**最长的合格窗口（整窗 `|dT/dt| ≤ 0.02 °C/min` 且首末三分之一均值差 ≤ 0.1 °C，窗口 ≥ `--hold 600` s）。
+  达不到就**拒绝**（退出码 2、什么都不写），并打印最接近的那个窗口还差在哪里（哪个通道、多少 °C/min、多少 °C）。
+- 剖面：窗口内逐通道均值 ± 样本标准差（含样本数），`θ = T − T∞`；`T∞` 用 `--ambient` 实测值，不给则用**剖面自身**联合拟合（`m` 与 `T∞` 两个参数，profile likelihood，`σ` 不报）。
+- 拟合：finite `Θ = cosh[m(L−x)]/cosh(mL)` 用 `θ(0)` 实测值定幅度，只拟合一个参数 `m`；semi-infinite `Θ = e^(−mx)` 用同一批数据做 log 线性回归作对照。两套残差都进 CSV 和图。
+- 不确定度：`σ_m` 由 SSR 对 `m` 的曲率给出（`dof = N − 1`），并在输出里注明"1 个拟合参数"；**逐探头未标定偏置（≈5 %，来自跳过的浸泡标定）必须另外加**，由 `probe_offset_sensitivity` 表给出：每次把一个探头抬高 `--sensitivity-offset`（默认 0.5 °C）重拟合，看 `m` 动多少。
+- 输出（默认目录即仓库约定）：
+  - `Module_7/data/processed/<run>_stationary_fit.json` — 判据、窗口、逐点剖面、两套模型、`σ`、`ε_T` 表、`Bi∥`/`Bi⊥`、灵敏度表、源文件 SHA-256（严格 JSON，非有限浮点写 `null`）；
+  - `Module_7/data/processed/<run>_stationary_profile.csv` — `label, x_m, temperature_C, std_C, samples, theta_C` + 两套模型值与残差；
+  - `Module_7/figures/part_03_stationary_profile.png` — 剖面 + 两模型 + 双残差（可用 `--figure-name` 改名）。
+- 几何默认值就是 [现场记录](../docs/module_notes/module_07_rod_instrument.md) 的孔位（`x = 0, 3.85, 8.95, 14.05, 19.15 cm`，`L = 27.15 cm`），可用 `--positions` / `--length` 覆盖；`--diameter-is-measured` 只在真量过直径后加，否则输出里会写"直径是标称值"。
+- 20 个无硬件测试：`.venv/bin/python Module_7/python/test_module_07_stationary_fin_fit.py`（合成剖面恢复已知 `m`、半无限偏差、`ε_T` 闭式、拒绝逻辑、原始文件哈希不变、JSON 严格且可移植）。
 
 **Stage 4 — 标定前集成检查**
 
@@ -258,15 +282,17 @@ Module_7/
 ├── python/
 │   ├── module_07_rod_acquisition_gui.py          Stage 2（Module 6 GUI 的拷贝）
 │   ├── rod_protocol.py                           串口格式与解析（Qt-free，可单测）
-│   ├── test_rod_protocol.py                      19 个无硬件测试
+│   ├── test_rod_protocol.py                      21 个无硬件测试
 │   ├── test_module_07_calibration.py             24 个无硬件测试（合成六通道数据）
+│   ├── test_module_07_stationary_fin_fit.py      20 个无硬件测试（合成稳态剖面、拒绝逻辑、输出可移植性）
 │   └── analysis/
 │       ├── module_07_calibration.py              Stage 3 交叉标定（标准库即可；图需 matplotlib）
-│       └── module_07_stationary_fin_fit.py       Part 3 finite/semi-infinite 拟合（待写）
+│       ├── module_07_stationary_fin_fit.py       Part 3 稳态拟合：稳态判据 + finite/semi-infinite + 残差 + 不确定度
+│       └── analyze_pilot_run.py                  试测 run 的质量检查（不是拟合）
 ├── data/
 │   ├── raw/                                      原始 CSV（永不覆盖）
-│   ├── calibration/                              标定系数表 + 修正数据 CSV（Stage 3 写入）
-│   ├── processed/                                拟合结果（Part 3 建）
+│   ├── calibration/                              标定系数表 + 修正数据 CSV（本次不生成：浸泡标定已跳过）
+│   ├── processed/                                稳态拟合结果（Part 3：`<run>_stationary_fit.json`、`<run>_stationary_profile.csv`）
 │   └── README.md                                 数据目录规则
 ├── figures/                                      Part 1–3 的图（脚本运行时生成）
 ├── docs/
@@ -275,9 +301,17 @@ Module_7/
 
 课程额外要求的证据文件（放 `docs/module_notes/`，与 Module 1–5 的笔记一致）：
 
-- `docs/module_notes/module_07_rod_instrument.md` — 传感器地图、标定记录、几何、baseline/阶跃、运行元数据
-- `docs/module_notes/module_07_stationary_fin.md` — 形成性稳态肋片分析（C6 与最终展示的证据）
+- `docs/module_notes/module_07_rod_instrument.md` — 传感器地图、标定记录、几何、baseline/阶跃、运行元数据，以及"跳过浸泡标定"的决定与代价
+- `docs/module_notes/module_07_stationary_fin.md` — 稳态拟合的方法、判据、不确定度分层与待回填项
 - `docs/assessments/a4_finite_length_biot.md` — A4 的四部分正文
+
+**无硬件测试（改动任何脚本后先跑这三条，不需要 Qt/串口/Arduino）**
+
+```bash
+.venv/bin/python Module_7/python/test_rod_protocol.py                 # 21 个：解析器 = 固件表头
+.venv/bin/python Module_7/python/test_module_07_calibration.py        # 24 个：合成六通道标定
+.venv/bin/python Module_7/python/test_module_07_stationary_fin_fit.py # 20 个：稳态判据、拟合恢复、输出可移植
+```
 
 ## 8. 行动清单（按优先级）
 
