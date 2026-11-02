@@ -1,5 +1,5 @@
 {
-  "source": "/Users/xianruohuang/Documents/GitHub/Phys39-teamR-X/Module_7/data/raw/module_07_rod_interlock_trip_45C_40C.csv",
+  "source": "Module_7/data/raw/module_07_rod_interlock_trip_45C_40C.csv",
   "source_sha256": "e36e05de11a3a3d7f68d3e0e082e3dd0101a55451291b89400e4258a0e028fe0",
   "measurement_rows": 1454,
   "duration_s": 750.45,

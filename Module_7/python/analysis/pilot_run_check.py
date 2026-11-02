@@ -32,6 +32,19 @@ def number(value):
         return math.nan
 
 
+def portable_path(path):
+    """Path relative to the repository when possible, so JSON stays portable.
+
+    The twin of `portable_path` in stationary_fin_fit.py: a committed quality
+    JSON must not carry one machine's home directory.
+    """
+    resolved = Path(path).resolve()
+    try:
+        return str(resolved.relative_to(MODULE.parent))
+    except ValueError:
+        return resolved.name
+
+
 def inspect(raw):
     before = hashlib.sha256(raw.read_bytes()).hexdigest()
     with raw.open(newline="") as stream:
@@ -44,7 +57,7 @@ def inspect(raw):
         raise ValueError("Nonfinite Arduino timestamp")
     tail = [row for row in rows if number(row["time_s"]) >= times[-1] - 60]
     result = {
-        "source": str(raw.resolve()), "source_sha256": before,
+        "source": portable_path(raw), "source_sha256": before,
         "measurement_rows": len(rows), "duration_s": times[-1] - times[0],
         "largest_gap_s": max(b - a for a, b in zip(times, times[1:])),
         "nonadvancing_timestamps": sum(b <= a for a, b in zip(times, times[1:])),
