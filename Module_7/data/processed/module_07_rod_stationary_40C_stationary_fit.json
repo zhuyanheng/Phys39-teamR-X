@@ -1,0 +1,225 @@
+{
+  "status": "fitted",
+  "criterion": {
+    "slope_limit_C_per_min": 0.06,
+    "hold_s": 600.0,
+    "drift_budget_C": 0.4,
+    "channels": [
+      "tec_C",
+      "rod1_C",
+      "rod2_C",
+      "rod3_C",
+      "rod4_C",
+      "rod5_C"
+    ],
+    "relaxed": true
+  },
+  "measurement_rows": 3578,
+  "rows_used": 3578,
+  "steady_window": {
+    "start_s": 1175.22,
+    "stop_s": 1849.33,
+    "duration_s": 674.1099999999999,
+    "rows": 1304,
+    "worst_slope_C_per_min": 0.05501574925687522,
+    "slope_channel": "rod5_C",
+    "worst_drift_C": 0.39993087557611773,
+    "drift_channel": "rod5_C"
+  },
+  "window_means_C": {
+    "tec_C": 39.98124233128834,
+    "rod1_C": 36.157016871165645,
+    "rod2_C": 34.15778374233129,
+    "rod3_C": 32.62801380368098,
+    "rod4_C": 31.502124233128832,
+    "rod5_C": 30.499647239263805
+  },
+  "window_std_C": {
+    "tec_C": 0.2957947622659503,
+    "rod1_C": 0.08487856717478297,
+    "rod2_C": 0.11382047171547377,
+    "rod3_C": 0.14073743876595846,
+    "rod4_C": 0.16997633322288275,
+    "rod5_C": 0.1824894738920517
+  },
+  "ambient_mode": "measured",
+  "ambient_C": 23.95,
+  "positions_m": [
+    0.0,
+    0.0385,
+    0.0895,
+    0.1405,
+    0.1915
+  ],
+  "analysis_length_m": 0.2715,
+  "geometry": {
+    "diameter_m": 0.0127,
+    "radius_m": 0.00635,
+    "area_m2": 0.00012667686977437442,
+    "perimeter_m": 0.03989822670059037,
+    "area_over_perimeter_m": 0.003175
+  },
+  "diameter_is_measured": false,
+  "finite_model": {
+    "m_per_m": 4.8258996809707595,
+    "ssr_C2": 0.0810320071611353,
+    "rms_C": 0.12730436533060074,
+    "theta0_measured_C": 12.207016871165646,
+    "sigma_m_per_m": 0.06833403774797751,
+    "sigma_note": "from the curvature of SSR, one fitted parameter",
+    "one_over_m_m": 0.20721524816256517,
+    "degrees_of_freedom": 4
+  },
+  "semi_infinite_model": {
+    "m_per_m": 3.4006310761728704,
+    "ssr_C2": 0.3919016232987861,
+    "rms_C": 0.2799648632592262,
+    "method": "log-linear, theta_0 fixed at x = 0"
+  },
+  "epsilon_table": [
+    {
+      "x_m": 0.0,
+      "theta_finite_normalised": 1.0,
+      "theta_semi_normalised": 1.0,
+      "epsilon_T": 0.0
+    },
+    {
+      "x_m": 0.0385,
+      "theta_finite_normalised": 0.8557936630785942,
+      "theta_semi_normalised": 0.8304420432639384,
+      "epsilon_T": 0.029623518972385156
+    },
+    {
+      "x_m": 0.0895,
+      "theta_finite_normalised": 0.7096981373221767,
+      "theta_semi_normalised": 0.649262600112078,
+      "epsilon_T": 0.08515668004728487
+    },
+    {
+      "x_m": 0.1405,
+      "theta_finite_normalised": 0.6068103754954206,
+      "theta_semi_normalised": 0.5076114911613621,
+      "epsilon_T": 0.16347591989189245
+    },
+    {
+      "x_m": 0.1915,
+      "theta_finite_normalised": 0.5408663762004419,
+      "theta_semi_normalised": 0.3968647291782735,
+      "epsilon_T": 0.26624255705036143
+    }
+  ],
+  "probe_offset_sensitivity": {
+    "offset_C": 0.5,
+    "base_m_per_m": 4.8258996809707595,
+    "probes": [
+      {
+        "label": "rod1",
+        "x_m": 0.0,
+        "offset_C": 0.5,
+        "m_per_m": 5.111364617145853,
+        "delta_m_per_m": 0.28546493617509316,
+        "relative_delta_m": 0.05915268759123276
+      },
+      {
+        "label": "rod2",
+        "x_m": 0.0385,
+        "offset_C": 0.5,
+        "m_per_m": 4.770734209650456,
+        "delta_m_per_m": -0.05516547132030336,
+        "relative_delta_m": -0.011431126829641532
+      },
+      {
+        "label": "rod3",
+        "x_m": 0.0895,
+        "offset_C": 0.5,
+        "m_per_m": 4.720803444839952,
+        "delta_m_per_m": -0.10509623613080787,
+        "relative_delta_m": -0.021777542650796903
+      },
+      {
+        "label": "rod4",
+        "x_m": 0.1405,
+        "offset_C": 0.5,
+        "m_per_m": 4.68922992488127,
+        "delta_m_per_m": -0.13666975608948917,
+        "relative_delta_m": -0.02832005742440075
+      },
+      {
+        "label": "rod5",
+        "x_m": 0.1915,
+        "offset_C": 0.5,
+        "m_per_m": 4.670601793201756,
+        "delta_m_per_m": -0.15529788776900322,
+        "relative_delta_m": -0.0321800903531762
+      }
+    ]
+  },
+  "theta_tip_finite": 0.5029181452797733,
+  "bi_parallel": 1.7167072737791969,
+  "bi_perp": 0.00023477077774373202,
+  "profiles": [
+    {
+      "label": "rod1",
+      "x_m": 0.0,
+      "temperature_C": 36.157016871165645,
+      "std_C": 0.08487856717478297,
+      "samples": 1304,
+      "theta_C": 12.207016871165646,
+      "theta_finite_model_C": 12.207016871165646,
+      "theta_semi_model_C": 12.207016871165646,
+      "residual_finite_C": 0.0,
+      "residual_semi_C": 0.0
+    },
+    {
+      "label": "rod2",
+      "x_m": 0.0385,
+      "temperature_C": 34.15778374233129,
+      "std_C": 0.11382047171547377,
+      "samples": 1304,
+      "theta_C": 10.20778374233129,
+      "theta_finite_model_C": 10.446687683437048,
+      "theta_semi_model_C": 10.709022852224443,
+      "residual_finite_C": 0.2389039411057574,
+      "residual_semi_C": 0.5012391098931523
+    },
+    {
+      "label": "rod3",
+      "x_m": 0.0895,
+      "temperature_C": 32.62801380368098,
+      "std_C": 0.14073743876595846,
+      "samples": 1304,
+      "theta_C": 8.67801380368098,
+      "theta_finite_model_C": 8.663297135726644,
+      "theta_semi_model_C": 9.003869761811178,
+      "residual_finite_C": -0.01471666795433535,
+      "residual_semi_C": 0.3258559581301981
+    },
+    {
+      "label": "rod4",
+      "x_m": 0.1405,
+      "temperature_C": 31.502124233128832,
+      "std_C": 0.16997633322288275,
+      "samples": 1304,
+      "theta_C": 7.552124233128833,
+      "theta_finite_model_C": 7.40734449127096,
+      "theta_semi_model_C": 7.570221093591014,
+      "residual_finite_C": -0.14477974185787268,
+      "residual_semi_C": 0.018096860462181397
+    },
+    {
+      "label": "rod5",
+      "x_m": 0.1915,
+      "temperature_C": 30.499647239263805,
+      "std_C": 0.1824894738920517,
+      "samples": 1304,
+      "theta_C": 6.549647239263805,
+      "theta_finite_model_C": 6.602364979325019,
+      "theta_semi_model_C": 6.3648463296211055,
+      "residual_finite_C": 0.05271774006121355,
+      "residual_semi_C": -0.1848009096426999
+    }
+  ],
+  "source": "Module_7/data/raw/module_07_rod_stationary_40C.csv",
+  "source_sha256": "70aaaec4b67fc6068cc98271867e34bf84ac237defc0c305afaa1eb41a47cc54",
+  "raw_unchanged": true
+}
