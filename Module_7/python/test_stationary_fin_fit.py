@@ -297,6 +297,35 @@ class CommandLineTests(unittest.TestCase):
             self.assertEqual(list(Path(tmp).glob("*_stationary_profile.csv")), [])
             self.assertIn("no trailing window", message)
 
+    def test_a_relaxed_criterion_marks_its_own_output(self):
+        def drifting(time_s):
+            return 0.01 * time_s
+
+        with tempfile.TemporaryDirectory() as tmp:
+            raw = Path(tmp) / "drifting.csv"
+            write_rows(raw, make_rows(offset=drifting))
+            stream = io.StringIO()
+            with contextlib.redirect_stdout(stream), contextlib.redirect_stderr(stream):
+                code = fit.main([str(raw), "--out-dir", tmp,
+                                 "--ambient", f"{TRUE_AMBIENT:g}",
+                                 "--slope-limit", "1", "--drift-budget", "10",
+                                 "--no-figures"])
+            self.assertEqual(code, 0)
+            self.assertIn("CRITERION RELAXED", stream.getvalue())
+            result = json.loads(
+                (Path(tmp) / "drifting_stationary_fit.json").read_text())
+            self.assertTrue(result["criterion"]["relaxed"])
+            self.assertEqual(result["criterion"]["slope_limit_C_per_min"], 1.0)
+
+    def test_the_pre_registered_criterion_is_not_flagged_as_relaxed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            code, _, _, _, message = run_main(make_rows(), tmp)
+            self.assertEqual(code, 0)
+            self.assertNotIn("CRITERION RELAXED", message)
+            result = json.loads(
+                (Path(tmp) / "synthetic_steady_stationary_fit.json").read_text())
+            self.assertFalse(result["criterion"]["relaxed"])
+
     def test_positions_must_start_at_zero_and_stay_inside_the_rod(self):
         with tempfile.TemporaryDirectory() as tmp:
             write_rows(Path(tmp) / "rows.csv", make_rows(duration=700.0))

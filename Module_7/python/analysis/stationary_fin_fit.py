@@ -64,6 +64,17 @@ DRIFT_BUDGET_C = 0.10
 SENSITIVITY_OFFSET_C = 0.5
 
 
+def relaxed_criterion(limit, hold, drift_budget):
+    """True when the caller did not use the pre-registered steady criterion.
+
+    The three limits in §2 of module_07_stationary_fin.md were fixed before the
+    run, so a fit made under other limits has to be recognisable from its own
+    output: it is a diagnostic of a drifting record, not the Part 3 result.
+    """
+    return (limit != SLOPE_LIMIT_C_PER_MIN or hold != HOLD_S
+            or drift_budget != DRIFT_BUDGET_C)
+
+
 def number(value):
     try:
         return float(value)
@@ -429,7 +440,8 @@ def analyse(rows, xs, length, ambient=None, diameter=NOMINAL_DIAMETER_M,
     table written to CSV and is empty unless the fit ran.
     """
     criterion = {"slope_limit_C_per_min": limit, "hold_s": hold,
-                 "drift_budget_C": drift_budget, "channels": list(channels)}
+                 "drift_budget_C": drift_budget, "channels": list(channels),
+                 "relaxed": relaxed_criterion(limit, hold, drift_budget)}
     times = [number(row.get("time_s")) for row in rows]
     complete = [index for index, row in enumerate(rows)
                 if all(math.isfinite(number(row.get(channel)))
@@ -588,6 +600,11 @@ def print_summary(result):
           f"{window['slope_channel']} (limit {criterion['slope_limit_C_per_min']} C/min)")
     print(f"  worst third-to-third drift {window['worst_drift_C']:.3f} C on "
           f"{window['drift_channel']} (budget {criterion['drift_budget_C']} C)")
+    if criterion.get("relaxed"):
+        print("  *** CRITERION RELAXED: these limits are not the pre-registered "
+              "ones (0.02 C/min, 0.10 C, 600 s),")
+        print("  *** so this window is a diagnostic of a drifting record and the "
+              "fit below is NOT the Part 3 result")
     print(f"ambient T_inf: {result['ambient_C']:.2f} C ({result['ambient_mode']})")
     print()
     print("  probe     x (m)    T (C)   theta (C)   finite     semi   resid_f   resid_s")
@@ -652,6 +669,7 @@ def write_figure(path, result):
     length = result["analysis_length_m"]
     m = result["finite_model"]["m_per_m"]
     semi_m = result["semi_infinite_model"]["m_per_m"]
+    relaxed = bool(result["criterion"].get("relaxed"))
 
     grid = [length * index / 400.0 for index in range(401)]
     axes[0].plot(grid, [theta0 * theta_finite(x, m, length) for x in grid],
@@ -661,13 +679,15 @@ def write_figure(path, result):
                  color="#c0392b", lw=1.6, ls="--",
                  label=f"semi-infinite: m = {semi_m:.3f} 1/m")
     axes[0].errorbar(xs, thetas, yerr=errors, fmt="o", ms=7, capsize=4,
-                     color="#111111", label="steady-window mean")
+                     color="#111111",
+                     label="window mean" if relaxed else "steady-window mean")
     axes[0].axvline(length, color="#999999", lw=1.0, ls=":")
     axes[0].annotate("tip x = L", (length, max(thetas) * 0.98), ha="right",
                      va="top", fontsize=9, color="#666666")
     axes[0].set_xlabel("x from rod1 / hole 2 (m)")
     axes[0].set_ylabel("theta = T - T_inf (C)")
-    axes[0].set_title("Stationary profile, both models")
+    axes[0].set_title("Steady profile, both models"
+                      if not relaxed else "Trailing-window profile, both models")
     axes[0].grid(alpha=0.25)
     axes[0].legend(fontsize=9)
 
@@ -684,10 +704,17 @@ def write_figure(path, result):
     axes[1].legend(fontsize=9)
 
     window = result["steady_window"]
-    figure.suptitle(
-        f"steady window {window['start_s']:.0f}-{window['stop_s']:.0f} s, "
-        f"T_inf = {result['ambient_C']:.2f} C ({result['ambient_mode']})",
-        fontsize=10)
+    criterion = result["criterion"]
+    limits = (f"|dT/dt| <= {criterion['slope_limit_C_per_min']:g} C/min, "
+              f"drift <= {criterion['drift_budget_C']:g} C, "
+              f"window >= {criterion['hold_s']:g} s")
+    title = (f"window {window['start_s']:.0f}-{window['stop_s']:.0f} s "
+             f"({limits}), T_inf = {result['ambient_C']:.2f} C "
+             f"({result['ambient_mode']})")
+    if relaxed:
+        title = ("CRITERION RELAXED: this record is not a certified steady "
+                 "profile\n" + title)
+    figure.suptitle(title, fontsize=10)
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(path, dpi=160)
     plt.close(figure)
