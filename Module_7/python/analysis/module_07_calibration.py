@@ -417,7 +417,8 @@ def main(argv=None):
     parser.add_argument("--criterion-mean", type=float, default=0.2,
                         help="|mean residual| limit in C (default 0.2)")
     parser.add_argument("--criterion-trend", type=float, default=0.2,
-                        help="hot/cold end residual difference limit in C "
+                        help="residual curvature limit in C: mean of the middle "
+                             "half minus the mean of both end quarters "
                              "(default 0.2)")
     parser.add_argument("--criterion-max", type=float, default=0.2,
                         help="max |residual| limit in C (default 0.2)")
