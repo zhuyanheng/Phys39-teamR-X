@@ -182,8 +182,8 @@ Two runs were recorded and committed (field record, timings and the interlock tr
 
 | Raw file | What it is | Script verdict |
 | --- | --- | --- |
-| `module_07_rod_20261102_100034_422916_T20C.csv` | 188 s at 20 °C, `Kp=20`, `Ki=0.1` | refuse, exit 2: record only 239.4 s, `tec_C` at 0.934 °C/min |
-| `module_07_rod_20261102_100448_913799_T20C_trip45C_T40C.csv` | 294 s at 20 °C, 45 °C step → interlock trip, then 389 s at 40 °C | refuse, exit 2 (defaults **and** `--hold 300`) |
+| `module_07_rod_pi_check_20C.csv` | 188 s at 20 °C, `Kp=20`, `Ki=0.1` | refuse, exit 2: record only 239.4 s, `tec_C` at 0.934 °C/min |
+| `module_07_rod_interlock_trip_45C_40C.csv` | 294 s at 20 °C, 45 °C step → interlock trip, then 389 s at 40 °C | refuse, exit 2 (defaults **and** `--hold 300`) |
 
 The second verdict at `--hold 300` is the informative one, because 300 s is what the operator judged
 sufficient: over the trailing 300 s of the 40 °C hold, `rod4_C` still moves at **0.741 °C/min** (37 × the

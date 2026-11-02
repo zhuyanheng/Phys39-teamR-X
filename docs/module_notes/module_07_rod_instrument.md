@@ -74,15 +74,17 @@ confirmed to be the physical bottom end.
 
 ## 2026-10-30 15:23–15:29: short 20 → 30 → 20 °C trial
 
-Raw data: `Module_7/data/raw/module_07_rod_20261030_152300_037075_T20C_T30C_T20C.csv`. The tag was added on
-2026-11-02 together with the others: `T20C → T30C → T20C` is the commanded setpoint sequence, the timestamp
-is still the moment the GUI opened the file, and the rows and bytes are untouched (the SHA-256 in the quality
-JSON below was recomputed from the renamed file and matches the pre-rename value).
+Raw data: `Module_7/data/raw/module_07_rod_pilot_20C_30C_20C.csv`. The name states the purpose (`pilot`: a
+function and propagation trial, not a fit input) and the commanded programme `20 → 30 → 20 °C`; the run's clock
+time is in every row's `host_time` and in the table below, not in the name (rule 6 of
+`Module_7/data/README.md`). The file was renamed on 2026-11-02 with the others; the rows and bytes are
+untouched, so it hashes the same before and after, and the quality JSON below was regenerated under the new
+stem.
 Check script: `Module_7/python/analysis/pilot_run_check.py`; the numerical check and the SHA-256 of the
 source file are stored in
-`Module_7/data/processed/pilot_checks/module_07_rod_20261030_152300_037075_T20C_T30C_T20C_quality.json`; the
+`Module_7/data/processed/pilot_checks/module_07_rod_pilot_20C_30C_20C_quality.json`; the
 temperature traces are in
-`Module_7/figures/pilot_checks/module_07_rod_20261030_152300_037075_T20C_T30C_T20C_temperatures.png`.
+`Module_7/figures/pilot_checks/module_07_rod_pilot_20C_30C_20C_temperatures.png`.
 
 - 774 measurement rows, Arduino time 0.55–399.76 s (about 6 min 39 s), largest sampling interval 0.52 s,
   no duplicate or non-monotonic timestamps.
@@ -114,18 +116,19 @@ This session was meant to produce the final `20 → 45 °C` steady profile. It p
 records instead, and it established that the 45 °C setpoint cannot be reached by this firmware at all: the
 safety interlock trips first.
 
-### Raw files and their new names
+### Raw files and their names
 
-The two files gained a setpoint tag on 2026-11-02, so that a file name says what was commanded instead of only
-when the writer opened it. The tags are chronological: `T20C` = held at 20 °C, `trip45C` = the 45 °C attempt
-the safety cut short, `T40C` = held at 40 °C. The timestamp in the name is still the moment the GUI created the
-file, the rows and bytes are unchanged, and the SHA-256 of the file as checked is stored in the matching quality
-JSON.
+Both files are named for what they were there to do: `pi_check` (does the PI loop actually hold a setpoint, and
+what do the probes do under a hold) and `interlock_trip` (the safety path cutting a 45 °C attempt short). The
+programme part of the name is the commanded setpoint sequence: `20C` = held at 20 °C, `45C` = the 45 °C attempt
+that tripped, `40C` = held at 40 °C. The GUI's timestamp is deliberately no longer in the name — it survives in
+every row's `host_time` and in the wall-clock column below. The rows and bytes are unchanged, and the SHA-256 of
+each file as checked is stored in the matching quality JSON.
 
 | Raw file | Wall clock | Rows | Arduino span | Commanded sequence |
 | --- | --- | ---: | ---: | --- |
-| `module_07_rod_20261102_100034_422916_T20C.csv` | 10:00:34–10:04:36 | 465 | 0.6–240.0 s | P for 51 s, then PI at **20 °C** (`Kp = 20` PWM/°C, `Ki = 0.1` PWM/(°C·s)), 52–240 s |
-| `module_07_rod_20261102_100448_913799_T20C_trip45C_T40C.csv` | 10:04:48–10:17:22 | 1454 | 0.6–751.0 s | P for 19 s; PI at **20 °C** 20–314 s; setpoint step to **45 °C** at 314 s → **trip**; PI at **40 °C** (`Kp = 100`, `Ki = 0.3`) 362–751 s |
+| `module_07_rod_pi_check_20C.csv` | 10:00:34–10:04:36 | 465 | 0.6–240.0 s | P for 51 s, then PI at **20 °C** (`Kp = 20` PWM/°C, `Ki = 0.1` PWM/(°C·s)), 52–240 s |
+| `module_07_rod_interlock_trip_45C_40C.csv` | 10:04:48–10:17:22 | 1454 | 0.6–751.0 s | P for 19 s; PI at **20 °C** 20–314 s; setpoint step to **45 °C** at 314 s → **trip**; PI at **40 °C** (`Kp = 100`, `Ki = 0.3`) 362–751 s |
 
 Both files pass `pilot_run_check.py`: largest sampling interval 0.52 s, no repeated or non-monotonic
 timestamps, `rod_ok=5` on every measurement row, `safety=OK` on every measurement row (event rows leave the

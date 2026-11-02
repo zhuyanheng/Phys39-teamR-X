@@ -34,7 +34,7 @@ Run the whole hardware-free suite after touching any script (no Arduino, serial 
 
 | Path | State |
 | --- | --- |
-| `Module_7/data/raw/` | Four runs, every name tagged with its chronological setpoint sequence: `..._20261030_152300_037075_T20C_T30C_T20C`, `..._20261102_100034_422916_T20C`, `..._20261102_100448_913799_T20C_trip45C_T40C`, `..._20261102_111341_355018_T40C` (the last one is still being written, so it is not committed yet). The seven few-second UI-check runs and one uncontrolled 2-minute passive record were deleted on 2026-11-02; rows are never modified or overwritten |
+| `Module_7/data/raw/` | Four runs, each named for its purpose and commanded programme: `module_07_rod_pilot_20C_30C_20C`, `module_07_rod_pi_check_20C`, `module_07_rod_interlock_trip_45C_40C`, `module_07_rod_stationary_40C` (the last one is still being written, so it is not committed yet). The GUI's timestamped name is only a scratch name, replaced at write-up; the seven few-second UI-check runs and one uncontrolled 2-minute passive record were deleted on 2026-11-02; rows are never modified or overwritten |
 | `Module_7/data/calibration/` | **Empty by decision** — the soak cross-calibration was skipped; the cost is quantified in the [rod instrument record](module_07_rod_instrument.md) |
 | `Module_7/data/processed/pilot_checks/` | Three `<raw stem>_quality.json`, one per checked run (2026-10-30 pilot and both 2026-11-02 runs) |
 | `Module_7/data/processed/` | No `<raw stem>_stationary_fit.json` — both 2026-11-02 runs were **refused** by the steady-state criteria (exit 2); see [stationary fin note §9](module_07_stationary_fin.md) |
