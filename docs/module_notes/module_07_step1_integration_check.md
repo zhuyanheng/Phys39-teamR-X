@@ -98,8 +98,9 @@ Module_7/run_rod_acquisition.command        # use --preview to look at the windo
 - [ ] Status bar: `Connected; wait for a fresh Safety: OK line. CSV: …/Module_7/data/raw/module_07_rod_<timestamp>.csv`
 - [ ] Readout line shows `valid 5/5`, `Safety=OK`, `PWM=+0`, and `rows ok/bad=` with
   `bad` staying at 0. A growing `bad` count means a baud-rate or wiring problem, not data.
-- [ ] All six temperature curves plus the dashed setpoint line are visible; TEC is the
-  thick black curve; rod 1–5 are blue, green, olive, orange, violet.
+- [ ] Two plots: TEC base with the dashed setpoint on top, rods A1–A5 below on their own
+  axis. TEC is the thick black curve; rod 1–5 are blue, green, olive, orange, violet, and the
+  legend gives each probe's distance from hole 2. Zooming one plot zooms both.
 
 ## 5. Channel fingerprint (the actual integration test)
 

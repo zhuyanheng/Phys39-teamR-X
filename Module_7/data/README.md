@@ -12,7 +12,7 @@ Only **measured** things live here, never derived things. The subdirectories nev
 Rules:
 
 1. **Raw columns are never rewritten.** Corrected values are stored as new `rod1_corrected_C` ... `rod5_corrected_C` columns or in a separate file, and the calibration-table version that was applied is written down next to them.
-2. Every file in `raw/` corresponds to one real run; do not hand-edit, merge or "clean" them.
+2. Every file in `raw/` corresponds to one real run; do not hand-edit, merge or "clean" them. `Module_7/data/raw/**` is marked `-text` in the repository `.gitattributes`, so these files are checked out byte for byte and the SHA-256 quoted in a `_quality.json` always matches the working copy. The GUI writes LF line endings; the two 2026-11-02 files predate that and are CRLF, which is why the attribute exists.
 3. The first line of every CSV is the header. The first 14 measurement columns have the same names and the same order as the firmware `DATA` line (see `Module_7/python/rod_protocol.py`); the `event` column separates `measurement`, `start`, `stop`, `setpoint_step`, `operator_mark`, `connect`, `disconnect`.
 4. Analysis scripts only ever read `raw/`; their outputs may only be written to `calibration/` or `processed/`.
 5. Derived file names are `<raw file stem>_<artifact>.<ext>`, so every processed artefact points back to exactly one raw run. Only the raw file itself keeps the `module_07_` prefix, because it travels into reports where the module number is no longer implied by the path.

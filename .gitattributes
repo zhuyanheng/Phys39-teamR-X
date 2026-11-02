@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Raw acquisition CSVs are evidence: their SHA-256 is quoted in the quality JSON,
+# so they must be checked out byte for byte, whatever the GUI wrote.
+Module_7/data/raw/** -text

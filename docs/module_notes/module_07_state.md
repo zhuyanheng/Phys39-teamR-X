@@ -18,7 +18,7 @@ it by editing the tables in place at the end of a working session — do not app
 | --- | --- | --- |
 | `arduino/module_07_rod_controller/module_07_rod_controller.ino` | Six channels (A0 = TEC, A1–A5 = rod); A0 remains the only PI and safety input | On-site six-channel runs recorded 2026-11-02: all six columns finite, `rod_ok=5` on every row. The Step 4 integration check write-up is still open |
 | `python/rod_protocol.py` | Complete: header line, parser, per-channel validity | 21 hardware-free tests |
-| `python/rod_acquisition_gui.py` | Complete: six traces, one CSV column per channel, `rod_ok` counter, event marks | 8 hardware-free tests (fake serial port, offscreen Qt) |
+| `python/rod_acquisition_gui.py` | Complete: two linked plots (TEC+setpoint, rods A1–A5 on their own axis), one CSV column per channel, `rod_ok` counter, event marks, LF-only raw CSV | 10 hardware-free tests (fake serial port, offscreen Qt) |
 | `python/analysis/cross_calibration_fit.py` | Complete: criterion, calibration table, corrected CSV, fit figure | 24 tests on synthetic six-channel data; **no measured input exists** |
 | `python/analysis/stationary_fin_fit.py` | Complete: steady-state criteria, finite and semi-infinite fit, residual sets, two-layer uncertainty, refusal on a bad run | 20 tests |
 | `python/analysis/pilot_run_check.py` | Complete, diagnostic only (not a fit) | Run by hand on a pilot file |
@@ -27,7 +27,7 @@ it by editing the tables in place at the end of a working session — do not app
 Run the whole hardware-free suite after touching any script (no Arduino, serial port or Qt window needed):
 
 ```bash
-.venv/bin/python -m unittest discover -s Module_7/python -t Module_7/python   # 73 tests, expect OK
+.venv/bin/python -m unittest discover -s Module_7/python -t Module_7/python   # 75 tests, expect OK
 ```
 
 ## Data and figures
@@ -78,6 +78,9 @@ The ordered checklist with deadlines is [README §8](../../Module_7/README.md#8-
 - The ≈ 30 min settling estimate in the rod instrument record comes from a log-linear fit of 60 s block slopes
   made outside the repository. It is a planning figure; promoting it to a committed `_check` script (with tests)
   is the way to make it citable.
+- Raw CSV line endings are mixed: the two 2026-11-02 files are CRLF (the GUI then used the `csv` default), later
+  ones will be LF (`lineterminator='\n'`). `Module_7/data/raw/**` is marked `-text` in `.gitattributes`, so every
+  raw file is checked out byte for byte and the SHA-256 in its quality JSON stays valid; do not drop that rule.
 - `stationary_fin_fit.py` deliberately writes repository-relative paths. Keep that behaviour when editing it,
   and keep the portability test green.
 

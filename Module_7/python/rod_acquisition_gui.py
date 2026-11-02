@@ -72,6 +72,10 @@ HISTORY_LIMIT = 50000
 # temperature trace keeps the same colour across runs and figures.
 CHANNEL_PENS = ["#111111", "#245a81", "#2f7d4f", "#927919", "#b45b22", "#693f85"]
 
+# Probe positions along the rod in cm from hole 2 (origin), the same list as
+# pilot_run_check.py POSITIONS_CM and the Part 3 fit, so a trace can be read as x.
+ROD_POSITIONS_CM = [0, 3.85, 8.95, 14.05, 19.15]
+
 
 class RodAcquisitionWindow(QMainWindow):
     def __init__(self, preview=False):
@@ -136,23 +140,33 @@ class RodAcquisitionWindow(QMainWindow):
         self.readout=QLabel("Waiting for Arduino measurements. Output is disabled.")
         self.readout.setWordWrap(True);layout.addWidget(self.readout)
         pg.setConfigOptions(antialias=True,foreground='#222222')
+        # Two plots, because one shared axis hides the rod differences: the TEC
+        # spans 15-45 C while rods 1-5 sit inside a few tenths of a degree of
+        # each other, so on a common y-axis every rod looks like one flat line.
+        # Splitting them gives each group its own auto-ranged y-axis (the same
+        # split the pilot_check figures use) and keeps the PWM panels out of the
+        # way; the PWM history is still in the CSV and the readout line.
         self.plots=[];self.curves={}
-        channel_series=[("tec_C","TEC base",CHANNEL_PENS[0],3)]
-        channel_series+=[(f"{channel}_C",f"rod {index}",CHANNEL_PENS[index],2)
-                         for index,channel in enumerate(ROD_CHANNELS,start=1)]
-        channel_series.append(("setpoint_C","Setpoint",'#c0392b',2))
-        for title,unit,series in [
-            ("Temperature: TEC base, rod 1-5 and setpoint","C",channel_series),
-            ("Signed PWM: reported, requested and sent","PWM",[("reported_signed_pwm","Firmware applied",'#222222',2),("requested_signed_pwm","Next requested",'#999999',2),("sent_signed_pwm","Next sent",'#b45b22',2)]),
-            ("Proportional and integral contributions","PWM",[("p_term_pwm","P term",'#245a81',2),("i_term_pwm","I term",'#b45b22',2)]),
-            ("Setpoint minus measured TEC temperature","C",[("error_C","Error",'#693f85',2)])]:
+        rod_series=[(f"{channel}_C",f"A{index} / T{index}  (x={x:g} cm)",CHANNEL_PENS[index],2)
+                    for index,channel,x in zip(range(1,6),ROD_CHANNELS,ROD_POSITIONS_CM)]
+        for index,(title,series) in enumerate([
+            ("TEC base and setpoint",[("tec_C","A0: measured TEC",CHANNEL_PENS[0],3),
+                                      ("setpoint_C","TEC setpoint",'#c0392b',2)]),
+            ("Rod thermistors A1-A5: holes 2, 5, 7, 8, 9 (origin at hole 2)",rod_series)]):
             plot=pg.PlotWidget(title=title);plot.setBackground('w')
-            plot.addLegend(colCount=min(4,len(series)),offset=(10,0),labelTextColor='#222222')
-            plot.showGrid(x=True,y=True,alpha=.2);plot.setLabel('left',unit);plot.setLabel('bottom','Arduino time',units='s')
+            legend=plot.addLegend(colCount=min(3,len(series)),offset=(10,0),labelTextColor='#222222')
+            legend.setBrush(pg.mkBrush(255,255,255,205))
+            plot.showGrid(x=True,y=True,alpha=.2);plot.setLabel('left','Temperature',units='C')
+            plot.setLabel('bottom','Arduino time',units='s')
+            # Padding keeps a 0.2 C difference visible instead of hugging the frame.
+            plot.getPlotItem().getViewBox().setDefaultPadding(.05)
             for key,label,color,width in series:
                 pen=pg.mkPen(color,width=width,style=pg.QtCore.Qt.DashLine if key=='setpoint_C' else pg.QtCore.Qt.SolidLine)
                 self.curves[key]=plot.plot([],[],pen=pen,name=label)
-            self.plots.append(plot);layout.addWidget(plot)
+            if self.plots:plot.setXLink(self.plots[0])
+            self.plots.append(plot)
+            # The rod panel gets the larger share: its whole point is a 0.1 C spread.
+            layout.addWidget(plot,2 if index==0 else 3)
         self.refresh_ports()
         self.timer=QTimer(self);self.timer.timeout.connect(self.poll_serial);self.timer.start(100)
         self.mode.currentTextChanged.connect(self.change_mode)
@@ -195,7 +209,9 @@ class RodAcquisitionWindow(QMainWindow):
         folder=ROOT/'Module_7/data/raw';folder.mkdir(parents=True,exist_ok=True)
         self.csv_path=folder/f"module_07_rod_{datetime.now():%Y%m%d_%H%M%S_%f}.csv"
         self.csv_file=self.csv_path.open('x',newline='',encoding='utf-8')
-        self.csv_writer=csv.DictWriter(self.csv_file,fieldnames=FIELDS)
+        # '\n' explicitly: the csv default is '\r\n', and a CRLF file whose
+        # SHA-256 is quoted in a quality JSON must not depend on that default.
+        self.csv_writer=csv.DictWriter(self.csv_file,fieldnames=FIELDS,lineterminator='\n')
         self.csv_writer.writeheader();self.csv_file.flush()
 
     def connect_port(self):

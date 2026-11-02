@@ -94,6 +94,35 @@ class AcquisitionTests(unittest.TestCase):
             self.assertTrue(math.isfinite(float(rows[0][name])))
         self.assertTrue(all("PWM 0 " in command for command in self.serial.commands))
 
+    def test_raw_csv_is_lf_and_starts_with_the_protocol_header(self):
+        """The quality JSON quotes this file's SHA-256, so its bytes must not depend on the csv default."""
+        self.feed(tec=25.5, rods=[25.4, 25.3, 25.2, 25.1, 25.0])
+        self.window.csv_file.flush()
+        raw = self.window.csv_path.read_bytes()
+        self.assertNotIn(b"\r", raw)
+        self.assertTrue(raw.startswith(b"host_time,event,run_id,time_s,tec_C,rod1_C"))
+        rows = [row for row in self.rows() if row["event"] == "measurement"]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(float(rows[0]["tec_C"]), 25.5)
+
+
+    def test_two_linked_plots_keep_tec_and_rods_on_separate_axes(self):
+        """One shared y-axis would hide a 0.1 C rod-to-rod difference."""
+        self.feed(tec=30.0, rods=[29.9, 29.8, 29.7, 29.6, 29.5])
+        self.assertEqual(len(self.window.plots), 2)
+        self.assertEqual(set(self.window.curves),
+                         {"tec_C", "setpoint_C", "rod1_C", "rod2_C", "rod3_C",
+                          "rod4_C", "rod5_C"})
+        base, rods = self.window.plots
+        self.assertIn(self.window.curves["tec_C"], base.getPlotItem().listDataItems())
+        self.assertIn(self.window.curves["setpoint_C"], base.getPlotItem().listDataItems())
+        self.assertNotIn(self.window.curves["rod1_C"], base.getPlotItem().listDataItems())
+        for key in ("rod1_C", "rod2_C", "rod3_C", "rod4_C", "rod5_C"):
+            self.assertIn(self.window.curves[key], rods.getPlotItem().listDataItems())
+        self.assertNotIn(self.window.curves["tec_C"], rods.getPlotItem().listDataItems())
+        self.assertIs(rods.getPlotItem().getViewBox().linkedView(0),
+                      base.getPlotItem().getViewBox())
+
     def test_active_setpoint_step_keeps_control_and_integral(self):
         self.start()
         self.feed(time_s=1.5, pwm=10)

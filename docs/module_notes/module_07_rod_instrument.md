@@ -132,7 +132,9 @@ traces: `Module_7/figures/pilot_checks/<raw stem>_temperatures.png`.
 
 The two runs do **not** use the same PI gains (`20 / 0.1` in the first, `100 / 0.3` in the second), and the
 40 °C hold was restarted rather than stepped to from 20 °C, so the two files are two separate experiments, not
-one experiment in two parts.
+one experiment in two parts. Both are CRLF files (the GUI wrote the `csv` default `\r\n` at the time);
+`Module_7/data/raw/**` is marked `-text`, so the committed bytes are exactly the bytes the SHA-256 was computed
+on.
 
 ### The 45 °C setpoint cannot be reached: the interlock fires first
 
