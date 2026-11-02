@@ -246,8 +246,15 @@ Files: `Module_7/python/rod_acquisition_gui.py` (a copy of the Module 6 GUI) +
   y-axis would draw the rods as one flat line — the TEC spans 15–45 °C while the rods sit
   within a degree or two of each other, and the difference between them is the measurement.
   The two plots share one x-axis (zooming either zooms both); PWM and P/I terms are in the CSV
-  and in the readout line, not in a panel. The default window is 900 s with a `Show whole run`
-  option — the rod responds on a tens-of-minutes scale, so Module 6's 180 s window is not enough.
+  and in the readout line, not in a panel.
+- The x axis always spans the **whole run from t = 0** (no sliding window — the rod settles over tens
+  of minutes, so Module 6's 180 s window would hide everything the run is about). Early rows are never
+  discarded, only the oldest beyond `HISTORY_LIMIT` (50 000 rows ≈ 6.9 h at the 500 ms report period),
+  so zooming back out to t = 0 always works. To look at a detail, zoom with the wheel and pan by
+  dragging: the first zoom unticked "X axis: whole run" so the next sample does not pull the view away,
+  and **Fit x** (or re-ticking the box) returns to the full run. The y axis rescales to the visible
+  x-window (`setAutoVisible(y=True)`), so zooming into the 30 min hold re-expands the rod spread
+  instead of fitting the 20–40 °C warm-up.
 - Malformed lines are counted and skipped without crashing (`rows ok/bad`); lines starting with `#` are not
   counted as bad; the file is opened in `'x'` mode so it is never overwritten; every row is flushed.
 - A `Mark event` button writes a commented event into the CSV (steady-state verdict, probe moved, calibration
@@ -422,7 +429,7 @@ Module_7/
 │   ├── rod_acquisition_gui.py            Stage 2 (copy of the Module 6 GUI)
 │   ├── rod_protocol.py                   serial format and parser (Qt-free, unit-testable)
 │   ├── test_rod_protocol.py              21 hardware-free tests
-│   ├── test_rod_acquisition_gui.py        10 hardware-free tests (fake serial port, offscreen Qt)
+│   ├── test_rod_acquisition_gui.py        12 hardware-free tests (fake serial port, offscreen Qt)
 │   ├── test_cross_calibration_fit.py     24 hardware-free tests (synthetic six-channel data)
 │   ├── test_stationary_fin_fit.py        20 hardware-free tests (synthetic profile, refusal, portability)
 │   └── analysis/
@@ -451,7 +458,7 @@ Evidence files the course asks for live in `docs/module_notes/`, like the notes 
 
 ```bash
 .venv/bin/python Module_7/python/test_rod_protocol.py             # 21: parser = firmware header
-.venv/bin/python Module_7/python/test_rod_acquisition_gui.py      #  8: GUI with a fake serial port
+.venv/bin/python Module_7/python/test_rod_acquisition_gui.py      # 12: GUI with a fake serial port
 .venv/bin/python Module_7/python/test_cross_calibration_fit.py    # 24: synthetic six-channel calibration
 .venv/bin/python Module_7/python/test_stationary_fin_fit.py       # 20: steady criteria, fit recovery, portability
 ```

@@ -61,11 +61,12 @@ FIELDS = (["host_time", "event", "run_id"] + list(FIELD_NAMES)
        "backlog_sample", "note"])
 
 
-# Plot window. The rod takes tens of minutes to settle, so the default window is
-# far longer than Module 6's 180 s; "Show whole run" keeps everything, capped by
-# HISTORY_LIMIT (50000 rows is 6.9 h at the 500 ms report period and keeps every
-# redraw cheap enough to stay responsive).
-WINDOW_S = 900
+# Plot window. The rod takes tens of minutes to settle, so the x axis always
+# shows the whole run from its first sample instead of a sliding window: a
+# sliding window would throw away the early rows and make it impossible to zoom
+# back out to t=0. HISTORY_LIMIT caps the kept rows (50000 rows is 6.9 h at the
+# 500 ms report period and keeps every redraw cheap enough to stay responsive).
+X_MIN_SPAN = 60.0
 HISTORY_LIMIT = 50000
 
 # Fixed colours per channel (index 0 = TEC base, 1..5 = rod 1..5) so that a
@@ -131,8 +132,15 @@ class RodAcquisitionWindow(QMainWindow):
         self.mark_note=QLineEdit();self.mark_note.setPlaceholderText(
             "Note for the log (e.g. steady reached, probe moved, calibration start)")
         self.mark=QPushButton("Mark event");self.mark.clicked.connect(self.mark_event)
-        self.whole_run=QCheckBox("Show whole run");self.whole_run.setChecked(False)
-        grid.addWidget(self.anti,2,0,1,3);grid.addWidget(self.whole_run,2,3,1,2)
+        self.whole_run=QCheckBox("X axis: whole run (wheel = zoom, drag = pan)")
+        self.whole_run.setChecked(True)
+        self.whole_run.setToolTip(
+            "Ticked: the x axis always spans the whole run from t=0.\n"
+            "Zoom or pan with the mouse and this unticks itself, so the window you are\n"
+            "looking at is not pulled away by the next sample. 'Fit x' returns to the run.")
+        self.fit_button=QPushButton("Fit x");self.fit_button.clicked.connect(self.fit_whole_run)
+        grid.addWidget(self.anti,2,0,1,2);grid.addWidget(self.whole_run,2,2,1,1)
+        grid.addWidget(self.fit_button,2,3,1,2)
         grid.addWidget(self.start,3,0);grid.addWidget(self.apply,3,1)
         grid.addWidget(self.reset,3,2);grid.addWidget(self.stop,3,3,1,2)
         grid.addWidget(self.mark_note,4,0,1,3);grid.addWidget(self.mark,4,3,1,2)
@@ -160,15 +168,30 @@ class RodAcquisitionWindow(QMainWindow):
             plot.setLabel('bottom','Arduino time',units='s')
             # Padding keeps a 0.2 C difference visible instead of hugging the frame.
             plot.getPlotItem().getViewBox().setDefaultPadding(.05)
+            # Auto-range y over the visible x window only, so zooming into a
+            # stationary interval rescales the temperature axis to that interval
+            # instead of to the whole 20-40 C warm-up.
+            plot.getPlotItem().getViewBox().setAutoVisible(y=True)
             for key,label,color,width in series:
                 pen=pg.mkPen(color,width=width,style=pg.QtCore.Qt.DashLine if key=='setpoint_C' else pg.QtCore.Qt.SolidLine)
-                self.curves[key]=plot.plot([],[],pen=pen,name=label)
+                curve=plot.plot([],[],pen=pen,name=label)
+                # The x axis spans the whole run, so the curves hold tens of
+                # thousands of points. Draw the visible slice only and decimate it
+                # to the pixel width (peak keeps the extremes), or a 6.9 h run
+                # would spend most of a core repainting pixels it cannot show.
+                curve.setClipToView(True);curve.setDownsampling(auto=True,method='peak')
+                self.curves[key]=curve
             if self.plots:plot.setXLink(self.plots[0])
             self.plots.append(plot)
             # The rod panel gets the larger share: its whole point is a 0.1 C spread.
             layout.addWidget(plot,2 if index==0 else 3)
         self.refresh_ports()
         self.timer=QTimer(self);self.timer.timeout.connect(self.poll_serial);self.timer.start(100)
+        # Zoom/pan is the operator's: the first wheel or drag unticked 'whole run'
+        # by itself (see x_range_changed), and 'Fit x' / re-ticking returns to it.
+        self._fitting_x=False
+        self.plots[0].getPlotItem().getViewBox().sigXRangeChanged.connect(self.x_range_changed)
+        self.whole_run.toggled.connect(lambda checked:checked and self.show_whole_run())
         self.mode.currentTextChanged.connect(self.change_mode)
         self.change_mode()
         self.connect_button.setEnabled(not preview)
@@ -177,6 +200,28 @@ class RodAcquisitionWindow(QMainWindow):
     def number(self,minimum,maximum,value,decimals):
         box=QDoubleSpinBox();box.setDecimals(decimals);box.setRange(minimum,maximum);box.setValue(value)
         return box
+
+    def fit_whole_run(self):
+        """'Fit x': tick auto-follow (the tick re-fits) and fit once more regardless."""
+        self.whole_run.setChecked(True)
+        self.show_whole_run()
+
+    def show_whole_run(self):
+        """Span the x axis from the first sample to the latest one."""
+        if not self.history:return
+        first=self.history[0]['time_s'];last=self.history[-1]['time_s']
+        self._fitting_x=True
+        try:
+            # setXRange on the first plot is enough: the rod plot is x-linked to it.
+            self.plots[0].setXRange(first,max(last,first+X_MIN_SPAN),padding=0)
+        finally:self._fitting_x=False
+
+    def x_range_changed(self,*_):
+        """A manual zoom or pan while auto-follow is on means a window is wanted."""
+        if getattr(self,'_fitting_x',False) or not self.whole_run.isChecked():return
+        # Untick quietly: toggled() only acts when it is ticked again, so this
+        # cannot call back into show_whole_run and fight the mouse.
+        self.whole_run.setChecked(False)
 
     def refresh_ports(self):
         old=self.port.currentText()
@@ -373,15 +418,15 @@ class RodAcquisitionWindow(QMainWindow):
         self.log(**row)
         if not self.active:result=None
         if math.isfinite(sample.time_s):
-            if self.history and sample.time_s<=self.history[-1]['time_s']:self.history=[]
+            if self.history and sample.time_s<=self.history[-1]['time_s']:
+                self.history=[]            # Arduino time reset: treat it as a new run
             self.history.append(row)
-            if self.whole_run.isChecked():
-                if len(self.history)>HISTORY_LIMIT:self.history=self.history[-HISTORY_LIMIT:]
-            else:
-                cutoff=sample.time_s-WINDOW_S
-                self.history=[r for r in self.history if r['time_s']>=cutoff]
+            # Never drop the early rows (that is what makes zooming out to t=0
+            # possible); only the oldest rows beyond HISTORY_LIMIT go.
+            if len(self.history)>HISTORY_LIMIT:self.history=self.history[-HISTORY_LIMIT:]
             for key,curve in self.curves.items():
                 curve.setData([r['time_s'] for r in self.history],[r.get(key,math.nan) for r in self.history])
+            if self.whole_run.isChecked():self.show_whole_run()
         rods=" ".join(f"{value:.2f}" if math.isfinite(value) else "nan" for value in sample.rods_c)
         self.readout.setText(
             f"TEC={sample.tec_c:.2f} C | rods={rods} C | valid {sample.rod_ok}/{len(ROD_CHANNELS)} | "

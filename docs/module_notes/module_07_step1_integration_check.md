@@ -101,6 +101,9 @@ Module_7/run_rod_acquisition.command        # use --preview to look at the windo
 - [ ] Two plots: TEC base with the dashed setpoint on top, rods A1–A5 below on their own
   axis. TEC is the thick black curve; rod 1–5 are blue, green, olive, orange, violet, and the
   legend gives each probe's distance from hole 2. Zooming one plot zooms both.
+- [ ] The x axis starts at t = 0 and grows with the run (`X axis: whole run` ticked), and the
+  y axes rescale to the visible window — so roll the wheel over the rod plot to zoom into a
+  few minutes and back out; `Fit x` returns to the whole run.
 
 ## 5. Channel fingerprint (the actual integration test)
 

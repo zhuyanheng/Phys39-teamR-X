@@ -122,6 +122,43 @@ class AcquisitionTests(unittest.TestCase):
         self.assertNotIn(self.window.curves["tec_C"], rods.getPlotItem().listDataItems())
         self.assertIs(rods.getPlotItem().getViewBox().linkedView(0),
                       base.getPlotItem().getViewBox())
+        # A whole-run x axis holds tens of thousands of points: each curve must
+        # draw only the visible slice, decimated to the pixel width.
+        for curve in self.window.curves.values():
+            self.assertTrue(curve.opts["clipToView"])
+            self.assertTrue(curve.opts["autoDownsample"])
+            self.assertEqual(curve.opts["downsampleMethod"], "peak")
+
+    def test_x_axis_keeps_the_whole_run_including_early_rows(self):
+        """No sliding window: rows older than 900 s must survive so t=0 stays reachable."""
+        for t in (0.5, 1000.0, 2000.0, 3000.0):
+            self.feed(time_s=t)
+        self.assertEqual([row["time_s"] for row in self.window.history],
+                         [0.5, 1000.0, 2000.0, 3000.0])
+        self.assertTrue(self.window.whole_run.isChecked())
+        low, high = self.window.plots[0].getPlotItem().getViewBox().viewRange()[0]
+        self.assertAlmostEqual(low, 0.5, places=6)
+        self.assertAlmostEqual(high, 3000.0, places=6)
+
+    def test_manual_zoom_stops_auto_follow_and_fit_x_restores_it(self):
+        self.feed(time_s=10.0)
+        self.feed(time_s=20.0)
+        self.window.plots[0].setXRange(12.0, 18.0)
+        self.assertFalse(self.window.whole_run.isChecked())
+        # setXRange pads the view a little; the point is that it is near 12-18 and,
+        # above all, that the next sample does not drag it back to the whole run.
+        zoomed = self.window.plots[0].getPlotItem().getViewBox().viewRange()[0]
+        self.assertLess(zoomed[0], 12.0)
+        self.assertGreater(zoomed[1], 18.0)
+        self.feed(time_s=30.0)
+        self.assertAlmostEqual(self.window.plots[0].getPlotItem().getViewBox().viewRange()[0][0],
+                               zoomed[0], places=6)
+        self.window.fit_button.click()
+        self.assertTrue(self.window.whole_run.isChecked())
+        low, high = self.window.plots[0].getPlotItem().getViewBox().viewRange()[0]
+        self.assertAlmostEqual(low, 10.0, places=6)
+        # A run shorter than X_MIN_SPAN is shown over at least X_MIN_SPAN seconds.
+        self.assertAlmostEqual(high, max(30.0, 10.0 + gui.X_MIN_SPAN), places=6)
 
     def test_active_setpoint_step_keeps_control_and_integral(self):
         self.start()

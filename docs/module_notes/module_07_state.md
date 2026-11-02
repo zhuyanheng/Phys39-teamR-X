@@ -18,7 +18,7 @@ it by editing the tables in place at the end of a working session — do not app
 | --- | --- | --- |
 | `arduino/module_07_rod_controller/module_07_rod_controller.ino` | Six channels (A0 = TEC, A1–A5 = rod); A0 remains the only PI and safety input | On-site six-channel runs recorded 2026-11-02: all six columns finite, `rod_ok=5` on every row. The Step 4 integration check write-up is still open |
 | `python/rod_protocol.py` | Complete: header line, parser, per-channel validity | 21 hardware-free tests |
-| `python/rod_acquisition_gui.py` | Complete: two linked plots (TEC+setpoint, rods A1–A5 on their own axis), one CSV column per channel, `rod_ok` counter, event marks, LF-only raw CSV | 10 hardware-free tests (fake serial port, offscreen Qt) |
+| `python/rod_acquisition_gui.py` | Complete: two linked plots (TEC+setpoint, rods A1–A5 on their own axis), x axis always spans the whole run from t=0 with wheel-zoom / drag-pan / `Fit x`, one CSV column per channel, `rod_ok` counter, event marks, LF-only raw CSV | 12 hardware-free tests (fake serial port, offscreen Qt) |
 | `python/analysis/cross_calibration_fit.py` | Complete: criterion, calibration table, corrected CSV, fit figure | 24 tests on synthetic six-channel data; **no measured input exists** |
 | `python/analysis/stationary_fin_fit.py` | Complete: steady-state criteria, finite and semi-infinite fit, residual sets, two-layer uncertainty, refusal on a bad run | 20 tests |
 | `python/analysis/pilot_run_check.py` | Complete, diagnostic only (not a fit) | Run by hand on a pilot file |
@@ -27,7 +27,7 @@ it by editing the tables in place at the end of a working session — do not app
 Run the whole hardware-free suite after touching any script (no Arduino, serial port or Qt window needed):
 
 ```bash
-.venv/bin/python -m unittest discover -s Module_7/python -t Module_7/python   # 75 tests, expect OK
+.venv/bin/python -m unittest discover -s Module_7/python -t Module_7/python   # 77 tests, expect OK
 ```
 
 ## Data and figures
