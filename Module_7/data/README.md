@@ -1,17 +1,20 @@
-# Module 7 数据目录约定
+# Module 7 data conventions
 
-只放**测量到的东西**，不放推出来的东西。三个子目录互不覆盖：
+Only **measured** things live here, never derived things. The subdirectories never overwrite each other:
 
-| 目录 | 内容 | 由谁写 |
+| Directory | Contents | Written by |
 | --- | --- | --- |
-| `raw/` | GUI 直接落盘的原始 CSV，文件名 `module_07_rod_<YYYYmmdd_HHMMSS_微秒>.csv` | `module_07_rod_acquisition_gui.py`（`'x'` 模式，绝不覆盖） |
-| `calibration/` | 交叉标定系数表（`a_i`、`b_i`、温度范围、残差统计）+ 修正后的数据 CSV | `python/analysis/module_07_calibration.py` |
-| `processed/` | 稳态剖面、阶跃响应的拟合结果（`m`、`1/m`、`χ²`、判据表）：`<run>_stationary_fit.json` + `<run>_stationary_profile.csv` | `python/analysis/module_07_stationary_fin_fit.py`（图写到 `figures/part_03_stationary_profile.png`） |
+| `raw/` | Raw CSV written straight by the GUI, named `module_07_rod_<YYYYmmdd_HHMMSS_microseconds>.csv`, with an optional chronological setpoint tag after the timestamp (`..._T20C.csv`, `..._T20C_trip45C_T40C.csv`) | `Module_7/python/rod_acquisition_gui.py` (opened in `'x'` mode, never overwritten); the tag is added by hand when a run is written up |
+| `calibration/` | Cross-calibration coefficient table (`a_i`, `b_i`, temperature range, residual statistics) + corrected data CSV | `python/analysis/cross_calibration_fit.py` |
+| `processed/` | Stationary-profile and step-response fits (`m`, `1/m`, chi-squared, criterion table): `<run>_stationary_fit.json` + `<run>_stationary_profile.csv` | `python/analysis/stationary_fin_fit.py` (figure goes to `figures/part_03_stationary_profile.png`) |
+| `processed/pilot_checks/` | Quality check of one pilot run (row counts, gaps, per-channel slopes): `<run>_quality.json` | `python/analysis/pilot_run_check.py` |
 
-规则：
+Rules:
 
-1. **原始列永不改写。** 修正值另存为 `rod1_corrected_C`…`rod5_corrected_C` 新列或新文件，并写明用的是哪一版标定表。
-2. `raw/` 里的每个文件都对应一次真实运行；不要手工编辑、合并或"清理"它们。
-3. 每个 CSV 的第一行就是列名，前 14 个测量列与固件 `DATA` 行同名同序（见 `Module_7/python/rod_protocol.py`）；`event` 列区分 `measurement`、`start`、`stop`、`setpoint_step`、`operator_mark`、`connect`、`disconnect`。
-4. 分析脚本只读 `raw/`，输出只能写到 `calibration/` 或 `processed/`。
-5. 提交进 Git 的应当是"能支撑报告结论的那几条"运行（连同 `docs/module_notes/module_07_rod_instrument.md` 里的运行元数据），不是全部原始数据。
+1. **Raw columns are never rewritten.** Corrected values are stored as new `rod1_corrected_C` ... `rod5_corrected_C` columns or in a separate file, and the calibration-table version that was applied is written down next to them.
+2. Every file in `raw/` corresponds to one real run; do not hand-edit, merge or "clean" them.
+3. The first line of every CSV is the header. The first 14 measurement columns have the same names and the same order as the firmware `DATA` line (see `Module_7/python/rod_protocol.py`); the `event` column separates `measurement`, `start`, `stop`, `setpoint_step`, `operator_mark`, `connect`, `disconnect`.
+4. Analysis scripts only ever read `raw/`; their outputs may only be written to `calibration/` or `processed/`.
+5. Derived file names are `<raw file stem>_<artifact>.<ext>`, so every processed artefact points back to exactly one raw run. Only the raw file itself keeps the `module_07_` prefix, because it travels into reports where the module number is no longer implied by the path.
+6. A raw name may gain a **setpoint tag** after the timestamp once the run is written up (`T20C` = held at 20 °C, `trip45C` = the 45 °C attempt the interlock cut short, `T40C` = held at 40 °C). The tag is chronological and lower case except the unit, the timestamp keeps meaning "when the GUI opened the file", the rows are never touched, and the SHA-256 recorded in `<raw stem>_quality.json` still identifies the same bytes. This is the only part of a raw name that may change after the fact.
+7. What gets committed is the handful of runs that support the report's conclusions (together with the run metadata in `docs/module_notes/module_07_rod_instrument.md`), not every raw file. That file is also the inventory: it says what each committed run was commanded to do.

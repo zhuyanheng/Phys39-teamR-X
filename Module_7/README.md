@@ -1,253 +1,361 @@
-# Module 7：铝棒仪器、阶跃响应与稳态肋片
+# Module 7: Aluminium Rod Instrument, Step Response And Stationary Fin
 
-Module 7 把 Module 6 的"一两个温度"模型换成有空间分布的 `T(x, t)`。
-三个部分共用一条"预测 → 测量 → 比较 → 判断"的模型检验链：
+Module 7 replaces Module 6's "one or two temperatures" model with a spatially distributed `T(x, t)`.
+All three parts share one model-testing chain: predict → measure → compare → judge.
 
-**要开始动手，先看 [实验日执行清单（S16 → S17 runbook）](../docs/module_notes/module_07_lab_day_runbook_2026-10-26.md)**：
-它按依赖顺序排出"先做什么"，本文件是背景与要求汇总。
+**Before doing anything, read the [lab-day runbook (S16 → S17)](../docs/module_notes/module_07_lab_day_runbook_2026-10-26.md)**:
+it orders the work by dependency. This file is the background and requirement summary.
+**[`docs/module_notes/module_07_state.md`](../docs/module_notes/module_07_state.md)** records where the work
+currently stands (what is verified, what is missing, the known warts) — read it first if you are picking the
+module up cold.
 
-| 部分 | 核心问题 | 做什么 | 评估 |
+| Part | Core question | What we do | Assessed by |
 |---|---|---|---|
-| Part I 热传输基础 | 本构律 + 能量守恒怎么给出温度方程？ | 解释 Fourier 定律、推一维热方程、建立 Biot 判据 | A4 第 1 部分、C5 口试 |
-| Part II 有限/无限杆理论 | 轴向导热 + 侧面散热 + 端部条件给出什么稳态剖面？ | 推有限长解、半无限极限、两个模型有效性检验 | A4 第 2–4 部分 |
-| Part III 实验 | 这些假设和预测是否描述我们的铝棒？ | 六通道交叉标定、测阶跃响应、测稳态剖面、拟合与残差 | C5、形成性记录、C6 证据 |
+| Part I Heat-transport foundations | How do the constitutive law and energy conservation produce the temperature equation? | Explain Fourier's law, derive the one-dimensional heat equation, establish the Biot criterion | A4 Part 1, C5 oral |
+| Part II Finite/infinite rod theory | What steady profile comes out of axial conduction, side losses and the end condition? | Derive the finite-length solution and the semi-infinite limit, do two model-validity checks | A4 Parts 2–4 |
+| Part III Experiment | Do these assumptions and predictions describe *our* aluminium rod? | Six-channel cross-check, step response, steady profile, fits and residuals | C5, formative record, C6 evidence |
 
-三个部分的模型是层层递进的，不是三个独立模型：
+The three parts layer on one another rather than being three separate models:
 
-- Part I：有 `∂T/∂t`，**无**侧向散热；
-- Part II：**无** `∂T/∂t`（稳态），**有**侧向散热；
-- Part III：两者都保留 → `ρcA ∂θ/∂t = kA ∂²θ/∂x² − hPθ`。
+- Part I: keeps `∂T/∂t`, **no** lateral loss;
+- Part II: **no** `∂T/∂t` (steady), **with** lateral loss;
+- Part III: keeps both → `ρcA ∂θ/∂t = kA ∂²θ/∂x² − hPθ`.
 
-## 0. 现在的时间线（最紧急）
+## 0. Current timeline (most urgent first)
 
-| 时间 | 事情 |
+| Time | Event |
 |---|---|
-| S16 周一 10/26（**今天**） | 课上：复习有限杆理论、比较 finite/semi-infinite、算 `Bi⊥`、建传感器地图并标定、开始 baseline 与阶跃测量 |
-| S17 周三 10/28 | 课上：完成同步阶跃响应 + 稳态剖面；做 finite 与 semi-infinite 拟合 |
-| **周三 10/28 09:05** | **A4 提交**（个人，10 分，Moodle `A4_Lastname.pdf` + 仓库 `docs/assessments/a4_finite_length_biot.md`） |
-| **周三 10/28 11:55** | **C5 Moodle receipt** 截止，必须引用已 push 的采集代码与证据 commit |
-| 周三 10/28 课上 | C5 现场演示（传感器地图 + 标定 + 同步采集 + baseline/阶跃数据 + 不确定性） |
+| Mon 10/26, S16 (**today**) | In class: review finite-rod theory, compare finite vs semi-infinite, compute `Bi⊥`, build the sensor map and cross-check the probes, start the baseline and the step measurement |
+| Wed 10/28, S17 | In class: finish the simultaneous step response and the steady profile; run the finite and semi-infinite fits |
+| **Wed 10/28 09:05** | **A4 submission** (individual, 10 marks, Moodle `A4_Lastname.pdf` + repository `docs/assessments/a4_finite_length_biot.md`) |
+| **Wed 10/28 11:55** | **C5 Moodle receipt** deadline; it must cite pushed acquisition code and evidence commits |
+| Wed 10/28, in class | C5 live demonstration (sensor map, calibration, simultaneous acquisition, baseline/step data, uncertainty) |
 
-关键判断：**A4 完全不需要实验数据**（用课程给定的杆参数和传感器位置即可），所以它可以在等器材/等标定时并行完成。C5 才依赖硬件和标定。
+Key judgement: **A4 needs no experimental data at all** (the course-supplied rod parameters and sensor
+positions are enough), so it can proceed in parallel while hardware and calibration are pending. Only C5
+depends on the hardware and the calibration.
 
-## 1. 核心公式速查
+## 1. Formula sheet
 
-记 `θ(x, t) = T(x, t) − T∞`，`T∞` 为远离装置处的室温（不是 TEC 附近读数）。
+Write `θ(x, t) = T(x, t) − T∞`, where `T∞` is the room temperature far from the apparatus (not a reading
+taken next to the TEC).
 
-**通用控制方程（Part III 完整形式）**
+**General governing equation (full Part III form)**
 
 ```text
 ρcA ∂θ/∂t = kA ∂²θ/∂x² − hPθ
 ∂θ/∂t = α ∂²θ/∂x² − νθ,   α = k/(ρc),   ν = hP/(ρcA)
 ```
 
-**稳态肋片方程（Part II）**
+**Stationary fin equation (Part II)**
 
 ```text
-d²θ/dx² − m²θ = 0,   m² = hP/(kA) = ν/α,   1/m = 衰减长度
+d²θ/dx² − m²θ = 0,   m² = hP/(kA) = ν/α,   1/m = decay length
 ```
 
-**有限长 + 绝热端解（Lienhard 4.41）**
+**Finite length with an insulated tip (Lienhard 4.41)**
 
 ```text
 Θ(x) = θ(x)/θ(0) = cosh[m(L − x)] / cosh(mL)
 Θ_tip = 1/cosh(mL)
 ```
 
-**半无限极限（4.50）**：`Θ∞(x) = e^(−mx)`，`mL ≫ 1` 时成立。
+**Semi-infinite limit (4.50):** `Θ∞(x) = e^(−mx)`, valid when `mL ≫ 1`.
 
-**有限端误差（A4 第 3 部分的判据）**
+**Finite-end error (A4 Part 3 criterion)**
 
 ```text
-ε_T(x) = |Θ_finite(x) − Θ∞(x)| / |Θ_finite(x)|      起始判据 ε_T < 5%
+ε_T(x) = |Θ_finite(x) − Θ∞(x)| / |Θ_finite(x)|      starting criterion ε_T < 5 %
 ```
 
-**横向 Biot 数（A4 第 4 部分，管半径）**
+**Transverse Biot number (A4 Part 4, tube radius)**
 
 ```text
 Bi⊥ = h(A/P)/k = hR/(2k) = (mR/2)² = (md/4)² ≪ 1
 ```
 
-**平行 Biot 数（长度方向）**
+**Parallel Biot number (along the rod)**
 
 ```text
 Bi∥ = hPL²/(kA) = (mL)²
 ```
 
-**边界条件**：`x = 0` 是 Dirichlet（杆热敏电阻 1 实测 `T(0,t)`），`x = L` 是 Neumann 绝热（`dT/dx = 0`）；若端部对流则变 Robin。
+**Boundary conditions:** `x = 0` is Dirichlet (the measured `T(0, t)` from rod thermistor 1) and `x = L` is
+Neumann, insulated (`dT/dx = 0`); convection off the end face turns it into a Robin condition.
 
-**重要概念区别**：`Bi⊥` 检验"每个截面能否用一个温度"（半径方向）；`mL` 与 `ε_T(x)` 检验"远端能否忽略"（长度方向）。**两个结论必须分开写**，不能合并成一句"近似一维"。
+**Keep these two ideas apart:** `Bi⊥` tests whether *one temperature per cross-section* is enough (radial
+direction); `mL` and `ε_T(x)` test whether *the far end can be ignored* (axial direction). **The two
+conclusions must be written separately**, never merged into a single "the rod is one-dimensional".
 
-**为什么稳态实验分不开 k 和 h**：拟合只得到 `m² = hP/(kA)` 一个组合量。Module 8 的 Ångström 周期实验提供第二个独立测量，才能分开 `k` 与 `h`。
+**Why a steady-state experiment cannot separate `k` from `h`:** the fit yields only one combination,
+`m² = hP/(kA)`. The Ångström periodic experiment in Module 8 supplies the second independent measurement
+needed to separate `k` and `h`.
 
+## 2. A4: Finite-Rod Model And Validity Checks (individual, 10 marks)
 
-## 2. A4：Finite-Rod Model And Validity Checks（个人，10 分）
+- Type: individual, 10 marks; due **Wed 10/28 09:05**.
+- Moodle file: `A4_Lastname.pdf`; repository file: `docs/assessments/a4_finite_length_biot.md`.
+- Submit both the PDF and the repository file, with name, assignment number, date, repository URL and the
+  **exact Git commit hash** on the first page.
+- Units and dimensional checks are required throughout.
 
-- 类型：个人，10 分；截止 **周三 10/28 09:05**。
-- Moodle 文件：`A4_Lastname.pdf`；仓库文件：`docs/assessments/a4_finite_length_biot.md`。
-- 交一份 PDF + 仓库文件，首页写：姓名、作业号、日期、仓库 URL、**精确 Git commit hash**。
-- 全程要写单位与量纲检查。
+Four parts, matching the rubric one-to-one:
 
-四个部分（与评分一一对应）：
-
-| 部分 | 内容 | 分值 |
+| Part | Content | Marks |
 |---|---|---|
-| Part 1 | 用 Fourier 定律做 **Lienhard Problem 1.3**（Part I 布置）：展示定律如何得到每个结果、带单位、指出物理上不合理的结果 | 1 |
-| Part 2 | 从能量守恒 + Fourier 定律 + Newton 冷却律出发，推稳态肋片方程；按 Lienhard §4.5 推出有限长绝热端解；说明两个边界条件的物理含义 | 3 |
-| Part 3 | 用 **Problem 4.12** 取半无限极限；用 **Example 4.8** 与 **Problem 4.20** 量化端部边界条件的近似；对每个课程杆传感器算 `mL` 与 `ε_T(x)`；结论必须写明依赖的传感器位置与误差判据 | 3 |
-| Part 4 | 算课程杆的 `Bi⊥`，**单独**给出"每个截面能否用一个温度"的结论（不与 Part 3 的长度结论合并）；再答散热器 vs 航天器辐射器的应用题：哪个能用 Newton 冷却律、太空为何无对流、用什么辐射定律替代（Stefan–Boltzmann `q″ = εσ(T_s⁴ − T_sur⁴)`） | 2 |
-| 整体 | 完整、量纲检查、条理清楚、引用精确 Git checkpoint | 1 |
+| Part 1 | **Lienhard Problem 1.3** with Fourier's law (assigned in Part I): show how the law produces each result, with units, and point out the physically unreasonable result | 1 |
+| Part 2 | From energy conservation + Fourier's law + Newton's law of cooling, derive the stationary fin equation; derive the finite-length insulated-tip solution following Lienhard §4.5; explain the physical meaning of both boundary conditions | 3 |
+| Part 3 | Take the semi-infinite limit with **Problem 4.12**; quantify the end-condition approximation with **Example 4.8** and **Problem 4.20**; compute `mL` and `ε_T(x)` for every course-rod sensor; the conclusion must state which sensor positions and which error criterion it depends on | 3 |
+| Part 4 | Compute `Bi⊥` for the course rod and give the "one temperature per cross-section" conclusion **separately** (never merged with the Part 3 length conclusion); then answer the applied question on heat sinks vs spacecraft radiators: which one allows Newton's law of cooling, why there is no convection in space, and which radiation law replaces it (Stefan–Boltzmann `q″ = εσ(T_s⁴ − T_sur⁴)`) | 2 |
+| Overall | Completeness, dimensional checks, clarity, exact Git checkpoint citation | 1 |
 
-阅读路线：Lienhard 第 1 章选读（能量守恒、热阻、热容、lumped model）+ §4.5 教材 pp. 163–173（要跟着推导走，不只看结论）。
+Reading route: selected Chapter 1 of Lienhard (energy conservation, thermal resistance, heat capacity,
+lumped model) plus §4.5, textbook pp. 163–173 (follow the derivation, not just the result).
 
-## 3. C5：Rod Instrument And Data-Acquisition Chain（团队）
+## 3. C5: Rod Instrument And Data-Acquisition Chain (team)
 
-周三 10/28 课上演示，receipt 11:55 AM 前交，引用已 push 的 commit。要展示：
+Demonstrated in class on Wed 10/28; the receipt is due before 11:55 AM and must cite pushed commits. It has
+to show:
 
-- 已标定/交叉校核的杆热敏电阻；
-- 有记录的传感器坐标与接线；
-- 六通道同步记录；
-- baseline 与初始阶跃响应数据；
-- 文件含时间戳、单位、通道标签、实验备注；
-- 每个成员能讲清测量链和**一个主导不确定度**。
+- rod thermistors that have been calibrated or cross-checked;
+- recorded sensor coordinates and wiring;
+- a simultaneous six-channel record;
+- baseline and first step-response data;
+- files with timestamps, units, channel labels and experiment notes;
+- every member able to explain the measurement chain and **one dominant uncertainty**.
 
-## 4. 实验流程（Part 1 → 2 → 3）
+## 4. Experimental sequence (Parts 1 → 2 → 3)
 
-**Part 1 传感器地图与交叉标定**
+**Part 1 — sensor map and cross-check**
 
-1. 杆材料 6061-T6 铝；量直径 `d`、总长、以及从第一个热敏孔到杆尖的分析长度 `L`；算 `A`、`P`（SI）。
-2. 给 6 个热敏电阻命名并固定通道：`A0` = TEC base，`A1`–`A5` = rod 1–5。
-3. 同温标定：6 个探头一起放进温水（`20–60 °C`）里缓慢降温 ≥ 60 s，搅拌保持均匀，只浸防水端、接头保持干燥。
-4. 以 `tec_C` 为参考，逐通道拟合 `T_TEC = a_i + b_i T_i`，修正 `T_i,corrected = a_i + b_i T_i`。
-5. 检查 `ΔT_i = T_i,corrected − T_TEC` 对 `T_TEC`：起始判据是修正后平均差 < `0.2 °C` 且无 > `0.2 °C` 的残余趋势。
-6. 原始数据永不覆盖；修正系数单独存文件，分析时再套用。
-7. 把 rod 1 装进第一个孔并定义该孔为 `x = 0`；量其余 4 个位置和杆尖（`x = L`），记录每个位置与 `L` 的不确定度；画/拍传感器标签、通道、坐标方向、位置图。
+1. Rod material 6061-T6 aluminium; measure `d`, the overall length, and the analysis length `L` from the
+   first thermistor hole to the rod tip; compute `A` and `P` in SI units.
+2. Name the 6 thermistors and fix the channels: `A0` = TEC base, `A1`–`A5` = rod 1–5.
+3. Same-temperature check: put all six probes into warm water (`20–60 °C`), let it cool slowly for ≥ 60 s
+   while stirring to keep it uniform; immerse only the waterproof ends and keep the connectors dry.
+4. Using `tec_C` as reference, fit `T_TEC = a_i + b_i T_i` per channel and correct
+   `T_i,corrected = a_i + b_i T_i`.
+5. Check `ΔT_i = T_i,corrected − T_TEC` against `T_TEC`: the starting criterion is a corrected mean offset
+   < `0.2 °C` with no residual trend larger than `0.2 °C`.
+6. Raw data is never overwritten; the correction coefficients are stored in a separate file and applied
+   during analysis.
+7. Fit rod 1 into the first hole and define that hole as `x = 0`; measure the other 4 positions and the tip
+   (`x = L`), recording the uncertainty of every position and of `L`; draw or photograph the labels,
+   channels, coordinate direction and positions.
 
-> **跳过说明：上面第 3–5 步的浸泡标定已决定不做**（探头已永久装入 TEC base 与杆孔，安装后六路温差已在 1 °C 以内）。
-> 代价已量化：任一探头偏 0.5 °C 会把 `m` 推 5.1 %（基温探头最敏感），所以报告里 `m` 必须带"未标定偏置 ≈5 %"这一项，
-> 并用 [现场记录](../docs/module_notes/module_07_rod_instrument.md) 里列出的替代检查（换基准重拟合、两个温度点的无量纲形状比较）。
-> `Module_7/python/analysis/module_07_calibration.py` 与 `data/calibration/` 因此保持空位，等以后真做浸泡时再用。
+> **Skip note: steps 3–5 above (the soak calibration) were decided against.** The probes are already fitted
+> permanently into the TEC base and the rod holes, and the installed spread is within 1 °C.
+> The cost is quantified: 0.5 °C of offset on any probe moves `m` by 5.1 % (the base probe is the most
+> sensitive), so the reported `m` must carry an "uncalibrated offset ≈ 5 %" term, together with the
+> substitute checks in the [field record](../docs/module_notes/module_07_rod_instrument.md) (re-fit with a
+> different reference probe; compare the dimensionless shape at two temperatures).
+> `Module_7/python/analysis/cross_calibration_fit.py` and `data/calibration/` therefore stay unused for now, ready
+> for a real soak later.
 
-**Part 2 选位置 + 阶跃响应**
+**Part 2 — choose the positions, then the step response**
 
-1. 先用 `T_set = 45 °C` 做稳态试探（更快但温差小；更高温差大但更慢、漏热多；**不得超过 55 °C**）。
-2. 在孔位间移动其余 4 个探头，用 `ln θ` vs `x` 选点：最远点要满足 `0 < θ₅ ≤ θ₁/e`，点要散布在 semilog 图上，不能挤在一端，也不能落进噪声/室温漂移里。
-3. 定好位置后不动，记录每个位置与不确定度。
-4. 先 `20 °C` 全杆平衡，记录室温与 6 通道，确认通道差异在标定判据内。
-5. 用 PI 做 `20 → 45 °C` **非振荡**阶跃，连续记录到满足稳态判据。
-6. 所有温度画在同一时间轴，解释为什么越远的探头响应越晚、幅度越小。
-7. 保存**指令** TEC 温度、**实测** TEC 温度、以及 **rod 1 实测 `T(0,t)`**（模型边界条件用 rod 1，不是 TEC 指令/热电偶）。
+1. Start with a `T_set = 45 °C` steady-state trial (faster, but a smaller span; higher gives a larger span
+   but is slower and loses more heat; **never exceed 55 °C**).
+2. Move the remaining 4 probes between holes and choose positions from `ln θ` vs `x`: the farthest point
+   must satisfy `0 < θ₅ ≤ θ₁/e`, the points must spread over the semilog plot instead of bunching at one
+   end, and none may sit in noise or room-temperature drift.
+3. Once the positions are fixed, do not move them again; record each position and its uncertainty.
+4. First equilibrate the whole rod at `20 °C`, recording the room temperature and all 6 channels, and
+   confirm the channel differences are inside the calibration criterion.
+5. Run a **non-oscillatory** `20 → 45 °C` step with the PI controller and record continuously until the
+   steady-state criterion is met.
+6. Plot all temperatures on one time axis and explain why farther probes respond later and with smaller
+   amplitude.
+7. Save the **commanded** TEC temperature, the **measured** TEC temperature and the **measured rod 1
+   `T(0, t)`** (the model boundary condition uses rod 1, not the TEC setpoint or the TEC thermistor).
 
-**Part 3 稳态肋片剖面**
+**Part 3 — stationary fin profile**
 
-1. 开跑前先记录预测的剖面形状和稳态判据（起始判据：所有探头 `|dT_i/dt| < 0.02 °C/min` 持续 ≥ 10 min）。判据在脚本里的实现是**两条同时满足**：整窗最小二乘斜率 ≤ 0.02 °C/min，且首末三分之一窗口均值差 ≤ 0.1 °C（防止"窗口起点落在瞬态里"被整窗斜率放过）。
-2. 直接用上面 `20 → 45 °C` 阶跃的最后稳态段，**不需要另做一次加热**。
-3. 判据满足后取**尾部**最长合格窗口平均：脚本自动把窗口起点选在最后一个瞬态之后，窗口内逐通道求均值 ± 标准差并写进 `_stationary_profile.csv`；不达标的 run 直接拒绝（退出码 2，不写任何结果）。
-4. 画 `θ` vs `x`（带误差棒），**同时**拟合 finite（cosh）与 semi-infinite（指数），画两套残差，报告 `m`（1/m）与不确定度、`1/m`（m）。一键命令见 §5 的"Part 3 分析"。
-5. 报告忽略有限端后 `m` 变了多少，并与拟合不确定度比较。
-6. 讨论传感器位置误差、室温漂移、接触不良、以及端部边界条件的实测证据。
-7. 与预测记录对照：哪些假设被支持、哪个模型更合适、剩下什么无法解释的偏差。
+1. Before the run, write down the predicted profile shape and the steady-state criterion (starting
+   criterion: every probe with `|dT_i/dt| < 0.02 °C/min` for ≥ 10 min). The script implements **two
+   simultaneous** conditions: a whole-window least-squares slope ≤ 0.02 °C/min and a first-third vs
+   last-third mean difference ≤ 0.1 °C — which catches "the window opens inside a transient", something a
+   whole-window slope alone would let through.
+2. Use the trailing steady segment of the `20 → 45 °C` step above; **no second heating run is needed**.
+3. Once the criterion is met, average over the longest qualifying **trailing** window: the script puts the
+   window start after the last transient, averages each channel inside the window (± standard deviation)
+   and writes `_stationary_profile.csv`; a run that fails is refused (exit code 2, nothing written).
+4. Plot `θ` vs `x` with error bars, fit **both** the finite (cosh) and semi-infinite (exponential) models,
+   plot both residual sets, and report `m` (1/m) with its uncertainty and `1/m` (m). One-line command:
+   "Part 3 analysis" in §5.
+5. Report how much `m` moves when the finite end is ignored, compared with the fitting uncertainty.
+6. Discuss sensor position error, room-temperature drift, poor thermal contact, and the measured evidence
+   for the end boundary condition.
+7. Compare against the prediction record: which assumptions are supported, which model fits better, and
+   what unexplained deviation remains.
 
-## 5. 六通道软件扩展（保留 Module 6 作为可工作的 checkpoint）
+## 5. Six-channel software extension (Module 6 stays as the working checkpoint)
 
-**规则**：Module 6 的 Arduino sketch 和 Python GUI **原样不动**，另外复制出 Module 7 版本再改。TEC base 热敏电阻仍然是唯一的反馈与安全传感器；5 个杆通道只做测量，不进入 PI 控制律。
+**Rule:** Module 6's Arduino sketch and Python GUI are **left exactly as they are**; Module 7 versions are
+copied and then modified. The TEC base thermistor remains the only feedback and safety sensor; the five rod
+channels only measure and never enter the PI control law.
 
-分四个阶段，每阶段跑通再做下一个：
+Four stages, each one working before the next starts:
 
-**Stage 1 — Arduino 六通道采集（已实现）**
+**Stage 1 — Arduino six-channel acquisition (implemented)**
 
-文件：`Module_7/arduino/module_07_rod_controller/module_07_rod_controller.ino`（Module 6 sketch 的拷贝；命令协议、H 桥引脚、上电 PWM=0、60 °C 软件上限、`!isfinite` 停机逻辑全部保持不变）。
+File: `Module_7/arduino/module_07_rod_controller/module_07_rod_controller.ino` (a copy of the Module 6
+sketch; the command protocol, H-bridge pins, PWM = 0 at power-up, the 60 °C software limit and the
+`!isfinite` shutdown logic are all unchanged). The sketch folder keeps the module prefix because Arduino
+sketch names must be unique, and it records where the file came from.
 
-- 通道：`A0` = TEC base（**唯一** PI 反馈与安全输入），`A1`–`A5` = rod 1–5。
-- 采样预算：TEC 每周期 1000 次 ADC 平均（与 Module 6 相同），杆通道各 100 次。理由：AVR 一次 `analogRead` 约 112 µs，6 通道各 1000 次要 ~670 ms，会破坏 500 ms 周期并给控制加相位滞后；当前一次完整扫描约 168 ms。
-- 杆通道读数落在 `-20…90 °C` 之外就发 `nan` 且不计入 `rod_ok`，但**不**触发执行器停机——松动的杆探头不能中断 40 min 的稳态运行；TEC 通道仍按原规则停机。
-- 每周期只发**一条**完整记录，字段顺序固定：
+- Channels: `A0` = TEC base (**the only** PI feedback and safety input), `A1`–`A5` = rod 1–5.
+- Sampling budget: the TEC channel averages 1000 ADC readings per cycle (as in Module 6), each rod channel
+  100. Reason: one AVR `analogRead` takes about 112 µs, so six channels at 1000 readings each would take
+  ~670 ms, break the 500 ms cycle and add phase lag to the controller; one full scan currently takes ~168 ms.
+- A rod reading outside `-20…90 °C` is sent as `nan` and does not count towards `rod_ok`, but it does **not**
+  trigger an actuator shutdown — a loose rod probe must not abort a 40 min steady run. The TEC channel keeps
+  the original shutdown rule.
+- Exactly **one** complete record per cycle, with a fixed field order:
 
 ```text
 #DATA,time_s,tec_C,rod1_C,rod2_C,rod3_C,rod4_C,rod5_C,pwm,heat_cool,heat_pwm,cool_pwm,limit_C,safety,rod_ok
 DATA,12.50,23.41,23.38,23.36,23.34,23.31,23.29,120,1,120,0,60.00,OK,5
 ```
 
-- 启动时打印 `#firmware`、`#channels`、`#pins`、`#DATA,...` 四条表头；所有表头/诊断行以 `#` 开头，只有以 `DATA,` 开头的行是数据。`heat_pwm`/`cool_pwm` 是固件自报的输出（不能替代对引脚的实测），`limit_C` 是软件上限的现场证据。
-- `setpoint_C` 不属于固件（它是 PI 目标），由 Python 追加到 CSV。
-- 编译验证（2026-10-26）：`arduino-cli compile --fqbn arduino:avr:uno` → 7844 B flash (24%)、545 B RAM (26%)。
+- At startup the firmware prints four header lines `#firmware`, `#channels`, `#pins`, `#DATA,...`. Every
+  header or diagnostic line starts with `#`; only lines starting with `DATA,` are data. `heat_pwm`/`cool_pwm`
+  are the outputs the firmware reports (not a substitute for measuring the pins), and `limit_C` is the
+  on-record evidence of the software limit.
+- `setpoint_C` is not part of the firmware (it is the PI target) and is appended to the CSV by Python.
+- Compile check (2026-10-26): `arduino-cli compile --fqbn arduino:avr:uno` → 7844 B flash (24 %), 545 B RAM
+  (26 %).
 
-**Stage 2 — Python 显示与原始数据记录（已实现）**
+**Stage 2 — Python display and raw logging (implemented)**
 
-文件：`Module_7/python/module_07_rod_acquisition_gui.py`（Module 6 GUI 的拷贝）+ `Module_7/python/rod_protocol.py`（Qt-free 解析器）+ `Module_7/run_rod_acquisition.command`。
+Files: `Module_7/python/rod_acquisition_gui.py` (a copy of the Module 6 GUI) +
+`Module_7/python/rod_protocol.py` (a Qt-free parser) + `Module_7/run_rod_acquisition.command`.
 
-- `PIController` 直接从 `Module_6/python/` 导入，**不复制**控制律——与 Module 6 复用 Module 5 `parse_measurement` 是同一做法，控制算术只有一份实现。
-- 解析器与固件表头由 `Module_7/python/test_rod_protocol.py` 交叉校验（21 个测试，`python3 Module_7/python/test_rod_protocol.py`，无需 Qt/串口/Arduino）。
-- CSV：`Module_7/data/raw/module_07_rod_<时间戳>.csv`。前 14 个测量列与 `DATA` 行**同名同序**（`time_s, tec_C, rod1_C, rod2_C, rod3_C, rod4_C, rod5_C, pwm, heat_cool, heat_pwm, cool_pwm, limit_C, safety, rod_ok`，由 `rod_protocol.py` 生成，手改列名会让测试失败），其后追加控制列（`setpoint_C`、`error_C`、`p_term_pwm`、`i_term_pwm`、`sent_signed_pwm`…），所以一行 CSV 仍然能解释当时的执行器命令。
-- 4 张图：6 通道温度 + 设定值（TEC 加粗、每通道固定颜色）、signed PWM、P/I 项、误差。默认窗口 900 s，可勾 `Show whole run`——杆的响应是几十分钟量级，Module 6 的 180 s 窗口不够用。
-- 坏行跳过不崩并计数（`rows ok/bad`）；`#` 开头的行不计为坏行；`'x'` 模式打开文件，绝不覆盖；每行 flush。
-- `Mark event` 按钮把带说明的事件写进 CSV（稳态判定、移动探头、标定开始等）。
-- 端到端验证（2026-10-26，`QT_QPA_PLATFORM=offscreen` + 假串口）：表头/坏行被忽略、20 行 CSV 落盘（含 `connect`/`stop`/`operator_mark` 事件行）、25→45 °C 阶跃发出 `SET PWM … DIR HEAT`、杆通道 `nan` **不**停机、`SHUTDOWN` 与 TEC 46 °C 都会停机——均已通过。
+- `PIController` is imported straight from `Module_6/python/` and **not** copied — the same approach as
+  Module 6 reusing Module 5's `parse_measurement`, so the control arithmetic exists in exactly one place.
+- The parser and the firmware header are cross-checked by `Module_7/python/test_rod_protocol.py` (21 tests,
+  `python3 Module_7/python/test_rod_protocol.py`, no Qt, serial port or Arduino needed).
+- CSV: `Module_7/data/raw/module_07_rod_<timestamp>.csv`. The first 14 measurement columns have the **same
+  names and order** as the `DATA` line
+  (`time_s, tec_C, rod1_C, rod2_C, rod3_C, rod4_C, rod5_C, pwm, heat_cool, heat_pwm, cool_pwm, limit_C,
+  safety, rod_ok`, generated by `rod_protocol.py`; editing the names by hand makes the tests fail), followed
+  by the control columns (`setpoint_C`, `error_C`, `p_term_pwm`, `i_term_pwm`, `sent_signed_pwm`, …), so one
+  CSV row still explains the actuator command at that instant.
+- Four plots: six channel temperatures plus the setpoint (TEC bold, fixed colour per channel), signed PWM,
+  P/I terms, and the error. The default window is 900 s with a `Show whole run` option — the rod responds on
+  a tens-of-minutes scale, so Module 6's 180 s window is not enough.
+- Malformed lines are counted and skipped without crashing (`rows ok/bad`); lines starting with `#` are not
+  counted as bad; the file is opened in `'x'` mode so it is never overwritten; every row is flushed.
+- A `Mark event` button writes a commented event into the CSV (steady-state verdict, probe moved, calibration
+  started, …).
+- End-to-end verification (2026-10-26, `QT_QPA_PLATFORM=offscreen` with a fake serial port): headers and bad
+  lines ignored, 20 CSV rows written (including `connect`/`stop`/`operator_mark` event rows), a 25→45 °C step
+  emitting `SET PWM … DIR HEAT`, a `nan` rod channel **not** shutting down, and both `SHUTDOWN` and a 46 °C
+  TEC reading shutting the actuator down — all passing.
 
-运行方式（需要项目 `.venv`，已按 `requirements.txt` 装好 `PySide6`/`pyqtgraph`/`pyserial`）：
-
-```bash
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt   # 只需一次
-Module_7/run_rod_acquisition.command --preview   # 不碰串口，检查界面
-Module_7/run_rod_acquisition.command             # 实测：选端口 → Connect (PWM 0) → Start P / PI
-```
-
-上机第一次通电的每一步见 [Step 1 现场操作单](../docs/module_notes/module_07_step1_integration_check.md)（接线图、每个温度对应的期望电压、逐通道指纹表、故障注入、排查表）。
-
-**Stage 3 — 相对标定分析（独立脚本）**
-
-```bash
-.venv/bin/python Module_7/python/analysis/module_07_calibration.py \
-    Module_7/data/raw/module_07_rod_20261026_141500_123456.csv      # 不给文件则取 raw/ 里最新的一份
-```
-
-- 只读原始 CSV（`raw/` 里的文件字节不变，有测试守着），逐杆通道拟合 `T_TEC = a_i + b_i T_i`，默认只用 `event=measurement` 且 `tec_C`/该杆通道都有限的 240 行级别样本。
-- 画 `T_i` vs `T_TEC`（含 identity 线与拟合线）和修正后残差 `(a_i + b_i T_i) − T_TEC` vs `T_TEC`，图写到 `figures/calibration/<raw 文件名>_fit.png`。
-- 输出标定表到 `data/calibration/module_07_calibration_<raw 文件名>.csv`：通道、`a_i`、`b_i`、点数、温度范围、残差均值/标准差/最大绝对值、`before`（未修正前平均偏差）、三项判据与总判定。
-- 另存"原始列 + `rod1_corrected_C`…`rod5_corrected_C`"到 `data/calibration/<raw 文件名>_corrected.csv`，原始列不改；`nan` 在修正列里仍是 `nan`。
-- 判据（与 runbook 一致，可用 `--criterion-*` 改）：`|残差均值| ≤ 0.2 °C`、`残差曲率 ≤ 0.2 °C`、`max|残差| ≤ 0.2 °C`。任一通道不达标时退出码为 2，并提示重做浸泡。
-- **判据的正确读法**：拟合带截距，所以残差均值按构造恒为 0（它只是"截距解对了"的自检）；残差的**直线倾斜**也被 `b` 吃掉，所以"趋势"用**曲率**（中间半段均值 − 两端四分之一均值）来量；真正判别探头滞后/失去接触的是 `max|残差|` 与曲率两项。
-- 参考本身是未标定的 A0 探头（β=4540 K 标称值，β 差 1 % ≈ 0.6 °C），所以它做的是**相对一致性**标定，不是绝对精度标定——这一点必须写进报告。**本模块已决定不做浸泡标定**（见 §4 Part 1 的跳过说明与 [现场记录](../docs/module_notes/module_07_rod_instrument.md)），所以这个脚本在本次只作为补做工具保留。
-
-**Part 3 分析 — 稳态剖面拟合（独立脚本，只依赖标准库 + matplotlib 画图）**
+How to run (needs the project `.venv` with `PySide6`/`pyqtgraph`/`pyserial` installed from
+`requirements.txt`):
 
 ```bash
-.venv/bin/python Module_7/python/analysis/module_07_stationary_fin_fit.py \
-    Module_7/data/raw/<run>.csv --ambient <远离装置的室温 °C>
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt   # once
+Module_7/run_rod_acquisition.command --preview   # no serial port, just checks the window
+Module_7/run_rod_acquisition.command             # live: choose port → Connect (PWM 0) → Start P / PI
 ```
 
-- 判据先行：脚本先找**尾部**最长的合格窗口（整窗 `|dT/dt| ≤ 0.02 °C/min` 且首末三分之一均值差 ≤ 0.1 °C，窗口 ≥ `--hold 600` s）。
-  达不到就**拒绝**（退出码 2、什么都不写），并打印最接近的那个窗口还差在哪里（哪个通道、多少 °C/min、多少 °C）。
-- 剖面：窗口内逐通道均值 ± 样本标准差（含样本数），`θ = T − T∞`；`T∞` 用 `--ambient` 实测值，不给则用**剖面自身**联合拟合（`m` 与 `T∞` 两个参数，profile likelihood，`σ` 不报）。
-- 拟合：finite `Θ = cosh[m(L−x)]/cosh(mL)` 用 `θ(0)` 实测值定幅度，只拟合一个参数 `m`；semi-infinite `Θ = e^(−mx)` 用同一批数据做 log 线性回归作对照。两套残差都进 CSV 和图。
-- 不确定度：`σ_m` 由 SSR 对 `m` 的曲率给出（`dof = N − 1`），并在输出里注明"1 个拟合参数"；**逐探头未标定偏置（≈5 %，来自跳过的浸泡标定）必须另外加**，由 `probe_offset_sensitivity` 表给出：每次把一个探头抬高 `--sensitivity-offset`（默认 0.5 °C）重拟合，看 `m` 动多少。
-- 输出（默认目录即仓库约定）：
-  - `Module_7/data/processed/<run>_stationary_fit.json` — 判据、窗口、逐点剖面、两套模型、`σ`、`ε_T` 表、`Bi∥`/`Bi⊥`、灵敏度表、源文件 SHA-256（严格 JSON，非有限浮点写 `null`）；
-  - `Module_7/data/processed/<run>_stationary_profile.csv` — `label, x_m, temperature_C, std_C, samples, theta_C` + 两套模型值与残差；
-  - `Module_7/figures/part_03_stationary_profile.png` — 剖面 + 两模型 + 双残差（可用 `--figure-name` 改名）。
-- 几何默认值就是 [现场记录](../docs/module_notes/module_07_rod_instrument.md) 的孔位（`x = 0, 3.85, 8.95, 14.05, 19.15 cm`，`L = 27.15 cm`），可用 `--positions` / `--length` 覆盖；`--diameter-is-measured` 只在真量过直径后加，否则输出里会写"直径是标称值"。
-- 20 个无硬件测试：`.venv/bin/python Module_7/python/test_module_07_stationary_fin_fit.py`（合成剖面恢复已知 `m`、半无限偏差、`ε_T` 闭式、拒绝逻辑、原始文件哈希不变、JSON 严格且可移植）。
+The first power-up, step by step, is in the
+[Step 1 on-site procedure](../docs/module_notes/module_07_step1_integration_check.md) (wiring diagram,
+expected voltage at each temperature, per-channel fingerprint table, fault injection, troubleshooting table).
 
-**Stage 4 — 标定前集成检查**
+**Stage 3 — cross-calibration analysis (stand-alone script)**
 
-- 单独加热一个探头，确认只有它对应的 Arduino 与 Python 通道变化；
-- 核对"一条 DATA 行 = 一组显示值 = 一行 CSV"；
-- 拔掉一个杆探头，确认故障可见且**不破坏** TEC base 的安全停机；
-- 重启两程序，确认 PWM 从 0 开始且新建数据文件；
-- 把 sketch/GUI/标定脚本文件名与 commit hash 写进传感器地图。
+```bash
+.venv/bin/python Module_7/python/analysis/cross_calibration_fit.py \
+    Module_7/data/raw/module_07_rod_20261026_141500_123456.csv   # without an argument the newest file in raw/
+```
 
-## 6. 预测记录（开加热前必须先写下来）
+- Reads the raw CSV only (the bytes in `raw/` are unchanged, and a test guards that), fits
+  `T_TEC = a_i + b_i T_i` per rod channel, and by default uses only rows with `event=measurement` where both
+  `tec_C` and that rod channel are finite (a few hundred rows).
+- Plots `T_i` vs `T_TEC` (identity line and fitted line) and the corrected residual
+  `(a_i + b_i T_i) − T_TEC` vs `T_TEC`; the figure goes to `figures/calibration/<raw file>_fit.png`.
+- Writes the calibration table to `data/calibration/<raw file>_calibration_table.csv`: channel, `a_i`, `b_i`,
+  number of points, temperature range, residual mean/standard deviation/maximum magnitude, `before` (mean
+  offset without correction), the three criteria and the overall verdict.
+- Also saves "original columns + `rod1_corrected_C`…`rod5_corrected_C`" to
+  `data/calibration/<raw file>_corrected.csv`; original columns are untouched and `nan` stays `nan` in the
+  corrected columns.
+- Criteria (matching the runbook, adjustable with `--criterion-*`): `|residual mean| ≤ 0.2 °C`, residual
+  curvature ≤ 0.2 °C, `max|residual| ≤ 0.2 °C`. If any channel fails, the exit code is 2 and the message asks
+  for a new soak.
+- **How to read the criteria:** the fit has an intercept, so the residual mean is zero by construction (it is
+  only a self-check that the intercept came out right); a straight residual tilt is absorbed by `b` as well,
+  so "trend" is measured as **curvature** (mean of the middle half minus the mean of the two end quarters);
+  what really detects a lagging or detached probe is `max|residual|` plus the curvature term.
+- The reference is itself an uncalibrated A0 probe (nominal β = 4540 K; a 1 % error in β is ≈ 0.6 °C), so this
+  is a **relative-consistency** calibration, not an absolute-accuracy one — the report must say so. **This
+  module decided against the soak calibration** (see the skip note in §4 Part 1 and the
+  [field record](../docs/module_notes/module_07_rod_instrument.md)), so the script is kept here only as a
+  backfill tool.
 
-必须记录的内容：
+**Part 3 analysis — steady-profile fit (stand-alone script, standard library only, matplotlib for figures)**
 
-1. 各探头响应先后顺序；
-2. 响应幅度随距离如何变化；
-3. 稳态剖面定性形状；
-4. 测量区间是否应看到有限端。
+```bash
+.venv/bin/python Module_7/python/analysis/stationary_fin_fit.py \
+    Module_7/data/raw/<run>.csv --ambient <room temperature far from the apparatus, °C>
+```
 
-下面是**用课程给定几何 + 文献量级做的粗估**，用来先形成预期；拿到实测 `d`、`L`、位置和 `m` 后必须替换。
+- Criteria first: the script looks for the longest qualifying **trailing** window (whole-window
+  `|dT/dt| ≤ 0.02 °C/min` and a first-third/last-third mean difference ≤ 0.1 °C, window ≥ `--hold 600` s).
+  If there is none it **refuses** (exit code 2, nothing written) and prints where the closest window falls
+  short (which channel, how many °C/min, how many °C).
+- Profile: per-channel mean ± sample standard deviation inside the window (with the sample count),
+  `θ = T − T∞`; `T∞` comes from a measured `--ambient`, otherwise the script fits `T∞` **together with** the
+  profile (`m` and `T∞`, profile likelihood, `σ` not reported).
+- Fits: the finite model `Θ = cosh[m(L−x)]/cosh(mL)` takes its amplitude from the measured `θ(0)` and fits
+  only `m`; the semi-infinite `Θ = e^(−mx)` is a log-linear regression on the same data as a control. Both
+  residual sets go into the CSV and the figure.
+- Uncertainty: `σ_m` comes from the curvature of SSR in `m` (`dof = N − 1`) and the output states "1 fitted
+  parameter"; the **per-probe uncalibrated offset (≈ 5 %, from the skipped soak) must be added on top** and is
+  given by the `probe_offset_sensitivity` table: raise one probe by `--sensitivity-offset` (default 0.5 °C) and
+  re-fit to see how far `m` moves.
+- Outputs (default directories are the repository convention):
+  - `Module_7/data/processed/<run>_stationary_fit.json` — criteria, window, per-point profile, both models,
+    `σ`, the `ε_T` table, `Bi∥`/`Bi⊥`, the sensitivity table, the source SHA-256 (strict JSON, non-finite
+    floats written as `null`);
+  - `Module_7/data/processed/<run>_stationary_profile.csv` — `label, x_m, temperature_C, std_C, samples,
+    theta_C` plus both model values and residuals;
+  - `Module_7/figures/part_03_stationary_profile.png` — profile, both models and both residual sets
+    (rename with `--figure-name`).
+- The default geometry is the hole layout from the
+  [field record](../docs/module_notes/module_07_rod_instrument.md) (`x = 0, 3.85, 8.95, 14.05, 19.15 cm`,
+  `L = 27.15 cm`), overridable with `--positions` / `--length`; add `--diameter-is-measured` only after the
+  diameter has really been measured, otherwise the output states that the diameter is nominal.
+- 20 hardware-free tests: `.venv/bin/python Module_7/python/test_stationary_fin_fit.py` (recovering a known
+  `m` from a synthetic profile, the semi-infinite bias, the closed-form `ε_T`, the refusal logic, an unchanged
+  raw-file hash, strict and portable JSON).
 
-假设：6061-T6 `k ≈ 167 W/(m·K)`，`d = 12.7 mm`，自然对流 `h = 5–10 W/(m²·K)`，`L = 0.30 m`（**待实测**）。
+**Stage 4 — pre-calibration integration check**
+
+- Heat one probe on its own and confirm that only its Arduino and Python channel changes;
+- Confirm that "one `DATA` line = one set of displayed values = one CSV row";
+- Unplug one rod probe and confirm the fault is visible and does **not** break the TEC base safety shutdown;
+- Restart both programs and confirm PWM starts at 0 and a new data file is created;
+- Write the sketch/GUI/analysis file names and the commit hash into the sensor map.
+
+## 6. Prediction record (must be written down before the first heating run)
+
+What has to be recorded:
+
+1. the response order of the probes;
+2. how the response amplitude changes with distance;
+3. the qualitative shape of the stationary profile;
+4. whether the finite end should be visible inside the measured range.
+
+The numbers below are a **rough estimate from the course geometry plus literature orders of magnitude**,
+written only to form an expectation; they must be replaced once the measured `d`, `L`, positions and `m` exist.
+
+Assumptions: 6061-T6 `k ≈ 167 W/(m·K)`, `d = 12.7 mm`, natural convection `h = 5–10 W/(m²·K)`,
+`L = 0.30 m` (**to be measured**).
 
 | `h` (W/m²K) | `m` (1/m) | `1/m` (m) | `mL` | `Θ_tip` | `Bi⊥` |
 |---|---|---|---|---|---|
@@ -255,7 +363,7 @@ Module_7/run_rod_acquisition.command             # 实测：选端口 → Connec
 | 7 | 3.63 | 0.275 | 1.09 | 0.60 | 1.3×10⁻⁴ |
 | 10 | 4.34 | 0.230 | 1.30 | 0.51 | 1.9×10⁻⁴ |
 
-对应有限端误差 `ε_T(x)`（同一假设下）：
+Corresponding finite-end error `ε_T(x)` under the same assumptions:
 
 | `x` (m) | 0.05 | 0.10 | 0.15 | 0.20 | 0.25 |
 |---|---|---|---|---|---|
@@ -263,98 +371,146 @@ Module_7/run_rod_acquisition.command             # 实测：选端口 → Connec
 | `ε_T` (h=7) | 4.3% | 9.8% | 17% | 25% | 34% |
 | `ε_T` (h=10) | 3.6% | 8.7% | 16% | 24% | 35% |
 
-由此得到两个**可检验**的预判：
+Two **testable** predictions follow:
 
-- `Bi⊥ ~ 10⁻⁴ ≪ 1`：一维径向近似几乎肯定成立（`k` 大、`d` 小）。
-- `mL ~ 1`，杆尖仍有基温的 50–70%：**半无限近似在 `x ≳ 5 cm` 就不满足 5% 判据**，A4 第 3 部分应保留有限长 cosh 解，并明确写出"结论依赖传感器位置与判据"。这与 Lienhard 的经验阈值（温度用 `mL ≳ 5`、基热流用 `mL ≳ 3`）一致地指向"有限端不可忽略"。
+- `Bi⊥ ~ 10⁻⁴ ≪ 1`: the one-dimensional radial approximation is almost certainly valid (large `k`, small `d`).
+- `mL ~ 1` and the tip still carries 50–70 % of the base excess, so **the semi-infinite approximation already
+  misses the 5 % criterion at `x ≳ 5 cm`**. A4 Part 3 must therefore keep the finite-length cosh solution and
+  state explicitly that "the conclusion depends on the sensor positions and on the criterion". This agrees
+  with Lienhard's empirical thresholds (`mL ≳ 5` for temperatures, `mL ≳ 3` for base heat flow) in pointing to
+  "the finite end cannot be ignored".
 
-## 7. 目录与命名约定
+## 7. Directory and naming conventions
 
-沿用 Module 4–6 的仓库习惯（小写+下划线，小数点写 `p`），并满足课程要求的证据文件路径：
+Repository habits from Modules 4–6 (lower case with underscores, a decimal point written as `p`) plus the
+evidence paths the course requires. One rule per layer:
+
+- **Python code** lives in `Module_7/python/`: code is `<subject>.py`, tests are `test_<subject>.py`, and
+  scripts that read `data/raw/` live in `analysis/<subject>_<verb>.py` (`_fit` produces fitted results,
+  `_check` produces diagnostics). **No `module_07_` prefix inside the module directory** — the path already
+  scopes the name, and Modules 4–6 do the same (`p_only_tec_control_gui.py`, `pi_controller.py`,
+  `test_pi_control.py`, `analyze_model_baseline.py`).
+- **Arduino sketches** live in `arduino/<sketch>/<sketch>.ino`: the folder name must equal the sketch name and
+  must be unique across the repository, so this one keeps the module prefix.
+- **Raw data** keeps the prefix: `data/raw/module_07_rod_<YYYYmmdd_HHMMSS_microseconds>.csv`, because raw files
+  are quoted in reports and handed in outside this directory, and their rows are never edited. A run that is
+  written up may gain a chronological setpoint tag after the timestamp (`..._T20C.csv`,
+  `..._T20C_trip45C_T40C.csv`): the timestamp still says when the GUI opened the file and the tag says what was
+  commanded, the rows stay untouched, and the pre-rename SHA-256 stays in the matching `_quality.json`. That tag
+  is the only part of a raw file name that may change.
+- **Derived files** are `<raw file stem>_<artifact>.<ext>`: `_stationary_fit.json`, `_stationary_profile.csv`,
+  `_quality.json`, `_calibration_table.csv`, `_corrected.csv`, `_fit.png`.
+- **Deliverable figures** are `figures/part_<NN>_<subject>.png`; diagnostic figures sit in a named
+  subdirectory (`figures/pilot_checks/`, `figures/calibration/`) using `<raw stem>_<subject>.png`.
+- **Entry points** are `run_<thing>.command` at the module root, as in Modules 5 and 6 (`run_gui.command`,
+  `run_pi_control.command`).
+- **Documents are in English**, matching every note in `docs/module_notes/`, the Module 4/5 READMEs and
+  `Module_6/python/analysis/README.md`.
 
 ```text
 Module_7/
-├── README.md                                     本文件
-├── run_rod_acquisition.command                   Stage 2 启动脚本（可加 --preview）
+├── README.md                             this file
+├── run_rod_acquisition.command           Stage 2 launcher (add --preview for a dry run)
 ├── arduino/
 │   └── module_07_rod_controller/
-│       └── module_07_rod_controller.ino          Stage 1（Module 6 sketch 的拷贝）
+│       └── module_07_rod_controller.ino  Stage 1 (copy of the Module 6 sketch)
 ├── python/
-│   ├── module_07_rod_acquisition_gui.py          Stage 2（Module 6 GUI 的拷贝）
-│   ├── rod_protocol.py                           串口格式与解析（Qt-free，可单测）
-│   ├── test_rod_protocol.py                      21 个无硬件测试
-│   ├── test_module_07_calibration.py             24 个无硬件测试（合成六通道数据）
-│   ├── test_module_07_stationary_fin_fit.py      20 个无硬件测试（合成稳态剖面、拒绝逻辑、输出可移植性）
+│   ├── rod_acquisition_gui.py            Stage 2 (copy of the Module 6 GUI)
+│   ├── rod_protocol.py                   serial format and parser (Qt-free, unit-testable)
+│   ├── test_rod_protocol.py              21 hardware-free tests
+│   ├── test_rod_acquisition_gui.py        8 hardware-free tests (fake serial port, offscreen Qt)
+│   ├── test_cross_calibration_fit.py     24 hardware-free tests (synthetic six-channel data)
+│   ├── test_stationary_fin_fit.py        20 hardware-free tests (synthetic profile, refusal, portability)
 │   └── analysis/
-│       ├── module_07_calibration.py              Stage 3 交叉标定（标准库即可；图需 matplotlib）
-│       ├── module_07_stationary_fin_fit.py       Part 3 稳态拟合：稳态判据 + finite/semi-infinite + 残差 + 不确定度
-│       └── analyze_pilot_run.py                  试测 run 的质量检查（不是拟合）
+│       ├── cross_calibration_fit.py      Stage 3 cross-calibration (standard library; matplotlib for figures)
+│       ├── stationary_fin_fit.py         Part 3 fit: steady criteria + finite/semi-infinite + residuals + uncertainty
+│       └── pilot_run_check.py            quality check of a pilot run (not a fit)
 ├── data/
-│   ├── raw/                                      原始 CSV（永不覆盖）
-│   ├── calibration/                              标定系数表 + 修正数据 CSV（本次不生成：浸泡标定已跳过）
-│   ├── processed/                                稳态拟合结果（Part 3：`<run>_stationary_fit.json`、`<run>_stationary_profile.csv`）
-│   └── README.md                                 数据目录规则
-├── figures/                                      Part 1–3 的图（脚本运行时生成）
-├── docs/
-│   └── README.md                                 文档索引
+│   ├── raw/                              raw CSV (never overwritten)
+│   ├── calibration/                      calibration table + corrected data CSV (empty: the soak was skipped)
+│   ├── processed/                        fit results (Part 3: `<run>_stationary_fit.json`, `<run>_stationary_profile.csv`)
+│   └── README.md                         data directory rules
+├── figures/                              Parts 1–3 figures (written when the scripts run)
+└── docs/
+    └── README.md                         documentation index
 ```
 
-课程额外要求的证据文件（放 `docs/module_notes/`，与 Module 1–5 的笔记一致）：
+Evidence files the course asks for live in `docs/module_notes/`, like the notes for Modules 1–5:
 
-- `docs/module_notes/module_07_rod_instrument.md` — 传感器地图、标定记录、几何、baseline/阶跃、运行元数据，以及"跳过浸泡标定"的决定与代价
-- `docs/module_notes/module_07_stationary_fin.md` — 稳态拟合的方法、判据、不确定度分层与待回填项
-- `docs/assessments/a4_finite_length_biot.md` — A4 的四部分正文
+- `docs/module_notes/module_07_rod_instrument.md` — sensor map, cross-check record, geometry, baseline/step,
+  run metadata, and the decision to skip the soak calibration with its quantified cost
+- `docs/module_notes/module_07_stationary_fin.md` — stationary-fit method, criteria, two-layer uncertainty and
+  the open items
+- `docs/assessments/a4_finite_length_biot.md` — the four A4 parts
 
-**无硬件测试（改动任何脚本后先跑这三条，不需要 Qt/串口/Arduino）**
+**Hardware-free tests (run all four after touching any script; no Qt window, serial port or Arduino needed)**
 
 ```bash
-.venv/bin/python Module_7/python/test_rod_protocol.py                 # 21 个：解析器 = 固件表头
-.venv/bin/python Module_7/python/test_module_07_calibration.py        # 24 个：合成六通道标定
-.venv/bin/python Module_7/python/test_module_07_stationary_fin_fit.py # 20 个：稳态判据、拟合恢复、输出可移植
+.venv/bin/python Module_7/python/test_rod_protocol.py             # 21: parser = firmware header
+.venv/bin/python Module_7/python/test_rod_acquisition_gui.py      #  8: GUI with a fake serial port
+.venv/bin/python Module_7/python/test_cross_calibration_fit.py    # 24: synthetic six-channel calibration
+.venv/bin/python Module_7/python/test_stationary_fin_fit.py       # 20: steady criteria, fit recovery, portability
 ```
 
-## 8. 行动清单（按优先级）
+## 8. Action list (in priority order)
 
-**P0 — 今天/明天必须完成（A4 不依赖数据）**
+**P0 — today/tomorrow, independent of data (A4 needs no measurements)**
 
-- [ ] 读 Lienhard §4.5（pp. 163–173）+ 跟着 `fin-design-derivation` 走完 (4.27)–(4.51)
-- [ ] Lienhard Problem 1.3（A4 Part 1）
-- [ ] 稳态肋片方程 + 绝热端 cosh 解两边界条件推导（A4 Part 2）
-- [ ] Problem 4.12 / Example 4.8 / Problem 4.20 + 逐传感器 `mL`、`ε_T(x)`（A4 Part 3）
-- [ ] `Bi⊥` 计算 + 半径结论 + 散热器/辐射器应用题（A4 Part 4）
-- [ ] 写成 `docs/assessments/a4_finite_length_biot.md` 并导出 `A4_Lastname.pdf`，首页写 commit hash
+- [ ] Read Lienhard §4.5 (pp. 163–173) and follow (4.27)–(4.51) with `fin-design-derivation`
+- [ ] Lienhard Problem 1.3 (A4 Part 1)
+- [ ] Derive the stationary fin equation and the insulated-tip cosh solution with both boundary conditions
+      (A4 Part 2)
+- [ ] Problem 4.12 / Example 4.8 / Problem 4.20 plus `mL` and `ε_T(x)` for every sensor (A4 Part 3)
+- [ ] `Bi⊥` with the radial conclusion, and the heat-sink / radiator question (A4 Part 4)
+- [ ] Write it into `docs/assessments/a4_finite_length_biot.md`, export `A4_Lastname.pdf`, and put the commit
+      hash on the first page
 
-**P1 — S16 课上**
+**P1 — in class, S16**
 
-- [ ] 量 `d`、总长、`L`、孔位并记录不确定度
-- [ ] 六探头同温标定（≥ 60 s）
-- [ ] Stage 1 + Stage 2 改好并做 Stage 4 集成检查
-- [ ] baseline 与首次阶跃数据落盘
+- [ ] Measure `d`, the overall length, `L` and the hole positions, recording their uncertainties
+- [ ] Six-probe same-temperature check (≥ 60 s) — *skipped by decision; keep as a backfill item*
+- [ ] Modify Stage 1 + Stage 2 and run the Stage 4 integration check
+- [ ] Write the baseline and the first step data to disk
 
-**P2 — S17 课上 + 截止前**
+**P2 — in class, S17, and before the deadlines**
 
-- [ ] 定 5 个杆探头位置（`θ₅ ≤ θ₁/e`）
-- [ ] 完成 `20 → 45 °C` 阶跃到稳态
-- [ ] finite/semi-infinite 双拟合 + 残差
-- [ ] 写 `module_07_rod_instrument.md`、`module_07_stationary_fin.md`
-- [ ] C5 演示 + 11:55 前交 receipt（引用已 push 的 commit）
+- [ ] Fix the five rod probe positions (`θ₅ ≤ θ₁/e`)
+- [ ] Complete the `20 → 45 °C` step into steady state
+- [ ] Run both fits (finite and semi-infinite) with residuals
+- [ ] Write `module_07_rod_instrument.md` and `module_07_stationary_fin.md`
+- [ ] Demonstrate C5 and submit the receipt before 11:55, citing pushed commits
 
-**建议分工（两人）**：A4 的四部分各自独立完成（个人作业），但可以互相校对量纲与边界条件；S16/S17 现场一人管硬件与标定、一人管软件与数据落盘，交换复核。
+**Suggested division of labour (two people):** the four A4 parts are individual work, but you can check each
+other's units and boundary conditions; on site at S16/S17 one person runs the hardware and calibration while
+the other runs the software and the logging, then swap and cross-check.
 
-## 9. 参考链接
+## 9. Reference links
 
-- [Module 7 Part I：Thermal Transport Foundations](https://sethfraden.github.io/Phys39F26-course/labs/theory-bridge-chapter-1/)
-- [Module 7 Part II：Finite And Infinite Rod Theory (fin-design-derivation)](https://sethfraden.github.io/Phys39F26-course/labs/fin-design-derivation/)
-- [Module 7 Part III：Rod Instrument, Step Response, And Stationary Fin](https://sethfraden.github.io/Phys39F26-course/labs/lab-08/)
-- [TEC + finite-rod 模拟器](https://sethfraden.github.io/Phys39F26-course/simulators/tec-rod-control/)
+- [Module 7 Part I: Thermal Transport Foundations](https://sethfraden.github.io/Phys39F26-course/labs/theory-bridge-chapter-1/)
+- [Module 7 Part II: Finite And Infinite Rod Theory (fin-design-derivation)](https://sethfraden.github.io/Phys39F26-course/labs/fin-design-derivation/)
+- [Module 7 Part III: Rod Instrument, Step Response, And Stationary Fin](https://sethfraden.github.io/Phys39F26-course/labs/lab-08/)
+- [TEC + finite-rod simulator](https://sethfraden.github.io/Phys39F26-course/simulators/tec-rod-control/)
 - [Lienhard & Lienhard, A Heat Transfer Textbook](https://sethfraden.github.io/Phys39F26-course/references/lienhard-heat-transfer-v6.pdf)
 
-## 模拟器要点（S16 之前可先玩）
+## Simulator notes (worth poking at before S16)
 
-- 杆被分成 24–100 个有限差分单元，`0.01 s` 子步长推进；控制器每 `0.1 s` 更新。
-- 端部**零热流**；驱动端接一个动态 TEC（冷面 `T_c`、热面 `T_h`、`C_c = 12 J/K`、`C_h = 180 J/K`、`S = 0.0513 V/K`、`R = 1.861 Ω`、`K_TEC = 0.560 W/K`、`R_hs = 0.55 K/W`、12 V）。
-- 热敏电阻有 2 s 一阶响应；PWM 限幅 ±100%。
-- 高增益练习：探针放 `x = 0`、纯 P，`Kp = 8 → 80 → 800`，找出"单调 → 衰减振荡 → 持续振荡"的转变点，并观察 PWM 是否大部分时间顶在限幅（bang-bang）。
-- 固定 `Kp = 800`，把探针沿杆后移：振荡**变慢**（反馈用到了更旧、更弱的信号）。
-- 这个振荡来自 TEC 双态执行器 + 分布扩散 + 传感器 + 采样累积的相位滞后，**一维 one-lump P 模型给不出来**——这是 Module 7 相较 Module 6 的关键新增物理。
+- The rod is split into 24–100 finite-difference cells advanced in `0.01 s` substeps; the controller updates
+  every `0.1 s`.
+- The end is **zero heat flux**; the driven end carries a dynamic TEC (cold face `T_c`, hot face `T_h`,
+  `C_c = 12 J/K`, `C_h = 180 J/K`, `S = 0.0513 V/K`, `R = 1.861 Ω`, `K_TEC = 0.560 W/K`,
+  `R_hs = 0.55 K/W`, 12 V).
+- The thermistors have a 2 s first-order response; PWM is clipped at ±100 %.
+- High-gain exercise: put the probe at `x = 0`, use pure P, and raise `Kp = 8 → 80 → 800` to find the
+  transition "monotonic → decaying oscillation → sustained oscillation", watching whether the PWM sits at the
+  limit most of the time (bang-bang).
+- Fix `Kp = 800` and move the probe down the rod: the oscillation gets **slower** (the feedback uses an older,
+  weaker signal).
+- This oscillation comes from the two-state TEC actuator plus distributed diffusion, sensor and sampling lag —
+  a one-lumped P model cannot produce it. That is the key new physics of Module 7 relative to Module 6.
+
+
+
+
+
+
 

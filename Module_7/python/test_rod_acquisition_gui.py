@@ -17,7 +17,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 try:
-    import module_07_rod_acquisition_gui as gui
+    import rod_acquisition_gui as gui
 except ModuleNotFoundError as error:
     gui = None
     IMPORT_ERROR = str(error)

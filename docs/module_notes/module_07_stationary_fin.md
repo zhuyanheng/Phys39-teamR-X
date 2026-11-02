@@ -1,84 +1,110 @@
-# Module 7 稳态肋片分析（Part 3）：方法、判据与不确定度
+# Module 7 stationary-fin analysis (Part 3): method, criteria, uncertainty
 
-**状态**：分析脚本 `Module_7/python/analysis/module_07_stationary_fin_fit.py` 与 20 个无硬件测试已完成并通过；
-**正式 `20 → 45 °C` 稳态 run 还没采到**，所以本文记录的是"怎么算、什么算合格、误差怎么报"，
-所有需要真实数据的格子标 `待回填`。原始数据约定见 [Module_7/data/README.md](../../Module_7/data/README.md)，
-几何/孔位/运行元数据见 [module_07_rod_instrument.md](module_07_rod_instrument.md)。
+**Status:** the analysis script `Module_7/python/analysis/stationary_fin_fit.py` and its 20
+hardware-free tests are complete and passing. **Two step runs were recorded on 2026-11-02 (20 °C and
+40 °C) and neither is stationary, so there is still no steady profile and `m` is not yet determined**;
+§9 records the measured shortfall and what it would take to clear it. Until then this note describes
+*how the numbers are computed, what counts as acceptable, and how the error is reported*; every cell
+that needs real data is marked `to fill in`. Raw-data conventions are in
+[Module_7/data/README.md](../../Module_7/data/README.md); geometry, hole positions and run metadata are
+in [module_07_rod_instrument.md](module_07_rod_instrument.md).
 
-## 1. 这段分析要回答什么
+## 1. What this analysis has to answer
 
-| 输出 | 符号 | 单位 | 用在哪 |
+| Output | Symbol | Unit | Used for |
 | --- | --- | --- | --- |
-| 衰减常数 | `m` | 1/m | Part 3 主结果；Part 4 的 `(mR/2)²` |
-| 特征长度 | `1/m` | m | 与 `L`、孔间距比较，说明"有限长"还是"半无限" |
-| 端部剩余 | `Θ_tip = 1/cosh(mL)` | — | 判断有限端是否可见（课程阈值 `Θ_tip > 0.1`） |
-| 有限长 Biot | `Bi∥ = (mL)²` | — | Part 4：自洽式 `(mR/2)²` 的对照量 |
-| 横向 Biot | `Bi⊥ = (mR/2)²` | — | Part 4：一维径向近似是否成立 |
-| 半无限误差 | `ε_T(x) = abs(Θ_fin − Θ_inf) / Θ_fin` | — | Part 3：能不能用指数近似、从哪一孔开始不行 |
+| Decay constant | `m` | 1/m | Main Part 3 result; feeds `(mR/2)²` in Part 4 |
+| Decay length | `1/m` | m | Compared with `L` and the hole spacing: finite or semi-infinite? |
+| Tip remainder | `Θ_tip = 1/cosh(mL)` | — | Is the finite end visible? (course threshold `Θ_tip > 0.1`) |
+| Finite-rod Biot number | `Bi∥ = (mL)²` | — | Part 4: the cross-check for `(mR/2)²` |
+| Transverse Biot number | `Bi⊥ = (mR/2)²` | — | Part 4: does the one-dimensional radial approximation hold? |
+| Semi-infinite error | `ε_T(x) = abs(Θ_fin − Θ_inf) / Θ_fin` | — | Part 3: how far out can the exponential be used? |
 
-三件事必须先定、不能事后调：**边界条件用 rod 1 实测**（不是 TEC 指令、不是 TEC 实测）、
-**`T∞` 用远离装置的实测室温**（不给才退化成拟合）、**稳态窗口按先写好的判据选**（见 §2）。
+Three things are fixed before the run and cannot be adjusted afterwards: **the boundary condition
+uses the measured rod 1** (not the TEC setpoint, not the measured TEC), **`T∞` is the measured room
+temperature far from the apparatus** (the fit only takes over when that was not recorded), and **the
+steady window is selected by the criteria written down in §2**.
 
-## 2. 判据先行：什么叫"稳态"
+## 2. Criteria first: what "steady" means
 
-脚本实现的是两条**同时**满足（`steady_window()`）：
+The script implements two conditions that must hold **simultaneously** (`steady_window()`):
 
-1. 整窗最小二乘斜率 `|dT/dt| ≤ 0.02 °C/min`（对 `tec_C` 与 `rod1_C…rod5_C` 六个通道都成立）；
-2. 首三分之一与末三分之一的窗口均值差 `≤ 0.10 °C`（逐通道，`--drift-budget`）。
+1. whole-window least-squares slope `|dT/dt| ≤ 0.02 °C/min`, for all six channels `tec_C` and
+   `rod1_C … rod5_C`;
+2. the difference between the mean of the first third and the mean of the last third of the window
+   is `≤ 0.10 °C`, channel by channel (`--drift-budget`).
 
-**为什么要第 2 条**：如果窗口起点落在一个正在收敛的瞬态里，整窗斜率会被"前段陡、后段平"平均掉，
-看起来合格，但窗口均值的偏差直接把剖面拉偏——而剖面只用一个均值，被平均掉的偏差不会进 `σ`。
-测试 `test_the_drift_budget_rejects_a_window_that_opens_inside_a_transient` 就是构造这种数据：斜率条过、漂移条不过。
+**Why condition 2 is needed:** if the window opens inside a still-converging transient, the
+whole-window slope averages "steep at the start, flat at the end" to something that looks acceptable,
+while the window mean is pulled off — and the profile uses one mean per probe, so that bias never
+enters `σ`. `test_the_drift_budget_rejects_a_window_that_opens_inside_a_transient` builds exactly this
+data: the slope condition passes, the drift condition does not.
 
-窗口取**尾部最长合格段**，长度至少 `--hold 600 s`（Arduino 秒）。达不到就拒绝，并且**什么都不写**：
+The window is the **longest qualifying trailing segment**, at least `--hold 600 s` (Arduino seconds)
+long. If there is none the run is refused and **nothing is written**:
 
-| 退出码 | 含义 |
+| Exit code | Meaning |
 | --- | --- |
-| 0 | 拟合完成，JSON/CSV/图都已写出 |
-| 2 | 判据不满足（不写任何结果，打印最接近那个窗口差在哪：哪个通道、多少 °C/min、多少 °C） |
-| 3 | 其他不可用（行数不足、raw 在分析期间被改动等） |
-| 4 | 几何参数非法（`--positions` 不等于 5 个、第一个不是 0、有点超出 `--length`） |
+| 0 | Fit complete; JSON, CSV and figure all written |
+| 2 | Criteria not met (nothing written; the closest window is reported with the channel, the °C/min and the °C by which it misses) |
+| 3 | Otherwise unusable (too few rows, raw file changed during the analysis, ...) |
+| 4 | Illegal geometry (`--positions` not five values, first value not 0, a position beyond `--length`) |
 
-数据里的空洞（`nan`、坏行）不会切成"两段分别拟合"，而是让所有跨过它的窗口作废；同时分析只在**最后一条六通道齐全的行**处截断（JSON 里的 `rows_used` 与 `measurement_rows` 一起给出），
-所以在 soak 之后才拔掉一个探头不会毁掉这段 soak，而 soak 中间掉一次就会拒绝。
+A hole in the data (`nan`, a malformed row) does not split the run into two separate fits; it
+invalidates every window that crosses it. The analysis also truncates at the **last row where all six
+channels are valid** (`rows_used` and `measurement_rows` are both reported in the JSON), so unplugging
+a probe *after* the soak is tolerated while losing one *during* the soak is refused.
 
-## 3. 两个模型、一个自由参数（唯一例外：拟合 `T∞`）
+## 3. Two models, one free parameter (one exception: fitting `T∞`)
 
-- **有限长（主结果）**：`Θ = cosh[m(L − x)] / cosh(mL)`。幅度由 `x = 0` 处实测 `θ₀ = T_rod1 − T∞` 定住，
-  所以只拟合 `m` 一个参数（`dof = N − 1 = 4`）。这与实验的边界条件一致：基温是**测出来**的，不是理想热源。
-- **半无限（对照）**：`Θ = e^(−mx)`，在 `ln(θ/θ₀)` vs `x` 上做过原点的线性回归，闭式、无迭代。
-  它的残差尺度是 log 空间，所以只把它的**温度残差列**与有限长模型比较，不比较 SSR 数值本身。
-- **拟合 `T∞`（只在没记室温时用）**：`(m, T∞)` 两参数、`dof = 3`，用 **profile likelihood**（对每个试探 `T∞` 重优化 `m`）
-  而不是交替松弛——两参数强相关（抬高 `T∞` 会缩小 `θ₀` 并要求更小的 `m`），交替松弛会卡在两者的谷底。
-  这条路径的 `sigma_m_per_m` 一律 **`null`**：5 个点拟 2 个参数，误差棒不可信，而且拟合出的 `T∞` **绝不能**当成实测室温引用。
+- **Finite (main result):** `Θ = cosh[m(L − x)] / cosh(mL)`. The amplitude is fixed by the measured
+  `θ₀ = T_rod1 − T∞` at `x = 0`, so only `m` is fitted (`dof = N − 1 = 4`). This matches the
+  experimental boundary condition: the base temperature is *measured*, not an ideal heat source.
+- **Semi-infinite (control):** `Θ = e^(−mx)`, an ordinary least-squares line through the origin on
+  `ln(θ/θ₀)` vs `x` — closed form, no iteration. Its residual scale is logarithmic, so only its
+  **temperature-residual column** is compared with the finite model, never the SSR value itself.
+- **Fitting `T∞` (only when the room temperature was not recorded):** two parameters `(m, T∞)`,
+  `dof = 3`, solved by **profile likelihood** (re-optimising `m` for each trial `T∞`) rather than by
+  alternating relaxation — the two parameters are strongly correlated (raising `T∞` shrinks `θ₀` and
+  demands a smaller `m`), so alternating relaxation stalls in the valley between them. On this path
+  `sigma_m_per_m` is always **`null`**: five points for two parameters do not give a trustworthy error
+  bar, and the fitted `T∞` must **never** be quoted as a measured room temperature.
 
-**为什么不能同时定 `k` 和 `h`**：稳态只给出 `m² = hP/(kA) = 2h/(kR)`，一个数、两个未知量。
-要么单独测 `h`（独立对流实验/文献量级），要么用铝的 `k` 反演 `h`（`h = m²kR/2`）。
-例：`k = 167 W/(m·K)`、`R = 6.35 mm`、若拟合得 `m = 3.63 1/m`，则 `h ≈ 7.0 W/(m²·K)`——与文献量级一致，
-但这是**在假定 `k` 之后的推论**，不是两次独立测量。报告里必须这样写。
+**Why `k` and `h` cannot both be determined:** a steady profile only gives
+`m² = hP/(kA) = 2h/(kR)` — one number, two unknowns. Either `h` is measured separately (independent
+convection experiment or a literature order of magnitude), or aluminium's `k` is assumed and `h` is
+inverted, `h = m²kR/2`. Example: with `k = 167 W/(m·K)`, `R = 6.35 mm` and a fitted `m = 3.63 1/m`,
+`h ≈ 7.0 W/(m²·K)`, consistent with the literature order of magnitude — but that is an **inference
+made after assuming `k`**, not two independent measurements. The report has to say it that way.
 
-## 4. 不确定度分两层，必须分开报
+## 4. Two uncertainty layers, reported separately
 
-1. **统计项** `σ_m`：由 `SSR(m)` 在极小值处的曲率给出，`σ = sqrt(2·SSR/dof / (d²SSR/dm²))`，`dof = N − 1`（N = 5）。
-   它只说明"这 5 个点有多一致"，**不包含任何传感器误差**。
-2. **未标定偏置项**（因为跳过了浸泡交叉标定，见 [rod_instrument §决定](module_07_rod_instrument.md)）：
-   `probe_offset_sensitivity` 每次只把一个探头抬高 `--sensitivity-offset`（默认 0.5 °C）重拟合 `m`
-   （下表按 `m = 3.63 1/m`、`θ₀ = 20 °C` 的预期工作点算，即 45 °C 设定值下 rod1 ≈ 41 °C、室温 ≈ 21 °C）：
+1. **Statistical term `σ_m`:** from the curvature of `SSR(m)` at its minimum,
+   `σ = sqrt(2·SSR/dof / (d²SSR/dm²))`, with `dof = N − 1` (N = 5). It only says how consistent these
+   five points are; it contains **no sensor error at all**.
+2. **Uncalibrated-bias term** (because the soak cross-calibration was skipped, see
+   [rod_instrument §decision](module_07_rod_instrument.md)): `probe_offset_sensitivity` raises one
+   probe at a time by `--sensitivity-offset` (default 0.5 °C) and re-fits `m`. The table below is
+   computed at the expected operating point `m = 3.63 1/m`, `θ₀ = 20 °C` (45 °C setpoint ⇒ rod1 ≈
+   41 °C at a ≈ 21 °C room):
 
-| 被抬高的探头 | `x` (m) | Δm/m |
+| Probe raised | `x` (m) | Δm/m |
 | --- | ---: | ---: |
-| rod1（`x = 0`，同时定 `θ₀`） | 0.0000 | **+5.1 %** |
+| rod1 (`x = 0`, also sets `θ₀`) | 0.0000 | **+5.1 %** |
 | rod2 | 0.0385 | −0.8 % |
 | rod3 | 0.0895 | −1.6 % |
 | rod4 | 0.1405 | −2.1 % |
 | rod5 | 0.1915 | −2.4 % |
 
-报告口径：`m = <值> ± <σ_m> (统计) ± 5 % (未标定偏置，主导)`，并说明偏置项来自 6 个探头在 20 °C 同温段的一致性
-（最大 0.48 °C）而不是跨度标定；它**不会**被更多数据点或更好的拟合算法减小。
+Reporting convention: `m = <value> ± <σ_m> (statistical) ± 5 % (uncalibrated bias, dominant)`, with
+the statement that the bias term comes from the six probes agreeing at 20 °C (0.48 °C worst case) and
+not from a span calibration, and that it is **not** reduced by more data points or a better fitting
+algorithm.
 
-## 5. 用实测几何算出来的预期
+## 5. Predictions from the measured geometry
 
-`L = 0.2715 m`、孔位 `x = 0, 3.85, 8.95, 14.05, 19.15 cm`、`d = 12.7 mm`（标称）、`k = 167 W/(m·K)`：
+`L = 0.2715 m`, hole positions `x = 0, 3.85, 8.95, 14.05, 19.15 cm`, `d = 12.7 mm` (nominal),
+`k = 167 W/(m·K)`:
 
 | `h` (W/m²K) | `m` (1/m) | `1/m` (m) | `mL` | `Θ_tip` | `Bi∥` | `Bi⊥` |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -86,9 +112,9 @@
 | 7 | 3.63 | 0.275 | 0.986 | 0.655 | 0.97 | 1.3×10⁻⁴ |
 | 10 | 4.34 | 0.230 | 1.178 | 0.562 | 1.39 | 1.9×10⁻⁴ |
 
-半无限近似在**实测孔位**上的误差（`m = 3.63 1/m`）：
+Error of the semi-infinite approximation at the **measured hole positions** (`m = 3.63 1/m`):
 
-| 孔 | `x` (m) | `ε_T` |
+| Hole | `x` (m) | `ε_T` |
 | --- | ---: | ---: |
 | rod1 | 0.0000 | 0 % |
 | rod2 | 0.0385 | 3.8 % |
@@ -96,40 +122,108 @@
 | rod4 | 0.1405 | 17.8 % |
 | rod5 | 0.1915 | 26.9 % |
 
-结论（先写下来，等真实数据验证）：`mL ≈ 1`，杆尖仍有基温的 65 %，**半无限近似在 `x ≳ 4 cm` 就超过 5 %**，
-所以 Part 3 必须保留有限长 cosh 解，`m` 也用有限长拟合的值；半无限拟合只作为"忽略了会发生什么"的对照。
-`Bi⊥ ~ 10⁻⁴ ≪ 1`，一维径向近似成立。这些表由脚本函数直接算出（`1/cosh(mL)`、`(mL)²`、`(mR/2)²`、`epsilon_table()`），
-不是手算的近似。
+Conclusion, written down before the measurement and to be checked against the real data: `mL ≈ 1`, so
+the tip still carries 65 % of the base excess, and **the semi-infinite approximation exceeds 5 % from
+`x ≳ 4 cm`**. Part 3 therefore has to keep the finite cosh solution, and `m` has to come from the
+finite fit; the semi-infinite fit is only the "what happens if you ignore the end" control.
+`Bi⊥ ~ 10⁻⁴ ≪ 1`, so the one-dimensional radial approximation holds. These tables are produced by the
+script's own functions (`1/cosh(mL)`, `(mL)²`, `(mR/2)²`, `epsilon_table()`), not by hand.
 
-## 6. 跳过了浸泡标定之后，还能做的两项替代检查
+## 6. Two substitute checks that remain possible without the soak calibration
 
-1. **换基准重拟合**：把 rod2 当 `x = 0`（其余按相对距离平移），同一段数据再拟一次。若两次的 `m` 在 5 % 内一致，
-   说明逐探头偏置没有集中在基温探头上（这是"相对偏置"检验，不需要浸泡）。
-2. **两个温度点的形状比较**：45 °C 与 35 °C 两个稳态剖面各自归一化成 `θ(x)/θ(0)`，同一 `m` 应给出同一条无量纲曲线。
-   若形状随温度变化，说明存在增益误差（`b_i ≠ 1`）——这是跨度检查的替代品，只需多一个稳态点，不用拆探头。
+1. **Re-fit with a different reference probe.** Treat rod2 as `x = 0` (shifting the other positions by
+   the relative distances) and fit the same window again. If the two `m` agree within 5 %, the
+   per-probe bias is not concentrated on the base probe; this is a *relative*-bias test and needs no
+   soak.
+2. **Shape comparison at two temperatures.** Normalise the 45 °C and 35 °C steady profiles to
+   `θ(x)/θ(0)`: the same `m` must give the same dimensionless curve. If the shape changes with
+   temperature there is a gain error (`b_i ≠ 1`) — this is the replacement for a span check, costing one
+   extra steady point and no rewiring.
 
-两项都还没做（需要正式稳态 run）。写进报告时说明：**同温一致性被验证过，跨度线性没有被验证。**
+Neither has been done yet (both need the real steady run). When writing the report, state explicitly:
+**same-temperature consistency was verified, span linearity was not.**
 
-## 7. 复现
+## 7. Reproducing
 
 ```bash
-# 拟合（默认读仓库约定路径，写 data/processed/ 与 figures/）
-.venv/bin/python Module_7/python/analysis/module_07_stationary_fin_fit.py \
-    Module_7/data/raw/<run>.csv --ambient <实测室温 °C>
+# fit (reads the default raw path, writes data/processed/ and figures/)
+.venv/bin/python Module_7/python/analysis/stationary_fin_fit.py \
+    Module_7/data/raw/<run>.csv --ambient <measured room temperature, °C>
 
-# 无硬件测试（20 个）
-.venv/bin/python Module_7/python/test_module_07_stationary_fin_fit.py
+# hardware-free tests (20)
+.venv/bin/python Module_7/python/test_stationary_fin_fit.py
 ```
 
-输出：`data/processed/<run>_stationary_fit.json`（判据、窗口、逐点剖面、两套模型、`σ`、`ε_T`、`Bi∥`/`Bi⊥`、
-灵敏度表、源文件 SHA-256）、`<run>_stationary_profile.csv`（含两套模型值与残差）、
-`figures/part_03_stationary_profile.png`（剖面 + 双残差）。JSON 是严格 JSON（非有限浮点写 `null`），
-路径相对仓库根，重跑不依赖本机绝对路径。
+Outputs: `data/processed/<run>_stationary_fit.json` (criteria, window, per-point profile, both models,
+`σ`, `ε_T`, `Bi∥`/`Bi⊥`, sensitivity table, source SHA-256),
+`data/processed/<run>_stationary_profile.csv` (with both model values and residuals), and
+`figures/part_03_stationary_profile.png` (profile plus both residual sets). The JSON is strict JSON
+(non-finite floats are written as `null`) and its paths are relative to the repository root, so a rerun
+on another machine does not depend on absolute paths.
 
-## 8. 待回填（拿到正式稳态 run 之后）
+## 8. To fill in once the real steady run exists
 
-- [ ] `m`、`σ_m`、`1/m`、`Θ_tip`、`Bi∥`、`Bi⊥`，以及两套残差的最大绝对值——写进 `docs/module_notes/module_07_rod_instrument.md` 的运行元数据。
-- [ ] 有限长 vs 半无限：`m` 的相对偏移，与 `σ_m`、5 % 偏置项放在同一句话里比较（课程要求）。
-- [ ] 孔位与 `L` 的不确定度（卡尺）→ 用 `--positions` / `--length` 做一次敏感性检查，写清哪个几何量主导。
-- [ ] §6 的两项替代检查。
-- [ ] 与 [runbook §8 预测记录](module_07_lab_day_runbook_2026-10-26.md#8-预测记录开加热前必须写完) 逐条对照"支持 / 不支持 / 无法判断"。
+- [x] Attempted on 2026-11-02 with a 20 °C hold and a 40 °C hold: **the script refused both times** (exit
+      code 2); the 45 °C setpoint trips the firmware interlock before it is reached. Details in §9.
+- [ ] `m`, `σ_m`, `1/m`, `Θ_tip`, `Bi∥`, `Bi⊥` and the maximum of both residual sets — into the run
+      metadata of `docs/module_notes/module_07_rod_instrument.md`.
+- [ ] Finite vs semi-infinite: the relative shift in `m`, compared in the same sentence with `σ_m` and
+      with the 5 % bias term (course requirement).
+- [ ] Caliper uncertainty of the hole positions and of `L` → one sensitivity run with `--positions` /
+      `--length`, stating which geometric term dominates.
+- [ ] The two substitute checks of §6.
+- [ ] Line-by-line comparison with the [runbook §8 prediction record](module_07_lab_day_runbook_2026-10-26.md#8-prediction-record-write-it-before-applying-heat):
+      supported / not supported / cannot determine.
+
+## 9. Measured status 2026-11-02: no stationary profile yet
+
+Two runs were recorded and committed (field record, timings and the interlock trip:
+[module_07_rod_instrument.md](module_07_rod_instrument.md#2026-11-02-10001017-a-20-c-hold-and-a-40-c-hold-and-the-45-c-interlock-trip)):
+
+| Raw file | What it is | Script verdict |
+| --- | --- | --- |
+| `module_07_rod_20261102_100034_422916_T20C.csv` | 188 s at 20 °C, `Kp=20`, `Ki=0.1` | refuse, exit 2: record only 239.4 s, `tec_C` at 0.934 °C/min |
+| `module_07_rod_20261102_100448_913799_T20C_trip45C_T40C.csv` | 294 s at 20 °C, 45 °C step → interlock trip, then 389 s at 40 °C | refuse, exit 2 (defaults **and** `--hold 300`) |
+
+The second verdict at `--hold 300` is the informative one, because 300 s is what the operator judged
+sufficient: over the trailing 300 s of the 40 °C hold, `rod4_C` still moves at **0.741 °C/min** (37 × the
+0.02 °C/min limit) and the first/last-third means differ by **2.466 °C** (25 × the 0.1 °C budget). The base
+probe, by contrast, is settled (`tec_C` at 0.029 °C/min, 0.11 °C below setpoint) — so the criteria fail on the
+rod, not on the controller. `rod5_C` at `x = 19.15 cm` is still moving at 0.57 °C/min when the record ends (it
+peaked at 0.85 °C/min about 3 min into the hold); see the block-slope decay table in the field record, which puts
+the needed hold at **≈ 30 min**, not 5.
+
+### Why a "snapshot fit" is not a substitute
+
+Fitting the trailing part of the 40 °C hold anyway (`analyse()` on rows truncated to the last *L* seconds,
+`ambient=None`, criterion relaxed to 5 °C/min with the drift budget off, nothing written to disk) gives:
+
+| Window | `m` (finite) | rms | `T∞` fitted |
+| --- | ---: | ---: | ---: |
+| last 60 s | 5.347 1/m | 0.114 °C | 19.40 °C |
+| last 120 s | 5.377 1/m | 0.114 °C | 19.09 °C |
+| last 240 s | 5.620 1/m | 0.114 °C | 18.85 °C |
+| whole 389 s hold (mean) | 7.864 1/m | 0.103 °C | 21.53 °C |
+
+The cosh shape does describe a single snapshot (rms 0.11 °C), but the fitted `T∞` lands 2.5–3 °C below the
+21.9–22.0 °C that the probes read at rest, i.e. the fit is partly absorbing the ongoing drift into the offset,
+and `m` moves by **46 %** between the 240 s snapshot and the segment mean. That spread is the bias, and it is
+far larger than any `σ_m` the fit could quote. **`m` therefore stays `to fill in`; 5.4 1/m is not a result and
+must not be quoted as one.**
+
+### The 20 °C runs cannot be fitted even in principle
+
+With the base at 20.5–21.5 °C and the room at ≈ 22 °C, `θ = T − T∞ < 0` along the whole rod, and the script
+refuses a negative-`θ` profile on purpose (`status: unusable-profile`). A cooling profile is the same equation
+with the sign flipped, but that is not implemented; for Part 3 the profile must be taken at a **heated**
+setpoint.
+
+### What would clear it
+
+1. Setpoint **40 °C** (43 °C at most; 45 °C is impossible, see the field record), PI `Kp = 100`, `Ki = 0.3`.
+2. Record **≈ 30 min** without touching anything, then stop; the criteria are applied to the trailing window, so
+   a longer record never hurts.
+3. Measure the room temperature far from the apparatus with a separate thermometer and pass it as `--ambient`;
+   a fitted `T∞` is a fallback, and §9 above shows how much drift it can hide.
+
+

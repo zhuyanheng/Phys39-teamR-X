@@ -1,6 +1,6 @@
 """Cross-calibrate the six Module 7 thermistor channels from one raw run.
 
-    .venv/bin/python Module_7/python/analysis/module_07_calibration.py \
+    .venv/bin/python Module_7/python/analysis/cross_calibration_fit.py \
         Module_7/data/raw/module_07_rod_20261026_141502_123456.csv
 
 All six probes must have been soaked in the *same* stirred water bath, so the
@@ -16,9 +16,9 @@ correction residual at the hot end and at the cold end of the soak).
 
 Outputs (see ``Module_7/data/README.md``):
 
-    data/calibration/module_07_calibration_<raw-stem>.csv   one row per channel
-    data/calibration/<raw-stem>_corrected.csv               raw rows + corrected columns
-    figures/calibration/<raw-stem>_fit.png                  T_i vs T_TEC + residuals
+    data/calibration/<raw-stem>_calibration_table.csv          one row per channel
+    data/calibration/<raw-stem>_corrected.csv                  raw rows + corrected columns
+    figures/calibration/<raw-stem>_fit.png                     T_i vs T_TEC + residuals
 
 The raw file is only ever read, never rewritten: the corrected columns are added
 to a *copy* and the original ``rodN_C`` values stay untouched.
@@ -466,7 +466,7 @@ def main(argv=None):
         print_summary(results, arguments.criterion_mean,
                       arguments.criterion_trend, arguments.criterion_max)
 
-        table_path = arguments.out_dir / f"module_07_calibration_{path.stem}.csv"
+        table_path = arguments.out_dir / f"{path.stem}_calibration_table.csv"
         write_table(table_path, results)
         print(f"  table     -> {table_path}")
         if not arguments.no_corrected:

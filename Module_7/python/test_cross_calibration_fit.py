@@ -1,6 +1,6 @@
 """Hardware-free tests for the Module 7 cross-calibration script.
 
-    python3 Module_7/python/test_module_07_calibration.py
+    python3 Module_7/python/test_cross_calibration_fit.py
 
 Synthetic six-channel runs only: no serial port, no Arduino, no figures required.
 The tests check that a known linear sensor error is recovered, that the runbook
@@ -16,12 +16,12 @@ import tempfile
 import unittest
 
 MODULE = Path(__file__).resolve().parents[1]
-SCRIPT = MODULE / "python/analysis/module_07_calibration.py"
+SCRIPT = MODULE / "python/analysis/cross_calibration_fit.py"
 sys.path.insert(0, str(MODULE / "python"))
 
 from rod_protocol import FIELD_NAMES, ROD_CHANNELS  # noqa: E402
 
-spec = importlib.util.spec_from_file_location("module_07_calibration", SCRIPT)
+spec = importlib.util.spec_from_file_location("cross_calibration_fit", SCRIPT)
 calibration = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(calibration)
 
@@ -257,7 +257,7 @@ class ColourTests(unittest.TestCase):
 
     def gui_pens(self):
         import ast
-        source = (MODULE / "python/module_07_rod_acquisition_gui.py").read_text()
+        source = (MODULE / "python/rod_acquisition_gui.py").read_text()
         tree = ast.parse(source)
         assignment = next(
             node for node in tree.body
@@ -292,7 +292,7 @@ class CommandLineTests(unittest.TestCase):
                 str(raw), "--out-dir", str(root / "calibration"),
                 "--figure-dir", str(root / "figures"), "--no-figures"])
             self.assertEqual(code, 0)
-            table = root / "calibration" / f"module_07_calibration_{raw.stem}.csv"
+            table = root / "calibration" / f"{raw.stem}_calibration_table.csv"
             self.assertTrue(table.is_file())
             self.assertTrue(
                 (root / "calibration" / f"{raw.stem}_corrected.csv").is_file())
@@ -319,7 +319,7 @@ class CommandLineTests(unittest.TestCase):
                 str(raw), "--out-dir", str(root / "calibration"),
                 "--figure-dir", str(root / "figures"), "--no-figures"])
             self.assertEqual(code, 2)
-            table = root / "calibration" / "module_07_calibration_run.csv"
+            table = root / "calibration" / "run_calibration_table.csv"
             with table.open(newline="", encoding="utf-8") as stream:
                 rows = list(csv.DictReader(stream))
             status = {row["channel"]: row["criterion_met"] for row in rows}

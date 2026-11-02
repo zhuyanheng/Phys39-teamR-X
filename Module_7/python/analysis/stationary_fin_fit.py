@@ -1,6 +1,6 @@
 """Fit the stationary rod profile of one raw run against both fin models.
 
-Usage: .venv/bin/python Module_7/python/analysis/module_07_stationary_fin_fit.py RAW.csv \
+Usage: .venv/bin/python Module_7/python/analysis/stationary_fin_fit.py RAW.csv \
            [--positions 0,0.0385,0.0895,0.1405,0.1915] [--length 0.2715] [--ambient 21.4]
 
 What it does, in order:

@@ -1,6 +1,6 @@
 """Inspect one short rod run without changing its raw readings.
 
-Usage: .venv/bin/python Module_7/python/analysis/analyze_pilot_run.py RAW.csv
+Usage: .venv/bin/python Module_7/python/analysis/pilot_run_check.py RAW.csv
 The slope check uses a least-squares line over the last 60 Arduino seconds;
 it is a diagnostic, not certification of a sustained stationary interval.
 """

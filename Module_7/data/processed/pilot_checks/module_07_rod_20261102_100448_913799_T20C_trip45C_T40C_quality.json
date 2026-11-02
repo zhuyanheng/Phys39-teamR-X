@@ -1,0 +1,186 @@
+{
+  "source": "/Users/xianruohuang/Documents/GitHub/Phys39-teamR-X/Module_7/data/raw/module_07_rod_20261102_100448_913799_T20C_trip45C_T40C.csv",
+  "source_sha256": "e36e05de11a3a3d7f68d3e0e082e3dd0101a55451291b89400e4258a0e028fe0",
+  "measurement_rows": 1454,
+  "duration_s": 750.45,
+  "largest_gap_s": 0.5200000000000955,
+  "nonadvancing_timestamps": 0,
+  "positions_cm_from_hole2": [
+    0,
+    3.85,
+    8.95,
+    14.05,
+    19.15
+  ],
+  "analysis_length_m": 0.2715,
+  "events": [
+    {
+      "host_time": "2026-11-02T10:04:48.922700-05:00",
+      "event": "connect",
+      "setpoint_C": "",
+      "note": "Connected with zero output; control remains OFF"
+    },
+    {
+      "host_time": "2026-11-02T10:04:51.834930-05:00",
+      "event": "stop",
+      "setpoint_C": "",
+      "note": "Mode selected"
+    },
+    {
+      "host_time": "2026-11-02T10:05:09.800103-05:00",
+      "event": "start",
+      "setpoint_C": "20.0",
+      "note": "Integral zero; first accepted sample uses dt=0"
+    },
+    {
+      "host_time": "2026-11-02T10:10:04.424061-05:00",
+      "event": "setpoint_step",
+      "setpoint_C": "45.0",
+      "note": "Integral retained for a within-run setpoint step"
+    },
+    {
+      "host_time": "2026-11-02T10:10:19.911675-05:00",
+      "event": "stop",
+      "setpoint_C": "45.0",
+      "note": "Unsafe report (TEC channel 45.22 C outside 10-45 C)"
+    },
+    {
+      "host_time": "2026-11-02T10:10:49.429749-05:00",
+      "event": "stop",
+      "setpoint_C": "45.0",
+      "note": "Operator stop"
+    },
+    {
+      "host_time": "2026-11-02T10:10:52.356909-05:00",
+      "event": "start",
+      "setpoint_C": "40.0",
+      "note": "Integral zero; first accepted sample uses dt=0"
+    },
+    {
+      "host_time": "2026-11-02T10:17:20.459290-05:00",
+      "event": "stop",
+      "setpoint_C": "40.0",
+      "note": "Operator stop"
+    },
+    {
+      "host_time": "2026-11-02T10:17:22.479774-05:00",
+      "event": "stop",
+      "setpoint_C": "40.0",
+      "note": "Disconnected"
+    },
+    {
+      "host_time": "2026-11-02T10:17:22.483240-05:00",
+      "event": "disconnect",
+      "setpoint_C": "40.0",
+      "note": "Serial closed"
+    }
+  ],
+  "status": {
+    "safety": {
+      "OK": 1454
+    },
+    "rod_ok": {
+      "5": 1454
+    },
+    "control_active": {
+      "0": 104,
+      "1": 1350
+    },
+    "backlog_sample": {
+      "0": 1454
+    }
+  },
+  "channels": {
+    "tec_C": {
+      "valid_rows": 1454,
+      "invalid_rows": 0,
+      "first_C": 21.93,
+      "last_C": 39.89,
+      "minimum": [
+        271.13,
+        20.11
+      ],
+      "maximum": [
+        329.07,
+        45.22
+      ],
+      "last60_slope_C_per_min": 0.029180626721896193
+    },
+    "rod1_C": {
+      "valid_rows": 1454,
+      "invalid_rows": 0,
+      "first_C": 22.13,
+      "last_C": 34.18,
+      "minimum": [
+        302.14,
+        21.22
+      ],
+      "maximum": [
+        751.0,
+        34.18
+      ],
+      "last60_slope_C_per_min": 0.37412142086790345
+    },
+    "rod2_C": {
+      "valid_rows": 1454,
+      "invalid_rows": 0,
+      "first_C": 22.15,
+      "last_C": 31.64,
+      "minimum": [
+        312.48,
+        21.42
+      ],
+      "maximum": [
+        749.97,
+        31.64
+      ],
+      "last60_slope_C_per_min": 0.46701304493501244
+    },
+    "rod3_C": {
+      "valid_rows": 1454,
+      "invalid_rows": 0,
+      "first_C": 22.72,
+      "last_C": 29.52,
+      "minimum": [
+        328.55,
+        22.04
+      ],
+      "maximum": [
+        751.0,
+        29.52
+      ],
+      "last60_slope_C_per_min": 0.5007049442741512
+    },
+    "rod4_C": {
+      "valid_rows": 1454,
+      "invalid_rows": 0,
+      "first_C": 23.0,
+      "last_C": 27.93,
+      "minimum": [
+        327.0,
+        22.33
+      ],
+      "maximum": [
+        748.43,
+        27.93
+      ],
+      "last60_slope_C_per_min": 0.5414240183501671
+    },
+    "rod5_C": {
+      "valid_rows": 1454,
+      "invalid_rows": 0,
+      "first_C": 22.93,
+      "last_C": 26.66,
+      "minimum": [
+        356.87,
+        22.25
+      ],
+      "maximum": [
+        751.0,
+        26.66
+      ],
+      "last60_slope_C_per_min": 0.5452172056106752
+    }
+  },
+  "raw_unchanged": true
+}

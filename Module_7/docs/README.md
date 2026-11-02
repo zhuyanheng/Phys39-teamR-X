@@ -1,30 +1,34 @@
-# Module 7 文档索引
+# Module 7 documentation index
 
-`Module_7/` 内部只放**这个模块自己的**产物；课程要求的证据笔记按仓库惯例统一放在仓库根的
-`docs/`（与 Module 1–6 一致），不在这里重复。
+`Module_7/` holds only **this module's own** artefacts. The evidence notes the course asks for live in the repository-root `docs/`, following the same convention as Modules 1-6, and are not duplicated here.
 
-## 本目录
+## This directory
 
-| 文件 | 内容 |
+| File | Contents |
 | --- | --- |
-| `README.md`（本文件） | Module 7 的文档索引：哪些文档在仓库根 `docs/`、图与数据从哪来 |
-| `../README.md` | Module 7 实验设计、六个部件、预测记录、软件扩展方案 |
+| `README.md` (this file) | Index of Module 7 documentation: which documents live in the repository-root `docs/`, and where figures and data come from |
+| `../README.md` | Module 7 experiment design, the six components, the prediction record, the software extension plan |
 
-## 仓库根 `docs/` 中与 Module 7 相关的证据
+## Module 7 evidence in the repository-root `docs/`
 
-| 文件 | 内容 | 状态 |
+| File | Contents | Status |
 | --- | --- | --- |
-| `docs/module_notes/module_07_lab_day_runbook_2026-10-26.md` | 实验日步骤：软件 → 几何 → 标定 → 阶跃 → 稳态 | 已有 |
-| `docs/module_notes/module_07_rod_instrument.md` | 传感器地图、同温检查记录、几何、baseline/阶跃、运行元数据；含"跳过浸泡标定"的决定与代价 | 已记录 2026-10-30 所选孔 2、5、7、8、9 与距离；σ、残差、`h` 反演待回填 |
-| `docs/module_notes/module_07_stationary_fin.md` | Part 3 稳态拟合的方法、稳态判据、两套模型、不确定度两层、实测几何下的预期与待回填项 | 方法与脚本已完成（20 个测试通过）；等正式稳态 run 回填数字 |
-| `docs/assessments/a4_finite_length_biot.md` | A4 四部分正文 | 仅骨架：四部分与提交头仍为 `TODO`，待写 |
+| `docs/module_notes/module_07_state.md` | Status snapshot: what exists, what is verified, what is missing, and the known warts; read this first when picking the module up cold | Present |
+| `docs/module_notes/module_07_lab_day_runbook_2026-10-26.md` | Lab-day sequence: software, geometry, calibration, step, steady state | Present |
+| `docs/module_notes/module_07_step1_integration_check.md` | On-site procedure for the first power-up of the six-channel chain: wiring, expected voltages, per-channel fingerprints, fault injection | Present |
+| `docs/module_notes/module_07_rod_instrument.md` | Sensor map, same-temperature check record, geometry, baseline/step, run metadata; includes the decision to skip the soak calibration and what that costs | Holes 2, 5, 7, 8, 9 and the measured distances recorded 2026-10-30; the 2026-11-02 20 °C/40 °C runs, the 45 °C interlock trip and the ≈ 30 min settling estimate recorded 2026-11-02; `sigma`, residuals and the `h` inversion still to be filled in |
+| `docs/module_notes/module_07_stationary_fin.md` | Part 3 method, steady-state criteria, the two models, two-layer uncertainty, predictions for the measured geometry, open items | Method and script complete (20 tests pass); §9 records the 2026-11-02 verdict: both runs refused, no stationary profile yet |
+| `docs/assessments/a4_finite_length_biot.md` | A4, parts 1-4 | Scaffold only: the four parts and the submission header are still `TODO` |
 
-## 图
+## Figures
 
-`Module_7/figures/` 由分析脚本写入，文件名与报告里的图号一一对应：
+`Module_7/figures/` is written by the analysis scripts. The file names map one-to-one onto the figure numbers used in the report:
 
-- `part_01_sensor_map.png` — 杆几何、孔位、探头编号
-- `part_02_step_response.png` — 6 通道阶跃响应（含标定后修正曲线）
-- `part_03_stationary_profile.png` — 稳态剖面 + finite/semi-infinite 拟合与残差
+- `part_01_sensor_map.png` - rod geometry, hole positions, probe numbering
+- `part_02_step_response.png` - six-channel step response (no calibration correction curves: the soak was skipped)
+- `part_03_stationary_profile.png` - stationary profile with both fits and both residual sets
 
-图里出现的数字必须能在 `Module_7/data/processed/` 的拟合结果里找到，反之亦然。
+Nothing in `part_*.png` exists yet. Diagnostic figures are not deliverable figures: the per-run check traces sit
+in `figures/pilot_checks/<raw stem>_temperatures.png`, one file per checked run.
+
+Every number that appears in a figure must be traceable to a fit result in `Module_7/data/processed/`, and vice versa.

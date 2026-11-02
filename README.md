@@ -299,6 +299,7 @@ and Part III builds the six-channel rod instrument and measures the step
 response and stationary profile.
 
 - [Module 7 plan and requirements](Module_7/README.md)
+- [Module 7 status snapshot](docs/module_notes/module_07_state.md)
 - [Module 7 lab-day runbook, S16 → S17](docs/module_notes/module_07_lab_day_runbook_2026-10-26.md)
 - Due Wednesday, October 28 at 9:05 AM: individual A4, submitted as
   `docs/assessments/a4_finite_length_biot.md` and `A4_Lastname.pdf`

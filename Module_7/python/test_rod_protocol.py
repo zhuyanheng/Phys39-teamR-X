@@ -22,7 +22,7 @@ from rod_protocol import (CHANNELS, FIELD_NAMES, ROD_CHANNELS, RodSample,
 
 MODULE = Path(__file__).resolve().parents[1]
 SKETCH = MODULE / "arduino/module_07_rod_controller/module_07_rod_controller.ino"
-GUI = MODULE / "python/module_07_rod_acquisition_gui.py"
+GUI = MODULE / "python/rod_acquisition_gui.py"
 
 BANNER = ("#firmware,module_07_rod_controller,2026-10-26\n"
           "#channels,tec=A0,rod1=A1,rod2=A2,rod3=A3,rod4=A4,rod5=A5\n"

@@ -1,6 +1,6 @@
 """Hardware-free tests for the Module 7 stationary-fin fit.
 
-    .venv/bin/python Module_7/python/test_module_07_stationary_fin_fit.py
+    .venv/bin/python Module_7/python/test_stationary_fin_fit.py
 
 Synthetic rods only: no serial port, no Arduino. The tests check that a known m
 is recovered from a synthetic steady profile, that the semi-infinite fit is
@@ -22,12 +22,12 @@ import tempfile
 import unittest
 
 MODULE = Path(__file__).resolve().parents[1]
-SCRIPT = MODULE / "python/analysis/module_07_stationary_fin_fit.py"
+SCRIPT = MODULE / "python/analysis/stationary_fin_fit.py"
 sys.path.insert(0, str(MODULE / "python"))
 
 from rod_protocol import ROD_CHANNELS  # noqa: E402
 
-spec = importlib.util.spec_from_file_location("module_07_stationary_fin_fit", SCRIPT)
+spec = importlib.util.spec_from_file_location("stationary_fin_fit", SCRIPT)
 fit = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(fit)
 
