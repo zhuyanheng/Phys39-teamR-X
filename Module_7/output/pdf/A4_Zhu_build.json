@@ -1,0 +1,10 @@
+{
+  "author": "Yanheng Zhu",
+  "source": "docs/assessments/a4_finite_length_biot.md",
+  "source_sha256": "4f05d7202c360a8b6c34a2b56b8fa7e4894251e096ed4dad5d054cd6b237f019",
+  "git_source_checkpoint": "0c844b8b17f42da73b3ab9caa6707169eaff2a2c",
+  "git_base_checkpoint": "0c844b8b17f42da73b3ab9caa6707169eaff2a2c",
+  "source_committed": true,
+  "diameter_status": "nominal_not_measured",
+  "pdf_sha256": "bfdc8747efb19698d1946643fc32570abcc6b45cd0386b8b00d5b73197e4ff0f"
+}
