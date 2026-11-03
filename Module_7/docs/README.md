@@ -18,7 +18,14 @@
 | `docs/module_notes/module_07_step1_integration_check.md` | On-site procedure for the first power-up of the six-channel chain: wiring, expected voltages, per-channel fingerprints, fault injection | Present |
 | `docs/module_notes/module_07_rod_instrument.md` | Sensor map, same-temperature check record, geometry, baseline/step, run metadata; includes the decision to skip the soak calibration and what that costs | Holes 2, 5, 7, 8, 9 and the measured distances recorded 2026-10-30; the 2026-11-02 20 °C/40 °C runs, the 45 °C interlock trip, the ≈ 30 min settling estimate and the 31 min 40 °C confirmation run (still 2.6× over the slope limit, so the target is now ≈ 45 min) recorded 2026-11-02; the self-read ambient and why it is the largest systematic; residuals and the `h` inversion still to be filled in |
 | `docs/module_notes/module_07_stationary_fin.md` | Part 3 method, steady-state criteria, the two models, two-layer uncertainty, predictions for the measured geometry, open items | Method and script complete (22 tests pass); §9: all three 2026-11-02 runs refused, so still no certified stationary profile; §10: the diagnostic fit the 31-minute record supports (`m = 4.83 ± 0.07 1/m`, five systematics) and how to quote it |
-| `docs/assessments/a4_finite_length_biot.md` | A4, parts 1-4 | Scaffold only: the four parts and the submission header are still `TODO` |
+| `docs/assessments/a4_finite_length_biot.md` | A4, parts 1-4 | Complete theoretical draft for Yanheng Zhu, prepared 2026-11-03; nominal diameter explicitly identified; reproducible predictions and PDF in `Module_7/output/pdf/A4_Zhu.pdf`; student review and Moodle submission not confirmed |
+
+A4 numerical checks: `.venv/bin/python Module_7/python/analysis/a4_theory_checks.py`.
+This writes provisional results to `data/processed/a4_predictions/` and the
+finite-length comparison to `figures/a4/`. PDF authoring and version recording
+are handled by `python/analysis/build_a4_pdf.py`; see that script's usage note.
+The A4 predictions use fixed `h = 10 W/(m^2 K)` and the same 6061-T6 table's
+`k = 166-172 W/(m K)` temperature envelope, never a diagnostic fitted `m`.
 
 ## Figures
 

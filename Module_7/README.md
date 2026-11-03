@@ -106,11 +106,18 @@ Four parts, matching the rubric one-to-one:
 | Part 1 | **Lienhard Problem 1.3** with Fourier's law (assigned in Part I): show how the law produces each result, with units, and point out the physically unreasonable result | 1 |
 | Part 2 | From energy conservation + Fourier's law + Newton's law of cooling, derive the stationary fin equation; derive the finite-length insulated-tip solution following Lienhard §4.5; explain the physical meaning of both boundary conditions | 3 |
 | Part 3 | Take the semi-infinite limit with **Problem 4.12**; quantify the end-condition approximation with **Example 4.8** and **Problem 4.20**; compute `mL` and `ε_T(x)` for every course-rod sensor; the conclusion must state which sensor positions and which error criterion it depends on | 3 |
-| Part 4 | Compute `Bi⊥` for the course rod and give the "one temperature per cross-section" conclusion **separately** (never merged with the Part 3 length conclusion); then answer the applied question on heat sinks vs spacecraft radiators: which one allows Newton's law of cooling, why there is no convection in space, and which radiation law replaces it (Stefan–Boltzmann `q″ = εσ(T_s⁴ − T_sur⁴)`) | 2 |
+| Part 4 | Compute provisional `Bi⊥` using `h = 10 W/(m² K)` and a justified conductivity range; give the radius conclusion **separately** from the Part 3 length conclusion; compare the same heat sink in still air and forced airflow, explaining how larger `h` changes `1/m` | 2 |
 | Overall | Completeness, dimensional checks, clarity, exact Git checkpoint citation | 1 |
 
 Reading route: selected Chapter 1 of Lienhard (energy conservation, thermal resistance, heat capacity,
 lumped model) plus §4.5, textbook pp. 163–173 (follow the derivation, not just the result).
+
+Prepared 2026-11-03: the full theoretical draft for Yanheng Zhu is in
+`docs/assessments/a4_finite_length_biot.md`, with a PDF at `Module_7/output/pdf/A4_Zhu.pdf`.
+It uses the recorded origin at physical hole 2 and `L = 0.2715 m`; `d = 12.7 mm` is nominal,
+not measured. Predictions use `h = 10 W/(m² K)` and the same 6061-T6 table's 166-172 W/(m K)
+envelope. The spacecraft application question in the older checklist has been replaced by the
+current still-air versus forced-airflow question. Student review and submission are not confirmed.
 
 ## 3. C5: Rod Instrument And Data-Acquisition Chain (team)
 
@@ -519,12 +526,12 @@ Evidence files the course asks for live in `docs/module_notes/`, like the notes 
 **P0 — today/tomorrow, independent of data (A4 needs no measurements)**
 
 - [ ] Read Lienhard §4.5 (pp. 163–173) and follow (4.27)–(4.51) with `fin-design-derivation`
-- [ ] Lienhard Problem 1.3 (A4 Part 1)
-- [ ] Derive the stationary fin equation and the insulated-tip cosh solution with both boundary conditions
+- [x] Lienhard Problem 1.3 (A4 Part 1), theoretical draft prepared 2026-11-03
+- [x] Derive the stationary fin equation and the insulated-tip cosh solution with both boundary conditions
       (A4 Part 2)
-- [ ] Problem 4.12 / Example 4.8 / Problem 4.20 plus `mL` and `ε_T(x)` for every sensor (A4 Part 3)
-- [ ] `Bi⊥` with the radial conclusion, and the heat-sink / radiator question (A4 Part 4)
-- [ ] Write it into `docs/assessments/a4_finite_length_biot.md`, export `A4_Lastname.pdf`, and put the commit
+- [x] Problem 4.12 / Example 4.8 / Problem 4.20 plus `mL` and `ε_T(x)` for every sensor (A4 Part 3)
+- [x] `Bi⊥` with the radial conclusion, and the still-air / forced-airflow heat-sink question (A4 Part 4)
+- [x] Write it into `docs/assessments/a4_finite_length_biot.md`, export `A4_Zhu.pdf`, and put the source commit
       hash on the first page
 
 **P1 — in class, S16**

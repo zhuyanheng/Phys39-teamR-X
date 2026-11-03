@@ -1,0 +1,286 @@
+{
+  "kind": "provisional_theory_not_measured_fit",
+  "inputs": {
+    "diameter_m": 0.0127,
+    "diameter_status": "nominal_not_measured",
+    "analysis_length_m": 0.2715,
+    "physical_origin_hole": 2,
+    "holes": [
+      2,
+      5,
+      7,
+      8,
+      9
+    ],
+    "positions_m": [
+      0,
+      0.0385,
+      0.0895,
+      0.1405,
+      0.1915
+    ],
+    "h_W_m2K": 10.0,
+    "k_W_mK": [
+      166.0,
+      167.0,
+      172.0
+    ],
+    "k_source": "Lienhard v6, Table A.1 p.739: 6061-T6; 166 at 0 C, 167 at 20 C, 172 at 100 C",
+    "k_range_interpretation": "conservative temperature envelope, not a statistical confidence interval",
+    "finite_error_acceptance": "epsilon_T < 0.05"
+  },
+  "slab": [
+    {
+      "material": "Pure silver",
+      "k_W_mK": 427.0,
+      "delta_T_K": 0.117096018735363,
+      "hot_side_C": -39.88290398126464,
+      "source": "A.1, p. 740, 20 C"
+    },
+    {
+      "material": "Pure aluminum",
+      "k_W_mK": 237.0,
+      "delta_T_K": 0.2109704641350211,
+      "hot_side_C": -39.78902953586498,
+      "source": "A.1, p. 739, 20 C"
+    },
+    {
+      "material": "Steel, 0.5% carbon",
+      "k_W_mK": 54.0,
+      "delta_T_K": 0.9259259259259259,
+      "hot_side_C": -39.074074074074076,
+      "source": "A.1, p. 739, 20 C"
+    },
+    {
+      "material": "Ice",
+      "k_W_mK": 2.215,
+      "delta_T_K": 22.573363431151243,
+      "hot_side_C": -17.426636568848757,
+      "source": "A.2, p. 742, 0 C"
+    },
+    {
+      "material": "Spruce, across grain",
+      "k_W_mK": 0.11,
+      "delta_T_K": 454.54545454545456,
+      "hot_side_C": 414.54545454545456,
+      "source": "A.2, p. 744, 20 C"
+    },
+    {
+      "material": "85% magnesia insulation",
+      "k_W_mK": 0.067,
+      "delta_T_K": 746.2686567164179,
+      "hot_side_C": 706.2686567164179,
+      "source": "A.2, p. 743, 38 C"
+    },
+    {
+      "material": "Silica aerogel",
+      "k_W_mK": 0.024,
+      "delta_T_K": 2083.3333333333335,
+      "hot_side_C": 2043.3333333333335,
+      "source": "A.2, p. 743, 0 C"
+    }
+  ],
+  "rod": [
+    {
+      "k_W_mK": 166.0,
+      "m_per_m": 4.35586178878158,
+      "decay_length_m": 0.22957569557773314,
+      "mL": 1.182616475654199,
+      "Bi_parallel": 1.3985817284887587,
+      "Bi_perp": 0.00019126506024096386,
+      "Theta_tip": 0.5603220054717611
+    },
+    {
+      "k_W_mK": 167.0,
+      "m_per_m": 4.342800704540433,
+      "decay_length_m": 0.2302661503564951,
+      "mL": 1.1790703912827276,
+      "Bi_parallel": 1.3902069875996044,
+      "Bi_perp": 0.00019011976047904192,
+      "Theta_tip": 0.5619690532255827
+    },
+    {
+      "k_W_mK": 172.0,
+      "m_per_m": 4.279213073721126,
+      "decay_length_m": 0.2336878259559107,
+      "mL": 1.1618063495152857,
+      "Bi_parallel": 1.3497939937740342,
+      "Bi_perp": 0.00018459302325581395,
+      "Theta_tip": 0.5700245124086397
+    }
+  ],
+  "sensors": [
+    {
+      "channel": "A1",
+      "hole": 2,
+      "x_m": 0,
+      "k_W_mK": 166.0,
+      "Theta_finite": 1.0,
+      "Theta_semi": 1.0,
+      "epsilon_T": 0.0,
+      "passes_5_percent": true
+    },
+    {
+      "channel": "A2",
+      "hole": 5,
+      "x_m": 0.0385,
+      "k_W_mK": 166.0,
+      "Theta_finite": 0.874540502153628,
+      "Theta_semi": 0.8456069048240512,
+      "epsilon_T": 0.03308434230127184,
+      "passes_5_percent": true
+    },
+    {
+      "channel": "A3",
+      "hole": 7,
+      "x_m": 0.0895,
+      "k_W_mK": 166.0,
+      "Theta_finite": 0.7458144027708451,
+      "Theta_semi": 0.6771586911303052,
+      "epsilon_T": 0.09205468731291669,
+      "passes_5_percent": false
+    },
+    {
+      "channel": "A4",
+      "hole": 8,
+      "x_m": 0.1405,
+      "k_W_mK": 166.0,
+      "Theta_finite": 0.654045975516424,
+      "Theta_semi": 0.5422660226133313,
+      "epsilon_T": 0.1709053447119417,
+      "passes_5_percent": false
+    },
+    {
+      "channel": "A5",
+      "hole": 9,
+      "x_m": 0.1915,
+      "k_W_mK": 166.0,
+      "Theta_finite": 0.594687778783439,
+      "Theta_semi": 0.4342445029983344,
+      "epsilon_T": 0.26979413653552065,
+      "passes_5_percent": false
+    },
+    {
+      "channel": "A1",
+      "hole": 2,
+      "x_m": 0,
+      "k_W_mK": 167.0,
+      "Theta_finite": 1.0,
+      "Theta_semi": 1.0,
+      "epsilon_T": 0.0,
+      "passes_5_percent": true
+    },
+    {
+      "channel": "A2",
+      "hole": 5,
+      "x_m": 0.0385,
+      "k_W_mK": 167.0,
+      "Theta_finite": 0.8750658234424491,
+      "Theta_semi": 0.8460322266582257,
+      "epsilon_T": 0.03317875753621272,
+      "passes_5_percent": true
+    },
+    {
+      "channel": "A3",
+      "hole": 7,
+      "x_m": 0.0895,
+      "k_W_mK": 167.0,
+      "Theta_finite": 0.7468353126401914,
+      "Theta_semi": 0.6779507301643736,
+      "epsilon_T": 0.09223530450414696,
+      "passes_5_percent": false
+    },
+    {
+      "channel": "A4",
+      "hole": 8,
+      "x_m": 0.1405,
+      "k_W_mK": 167.0,
+      "Theta_finite": 0.6553905520598711,
+      "Theta_semi": 0.5432620390193247,
+      "epsilon_T": 0.17108655699739664,
+      "passes_5_percent": false
+    },
+    {
+      "channel": "A5",
+      "hole": 9,
+      "x_m": 0.1915,
+      "k_W_mK": 167.0,
+      "Theta_finite": 0.5962273838705994,
+      "Theta_semi": 0.43533199376874665,
+      "epsilon_T": 0.26985575378532467,
+      "passes_5_percent": false
+    },
+    {
+      "channel": "A1",
+      "hole": 2,
+      "x_m": 0,
+      "k_W_mK": 172.0,
+      "Theta_finite": 1.0,
+      "Theta_semi": 1.0,
+      "epsilon_T": 0.0,
+      "passes_5_percent": true
+    },
+    {
+      "channel": "A2",
+      "hole": 5,
+      "x_m": 0.0385,
+      "k_W_mK": 172.0,
+      "Theta_finite": 0.8776258601728442,
+      "Theta_semi": 0.8481059556133727,
+      "epsilon_T": 0.03363609243881864,
+      "passes_5_percent": true
+    },
+    {
+      "channel": "A3",
+      "hole": 7,
+      "x_m": 0.0895,
+      "k_W_mK": 172.0,
+      "Theta_finite": 0.7518171166105627,
+      "Theta_semi": 0.6818200105647696,
+      "epsilon_T": 0.09310390053549586,
+      "passes_5_percent": false
+    },
+    {
+      "channel": "A4",
+      "hole": 8,
+      "x_m": 0.1405,
+      "k_W_mK": 172.0,
+      "Theta_finite": 0.6619587492184724,
+      "Theta_semi": 0.5481373214391946,
+      "epsilon_T": 0.17194640589562218,
+      "passes_5_percent": false
+    },
+    {
+      "channel": "A5",
+      "hole": 9,
+      "x_m": 0.1915,
+      "k_W_mK": 172.0,
+      "Theta_finite": 0.6037539123430069,
+      "Theta_semi": 0.4406654520240033,
+      "epsilon_T": 0.27012406376979164,
+      "passes_5_percent": false
+    }
+  ],
+  "example_4_8_and_problem_4_20": {
+    "m_per_m": 10.820035616009188,
+    "mL": 0.865602849280735,
+    "Bi_tip": 0.04682926829268293,
+    "b": 0.05410017808004594,
+    "Theta_tip_insulated": 0.7149914908532153,
+    "Theta_tip_convecting": 0.6889337908856996,
+    "T_tip_insulated_C": 114.6589448657987,
+    "T_tip_convecting_C": 111.42779006982676,
+    "tip_excess_relative_error": 0.03782322817119437,
+    "Q_insulated_W": 60.41071935520189,
+    "Q_convecting_W": 62.71338649688357,
+    "heat_rate_relative_error": 0.036717314600705035
+  },
+  "checks": {
+    "silver_textbook_answer": true,
+    "heat_rate_textbook_answer": true,
+    "finite_boundary_conditions": true,
+    "independent_error_formula": true,
+    "Biot_identity": true,
+    "long_rod_limits_both_tip_conditions": true
+  }
+}

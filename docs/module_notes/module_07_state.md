@@ -53,13 +53,15 @@ Per file: 21 protocol + 12 GUI + 24 cross-calibration + 22 stationary fit + 11 d
 | [Step 1 integration check](module_07_step1_integration_check.md) | Complete: wiring, expected voltages, per-channel fingerprints, fault injection |
 | [rod instrument record](module_07_rod_instrument.md) | Partial: holes 2, 5, 7, 8, 9, the measured distances, the skip decision and the 2026-11-02 runs (incl. the 45 °C interlock trip, the ≈ 30 min settling estimate and the 31 min confirmation run) are in; residuals and the `h` inversion are not |
 | [stationary fin note](module_07_stationary_fin.md) | Method, criteria and two-layer uncertainty complete. §9: all three runs refused, so **no certified steady profile**. §10: the diagnostic fit the 31-minute record supports (`m = 4.83 ± 0.07 1/m` on its trailing window) with the five systematics, the `T∞ = 23.95 °C` self-ambient derivation, and a ready-to-quote paragraph that keeps the diagnosis attached |
-| [`a4_finite_length_biot.md`](../assessments/a4_finite_length_biot.md) | **Scaffold only** — all four parts still `TODO` |
+| [`a4_finite_length_biot.md`](../assessments/a4_finite_length_biot.md) | Four-part theoretical draft completed 2026-11-03 for Yanheng Zhu, with exact textbook problem checks and installed geometry. Diameter is explicitly nominal. PDF: `Module_7/output/pdf/A4_Zhu.pdf`. Student review and submission are not confirmed |
 | `Module_7/README.md`, `Module_7/data/README.md`, `Module_7/docs/README.md` | Current, English |
 
 ## What is actually missing
 
-- **A4 (individual):** the four parts, then `A4_Lastname.pdf` with the commit hash on the first page. Needs no
-  measurements, so it is the only work that can proceed with the rod unavailable.
+- **A4 (individual):** all four parts and the PDF are prepared for Yanheng Zhu, using the user-authorized nominal
+  12.7 mm diameter and the recorded positions. Numerical verification is in
+  `Module_7/data/processed/a4_predictions/`; the source checkpoint is embedded by the PDF builder. Still open:
+  student review, a diameter measurement and geometry uncertainties if available, and Moodle submission.
 - **On site, done 2026-11-02:** six-channel sketch running and logging; three runs written to disk at 20 °C, 40 °C
   and 31 min at 40 °C. What that proves and what it does not is in the
   [rod instrument record](module_07_rod_instrument.md); the certified Part 3 fit is still refused
