@@ -1,0 +1,15 @@
+{
+  "kind": "prior_module_reference_not_module8_measurement",
+  "source": "Module_7/data/processed/module_07_rod_20261104_095908_593628_selected_stationary.json",
+  "source_raw": "Module_7/data/raw/module_07_rod_20261104_095908_593628.csv",
+  "source_raw_sha256": "d8b3a4fe907e9e33175a521776e4a0487be74f8d904c28b4ad78ef77bbe27492",
+  "interpretation": "operator_selected_stationary_approximation",
+  "strict_criterion_passed": false,
+  "ambient_mode": "fitted",
+  "ambient_C": 29.975933954205008,
+  "m_per_m": 6.784361910746365,
+  "m_squared_per_m2": 46.027566535986075,
+  "one_over_m_m": 0.1473977970449969,
+  "sigma_m_per_m": null,
+  "warning": "Operator-selected stationary approximation. Ambient jointly fitted; no independent room thermometer, so m is strongly dependent on ambient/model. Not a certified stationary result or a periodic measurement."
+}

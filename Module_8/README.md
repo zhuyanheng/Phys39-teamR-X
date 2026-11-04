@@ -131,7 +131,7 @@ Course notes remain in repository-root `docs/module_notes/` and `docs/assessment
 QT_QPA_PLATFORM=offscreen .venv/bin/python -m unittest discover -s Module_8/python -t Module_8/python
 ```
 
-All 65 hardware-free tests pass. The native tests compile the actual sketch/core with a host C++ compiler and do
+The acquisition baseline has 65 hardware-free tests; the offline analysis/viewer adds 15 tests. The full 80-test suite is verified below. The native tests compile the actual sketch/core with a host C++ compiler and do
 not access hardware. Uno compilation also passes: 15,542 bytes flash and 1,122
 bytes global RAM, leaving 926 bytes for locals/stack. Physical gain tuning,
 interlock validation and the on-apparatus rehearsal remain to be performed.
@@ -155,6 +155,24 @@ rehearsal does not satisfy this requirement. See the runbook for acceptance chec
 | Nov. 30, 11:55 | C6 demonstration/receipt citing the frozen pushed analysis commit |
 | Dec. 2 | F1 team slides before presentation; every member speaks and answers questions |
 
-The subsequent Angstrom fitting/model app is still a separate analysis task:
-per-sensor sinusoid fits, spatial amplitude/phase slopes, q/q_prime, kappa/nu,
-k/h, uncertainties, residuals and finite-length/transverse-Biot checks.
+The offline analysis/model viewer is now implemented: `run_angstrom_analysis.command`.
+It performs individual sinusoid fits, semi-infinite spatial slope fits, a complex
+finite insulated-tip fit, conditional cycle-repeat uncertainty, transport
+conversion, waveform/settling checks and residual inspection. See
+[theory and usage](docs/theory_and_analysis.md). Measured periodic files, measured
+oscillatory geometry and a complete systematic-error budget are still pending.
+
+## Offline analysis (no Arduino connection)
+
+```bash
+Module_8/run_angstrom_analysis.command
+.venv/bin/python Module_8/python/analysis/angstrom_fit.py --config Module_8/config/analysis_plan.json
+```
+
+The supplied analysis plan is a template, not measured evidence. Fill actual
+periodic intervals and measured geometry first. Outputs preserve raw hashes,
+actual tolerances, both spatial models and conditional fit errors. Missing rho/c
+leave k/h uncomputed. No original acquisition or firmware file was changed by
+this offline-analysis extension. The prior Module 7 near-steady result is kept
+under `data/reference/module_07_selected_stationary.json` with its failed strict
+criterion and fitted-ambient limitation attached.

@@ -5,3 +5,6 @@
 # so they must be checked out byte for byte, whatever the GUI wrote.
 Module_7/data/raw/** -text
 Module_8/data/raw/** -text
+
+# ReportLab PDFs may contain only ASCII bytes but are still binary artifacts.
+*.pdf binary

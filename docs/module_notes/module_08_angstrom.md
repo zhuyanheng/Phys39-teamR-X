@@ -41,7 +41,9 @@ Updated 2026-11-04. See [Module 8](../../Module_8/README.md),
 - Calibration validation with the rod attached, actual gains, room-temperature
   method and a quantitative periodic settling criterion.
 - Hardware rehearsal, pilot and two-period production records.
-- Per-sensor/spatial Angstrom fitting and final modeling app; see its separate note.
+- Actual periodic measurements and their accepted intervals; the offline fitter/viewer
+  is implemented and described in the modeling-app note. Complete propagation of
+  geometry/material/systematic errors still needs experimental input.
 
 ## Carry-forward facts
 
@@ -62,3 +64,13 @@ The 40 +/- 16 C handout trial is rejected by the retained 10–45 C range.
 
 No Module 8 experimental data has been acquired during software implementation.
 Record each real run's map, ambient method, gains, selected intervals and file identity here.
+
+## Offline analysis update, 2026-11-04
+
+The fitter and offline Qt viewer now implement time harmonics, linear spatial
+slopes, complex finite-rod spatial inference, cycle-repeat covariance, transport
+conversion, settling and finite/radial checks, and residual inspection. See
+`Module_8/docs/theory_and_analysis.md`. This implements the analysis workflow;
+no real periodic parameters or final experimental completion are claimed.
+The Nov. 4 Module 7 record is now a user-selected stationary approximation
+with strict-criterion failure and fitted ambient recorded in the reference JSON.

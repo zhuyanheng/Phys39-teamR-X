@@ -3,7 +3,7 @@
   "hardware_accessed": false,
   "firmware_uploaded": false,
   "tests": {
-    "count": 65,
+    "count": 80,
     "result": "passed",
     "command": "QT_QPA_PLATFORM=offscreen .venv/bin/python -m unittest discover -s Module_8/python -t Module_8/python",
     "includes": [
@@ -13,7 +13,13 @@
       "compensated anti-windup and safety stops",
       "Qt fake-serial handshake/upload/start/stop/reset",
       "paced long-command transfer and interrupted upload",
-      "versioned parser and common-bath calibration compatibility"
+      "versioned parser and common-bath calibration compatibility",
+      "per-sensor harmonic and spatial parameter recovery",
+      "finite insulated-tip complex transfer fit",
+      "cycle settling, missing data, gap and schema rejection",
+      "raw-hash preservation and strict JSON",
+      "supplied geometry/material/period uncertainty propagation",
+      "offline analysis viewer with serial access blocked"
     ]
   },
   "uno_build": {
@@ -44,7 +50,11 @@
     "Module_8/python/test_rod_acquisition_gui.py": "cd86925c546178c246566fe3a27d434248124d359f04a96075282a545b1b122d",
     "Module_8/python/test_rod_protocol.py": "9eaaeaeec518c026a26e24aa375cb7a39b889bb21bf4e679b20753125f3d1599",
     "Module_8/arduino/module_08_rod_controller/angstrom_core.h": "7799583714084bef94797c4200c6cac18433c622455b4e8ca10601627e34c96a",
-    "Module_8/arduino/module_08_rod_controller/module_08_rod_controller.ino": "a4e9d435190b2bfdfa663dd2df5da30ea36ed1c54f912fcd5bed53df209f505f"
+    "Module_8/arduino/module_08_rod_controller/module_08_rod_controller.ino": "a4e9d435190b2bfdfa663dd2df5da30ea36ed1c54f912fcd5bed53df209f505f",
+    "Module_8/python/analysis/angstrom_fit.py": "937ed3584650935f0a80f4b671b78a6a61bb2adc03ca18e1b187721094e369c7",
+    "Module_8/python/angstrom_analysis_gui.py": "cbdafac8dc066de6aa925d9375c40391d77140e61f25e65de90faf65ed73b1ca",
+    "Module_8/python/test_angstrom_fit.py": "a6a983ed42bfb8371ac5358395c9b9ff76a53657afe96d34eafd268ca5c5d8f6",
+    "Module_8/python/test_angstrom_analysis_gui.py": "6ba616b7756bbe370c7bcfe4f255ce50f2bdd742d77a7d99f4ffc6aeb812a2c6"
   },
   "physical_validation_remaining": [
     "Upload new firmware",
@@ -53,5 +63,15 @@
     "Tune periodic gains and evaluate T1 waveform",
     "Run on-apparatus schedule rehearsal",
     "Measure sensor positions and perform quantitative settling tests"
-  ]
+  ],
+  "offline_analysis": {
+    "physical_measurements": "none",
+    "viewer_checked_offscreen_with_synthetic_data": true,
+    "raw_module7_used_only_as_qualified_stationary_reference": true,
+    "full_suite_count": 80,
+    "result": "passed",
+    "systematic_error_inputs": "pending measured geometry/material values and sources",
+    "input_uncertainty_propagation": "implemented for supplied position covariance or standard errors, L, d, period, density and specific heat; missing components remain explicit",
+    "viewer_style_followup_tests": 2
+  }
 }

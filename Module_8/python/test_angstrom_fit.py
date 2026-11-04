@@ -27,7 +27,9 @@ class AngstromFitTests(unittest.TestCase):
             row={'time_s':t,'period_s':100,'step':0,'run_id':1,'plan_sha256':'abc','control_mode':'PI','safety':'OK','run_state':'RUNNING'}
             row['tec_C']=35+5*np.cos(w*t)+rng.normal(0,.001)
             row['setpoint_C']=35+5*np.cos(w*t)
-            for i,x in enumerate(self.x,1):row[f'rod{i}_C']=30+5*math.exp(-self.q*x)*np.cos(w*t-self.qp*x)+rng.normal(0,.001)
+            for i,x in enumerate(self.x,1):
+                z=a.finite_response(self.q,self.qp,.2715,x)
+                row[f'rod{i}_C']=30+5*float(np.real(z*np.exp(1j*w*t)))+rng.normal(0,.001)
             self.rows.append(row)
         self.plan={'label':'synthetic','period_s':100,'start_s':0,'end_s':600,
             'settling':{'max_mean_change_C':.02,'max_amplitude_change_fraction':.02,'max_phase_change_rad':.02}}
@@ -93,6 +95,25 @@ class AngstromFitTests(unittest.TestCase):
         r=a.spatial([0,.1,.2,.3],fits)
         self.assertAlmostEqual(r['q_prime_per_m'],8)
         self.assertAlmostEqual(r['q_per_m'],2)
+
+    def test_finite_periodic_fit_recovers_tip_sensitive_response(self):
+        xs=[0,.0385,.0895,.1405,.1915];q,qp=12.,10.
+        response=a.finite_response(q,qp,.2715,xs)
+        fits=[{'amplitude_C':float(abs(z)*5),'phase_rad':float(np.angle(z))} for z in response]
+        result=a.fit_finite_periodic(xs,fits,.2715,(10,8))
+        self.assertAlmostEqual(result['q_per_m'],q,places=5)
+        self.assertAlmostEqual(result['q_prime_per_m'],qp,places=5)
+        self.assertGreater(a.finite_error(q,qp,.2715,.1915),.05)
+
+    def test_supplied_geometry_and_material_uncertainties_propagate(self):
+        geometry=copy.deepcopy(self.geometry)
+        geometry.update(position_uncertainty_m=[0,.0002,.0002,.0002,.0002],analysis_length_standard_uncertainty_m=.0005,diameter_standard_uncertainty_m=.00001)
+        plan=copy.deepcopy(self.plan)
+        plan.update(period_standard_uncertainty_s=.01,material={'density_kg_m3':2700,'specific_heat_J_kgK':900,'source':'synthetic constants','density_standard_uncertainty_kg_m3':10,'specific_heat_standard_uncertainty_J_kgK':10})
+        r=a.analyse_interval(self.rows,geometry,plan);budget=r['uncertainty_budget']
+        self.assertTrue(budget['complete_supplied_input_budget'])
+        self.assertGreater(budget['kappa_known_components_se_m2_s'],r['transport']['kappa_se_m2_s'])
+        self.assertGreater(budget['k_known_components_se_W_mK'],r['transport']['k_fit_se_W_mK'])
 
     def test_plan_outputs_strict_json_without_changing_source(self):
         with tempfile.TemporaryDirectory() as tmp:

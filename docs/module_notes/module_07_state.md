@@ -61,15 +61,15 @@ acquisition UI; the whole suite is not currently green.
 | [Step 1 integration check](module_07_step1_integration_check.md) | Complete: wiring, expected voltages, per-channel fingerprints, fault injection |
 | [rod instrument record](module_07_rod_instrument.md) | Partial: holes 2, 5, 7, 8, 9, the measured distances, the skip decision and the 2026-11-02 runs (incl. the 45 °C interlock trip, the ≈ 30 min settling estimate and the 31 min confirmation run) are in; residuals and the `h` inversion are not |
 | [stationary fin note](module_07_stationary_fin.md) | Method, criteria and two-layer uncertainty complete. §9: all three runs refused, so **no certified steady profile**. §10: the diagnostic fit the 31-minute record supports (`m = 4.83 ± 0.07 1/m` on its trailing window) with the five systematics, the `T∞ = 23.95 °C` self-ambient derivation, and a ready-to-quote paragraph that keeps the diagnosis attached |
-| [`a4_finite_length_biot.md`](../assessments/a4_finite_length_biot.md) | Four-part theoretical draft completed 2026-11-03 for Yanheng Zhu, with exact textbook problem checks and installed geometry. Diameter is explicitly nominal. PDF: `Module_7/output/pdf/A4_Zhu.pdf`. Student review and submission are not confirmed |
+| [`a4_finite_length_biot.md`](../assessments/a4_finite_length_biot.md) | Four-part theoretical draft updated 2026-11-04 for Yanheng Zhu, with exact textbook problem checks and installed geometry. Diameter is measured 12.77 mm; all dependent tables/figure updated. PDF: `Module_7/output/pdf/A4_Zhu.pdf`. Student review and submission are not confirmed |
 | `Module_7/README.md`, `Module_7/data/README.md`, `Module_7/docs/README.md` | Current, English |
 
 ## What is actually missing
 
 **2026-11-04 acquisition update:** the final 40 C run
-`module_07_rod_20261104_095908_593628.csv` is in progress (Kp=50, Ki=0.3 in the
-inspected segment); preserve it and assess the trailing steady interval after
-completion. Two closed logs with zero measurements were deleted; all measured
+`module_07_rod_20261104_095908_593628.csv` completed at 10:37 (Kp=50, Ki=0.3).
+Its final controlled ten minutes are analyzed as an operator-selected stationary
+approximation, retaining the failed strict gate and jointly fitted ambient. Two closed logs with zero measurements were deleted; all measured
 runs remain, with the cleanup receipt in
 `Module_7/data/processed/data_inventory_20261104.json`. Diameter is now measured
 as 12.77 mm using a vernier caliper with reported instrument precision 0.01 mm;
@@ -87,8 +87,9 @@ statements below are historical.
 - **A4 (individual):** all four parts and the PDF are prepared for Yanheng Zhu, using the user-authorized nominal
   12.7 mm diameter and the recorded positions. Numerical verification is in
   `Module_7/data/processed/a4_predictions/`; the source checkpoint is embedded by the PDF builder. Still open:
-  student review, recalculation using the **12.77 mm measured diameter reported
-  2026-11-04**, geometry uncertainties if available, and Moodle submission.
+  student review, any further geometry uncertainty information, GitHub push approval
+  and Moodle submission. Recalculation for the **12.77 mm measured diameter** and
+  the rebuilt nine-page PDF are complete.
 - **On site, done 2026-11-02:** six-channel sketch running and logging; three runs written to disk at 20 °C, 40 °C
   and 31 min at 40 °C. What that proves and what it does not is in the
   [rod instrument record](module_07_rod_instrument.md); the certified Part 3 fit is still refused
@@ -109,7 +110,7 @@ The ordered checklist with deadlines is [README §8](../../Module_7/README.md#8-
 
 ## Known warts
 
-- **The only `m` in the repository is a diagnostic one.** `module_07_rod_stationary_40C_stationary_fit.json`
+- **No reported `m` is certified against the original strict gate.** The Nov. 4 user-selected stationary approximation is recorded below. The earlier diagnostic `module_07_rod_stationary_40C_stationary_fit.json`
   carries `criterion.relaxed: true` and `part_03_stationary_profile.png` is titled `CRITERION RELAXED`. Quoting
   `m = 4.83 1/m` without that sentence, or dropping the words "trailing-window diagnostic", would present a
   drifting record as a steady profile. The systematics that must travel with it are in
@@ -152,3 +153,23 @@ Deliberately not repeated here: naming and file layout are in
 [Module 7 README §7](../../Module_7/README.md#7-directory-and-naming-conventions), and the rules for what may be
 written into `data/` are in [`Module_7/data/README.md`](../../Module_7/data/README.md). Documents are in
 English, like every other note in `docs/module_notes/`.
+
+## 2026-11-04 final record and A4 completion update
+
+The 09:59 run is completed and disconnected at 10:37. At the operator request,
+its final controlled 600.29 s are used as a stationary approximation, not as
+passing the original gate (worst slope 0.02671 C/min, mean-third drift 0.1853 C).
+Outputs are `Module_7/data/processed/module_07_rod_20261104_095908_593628_selected_stationary.json`
+and its profile CSV; figures are in `Module_7/figures/final_selected/`. Joint
+ambient/m fitting gives T_inf=29.976 C and m=6.7844 /m; the ambient is not a
+room measurement and a joint-fit m standard error is not asserted.
+
+A4 is rebuilt using measured d=12.77 mm, vernier caliper precision 0.01 mm;
+the due date is Nov. 9, 09:05 per the student-provided Moodle text. The PDF
+source checkpoint is `49dd633ff35c6315a0143fa682a442d85e098bdc`. The four parts,
+all geometry-dependent numeric tables and plot, and the nine-page PDF are done.
+Student review/submission remain. A subsequent external push synchronized the
+source/PDF; connected GitHub reads verified their blob hashes against the local
+files. A4 does not need another push. The agent's earlier push attempt had been
+blocked by automatic approval review before that external synchronization.
+These current statements supersede earlier historical pending/nominal entries.

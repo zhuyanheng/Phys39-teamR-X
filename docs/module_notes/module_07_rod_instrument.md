@@ -411,3 +411,24 @@ so dismantling and re-installing them costs more than the check would recover.
   substitute for a span check, needing one extra steady point and no rewiring.
 - Both are written up in §6 of [module_07_stationary_fin.md](module_07_stationary_fin.md).
 
+
+## 2026-11-04: operator-selected stationary approximation
+
+The 09:59 raw file ended with an operator stop and disconnect at 10:37:41.
+The operator requests using its final controlled interval as stationary. The
+selected interval is 1705.95–2306.24 Arduino s (600.29 s; 1160 rows), with
+Kp=50, Ki=0.3 and target 40 C. Its six means are A0=40.0038 C,
+T1–T5=36.8771, 35.2251, 34.0120, 33.1673, 32.3097 C. All selected records
+report Safety OK; the largest sampling gap is recorded in the result JSON.
+
+The original criterion is not passed: worst slope 0.02671 C/min and
+first-/last-third mean difference 0.1853 C, both on T4. The selected-window
+finite fit gives m=6.7844 /m, decay length 0.14740 m, RMS 0.11586 C, and
+a jointly fitted ambient of 29.9759 C. The semi-infinite fit at the same
+fitted ambient gives m=5.6829 /m, RMS 0.14690 C. The transverse Biot value
+is 0.0004691. These are conditional near-steady model results, not independent
+ambient measurement or certified strict steady state; no joint-fit m standard
+error is invented. Reproduce with
+`Module_7/python/analysis/final_stationary_selected.py`. The source raw bytes
+remain unchanged. This qualified mean-profile result is carried into Module 8
+as a reference only, never as a periodic measurement.

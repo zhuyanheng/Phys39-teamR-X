@@ -375,3 +375,15 @@ for a steady profile.
 
 
 
+
+## 11. Nov. 4 selected final interval
+
+At the operator request, the final 600.29 s of the completed Nov. 4 40 C run
+are analyzed as a stationary approximation. Full provenance and numbers are
+in the final section of the field record and in
+`Module_7/data/processed/module_07_rod_20261104_095908_593628_selected_stationary.json`.
+The original gate still fails (0.02671 C/min, 0.1853 C); m=6.7844 /m is
+conditional on jointly fitted T_inf=29.9759 C, not independent room thermometry.
+This is the user-selected analysis result; the earlier Nov. 2 relaxed diagnostic
+remains historical evidence and is not overwritten. Neither is labelled as
+passing the preregistered gate. A4 remains a separate literature/h=10 prediction.

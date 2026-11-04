@@ -93,6 +93,42 @@ def finite_error(q,qp,length,x):
     return float(abs(finite-semi)/abs(finite))
 
 
+def finite_response(q,qp,length,x):
+    s=complex(q,qp);x=np.asarray(x,float)
+    return np.exp(-s*x)*(1+np.exp(-2*s*(length-x)))/(1+np.exp(-2*s*length))
+
+
+def fit_finite_periodic(xs,fits,length,initial):
+    """Fit the complex insulated-tip transfer relative to measured T1.
+
+    Positive log parameters and damped Gauss-Newton keep q/q_prime finite.
+    Multiple local starts reduce sensitivity to the semi-infinite initializer;
+    phase-branch uniqueness still needs the multi-frequency experimental check.
+    """
+    z=np.array([f['amplitude_C']*np.exp(1j*f['phase_rad']) for f in fits]);target=z/z[0]
+    def residual(p):
+        q,qp=np.exp(p);difference=finite_response(q,qp,length,xs)-target
+        return np.r_[difference[1:].real,difference[1:].imag]
+    best=None
+    for factor in (.5,1,2):
+        p=np.log(np.maximum(np.array(initial)*factor,1e-5));damping=.001
+        for _ in range(65):
+            r=residual(p);h=1e-5
+            J=np.column_stack([(residual(p+np.eye(2)[j]*h)-residual(p-np.eye(2)[j]*h))/(2*h) for j in range(2)])
+            step=np.linalg.solve(J.T@J+damping*np.eye(2),-J.T@r)
+            trial=np.clip(p+step,-10,10)
+            if np.sum(residual(trial)**2)<np.sum(r*r):
+                p=trial;damping=max(damping/3,1e-12)
+                if np.linalg.norm(step)<1e-8:break
+            else:damping=min(damping*10,1e8)
+        score=float(np.sum(residual(p)**2))
+        if best is None or score<best[0]:best=(score,p)
+    q,qp=np.exp(best[1])
+    return {'q_per_m':float(q),'q_prime_per_m':float(qp),'complex_ratio_ssr':best[0],
+            'complex_ratio_rms':float(np.sqrt(best[0]/max(1,len(xs)-1))),
+            'method':'complex finite insulated-tip transfer, measured T1 reference'}
+
+
 def validate_map(geometry):
     xs=geometry.get('x_m');length=geometry.get('analysis_length_m');d=geometry.get('diameter_m')
     if xs is None or length is None:raise ValueError('Measure/save Module 8 x_m and analysis_length_m before analysis; inherited reference coordinates are not selected automatically')
@@ -100,6 +136,62 @@ def validate_map(geometry):
     if len(xs)!=5 or not np.isfinite(xs).all() or xs[0]!=0 or np.any(np.diff(xs)<=0):raise ValueError('Need five strictly increasing finite rod coordinates starting at zero')
     if not np.isfinite(length) or length<=xs[-1] or not d or not np.isfinite(d) or d<=0:raise ValueError('Invalid rod length or diameter')
     return xs,float(length),float(d)
+
+
+def uncertainty_budget(xs,fits,length,d,finite_fit,cycle_cov,geometry,plan):
+    """First-order propagation of supplied standard errors, preserving unknowns.
+
+    Position errors are coordinates relative to T1; x0 is defined zero. A full
+    coordinate covariance may be supplied instead of independent error bars.
+    """
+    missing=[];cov=np.array(cycle_cov,float).copy();q=finite_fit['q_per_m'];qp=finite_fit['q_prime_per_m']
+    def std(container,key):
+        value=container.get(key)
+        if value is None:missing.append(key);return 0.
+        value=number(value)
+        if not np.isfinite(value) or value<0:raise ValueError('Invalid standard uncertainty: '+key)
+        return value
+    coordinate_cov=geometry.get('position_covariance_m2')
+    if coordinate_cov is None:
+        errors=geometry.get('position_uncertainty_m')
+        if errors is None:missing.append('position_uncertainty_m');coordinate_cov=np.zeros((5,5))
+        else:
+            errors=np.asarray(errors,float)
+            if errors.shape!=(5,) or not np.isfinite(errors).all() or np.any(errors<0):raise ValueError('Need five finite nonnegative position standard errors')
+            coordinate_cov=np.diag(errors**2)
+    coordinate_cov=np.asarray(coordinate_cov,float)
+    if coordinate_cov.shape!=(5,5) or not np.isfinite(coordinate_cov).all() or not np.allclose(coordinate_cov,coordinate_cov.T) or np.min(np.linalg.eigvalsh(coordinate_cov)) < -1e-14:raise ValueError('Invalid position covariance')
+    if np.any(np.abs(coordinate_cov[0])>1e-14):raise ValueError('Coordinate x0 is defined zero; supply relative-coordinate uncertainty/covariance with zero first row')
+    retained=plan.get('rod_sensors',[1,2,3,4,5]);retained=sorted(retained)
+    subcov=coordinate_cov[np.ix_([i-1 for i in retained],[i-1 for i in retained])]
+    J=np.zeros((2,len(xs)))
+    def parameters(x,L):
+        f=fit_finite_periodic(x,fits,L,(q,qp));return np.array([f['q_per_m'],f['q_prime_per_m']])
+    if np.any(subcov):
+        for j in range(1,len(xs)):
+            h=min(1e-5,min(np.diff(xs))/20);xp=np.array(xs);xm=np.array(xs);xp[j]+=h;xm[j]-=h
+            J[:,j]=(parameters(xp,length)-parameters(xm,length))/(2*h)
+        cov+=J@subcov@J.T
+    sigmaL=std(geometry,'analysis_length_standard_uncertainty_m')
+    if sigmaL:
+        h=min(1e-5,(length-max(xs))/20);gradient=(parameters(xs,length+h)-parameters(xs,length-h))/(2*h)
+        cov+=np.outer(gradient,gradient)*sigmaL**2
+    sigmad=std(geometry,'diameter_standard_uncertainty_m');sigmap=std(plan,'period_standard_uncertainty_s')
+    values=infer(q,qp,plan['period_s'],cov)
+    sk=math.hypot(values['kappa_se_m2_s'],values['kappa_m2_s']*sigmap/plan['period_s'])
+    sn=math.hypot(values['nu_se_per_s'],values['nu_per_s']*sigmap/plan['period_s'])
+    material=plan.get('material',{});rho=number(material.get('density_kg_m3'));c=number(material.get('specific_heat_J_kgK'))
+    srho=std(material,'density_standard_uncertainty_kg_m3');sc=std(material,'specific_heat_standard_uncertainty_J_kgK')
+    result={'complete_supplied_input_budget':not missing,'missing_standard_uncertainties':missing,
+            'q_qprime_covariance_with_supplied_geometry':cov,'kappa_known_components_se_m2_s':sk,
+            'nu_known_components_se_per_s':sn,'k_known_components_se_W_mK':None,'h_known_components_se_W_m2K':None,
+            'method':'First-order local propagation; cycle-repeat covariance plus supplied relative-coordinate covariance, length, diameter, period and material standard uncertainties. Unknown components are not zero-error claims.',
+            'remaining_systematics':'Temperature bias/contact, branch choice, scan timing, nonuniform convection, end boundary and model discrepancy are not covered by this numeric input budget.'}
+    if np.isfinite(rho) and rho>0 and np.isfinite(c) and c>0:
+        kap=values['kappa_m2_s'];nu=values['nu_per_s']
+        result['k_known_components_se_W_mK']=math.sqrt((rho*c*sk)**2+(c*kap*srho)**2+(rho*kap*sc)**2)
+        result['h_known_components_se_W_m2K']=math.sqrt((rho*c*d/4*sn)**2+(nu*c*d/4*srho)**2+(nu*rho*d/4*sc)**2+(nu*rho*c/4*sigmad)**2)
+    return result
 
 
 def analyse_interval(rows,geometry,plan):
@@ -165,12 +257,18 @@ def analyse_interval(rows,geometry,plan):
     repetitions=[spatial(retained_x,[cycle_fits[ch][j] for ch in selected]) for j in range(cycles)]
     params=np.array([[r['q_per_m'],r['q_prime_per_m']] for r in repetitions])
     cov=np.cov(params,rowvar=False,ddof=1)/cycles
-    physical=infer(sf['q_per_m'],sf['q_prime_per_m'],period,cov)
-    q,qp=sf['q_per_m'],sf['q_prime_per_m']
+    semi_physical=infer(sf['q_per_m'],sf['q_prime_per_m'],period,cov)
+    finite_fit=fit_finite_periodic(retained_x,[fits[ch] for ch in selected],length,(sf['q_per_m'],sf['q_prime_per_m']))
+    finite_repeats=[fit_finite_periodic(retained_x,[cycle_fits[ch][j] for ch in selected],length,(finite_fit['q_per_m'],finite_fit['q_prime_per_m'])) for j in range(cycles)]
+    finite_params=np.array([[r['q_per_m'],r['q_prime_per_m']] for r in finite_repeats])
+    finite_cov=np.cov(finite_params,rowvar=False,ddof=1)/cycles
+    q,qp=finite_fit['q_per_m'],finite_fit['q_prime_per_m']
+    physical=infer(q,qp,period,finite_cov)
+    budget=uncertainty_budget(retained_x,[fits[ch] for ch in selected],length,d,finite_fit,finite_cov,geometry,plan)
     eps=[{'sensor':ch,'x_m':float(x),'complex_relative_error':finite_error(q,qp,length,x)} for ch,x in zip(selected,retained_x)]
     tolerance=number(plan.get('finite_error_tolerance',.05))
     if not np.isfinite(tolerance) or tolerance<=0:raise ValueError('Finite error tolerance must be positive')
-    if max(e['complex_relative_error'] for e in eps)>tolerance:warnings.append('Semi-infinite approximation exceeds selected complex-response tolerance; finite periodic model needed for inference')
+    if max(e['complex_relative_error'] for e in eps)>tolerance:warnings.append('Semi-infinite approximation exceeds selected complex-response tolerance; reported transport uses the finite periodic model')
     if not physical['physical_positive_loss']:warnings.append('q <= q_prime: nonpositive inferred lateral loss; investigate uncertainty and model')
     bi=physical['m_squared_per_m2']*(d/4)**2
     if bi>=.1:warnings.append('Transverse Biot is not small: reject 1D interpretation')
@@ -179,8 +277,9 @@ def analyse_interval(rows,geometry,plan):
     base=fits['rod1_C'];z0=complex(base['coefficients'][1],-base['coefficients'][2])
     recon=[]
     for ch,x in zip(selected,retained_x):
-        z=z0*np.exp(-complex(q,qp)*x)
-        model=fits[ch]['mean_C']+np.real(z*np.exp(1j*2*np.pi*t_rel/period))
+        z=z0*finite_response(q,qp,length,x)
+        offset=number(offsets.get(ch,0))
+        model=fits[ch]['mean_C']+np.real(z*np.exp(1j*2*np.pi*(t_rel+offset)/period))
         observed=np.array([number(r[ch]) for r in chosen])
         recon.append({'sensor':ch,'model_rms_C':float(np.sqrt(np.mean((model-observed)**2)))})
     material=plan.get('material',{});rho=number(material.get('density_kg_m3'));c=number(material.get('specific_heat_J_kgK'))
@@ -206,10 +305,14 @@ def analyse_interval(rows,geometry,plan):
         'complete_cycles':cycles,'samples':len(chosen),'largest_gap_s':float(np.max(np.diff(t))),
         'selected_rod_sensors':requested,'positions_m':retained_x,'geometry':geometry,'settling_tolerances':settings,
         'cycle_checks':settled,'cycle_stationarity_passed':bool(all_settled),'channel_fits':fits,
-        'spatial_fit':sf,'q_qprime_covariance_of_mean':cov,'transport':physical,'finite_length_errors':eps,
+        'spatial_fit':sf,'q_qprime_covariance_of_mean':cov,'transport':physical,
+        'main_inference_model':'finite_insulated_tip','finite_periodic_fit':finite_fit,
+        'finite_q_qprime_covariance_of_mean':finite_cov,
+        'uncertainty_budget':budget,
+        'semi_infinite_transport':semi_physical,'finite_length_errors':eps,
         'finite_error_tolerance':tolerance,'bi_perp':bi,'reconstruction_rms':recon,'boundary_waveforms':waveform,
         'boundary_relative_rms':boundary_relative_rms,
-        'material_inputs':material,'warnings':warnings,'status':'candidate' if all_settled and boundary_ok and q>qp and max(e['complex_relative_error'] for e in eps)<=tolerance and bi<.1 else 'diagnostic_only'})
+        'material_inputs':material,'warnings':warnings,'status':'candidate' if all_settled and boundary_ok and q>qp and bi<.1 else 'diagnostic_only'})
 
 
 def analyse_plan(plan_path):

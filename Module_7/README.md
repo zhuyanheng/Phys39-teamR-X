@@ -27,7 +27,7 @@ The three parts layer on one another rather than being three separate models:
 |---|---|
 | Mon 10/26, S16 (**today**) | In class: review finite-rod theory, compare finite vs semi-infinite, compute `Bi⊥`, build the sensor map and cross-check the probes, start the baseline and the step measurement |
 | Wed 10/28, S17 | In class: finish the simultaneous step response and the steady profile; run the finite and semi-infinite fits |
-| **Wed 10/28 09:05** | **A4 submission** (individual, 10 marks, Moodle `A4_Lastname.pdf` + repository `docs/assessments/a4_finite_length_biot.md`) |
+| **Mon 11/09 09:05** | **A4 submission** (individual, 10 marks, Moodle `A4_Lastname.pdf` + repository `docs/assessments/a4_finite_length_biot.md`) |
 | **Wed 10/28 11:55** | **C5 Moodle receipt** deadline; it must cite pushed acquisition code and evidence commits |
 | Wed 10/28, in class | C5 live demonstration (sensor map, calibration, simultaneous acquisition, baseline/step data, uncertainty) |
 
@@ -93,7 +93,7 @@ needed to separate `k` and `h`.
 
 ## 2. A4: Finite-Rod Model And Validity Checks (individual, 10 marks)
 
-- Type: individual, 10 marks; due **Wed 10/28 09:05**.
+- Type: individual, 10 marks; due **Mon 11/09 09:05**, updated from the student-provided Moodle text on Nov. 4.
 - Moodle file: `A4_Lastname.pdf`; repository file: `docs/assessments/a4_finite_length_biot.md`.
 - Submit both the PDF and the repository file, with name, assignment number, date, repository URL and the
   **exact Git commit hash** on the first page.
@@ -114,8 +114,9 @@ lumped model) plus §4.5, textbook pp. 163–173 (follow the derivation, not jus
 
 Prepared 2026-11-03: the full theoretical draft for Yanheng Zhu is in
 `docs/assessments/a4_finite_length_biot.md`, with a PDF at `Module_7/output/pdf/A4_Zhu.pdf`.
-It uses the recorded origin at physical hole 2 and `L = 0.2715 m`; `d = 12.7 mm` is nominal,
-not measured. Predictions use `h = 10 W/(m² K)` and the same 6061-T6 table's 166-172 W/(m K)
+Updated 2026-11-04: it uses physical hole 2 as origin and `L = 0.2715 m`;
+`d = 12.77 mm` is measured by vernier caliper, reported precision 0.01 mm.
+The nine-page PDF cites source checkpoint `49dd633ff35c6315a0143fa682a442d85e098bdc`. Predictions use `h = 10 W/(m² K)` and the same 6061-T6 table's 166-172 W/(m K)
 envelope. The spacecraft application question in the older checklist has been replaced by the
 current still-air versus forced-airflow question. Student review and submission are not confirmed.
 

@@ -17,7 +17,8 @@ ROOT=Path(__file__).resolve().parents[2]
 
 class AnalysisWindow(QMainWindow):
     def __init__(self):
-        super().__init__();self.setWindowTitle('Module 8 - Offline Angstrom analysis');self.resize(1360,900)
+        super().__init__();pg.setConfigOptions(foreground='#222222',antialias=True)
+        self.setWindowTitle('Module 8 - Offline Angstrom analysis');self.resize(1360,900)
         self.config_path=ROOT/'Module_8/config/analysis_plan.json';self.result=None
         body=QWidget();outer=QVBoxLayout(body);self.setCentralWidget(body)
         banner=QLabel('OFFLINE ANALYSIS | Load measured periodic data and geometry; this window never connects to Arduino.')
@@ -30,13 +31,13 @@ class AnalysisWindow(QMainWindow):
         if self.config_path.exists():self.editor.setPlainText(self.config_path.read_text())
         right=QWidget();view=QVBoxLayout(right);split.addWidget(right);split.setSizes([430,900])
         self.selector=QComboBox();self.selector.currentIndexChanged.connect(self.show_interval);view.addWidget(self.selector)
-        self.summary=QTextBrowser();self.summary.setMaximumHeight(220);view.addWidget(self.summary)
-        self.history=pg.PlotWidget(title='Measured traces and selected interval');self.history.setBackground('w');self.history.addLegend();self.history.setLabel('left','Temperature',units='C');self.history.setLabel('bottom','Arduino time',units='s');view.addWidget(self.history,2)
+        self.summary=QTextBrowser();self.summary.setMaximumHeight(190);view.addWidget(self.summary)
+        self.history=pg.PlotWidget(title='Measured traces and selected interval');self.history.setBackground('w');self.history.addLegend(labelTextColor='#222222',brush=pg.mkBrush(255,255,255,220));self.history.setLabel('left','Temperature',units='C');self.history.setLabel('bottom','Arduino time',units='s');view.addWidget(self.history,2)
         row=QHBoxLayout();view.addLayout(row,1)
         self.amplitude=pg.PlotWidget(title='Log amplitude and spatial fit');self.phase=pg.PlotWidget(title='Unwrapped phase and spatial fit')
         for plot in (self.amplitude,self.phase):plot.setBackground('w');plot.setLabel('bottom','x',units='m');row.addWidget(plot)
         self.trace_selector=QComboBox();self.trace_selector.addItems(fit.CHANNELS);view.addWidget(self.trace_selector)
-        self.residual=pg.PlotWidget(title='Selected sensor: time residuals');self.residual.setBackground('w');self.residual.addLegend();self.residual.setLabel('bottom','Arduino time',units='s');self.residual.setLabel('left','Measured - model',units='C');view.addWidget(self.residual,1)
+        self.residual=pg.PlotWidget(title='Selected sensor: time residuals');self.residual.setBackground('w');self.residual.setMinimumHeight(170);self.residual.addLegend(labelTextColor='#222222',brush=pg.mkBrush(255,255,255,220));self.residual.setLabel('bottom','Arduino time',units='s');self.residual.setLabel('left','Measured - model',units='C');view.addWidget(self.residual,1)
         self.trace_selector.currentIndexChanged.connect(self.show_trace_residual)
         self.summary.setPlainText('No measured Module 8 result loaded. The template does not certify any dataset.\nComplete measured x_m/L and select at least five settled cycles at each retained period.\nMaterial inputs remain unknown until supplied; k and h are then left uncomputed.')
 
@@ -80,7 +81,8 @@ class AnalysisWindow(QMainWindow):
         r=self.result['intervals'][index];t=r['transport'];s=r['spatial_fit']
         def value(x):return 'not supplied' if x is None else f'{x:.6g}'
         lines=[f"{r['status']} | {r['complete_cycles']} complete cycles | {r['samples']} samples",
-            f"q = {s['q_per_m']:.6g} /m; q' = {s['q_prime_per_m']:.6g} /m",
+            f"Semi-infinite slopes: q = {s['q_per_m']:.6g} /m; q' = {s['q_prime_per_m']:.6g} /m",
+            f"Main finite fit: q = {r['finite_periodic_fit']['q_per_m']:.6g} /m; q' = {r['finite_periodic_fit']['q_prime_per_m']:.6g} /m",
             f"kappa = {value(t['kappa_m2_s'])} m2/s; nu = {value(t['nu_per_s'])} /s",
             f"k = {value(t['k_W_mK'])} W/(m K); h = {value(t['h_W_m2K'])} W/(m2 K)",
             f"Bi_perp = {r['bi_perp']:.4g}; repeat-fit errors exclude systematic errors"]+r['warnings']
@@ -96,7 +98,7 @@ class AnalysisWindow(QMainWindow):
             with raw.open(newline='') as stream:rows=[z for z in csv.DictReader(stream) if z.get('event')=='measurement']
             ts=[fit.number(z.get('time_s')) for z in rows]
             for ch,color in zip(fit.CHANNELS,['#111111','#245a81','#2f7d4f','#927919','#b45b22','#693f85']):self.history.plot(ts,[fit.number(z.get(ch)) for z in rows],pen=color,name=ch)
-            region=pg.LinearRegionItem((r['start_s'],r['end_s']),movable=False);self.history.addItem(region)
+            region=pg.LinearRegionItem((r['start_s'],r['end_s']),movable=False,brush=pg.mkBrush(100,155,110,35));self.history.addItem(region)
         else:self.statusBar().showMessage('Source CSV missing: fits are visible, raw time history unavailable')
         self.show_trace_residual()
 
@@ -116,9 +118,9 @@ class AnalysisWindow(QMainWindow):
         self.residual.plot(t,y-fitted,pen='#245a81',name='Individual sinusoid residual')
         if ch.startswith('rod'):
             i=int(ch[3:-2])-1;x=r['geometry']['x_m'][i];base=r['channel_fits']['rod1_C'];z0=complex(base['coefficients'][1],-base['coefficients'][2])
-            sp=r['spatial_fit'];z=z0*np.exp(-complex(sp['q_per_m'],sp['q_prime_per_m'])*x)
+            sp=r['finite_periodic_fit'];z=z0*fit.finite_response(sp['q_per_m'],sp['q_prime_per_m'],r['geometry']['analysis_length_m'],x)
             model=a+np.real(z*np.exp(1j*w*(tr+offset)))
-            self.residual.plot(t,y-model,pen='#b45b22',name='Spatial semi-infinite model residual')
+            self.residual.plot(t,y-model,pen='#b45b22',name='Spatial finite-rod model residual')
 
 
 def main():
