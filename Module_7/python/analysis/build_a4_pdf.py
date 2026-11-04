@@ -154,7 +154,7 @@ def render():
             story.append(Paragraph(inline(text[len(heading):]), pdf_styles[heading])); i += 1
             if heading == "# ":
                 story.append(Paragraph(inline(git_caption), small))
-                story.append(Paragraph("Provisional theory | Diameter 12.7 mm is nominal, not measured", small))
+                story.append(Paragraph("Provisional theory | Measured diameter 12.77 mm; vernier caliper, precision 0.01 mm", small))
             continue
         paragraph = [text]; i += 1
         while i < len(lines) and lines[i].strip() and not lines[i].startswith(("#", "|", "$$", "<!--", "```", "![")):
@@ -169,7 +169,7 @@ def render():
         canvas.line(48, 37, 564, 37)
         canvas.setFillColor(colors.HexColor("#536775"))
         canvas.setFont("UI", 7)
-        canvas.drawString(48, 24, "Yanheng Zhu | A4 | Provisional theory, nominal diameter")
+        canvas.drawString(48, 24, "Yanheng Zhu | A4 | Provisional theory, measured geometry")
         canvas.drawRightString(564, 24, str(doc.page))
         canvas.restoreState()
     doc = SimpleDocTemplate(str(PDF), pagesize=letter, rightMargin=48, leftMargin=48,
@@ -179,7 +179,9 @@ def render():
     record = {"author": "Yanheng Zhu", "source": str(SOURCE.relative_to(ROOT)),
               "source_sha256": digest(SOURCE), "git_source_checkpoint": commit if clean else None,
               "git_base_checkpoint": commit, "source_committed": clean,
-              "diameter_status": "nominal_not_measured", "pdf_sha256": digest(PDF)}
+              "diameter_status": "measured", "diameter_m": 0.01277,
+              "diameter_method": "vernier caliper", "instrument_precision_mm": 0.01,
+              "due_at": "2026-11-09T09:05:00-05:00", "pdf_sha256": digest(PDF)}
     (PDF.parent / "A4_Zhu_build.json").write_text(json.dumps(record, indent=2) + "\n")
     print(PDF)
     print(git_caption)

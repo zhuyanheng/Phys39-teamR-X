@@ -2,7 +2,7 @@
 
 Run from the project root with .venv/bin/python. All input values, source pages,
 acceptance criteria, and checks are retained in the JSON output. Change the
-nominal diameter only after measuring it; regenerate the paper tables as well.
+geometry inputs only when remeasured; regenerate the paper tables as well.
 """
 import csv
 import json
@@ -14,7 +14,8 @@ os.environ.setdefault("MPLCONFIGDIR", "/private/tmp/module7-matplotlib")
 MODULE = Path(__file__).resolve().parents[2]
 OUTPUT = MODULE / "data/processed/a4_predictions"
 FIGURES = MODULE / "figures/a4"
-DIAMETER_M = 0.0127  # Course nominal value: NOT measured.
+DIAMETER_M = 0.01277  # Measured by vernier caliper, 2026-11-04.
+INSTRUMENT_PRECISION_M = 0.00001  # Operator specification, not standard uncertainty.
 LENGTH_M = 0.2715
 POSITIONS_M = (0, 0.0385, 0.0895, 0.1405, 0.1915)
 HOLES = (2, 5, 7, 8, 9)
@@ -105,7 +106,10 @@ def calculate():
         long_fixed_tip = math.sinh(4 * (20 - x)) / math.sinh(4 * 20)
         assert math.isclose(long_fixed_tip, semi(4, x), rel_tol=1e-12)
     return {"kind": "provisional_theory_not_measured_fit",
-            "inputs": {"diameter_m": DIAMETER_M, "diameter_status": "nominal_not_measured",
+            "inputs": {"diameter_m": DIAMETER_M, "diameter_status": "measured",
+                       "diameter_method": "vernier caliper",
+                       "instrument_precision_m": INSTRUMENT_PRECISION_M,
+                       "instrument_precision_is_standard_uncertainty": False,
                        "analysis_length_m": LENGTH_M, "physical_origin_hole": 2,
                        "holes": HOLES, "positions_m": POSITIONS_M, "h_W_m2K": H,
                        "k_W_mK": K_VALUES, "k_source": "Lienhard v6, Table A.1 p.739: 6061-T6; 166 at 0 C, 167 at 20 C, 172 at 100 C",

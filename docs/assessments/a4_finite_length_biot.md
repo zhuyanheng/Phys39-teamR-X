@@ -1,10 +1,12 @@
 # A4: Finite-Rod Model and Validity Checks
 
-**Yanheng Zhu | Phys 39 | Prepared 2026-11-03**
+**Yanheng Zhu | Phys 39 | Updated 2026-11-04**
+
+**Assignment A4 | Due Monday, November 9, 2026, 9:05 AM (America/New_York)**
 
 Repository: https://github.com/zhuyanheng/Phys39-teamR-X
 
-The exact Git source checkpoint is embedded in the generated PDF and its build record. This is a provisional theoretical prediction, not a fit of the measured temperature profile. The diameter is the course nominal value, not a measurement. References [1]-[4] are listed at the end.
+The exact Git source checkpoint is embedded in the generated PDF and its build record. This is a provisional theoretical prediction, not a fit of the measured temperature profile. The rod diameter is measured; h and the conductivity range remain provisional theory inputs. A4 concerns Module 7 Parts I and II, not the Module 8 Angstrom measurement. References [1]-[4] are listed at the end.
 
 ## Geometry, property sources, and conventions
 
@@ -12,17 +14,17 @@ The operator identifies aluminum 6061; the course's more specific 6061-T6 identi
 
 | Quantity | Value | Status / source |
 | --- | --- | --- |
-| Diameter, d | 0.0127 m | Course nominal; not measured |
-| Radius, R | 0.00635 m | d/2 |
-| Area, A | 1.26677 x 10^-4 m^2 | pi d^2/4 |
-| Perimeter, P | 0.0398982 m | pi d |
-| A/P | 0.003175 m | d/4 |
+| Diameter, d | 0.01277 m | Vernier caliper, reported precision 0.01 mm |
+| Radius, R | 0.006385 m | d/2 |
+| Area, A | 1.28077 x 10^-4 m^2 | pi d^2/4 |
+| Perimeter, P | 0.0401181 m | pi d |
+| A/P | 0.0031925 m | d/4 |
 | Analysis length, L | 0.2715 m | Physical hole 2 to actual rod tip |
 | Side coefficient, h | 10 W/(m^2 K) | Course provisional prediction value [3] |
 | Conductivity envelope, k | 166-172 W/(m K) | 6061-T6, Table A.1, textbook p. 739 [1] |
 | Central conductivity | 167 W/(m K) | Same table, 20 C value |
 
-The 6061-T6 table lists k = 166 at 0 C, 167 at 20 C and 172 W/(m K) at 100 C. The envelope is conservative for the planned temperatures, not a confidence interval or measured sample property. It uses one temper throughout. Nominal d and unknown ruler uncertainties limit numerical precision.
+The 6061-T6 table lists k = 166 at 0 C, 167 at 20 C and 172 W/(m K) at 100 C. The envelope is conservative for the planned temperatures, not a confidence interval or measured sample property. It uses one temper throughout. The diameter was reported on 2026-11-04 as 12.77 mm measured by vernier caliper, with instrument precision 0.01 mm. The supplied instrument specification is not assumed to be a one-standard-deviation error; repeatability and ruler uncertainties were not supplied. The extra calculation digits allow reproduction, rather than asserting that precision.
 
 | Channel / probe | Physical hole | x (m), from hole 2 |
 | --- | --- | --- |
@@ -265,23 +267,23 @@ It gives zero error at the base and makes the growing influence of the tip towar
 
 ### Numerical prediction for the course rod
 
-Using the installed geometry, nominal d = 0.0127 m, and fixed h = 10 W/(m^2 K), the conductivity envelope gives:
+Using the installed geometry, measured d = 0.01277 m, and fixed h = 10 W/(m^2 K), the conductivity envelope gives:
 
 | k, W/(m K) | m, 1/m | 1/m, m | mL | Bi_parallel | Theta_tip |
 | --- | --- | --- | --- | --- | --- |
-| 166 | 4.3559 | 0.22958 | 1.18262 | 1.39858 | 0.56032 |
-| 167 | 4.3428 | 0.23027 | 1.17907 | 1.39021 | 0.56197 |
-| 172 | 4.2792 | 0.23369 | 1.16181 | 1.34979 | 0.57002 |
+| 166 | 4.3439 | 0.23021 | 1.17937 | 1.39092 | 0.56183 |
+| 167 | 4.3309 | 0.23090 | 1.17583 | 1.38259 | 0.56347 |
+| 172 | 4.2675 | 0.23433 | 1.15862 | 1.34239 | 0.57152 |
 
-Thus the provisional m range is 4.279-4.356 m^-1 and mL is only 1.162-1.183. The predicted tip excess remains about 56-57% of the base excess, so the physical tip is not thermally remote.
+Thus the provisional m range is 4.267-4.344 m^-1 and mL is only 1.159-1.179. The predicted tip excess remains about 56-57% of the base excess, so the physical tip is not thermally remote.
 
 | Probe / hole | x, m | Error at k=166 | Error at k=167 | Error at k=172 | Below 5% throughout? |
 | --- | --- | --- | --- | --- | --- |
 | T1 / 2 | 0.0000 | 0.00% | 0.00% | 0.00% | Yes, fixed boundary |
-| T2 / 5 | 0.0385 | 3.31% | 3.32% | 3.36% | Yes |
-| T3 / 7 | 0.0895 | 9.21% | 9.22% | 9.31% | No |
-| T4 / 8 | 0.1405 | 17.09% | 17.11% | 17.19% | No |
-| T5 / 9 | 0.1915 | 26.98% | 26.99% | 27.01% | No |
+| T2 / 5 | 0.0385 | 3.32% | 3.33% | 3.37% | Yes |
+| T3 / 7 | 0.0895 | 9.22% | 9.24% | 9.33% | No |
+| T4 / 8 | 0.1405 | 17.11% | 17.13% | 17.21% | No |
+| T5 / 9 | 0.1915 | 26.99% | 26.99% | 27.02% | No |
 
 **Length conclusion.** For this geometry, h and k envelope, the semi-infinite approximation passes the 5% temperature criterion only at T1 and T2. It fails for the full retained five-sensor region, especially T3-T5. The finite insulated-tip model should therefore be retained for the planned spatial comparison. This prediction does not certify the real tip as insulated; the final data must test that boundary assumption and may require a convecting-tip model.
 
@@ -289,7 +291,7 @@ Thus the provisional m range is 4.279-4.356 m^-1 and mL is only 1.162-1.183. The
 
 Solid curves show the finite insulated-tip prediction and dashed curves its semi-infinite approximation; vertical lines mark the installed positions. The close conductivity-envelope curves do not remove the much larger finite-end effect.
 
-These are predictions reconstructed on 2026-11-03 after the installation and earlier pilot runs. They are not represented as a pre-registered prediction made before the first heating. No fitted m from a drifting or relaxed-criterion run is used in A4.
+These theory predictions were first reconstructed on 2026-11-03 and updated on 2026-11-04 using the measured diameter, after the installation and earlier pilot runs. They are not represented as a pre-registered prediction made before the first heating. No fitted m from a drifting or relaxed-criterion run is used in A4.
 
 <!-- pagebreak -->
 
@@ -303,19 +305,19 @@ Using exactly the same h and conductivity envelope as in Part 3 gives:
 
 | k, W/(m K) | Bi_perp | Bi_parallel = (mL)^2 |
 | --- | --- | --- |
-| 166 | 0.00019127 | 1.39858 |
-| 167 | 0.00019012 | 1.39021 |
-| 172 | 0.00018459 | 1.34979 |
+| 166 | 0.00019232 | 1.39092 |
+| 167 | 0.00019117 | 1.38259 |
+| 172 | 0.00018561 | 1.34239 |
 
 The algebraic cross-check follows from m^2 = 4h/(kd):
 
 $$\mathrm{Bi}_\perp=\left(\frac{md}{4}\right)^2=\left(\frac{mR}{2}\right)^2.$$
 
-Here m is the *predicted* value, not a fitted measurement. Both expressions give the same dimensionless numbers. The transverse ratio is about 1.85-1.91 x 10^-4, far below unity.
+Here m is the *predicted* value, not a fitted measurement. Both expressions give the same dimensionless numbers. The transverse ratio is about 1.86-1.92 x 10^-4, far below unity.
 
 **Radius conclusion.** Under these provisional assumptions, internal radial conduction is much easier than heat loss from the section's surface. Each cross section should be represented adequately by one temperature, so a one-dimensional axial fin model is justified. This does not make the entire rod isothermal: the parallel ratio is of order 1.4 and an axial temperature gradient is expected.
 
-This radius conclusion is separate from the length conclusion: **one-dimensional, yes; semi-infinite across all five positions at a 5% criterion, no.** Both are conditional predictions using a nominal diameter, literature k and provisional h. Contact errors, an incorrect material identification, ambient nonuniformity and radiation can affect the later experimental comparison.
+This radius conclusion is separate from the length conclusion: **one-dimensional, yes; semi-infinite across all five positions at a 5% criterion, no.** Both are conditional predictions using a measured diameter, literature k and provisional h. Contact errors, an incorrect material identification, ambient nonuniformity and radiation can affect the later experimental comparison.
 
 ### Application: the same heat sink in still air and forced airflow
 
@@ -337,11 +339,11 @@ Every heat-flux calculation in Part 1 has units W/m^2, every heat-rate calculati
 
 https://sethfraden.github.io/Phys39F26-course/references/lienhard-heat-transfer-textbook-v6.pdf
 
-[2] Phys 39, Module 7 Part II, *Finite and Infinite Rod Theory*, current course source checked 2026-11-03. Equations (4.27)-(4.51), dimensionless variables and the distinction between transverse and parallel resistance ratios.
+[2] Phys 39, Module 7 Part II, *Finite and Infinite Rod Theory*, course source checked 2026-11-03; submission requirements updated from the student-provided Moodle text on 2026-11-04. Equations (4.27)-(4.51), dimensionless variables and the distinction between transverse and parallel resistance ratios.
 
 https://sethfraden.github.io/Phys39F26-course/labs/fin-design-derivation/
 
-[3] Phys 39, Module 7 Part III, *A4: Finite-Rod Model and Validity Checks*, current course source checked 2026-11-03. Four-part requirements; provisional h = 10 W/(m^2 K); no measured stationary-profile data required.
+[3] Phys 39, Module 7 Part III, *A4: Finite-Rod Model and Validity Checks*, course source checked 2026-11-03; submission requirements updated from the student-provided Moodle text on 2026-11-04. Four-part requirements; provisional h = 10 W/(m^2 K); no measured stationary-profile data required.
 
 https://github.com/SethFraden/Phys39F26-course/blob/main/course/labs/lab-08/index.md#a4-finite-rod-model-and-validity-checks
 
@@ -361,6 +363,6 @@ Numerical evidence is saved separately under `Module_7/data/processed/a4_predict
 
 Theoretical content completed: Parts 1-4, dimensional checks, stated 5% error criterion, actual installed positions, explicit coordinate origin, and separate length and radius conclusions. The superseded spacecraft-radiator application question is not used; the current airflow question is answered.
 
-Remaining operator facts: measure d and record geometry uncertainties; confirm the assumed cm units and channel-to-hole mapping. The user confirmed on 2026-11-03 that the diameter has not yet been measured. Recalculate if these inputs change. No ruler precision or experimental certification is invented.
+Measurement record updated 2026-11-04: d = 12.77 mm, vernier caliper, reported instrument precision 0.01 mm. Position/length uncertainties and repeated diameter readings have not been provided; no ruler precision or experimental certification is invented. The individual submission deadline above follows the student-provided Moodle assignment text, which supersedes the older public course calendar. The latest measured temperature record is not an input to these A4 predictions.
 
 AI assistance disclosure: Codex assisted with the derivations, calculation script, drafting and document preparation. The named student must review the reasoning, verify the reported setup and be able to explain the work. No AI-generated number is presented as a measurement.

@@ -1,8 +1,11 @@
 {
   "kind": "provisional_theory_not_measured_fit",
   "inputs": {
-    "diameter_m": 0.0127,
-    "diameter_status": "nominal_not_measured",
+    "diameter_m": 0.01277,
+    "diameter_status": "measured",
+    "diameter_method": "vernier caliper",
+    "instrument_precision_m": 1e-05,
+    "instrument_precision_is_standard_uncertainty": false,
     "analysis_length_m": 0.2715,
     "physical_origin_hole": 2,
     "holes": [
@@ -83,30 +86,30 @@
   "rod": [
     {
       "k_W_mK": 166.0,
-      "m_per_m": 4.35586178878158,
-      "decay_length_m": 0.22957569557773314,
-      "mL": 1.182616475654199,
-      "Bi_parallel": 1.3985817284887587,
-      "Bi_perp": 0.00019126506024096386,
-      "Theta_tip": 0.5603220054717611
+      "m_per_m": 4.343906842684795,
+      "decay_length_m": 0.23020751508150206,
+      "mL": 1.179370707788922,
+      "Bi_parallel": 1.3909152663905426,
+      "Bi_perp": 0.00019231927710843376,
+      "Theta_tip": 0.5618294642362078
     },
     {
       "k_W_mK": 167.0,
-      "m_per_m": 4.342800704540433,
-      "decay_length_m": 0.2302661503564951,
-      "mL": 1.1790703912827276,
-      "Bi_parallel": 1.3902069875996044,
-      "Bi_perp": 0.00019011976047904192,
-      "Theta_tip": 0.5619690532255827
+      "m_per_m": 4.330881605439178,
+      "decay_length_m": 0.2308998700735884,
+      "mL": 1.1758343558767368,
+      "Bi_parallel": 1.3825864324600605,
+      "Bi_perp": 0.0001911676646706587,
+      "Theta_tip": 0.5634743649124287
     },
     {
       "k_W_mK": 172.0,
-      "m_per_m": 4.279213073721126,
-      "decay_length_m": 0.2336878259559107,
-      "mL": 1.1618063495152857,
-      "Bi_parallel": 1.3497939937740342,
-      "Bi_perp": 0.00018459302325581395,
-      "Theta_tip": 0.5700245124086397
+      "m_per_m": 4.267468495010032,
+      "decay_length_m": 0.23433096252949587,
+      "mL": 1.1586176963952237,
+      "Bi_parallel": 1.3423949664001749,
+      "Bi_perp": 0.00018561046511627908,
+      "Theta_tip": 0.5715189237293246
     }
   ],
   "sensors": [
@@ -125,9 +128,9 @@
       "hole": 5,
       "x_m": 0.0385,
       "k_W_mK": 166.0,
-      "Theta_finite": 0.874540502153628,
-      "Theta_semi": 0.8456069048240512,
-      "epsilon_T": 0.03308434230127184,
+      "Theta_finite": 0.8750213270352196,
+      "Theta_semi": 0.8459961980274797,
+      "epsilon_T": 0.033170767512700455,
       "passes_5_percent": true
     },
     {
@@ -135,9 +138,9 @@
       "hole": 7,
       "x_m": 0.0895,
       "k_W_mK": 166.0,
-      "Theta_finite": 0.7458144027708451,
-      "Theta_semi": 0.6771586911303052,
-      "epsilon_T": 0.09205468731291669,
+      "Theta_finite": 0.7467488202411153,
+      "Theta_semi": 0.677883616795463,
+      "epsilon_T": 0.09222003648216895,
       "passes_5_percent": false
     },
     {
@@ -145,9 +148,9 @@
       "hole": 8,
       "x_m": 0.1405,
       "k_W_mK": 166.0,
-      "Theta_finite": 0.654045975516424,
-      "Theta_semi": 0.5422660226133313,
-      "epsilon_T": 0.1709053447119417,
+      "Theta_finite": 0.65527661935422,
+      "Theta_semi": 0.5431776159173375,
+      "epsilon_T": 0.17107126994300043,
       "passes_5_percent": false
     },
     {
@@ -155,9 +158,9 @@
       "hole": 9,
       "x_m": 0.1915,
       "k_W_mK": 166.0,
-      "Theta_finite": 0.594687778783439,
-      "Theta_semi": 0.4342445029983344,
-      "epsilon_T": 0.26979413653552065,
+      "Theta_finite": 0.5960969101224046,
+      "Theta_semi": 0.43523978913723366,
+      "epsilon_T": 0.26985062034986895,
       "passes_5_percent": false
     },
     {
@@ -175,9 +178,9 @@
       "hole": 5,
       "x_m": 0.0385,
       "k_W_mK": 167.0,
-      "Theta_finite": 0.8750658234424491,
-      "Theta_semi": 0.8460322266582257,
-      "epsilon_T": 0.03317875753621272,
+      "Theta_finite": 0.8755453733153308,
+      "Theta_semi": 0.8464205475139478,
+      "epsilon_T": 0.03326478180234021,
       "passes_5_percent": true
     },
     {
@@ -185,9 +188,9 @@
       "hole": 7,
       "x_m": 0.0895,
       "k_W_mK": 167.0,
-      "Theta_finite": 0.7468353126401914,
-      "Theta_semi": 0.6779507301643736,
-      "epsilon_T": 0.09223530450414696,
+      "Theta_finite": 0.7477676762196722,
+      "Theta_semi": 0.6786743263407589,
+      "epsilon_T": 0.09239948726884492,
       "passes_5_percent": false
     },
     {
@@ -195,9 +198,9 @@
       "hole": 8,
       "x_m": 0.1405,
       "k_W_mK": 167.0,
-      "Theta_finite": 0.6553905520598711,
-      "Theta_semi": 0.5432620390193247,
-      "epsilon_T": 0.17108655699739664,
+      "Theta_finite": 0.6566189368432477,
+      "Theta_semi": 0.5441725659743543,
+      "epsilon_T": 0.17125057557658796,
       "passes_5_percent": false
     },
     {
@@ -205,9 +208,9 @@
       "hole": 9,
       "x_m": 0.1915,
       "k_W_mK": 167.0,
-      "Theta_finite": 0.5962273838705994,
-      "Theta_semi": 0.43533199376874665,
-      "epsilon_T": 0.26985575378532467,
+      "Theta_finite": 0.597634288052913,
+      "Theta_semi": 0.4363267771682744,
+      "epsilon_T": 0.26991006725898703,
       "passes_5_percent": false
     },
     {
@@ -225,9 +228,9 @@
       "hole": 5,
       "x_m": 0.0385,
       "k_W_mK": 172.0,
-      "Theta_finite": 0.8776258601728442,
-      "Theta_semi": 0.8481059556133727,
-      "epsilon_T": 0.03363609243881864,
+      "Theta_finite": 0.8780991250689792,
+      "Theta_semi": 0.8484895272412308,
+      "epsilon_T": 0.033720108564534126,
       "passes_5_percent": true
     },
     {
@@ -235,9 +238,9 @@
       "hole": 7,
       "x_m": 0.0895,
       "k_W_mK": 172.0,
-      "Theta_finite": 0.7518171166105627,
-      "Theta_semi": 0.6818200105647696,
-      "epsilon_T": 0.09310390053549586,
+      "Theta_finite": 0.7527392808740473,
+      "Theta_semi": 0.6825370755123855,
+      "epsilon_T": 0.09326231159365843,
       "passes_5_percent": false
     },
     {
@@ -245,9 +248,9 @@
       "hole": 8,
       "x_m": 0.1405,
       "k_W_mK": 172.0,
-      "Theta_finite": 0.6619587492184724,
-      "Theta_semi": 0.5481373214391946,
-      "epsilon_T": 0.17194640589562218,
+      "Theta_finite": 0.6631758234676335,
+      "Theta_semi": 0.5490425567934603,
+      "epsilon_T": 0.1721010667689751,
       "passes_5_percent": false
     },
     {
@@ -255,9 +258,9 @@
       "hole": 9,
       "x_m": 0.1915,
       "k_W_mK": 172.0,
-      "Theta_finite": 0.6037539123430069,
-      "Theta_semi": 0.4406654520240033,
-      "epsilon_T": 0.27012406376979164,
+      "Theta_finite": 0.605149578066519,
+      "Theta_semi": 0.4416576622508032,
+      "epsilon_T": 0.27016777626794364,
       "passes_5_percent": false
     }
   ],
