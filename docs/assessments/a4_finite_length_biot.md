@@ -37,12 +37,6 @@ The 6061-T6 table lists k = 166 at 0 C, 167 at 20 C and 172 W/(m K) at 100 C. Th
 
 The reported segments 3.85 + 5.1 + 5.1 + 5.1 + 8 cm give L = 27.15 cm; hole 9 remains 8 cm from the tip. The 5.1 units are assumed cm pending confirmation. T1 is the rod boundary; A0 remains the separate TEC feedback/safety sensor.
 
-For the rod, define excess and normalized temperature by
-
-$$\theta(x)=T(x)-T_\infty,\qquad \theta_0=T(0)-T_\infty,\qquad \Theta(x)=\theta(x)/\theta_0.$$
-
-T-infinity is the ambient temperature away from the apparatus. Temperature differences in kelvin and degrees Celsius have the same numerical value. The slab thickness in Part 1 is denoted delta so it is not confused with the rod analysis length L.
-
 <!-- pagebreak -->
 
 ## Part 1. Apply Fourier's law: Problem 1.3
@@ -88,6 +82,12 @@ For variable conductivity, the replacement is q delta = integral of k(T) dT from
 <!-- pagebreak -->
 
 ## Part 2. Build the stationary finite-rod model
+
+For the rod, define excess and normalized temperature by
+
+$$\theta(x)=T(x)-T_\infty,\qquad \theta_0=T(0)-T_\infty,\qquad \Theta(x)=\theta(x)/\theta_0.$$
+
+T-infinity is the ambient temperature away from the apparatus. Temperature differences in kelvin and degrees Celsius have the same numerical value. The slab thickness in Part 1 is denoted delta so it is not confused with the rod analysis length L.
 
 ### Assumptions and energy balance
 
