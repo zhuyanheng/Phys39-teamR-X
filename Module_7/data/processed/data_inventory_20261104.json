@@ -1,0 +1,106 @@
+{
+  "checked_at": "2026-11-04T10:03:50.623788-05:00",
+  "policy": "Delete only the two explicitly enumerated closed CSVs that contain zero measurement rows. Preserve every measured record and protect live/open files. Do not connect serial or operate GUI.",
+  "deleted_count": 2,
+  "files": [
+    {
+      "path": "Module_7/data/raw/module_07_rod_20261104_094044_723371.csv",
+      "bytes": 81828,
+      "sha256": "cbe50828fd1599524627714e4d70eb2923bee9777ed6d8f9e21eedb0e2359677",
+      "measurement_rows": 320,
+      "event_rows": 8,
+      "first_host": "2026-11-04T09:40:46.998485-05:00",
+      "last_host": "2026-11-04T09:43:31.796246-05:00",
+      "first_time_s": "0.55",
+      "last_time_s": "165.23",
+      "action": "keep",
+      "reason": "Keep: Kp=50 attempt and measurement-timeout fault evidence."
+    },
+    {
+      "path": "Module_7/data/raw/module_07_rod_20261104_095254_917810.csv",
+      "bytes": 805,
+      "sha256": "c9a525c6c107a965d77c42bbab382ab7a612b37f278b726d8df614296e43786b",
+      "measurement_rows": 0,
+      "event_rows": 4,
+      "action": "delete",
+      "reason": "Closed connection log with zero measurement rows; fault summary remains in field record."
+    },
+    {
+      "path": "Module_7/data/raw/module_07_rod_20261104_095433_500673.csv",
+      "bytes": 711,
+      "sha256": "7c9eb2cd28593f44431898ab4dfd853bf2fd98200de52ec91e5d8fdde5ed0f4b",
+      "measurement_rows": 0,
+      "event_rows": 3,
+      "action": "delete",
+      "reason": "Closed connection log with zero measurement rows; fault summary remains in field record."
+    },
+    {
+      "path": "Module_7/data/raw/module_07_rod_20261104_095908_593628.csv",
+      "action": "protected",
+      "reason": "Protected: currently running final stationary acquisition; never delete, rename, write or certify during this cleanup.",
+      "open_at_check": true
+    },
+    {
+      "path": "Module_7/data/raw/module_07_rod_interlock_trip_45C_40C.csv",
+      "bytes": 395594,
+      "sha256": "e36e05de11a3a3d7f68d3e0e082e3dd0101a55451291b89400e4258a0e028fe0",
+      "measurement_rows": 1454,
+      "event_rows": 10,
+      "first_host": "2026-11-02T10:04:51.112482-05:00",
+      "last_host": "2026-11-02T10:17:22.198782-05:00",
+      "first_time_s": "0.55",
+      "last_time_s": "751.0",
+      "action": "keep",
+      "reason": "Keep: safety trip and high-gain controller evidence."
+    },
+    {
+      "path": "Module_7/data/raw/module_07_rod_pi_check_20C.csv",
+      "bytes": 111699,
+      "sha256": "a4a9cab266778dea22edf53f742b9907e663bd1f38b0fd273e955e6798003d93",
+      "measurement_rows": 465,
+      "event_rows": 6,
+      "first_host": "2026-11-02T10:00:36.616911-05:00",
+      "last_host": "2026-11-02T10:04:36.312209-05:00",
+      "first_time_s": "0.55",
+      "last_time_s": "239.97",
+      "action": "keep",
+      "reason": "Keep: low-temperature controller and baseline evidence."
+    },
+    {
+      "path": "Module_7/data/raw/module_07_rod_pilot_20C_30C_20C.csv",
+      "bytes": 200650,
+      "sha256": "31cd3639f4d3257fcd30673e703fb06796f3a920713ebc2976f20157afbb2398",
+      "measurement_rows": 774,
+      "event_rows": 8,
+      "first_host": "2026-10-30T15:23:02.294864-04:00",
+      "last_host": "2026-10-30T15:29:41.795941-04:00",
+      "first_time_s": "0.55",
+      "last_time_s": "399.76",
+      "action": "keep",
+      "reason": "Keep: baseline, stepped heating/cooling, propagation and same-temperature evidence."
+    },
+    {
+      "path": "Module_7/data/raw/module_07_rod_stationary_40C.csv",
+      "bytes": 984475,
+      "sha256": "70aaaec4b67fc6068cc98271867e34bf84ac237defc0c305afaa1eb41a47cc54",
+      "measurement_rows": 3578,
+      "event_rows": 7,
+      "first_host": "2026-11-02T11:13:43.588208-05:00",
+      "last_host": "2026-11-02T11:44:33.892428-05:00",
+      "first_time_s": "0.55",
+      "last_time_s": "1849.33",
+      "action": "keep",
+      "reason": "Keep: prior 31-minute drift/oscillation diagnostic, referenced by reports and processed results."
+    }
+  ],
+  "room_temperature": "Operator confirmed no independent thermometer on 2026-11-04. No independent ambient reading available; any fitted ambient must be labelled as estimated.",
+  "measured_diameter_m": 0.01277,
+  "live_run": "Module_7/data/raw/module_07_rod_20261104_095908_593628.csv",
+  "checks": [
+    "lsof +D raw: protect open files",
+    "csv.DictReader: count only event=measurement as temperatures",
+    "delete only the two enumerated closed files with zero measurement rows",
+    "recheck open owners and SHA-256 before deletion",
+    "verify SHA-256 of all other closed measured CSVs after deletion"
+  ]
+}

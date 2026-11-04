@@ -1,4 +1,7 @@
-"""Six-channel rod acquisition GUI with the Module 6 P/PI control path.
+"""Six-channel acquisition GUI with a horizontal control-and-plot layout.
+
+Controls are on the left, A0/setpoint at the upper right, and rods A1-A5 at
+the lower right. Promoted from the verified layout copy on 2026-11-04.
 
 Copied from Module_6/python/pi_tec_control_gui.py. The control path, safety
 gates, and setpoint-step handling are unchanged, so Module 6 stays a verified
@@ -12,7 +15,8 @@ The TEC channel remains the only PI feedback and the only safety input; an
 unusable rod channel is displayed and logged but never stops the actuator,
 because a loose rod probe must not abort a long steady-state run.
 
-Use Module_7/run_rod_acquisition.command. --preview never opens a serial port.
+Use Module_7/run_rod_acquisition.command.
+--preview never opens a serial port.
 """
 from pathlib import Path
 import os
@@ -33,10 +37,10 @@ import time
 import pyqtgraph as pg
 import serial
 from serial.tools import list_ports
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Qt
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
     QGridLayout, QGroupBox, QLabel, QPushButton, QComboBox, QDoubleSpinBox,
-    QSpinBox, QCheckBox, QLineEdit, QMessageBox)
+    QSpinBox, QCheckBox, QLineEdit, QMessageBox, QSplitter, QScrollArea, QFrame)
 
 # Reuse the tested Module 6 arithmetic instead of copying the controller.
 sys.path.insert(0, str(ROOT / "Module_6/python"))
@@ -99,22 +103,50 @@ class RodAcquisitionWindow(QMainWindow):
         self.csv_path = None
         self.setWindowTitle("Module 7 Six-Channel Rod Acquisition"
                             + (" — OFFLINE PREVIEW" if preview else ""))
-        self.resize(1180, 1000)
+        self.resize(1360, 860)
+        self.setMinimumSize(1000, 640)
         layout = QVBoxLayout()
         body = QWidget();body.setLayout(layout);self.setCentralWidget(body)
         banner = QLabel("OFFLINE PREVIEW — no serial connection, no experimental data saved" if preview
                         else "Physical rod instrument — instructor review before actuator power")
         banner.setStyleSheet("font-weight:bold; color:#a34d14")
+        banner.setWordWrap(True)
         layout.addWidget(banner)
+
+        # Independent panels keep the controls readable without shrinking the
+        # charts. The stop button stays visible below the scrollable controls.
+        self.main_splitter = QSplitter(Qt.Horizontal)
+        self.control_panel = QWidget()
+        self.control_panel.setMinimumWidth(330)
+        self.control_panel.setMaximumWidth(520)
+        control_layout = QVBoxLayout(self.control_panel)
+        control_layout.setContentsMargins(0, 0, 0, 0)
+        control_body = QWidget()
+        control_body_layout = QVBoxLayout(control_body)
+        control_body_layout.setContentsMargins(0, 0, 8, 0)
+        control_scroll = QScrollArea()
+        control_scroll.setWidgetResizable(True)
+        control_scroll.setFrameShape(QFrame.NoFrame)
+        control_scroll.setWidget(control_body)
+        control_layout.addWidget(control_scroll, 1)
+        self.plot_splitter = QSplitter(Qt.Vertical)
+        self.plot_splitter.setMinimumWidth(500)
+        self.main_splitter.addWidget(self.control_panel)
+        self.main_splitter.addWidget(self.plot_splitter)
+        self.main_splitter.setStretchFactor(0, 0)
+        self.main_splitter.setStretchFactor(1, 1)
+        self.main_splitter.setSizes([380, 950])
+        layout.addWidget(self.main_splitter, 1)
         connection = QGroupBox("Arduino connection");grid = QGridLayout(connection)
         self.port = QComboBox();self.port.setEditable(True)
         self.refresh = QPushButton("Refresh ports");self.refresh.clicked.connect(self.refresh_ports)
         self.connect_button = QPushButton("Connect (PWM 0)");self.connect_button.clicked.connect(self.connect_port)
         self.disconnect_button = QPushButton("Disconnect / PWM 0");self.disconnect_button.clicked.connect(self.disconnect_port)
-        grid.addWidget(self.port,0,0);grid.addWidget(self.refresh,0,1)
-        grid.addWidget(self.connect_button,0,2);grid.addWidget(self.disconnect_button,0,3)
-        layout.addWidget(connection)
-        controls = QGroupBox("P / PI settings");grid=QGridLayout(controls)
+        grid.addWidget(self.port,0,0,1,2)
+        grid.addWidget(self.refresh,1,0);grid.addWidget(self.connect_button,1,1)
+        grid.addWidget(self.disconnect_button,2,0,1,2)
+        control_body_layout.addWidget(connection)
+        controls = QGroupBox("Control factors — P / PI");grid=QGridLayout(controls)
         self.mode = QComboBox();self.mode.addItems(["P","PI"])
         self.target=self.number(10,45,30,4)
         self.kp=self.number(0,1000,2,5)
@@ -123,30 +155,51 @@ class RodAcquisitionWindow(QMainWindow):
         self.anti=QCheckBox("Conditional integration anti-windup");self.anti.setChecked(True)
         for i,(label,widget) in enumerate([("Mode",self.mode),("Setpoint (C)",self.target),
                 ("Kp (PWM/C)",self.kp),("Ki (PWM/(C s))",self.ki),("PWM limit",self.limit)]):
-            grid.addWidget(QLabel(label),0,i);grid.addWidget(widget,1,i)
+            grid.addWidget(QLabel(label),i,0);grid.addWidget(widget,i,1)
         self.start=QPushButton("Start P / PI");self.start.clicked.connect(self.start_control)
         self.stop=QPushButton("STOP — PWM 0");self.stop.clicked.connect(lambda:self.stop_control("Operator stop"))
         self.stop.setStyleSheet("font-weight:bold; background:#b22222; color:white")
+        self.stop.setMinimumHeight(44)
         self.reset=QPushButton("Zero integral + STOP");self.reset.clicked.connect(self.zero_integral)
         self.apply=QPushButton("Apply setpoint step");self.apply.clicked.connect(self.apply_setpoint)
         self.mark_note=QLineEdit();self.mark_note.setPlaceholderText(
             "Note for the log (e.g. steady reached, probe moved, calibration start)")
         self.mark=QPushButton("Mark event");self.mark.clicked.connect(self.mark_event)
-        self.whole_run=QCheckBox("X axis: whole run (wheel = zoom, drag = pan)")
+        self.whole_run=QCheckBox("Show whole run")
         self.whole_run.setChecked(True)
         self.whole_run.setToolTip(
             "Ticked: the x axis always spans the whole run from t=0.\n"
             "Zoom or pan with the mouse and this unticks itself, so the window you are\n"
             "looking at is not pulled away by the next sample. 'Fit x' returns to the run.")
         self.fit_button=QPushButton("Fit x");self.fit_button.clicked.connect(self.fit_whole_run)
-        grid.addWidget(self.anti,2,0,1,2);grid.addWidget(self.whole_run,2,2,1,1)
-        grid.addWidget(self.fit_button,2,3,1,2)
-        grid.addWidget(self.start,3,0);grid.addWidget(self.apply,3,1)
-        grid.addWidget(self.reset,3,2);grid.addWidget(self.stop,3,3,1,2)
-        grid.addWidget(self.mark_note,4,0,1,3);grid.addWidget(self.mark,4,3,1,2)
-        layout.addWidget(controls)
+        self.anti.setText("Anti-windup")
+        self.anti.setToolTip("Conditional integration anti-windup")
+        grid.addWidget(self.anti,5,0,1,2)
+        grid.addWidget(self.start,6,0,1,2)
+        grid.addWidget(self.apply,7,0,1,2)
+        grid.addWidget(self.reset,8,0,1,2)
+        control_body_layout.addWidget(controls)
+        chart_controls = QGroupBox("Chart view")
+        chart_grid = QGridLayout(chart_controls)
+        chart_grid.addWidget(self.whole_run,0,0)
+        chart_grid.addWidget(self.fit_button,0,1)
+        chart_hint = QLabel("Wheel: zoom · Drag: pan · Both time axes are linked")
+        chart_hint.setWordWrap(True)
+        chart_grid.addWidget(chart_hint,1,0,1,2)
+        control_body_layout.addWidget(chart_controls)
+        events = QGroupBox("Experiment notes")
+        event_layout = QVBoxLayout(events)
+        event_layout.addWidget(self.mark_note)
+        event_layout.addWidget(self.mark)
+        control_body_layout.addWidget(events)
         self.readout=QLabel("Waiting for Arduino measurements. Output is disabled.")
-        self.readout.setWordWrap(True);layout.addWidget(self.readout)
+        self.readout.setWordWrap(True)
+        readings = QGroupBox("Live readings")
+        readings_layout = QVBoxLayout(readings)
+        readings_layout.addWidget(self.readout)
+        control_body_layout.addWidget(readings)
+        control_body_layout.addStretch(1)
+        control_layout.addWidget(self.stop)
         pg.setConfigOptions(antialias=True,foreground='#222222')
         # Two plots, because one shared axis hides the rod differences: the TEC
         # spans 15-45 C while rods 1-5 sit inside a few tenths of a degree of
@@ -158,7 +211,7 @@ class RodAcquisitionWindow(QMainWindow):
         rod_series=[(f"{channel}_C",f"A{index} / T{index}  (x={x:g} cm)",CHANNEL_PENS[index],2)
                     for index,channel,x in zip(range(1,6),ROD_CHANNELS,ROD_POSITIONS_CM)]
         for index,(title,series) in enumerate([
-            ("TEC base and setpoint",[("tec_C","A0: measured TEC",CHANNEL_PENS[0],3),
+            ("A0 — TEC base and set temperature",[("tec_C","A0: measured TEC",CHANNEL_PENS[0],3),
                                       ("setpoint_C","TEC setpoint",'#c0392b',2)]),
             ("Rod thermistors A1-A5: holes 2, 5, 7, 8, 9 (origin at hole 2)",rod_series)]):
             plot=pg.PlotWidget(title=title);plot.setBackground('w')
@@ -184,7 +237,9 @@ class RodAcquisitionWindow(QMainWindow):
             if self.plots:plot.setXLink(self.plots[0])
             self.plots.append(plot)
             # The rod panel gets the larger share: its whole point is a 0.1 C spread.
-            layout.addWidget(plot,2 if index==0 else 3)
+            self.plot_splitter.addWidget(plot)
+            self.plot_splitter.setStretchFactor(index,2 if index==0 else 3)
+        self.plot_splitter.setSizes([310, 470])
         self.refresh_ports()
         self.timer=QTimer(self);self.timer.timeout.connect(self.poll_serial);self.timer.start(100)
         # Zoom/pan is the operator's: the first wheel or drag unticked 'whole run'
@@ -224,6 +279,8 @@ class RodAcquisitionWindow(QMainWindow):
         self.whole_run.setChecked(False)
 
     def refresh_ports(self):
+        # Preview is entirely offline, including discovery and refresh clicks.
+        if self.preview:return
         old=self.port.currentText()
         devices=[p.device for p in list_ports.comports()]
         self.port.clear();self.port.addItems(devices)

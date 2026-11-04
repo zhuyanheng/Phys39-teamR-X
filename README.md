@@ -18,6 +18,7 @@ Team members:
 - [Module 5: P control](Module_5/README.md)
 - [Module 6: P/PI control and thermal models](Module_6/README.md)
 - [Module 7: Aluminum rod instrument and stationary fin](Module_7/README.md)
+- [Module 8: Angstrom experiment and final thermal transport](Module_8/README.md)
 - [Current A3 PDF](Module_6/output/pdf/A3_Huang_Zhu.pdf)
 
 ## Module 1: Arduino Measurements

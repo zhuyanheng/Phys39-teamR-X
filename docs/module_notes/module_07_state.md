@@ -18,7 +18,7 @@ it by editing the tables in place at the end of a working session — do not app
 | --- | --- | --- |
 | `arduino/module_07_rod_controller/module_07_rod_controller.ino` | Six channels (A0 = TEC, A1–A5 = rod); A0 remains the only PI and safety input | On-site six-channel runs recorded 2026-11-02: all six columns finite, `rod_ok=5` on every row. The Step 4 integration check write-up is still open |
 | `python/rod_protocol.py` | Complete: header line, parser, per-channel validity | 21 hardware-free tests |
-| `python/rod_acquisition_gui.py` | Complete: two linked plots (TEC+setpoint, rods A1–A5 on their own axis), x axis always spans the whole run from t=0 with wheel-zoom / drag-pan / `Fit x`, one CSV column per channel, `rod_ok` counter, event marks, LF-only raw CSV | 12 hardware-free tests (fake serial port, offscreen Qt) |
+| `python/rod_acquisition_gui.py` | Complete: two linked plots (TEC+setpoint, rods A1–A5 on their own axis), x axis always spans the whole run from t=0 with wheel-zoom / drag-pan / `Fit x`, one CSV column per channel, `rod_ok` counter, event marks, LF-only raw CSV | 13 hardware-free tests (fake serial port, offscreen Qt); horizontal layout promoted 2026-11-04; preview also skips port discovery |
 | `python/analysis/cross_calibration_fit.py` | Complete: criterion, calibration table, corrected CSV, fit figure | 24 tests on synthetic six-channel data; **no measured input exists** |
 | `python/analysis/stationary_fin_fit.py` | Complete: steady-state criteria, finite and semi-infinite fit, residual sets, two-layer uncertainty, refusal on a bad run; relaxed limits self-identify (`criterion.relaxed`, console banner, figure title) | 22 tests |
 | `python/analysis/stationary_diagnostics.py` | Complete, **diagnostic only**: the systematics of a drifting record (`window_slide`, `extrapolation`, `ambient`, `geometry`, `origin_swap`), strict JSON with `source_sha256` / `raw_unchanged` / `worst_change_percent`; `--ambient` is required | 11 tests |
@@ -30,10 +30,18 @@ it by editing the tables in place at the end of a working session — do not app
 Run the whole hardware-free suite after touching any script (no Arduino, serial port or Qt window needed):
 
 ```bash
-.venv/bin/python -m unittest discover -s Module_7/python -t Module_7/python   # 101 tests, expect OK
+.venv/bin/python -m unittest discover -s Module_7/python -t Module_7/python   # 102 tests; see 2026-11-04 verification note below
 ```
 
-Per file: 21 protocol + 12 GUI + 24 cross-calibration + 22 stationary fit + 11 diagnostics + 11 figures.
+Per file: 21 protocol + 13 GUI + 24 cross-calibration + 22 stationary fit + 11 diagnostics + 11 figures.
+
+2026-11-04 verification: all 13 acquisition-GUI tests pass with physical serial
+access blocked, and the horizontal layout fits both 1360×860 and 1000×640.
+The full suite runs 102 tests: 98 pass; three figure-event assertions fail and
+one step-response figure test errors because its synthetic ISO timestamp
+(`2026-11-02T10:00:00.00-05:00`) is rejected by this Python runtime. These
+failures are in the unchanged figure tests/analysis and are separate from the
+acquisition UI; the whole suite is not currently green.
 
 ## Data and figures
 
@@ -58,10 +66,29 @@ Per file: 21 protocol + 12 GUI + 24 cross-calibration + 22 stationary fit + 11 d
 
 ## What is actually missing
 
+**2026-11-04 acquisition update:** the final 40 C run
+`module_07_rod_20261104_095908_593628.csv` is in progress (Kp=50, Ki=0.3 in the
+inspected segment); preserve it and assess the trailing steady interval after
+completion. Two closed logs with zero measurements were deleted; all measured
+runs remain, with the cleanup receipt in
+`Module_7/data/processed/data_inventory_20261104.json`. Diameter is now measured
+as 12.77 mm using a vernier caliper with reported instrument precision 0.01 mm;
+the method and instrument specification are recorded. The operator has no
+independent thermometer: ambient may be fitted, but must not be described as
+measured. The exact remaining acquisition/evidence checklist is at the top of
+[the field record](module_07_rod_instrument.md). A second stationary setpoint is
+optional. The operator confirms that the earlier step record exists but its
+final interval was not stationary: step-response acquisition is recorded as
+available, while stationary qualification remains pending. This confirmation
+does not independently verify the initial thermal equilibrium. The current
+warm-start run need not be restarted for that item. Earlier dated status
+statements below are historical.
+
 - **A4 (individual):** all four parts and the PDF are prepared for Yanheng Zhu, using the user-authorized nominal
   12.7 mm diameter and the recorded positions. Numerical verification is in
   `Module_7/data/processed/a4_predictions/`; the source checkpoint is embedded by the PDF builder. Still open:
-  student review, a diameter measurement and geometry uncertainties if available, and Moodle submission.
+  student review, recalculation using the **12.77 mm measured diameter reported
+  2026-11-04**, geometry uncertainties if available, and Moodle submission.
 - **On site, done 2026-11-02:** six-channel sketch running and logging; three runs written to disk at 20 °C, 40 °C
   and 31 min at 40 °C. What that proves and what it does not is in the
   [rod instrument record](module_07_rod_instrument.md); the certified Part 3 fit is still refused

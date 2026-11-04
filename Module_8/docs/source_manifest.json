@@ -1,0 +1,72 @@
+{
+  "prepared_date": "2026-11-04",
+  "scope": "Original copied source provenance; Module 8 destinations now extended for firmware-owned sinusoidal OPEN/P/PI control, scheduling and evidence logging. See verification.json for current checks.",
+  "files": [
+    {
+      "source": "Module_7/arduino/module_07_rod_controller/module_07_rod_controller.ino",
+      "source_sha256": "817ae468105c743d8467cfd2fec6f2879dd504caf1d8cbbd424a4d75e544814a",
+      "destination": "arduino/module_08_rod_controller/module_08_rod_controller.ino",
+      "prepared_sha256": "a4e9d435190b2bfdfa663dd2df5da30ea36ed1c54f912fcd5bed53df209f505f"
+    },
+    {
+      "source": "Module_7/python/rod_acquisition_gui.py",
+      "source_sha256": "a498db75465171f360e287c1bd0d9eb44fc80bc70596277dae00aaf939f19905",
+      "destination": "python/rod_acquisition_gui.py",
+      "prepared_sha256": "9cfff8fe6d3d4747e44b1d777b4808604d8095b07f988b6c36e57ca1bc125906"
+    },
+    {
+      "source": "Module_7/python/rod_protocol.py",
+      "source_sha256": "08011fd0ca034fb50e4eabe35145031aee70306b72131e56e561092cd71b51f3",
+      "destination": "python/rod_protocol.py",
+      "prepared_sha256": "aeec868983e62d6da0d36a3142c48c75d1efad69d67dc2b916e01ba6bb4fd4de"
+    },
+    {
+      "source": "Module_6/python/pi_controller.py",
+      "source_sha256": "a53a0cf178cc482638e101e0ac4719ce1ba64cc801ac559d7d1c896f314703ae",
+      "destination": "python/pi_controller.py",
+      "prepared_sha256": "a53a0cf178cc482638e101e0ac4719ce1ba64cc801ac559d7d1c896f314703ae"
+    },
+    {
+      "source": "Module_7/python/analysis/pilot_run_check.py",
+      "source_sha256": "9c2f99b4ffedd12a6ed07a35dde317d97d7c8c02f34b8e474d9c6c5efef0deda",
+      "destination": "python/analysis/acquisition_check.py",
+      "prepared_sha256": "e98357d1030bdf3fcb13edd644b534c24ed3d44d77b727d850d047fa2887bda0"
+    },
+    {
+      "source": "Module_7/python/analysis/cross_calibration_fit.py",
+      "source_sha256": "adce96dd89486321e0a5ebcdb33722657ce5b0aa5bb6eda41642157cbd03bfb4",
+      "destination": "python/analysis/cross_calibration_fit.py",
+      "prepared_sha256": "5823777b747a15b7e5d9b9a13999199dd882bb8bf3b499012f97b507d0124028"
+    },
+    {
+      "source": "Module_7/python/test_rod_protocol.py",
+      "source_sha256": "e32a23ee7df230797e394484600f01dabffeac5a5489bf175fa4c90df5cca8e2",
+      "destination": "python/test_rod_protocol.py",
+      "prepared_sha256": "9eaaeaeec518c026a26e24aa375cb7a39b889bb21bf4e679b20753125f3d1599"
+    },
+    {
+      "source": "Module_7/python/test_rod_acquisition_gui.py",
+      "source_sha256": "4c70e4c7f8f804c0f34b754a928c9e151259063c1eec2513473d57afb5b0ba0d",
+      "destination": "python/test_rod_acquisition_gui.py",
+      "prepared_sha256": "cd86925c546178c246566fe3a27d434248124d359f04a96075282a545b1b122d"
+    },
+    {
+      "source": "Module_7/python/test_cross_calibration_fit.py",
+      "source_sha256": "d364f6086eb7c57ec5b4902bfe7e9b02e7667b1aba90361265ffa105c1a279fe",
+      "destination": "python/test_cross_calibration_fit.py",
+      "prepared_sha256": "00c858a1e3fefd686c26a9aebb265a1755f24002d624e53e4d6ee9b6e71c9f4b"
+    },
+    {
+      "source": "Module_7/run_rod_acquisition.command",
+      "source_sha256": "5badba28ed26995283cf68c4de53de5b69d340ea0500ba3cd23a861f00a5c984",
+      "destination": "run_rod_acquisition.command",
+      "prepared_sha256": "d36b03b9ec298641803d52eee21792fa2a35c72019ed3b238a30eafa12b99f81"
+    },
+    {
+      "source": "Module_4/data/steady_state.csv",
+      "source_sha256": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
+      "destination": "data/reference/module_04_steady_state.csv",
+      "prepared_sha256": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c"
+    }
+  ]
+}

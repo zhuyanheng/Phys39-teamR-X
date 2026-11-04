@@ -1,0 +1,28 @@
+{
+  "status": "pending_module_08_measurement",
+  "channels": {
+    "tec": "A0",
+    "rod1": "A1",
+    "rod2": "A2",
+    "rod3": "A3",
+    "rod4": "A4",
+    "rod5": "A5"
+  },
+  "x_m": null,
+  "position_uncertainty_m": null,
+  "analysis_length_m": null,
+  "diameter_m": 0.01277,
+  "diameter_source": "User-reported caliper measurement on 2026-11-04; instrument precision 0.01 mm, not a complete uncertainty budget.",
+  "inherited_module_07_reference": {
+    "origin": "physical hole 2",
+    "x_m": [
+      0,
+      0.0385,
+      0.0895,
+      0.1405,
+      0.1915
+    ],
+    "analysis_length_m": 0.2715
+  },
+  "note": "Inherited coordinates are reference only. Module 8 starts with T1 at the first hole and downstream probes approximately one inch apart; remeasure all positions and L before production. No acquisition/analysis script treats this pending map as measured Module 8 geometry."
+}

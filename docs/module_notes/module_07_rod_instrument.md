@@ -1,5 +1,122 @@
 # Module 7 rod instrument: field record
 
+## 2026-11-04: measured diameter and acquisition UI
+
+### Data cleanup and remaining acquisition
+
+At the operator's request, the two closed connection-only CSVs beginning
+`module_07_rod_20261104_095254_917810` and
+`module_07_rod_20261104_095433_500673` were deleted. Each had zero measurement
+rows. Their sizes, hashes and deletion rationale are retained in
+`Module_7/data/processed/data_inventory_20261104.json`; the connection-fault
+summary below remains available. Every CSV containing measurements was kept.
+
+The ongoing final stationary run is
+`Module_7/data/raw/module_07_rod_20261104_095908_593628.csv` (opened 09:59:08,
+America/New_York). The file was confirmed open for writing and is protected
+from deletion, renaming and edits. It uses a 40 C setpoint, Kp=50 and Ki=0.3
+in the inspected segment. Do not change gains or stop this run for cleanup.
+No final stationary verdict has been issued while it is being acquired.
+
+The operator confirms **no independent room thermometer** is available.
+Room temperature is therefore missing as an independent measurement for this
+run. Once acquisition has ended, the existing stationary analysis can fit
+ambient jointly with m by omitting `--ambient`, but the result must be labelled
+as fitted, with the parameter-correlation limitation retained. Do not use the
+still-warm initial rod readings as a room-temperature measurement.
+
+Remaining actions, checked against the current course Part III page on
+2026-11-04:
+
+1. Finish this constant-setpoint run, preserving the complete recorded
+   approach. Evaluate the pre-registered trailing 600 s criteria only on a
+   completed file: every channel slope <=0.02 C/min and first/last-third mean
+   change <=0.10 C. Elapsed time or an apparently flat A0 alone is insufficient.
+2. Diameter method is now recorded: vernier caliper, operator-reported instrument
+   precision 0.01 mm, d=12.77 mm. Record the selected positions and L with their
+   uncertainties; confirm the actual overall physical rod length. Save the
+   channel/hole/wire-colour map and a labelled setup photograph if absent.
+   Record each divider's actual fixed resistance when power is off, after this
+   run; do not disconnect the live dividers for this task. The current course
+   specifies nominal 100 kohm dividers; the firmware also uses 100000 ohm.
+3. Preserve the existing below-1-C same-temperature cross-check and the
+   professor-authorized decision to use raw readings. A multi-temperature
+   common-bath record has not been located in this repository. This is an
+   evidence gap, not a reason to claim that calibration coefficients are
+   compulsory or to dismantle this running instrument.
+4. **Step-response record exists.** The operator confirms on 2026-11-04 that
+   the earlier requested record was acquired, although its final interval did
+   not reach a satisfactory stationary state. Remove the step-response item
+   from the missing-acquisition list and retain the existing step records as
+   transient evidence. This does not certify their final interval as stationary
+   or independently verify a uniform 20 C initial condition. The current 09:59
+   warm-start run supplies the pending stationary-profile measurement; do not
+   restart it just to repeat the earlier step.
+5. A second stationary setpoint is an optional robustness check, not a current
+   Part III requirement. Sinusoidal acquisition belongs to Module 8. Finite and
+   semi-infinite fits, residuals, m, 1/m, sensorwise end errors and transverse
+   Biot number are post-processing, not additional physical runs. Check the
+   farthest-sensor excess-temperature span against the course 1/e placement
+   target after fitting; do not move probes during this run.
+
+Course source: https://sethfraden.github.io/Phys39F26-course/labs/lab-08/
+(Phases 1, 3, 4 and 5). This current checklist supersedes older statements in
+these notes that imply mandatory correction fitting or a mandatory second
+stationary temperature. Calibration fitting is only required if the common-
+temperature spread reaches 1 C; that distinction does not establish that the
+unrecorded multi-temperature bath check has been completed.
+
+The operator reports a measured rod diameter of **12.77 mm = 0.01277 m**.
+This replaces the course nominal 12.7 mm for subsequent analysis of this rod.
+The operator identifies the instrument as a **vernier caliper** and reports its
+precision as **0.01 mm = 0.00001 m**. Record that value as the supplied instrument
+specification; it is not automatically a one-standard-deviation uncertainty.
+Repeated measurements, zero-offset checks and a specification/error model have
+not been supplied, so no combined standard uncertainty is invented.
+Sensor positions and analysis length remain as recorded below.
+
+For subsequent stationary fits pass `--diameter 0.01277 --diameter-is-measured`.
+The 2026-11-03 A4 PDF and existing processed results used 12.7 mm nominal; they
+are historical calculations and have not been recalculated for the new diameter.
+
+The official `Module_7/python/rod_acquisition_gui.py` now uses the horizontal
+layout: controls left, A0 and setpoint upper right, A1–A5 lower right. Use the
+existing `Module_7/run_rod_acquisition.command`; the separate horizontal-copy
+filenames are no longer needed. No control gains or safety limits were changed.
+
+The interrupted run is preserved at
+`Module_7/data/raw/module_07_rod_20261104_094044_723371.csv`.
+Its final measurement is at 09:43:31.796246 America/New_York (A0 39.77 C,
+firmware safety OK, all five rod channels valid). At 09:43:33.798574 it logs
+`stop: Measurement timeout`, and at 09:44:17.472037 it logs a disconnect.
+The log establishes a loss of fresh measurements, but does not establish its
+underlying cause. No overtemperature is recorded at the final measurement.
+
+Follow-up connection diagnosis: the 09:52:54 and 09:54:33 CSVs each contain
+zero measurement rows. With the GUI disconnected and no other process owning
+the serial port, two exclusive direct reads at 9600 baud received zero bytes
+(5 s with DTR false, 6 s with ordinary DTR true). No serial commands were
+written. macOS still enumerates an Arduino USB CDC device. The unchanged
+firmware should emit a DATA line even when a thermistor is invalid, and the
+parser accepts nan rod readings. These observations direct the next check to
+the board/firmware/USB/power path; they do not identify a failed thermistor or
+prove a specific hardware failure. The operator then unplugged/replugged USB
+with TEC external power off. A subsequent 7 s read at 9600 baud received 922
+bytes including the expected firmware banner and 10 valid DATA lines, spaced
+0.51–0.52 s apart. All six readings were finite, every row had Safety OK,
+rod_ok=5, and both PWM outputs were reported zero. The last row was
+A0=31.39 C; A1–A5=31.10, 30.54, 30.34, 29.97, 29.33 C. Offline replay of
+these actual DATA lines into the official GUI populated all six curves with
+10 samples. The serial monitor was closed afterward.
+
+Communication and probe readings recovered without code changes or firmware
+upload. This supports a transient board/USB/power-state fault rather than a
+currently failed thermistor. Because both USB cycling and TEC power-off were
+part of the intervention, it does not distinguish USB/firmware lockup from
+power or electrical-interference effects. Recurrence with TEC power restored
+would require a separate controlled check; stable powered operation has not
+yet been demonstrated.
+
 ## 2026-10-30: chosen holes and sensor positions
 
 Source: the mounting choices and the distances measured with a ruler, as reported by the operator in
@@ -64,7 +181,9 @@ confirmed to be the physical bottom end.
 
 - Confirm the actual channel → probe → hole assignment.
 - Confirm that the unit of the last three 5.1 segments is cm.
-- Rod diameter, overall physical length, how the geometry was measured, and the uncertainties.
+- Overall physical length, position/length measurement methods and uncertainties.
+  Diameter is 12.77 mm, measured by vernier caliper with operator-reported
+  precision 0.01 mm; repeated-reading scatter has not been supplied.
 - A photo of the installation with hole numbers, channel labels, the ruler and the positive coordinate
   direction.
 - The same-temperature check over a temperature *span*: the 2026-10-30 and 2026-11-02 records give 0.48 °C

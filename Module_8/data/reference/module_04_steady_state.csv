@@ -1,0 +1,11 @@
+run_id,direction,pwm,start_temperature_C,steady_temperature_C,time_waited_s,source_csv,steady_start_s,steady_end_s,range_exception_approved,notes
+H0,HEAT,0,23.40,23.44,,Module_4/data/module_04_heating_0pct_pwm0_20260928_112039_906848.csv,5.10,24.82,no,Ambient baseline; prior room-temperature wait not recorded
+H1,HEAT,11,21.89,28.31,209.99,Module_4/data/module_04_heating_25pct_pwm11_20260928_102552_858326.csv,218.12,237.97,no,25 percent of selected HEAT maximum
+H2,HEAT,23,25.38,34.62,375.43,Module_4/data/module_04_heating_50pct_pwm23_20260928_103051_243607.csv,402.29,422.14,no,50 percent of selected HEAT maximum; earlier three PWM 233 samples excluded
+H3,HEAT,34,25.12,40.42,479.82,Module_4/data/module_04_heating_75pct_pwm34_20260928_103941_134734.csv,519.31,539.16,no,75 percent of selected HEAT maximum
+H4,HEAT,45,45.44,45.37,27.99,Module_4/data/module_04_heating_max_pwm45_20260928_100550_571289.csv,220.66,240.51,yes,Instructor-approved course-range exception; all 40 samples exceed 45 C; final segment after PWM 47
+C0,COOL,0,23.43,23.44,,Module_4/data/module_04_cooling_0pct_pwm0_20260928_112013_141346.csv,2.08,21.78,no,Ambient baseline; preceding warm-up wait not captured in source CSV
+C1,COOL,24,29.33,20.44,404.37,Module_4/data/module_04_cooling_25pct_pwm24_20260928_104957_896611.csv,408.97,428.82,no,25 percent of selected COOL maximum
+C2,COOL,48,22.64,16.99,310.81,Module_4/data/module_04_cooling_50pct_pwm48_20260928_105744_249371.csv,358.90,378.75,no,50 percent of selected COOL maximum
+C3,COOL,72,17.39,13.40,333.13,Module_4/data/module_04_cooling_75pct_pwm72_20260928_110449_677478.csv,336.72,356.57,no,75 percent of selected COOL maximum
+C4,COOL,96,9.82,9.99,7.12,Module_4/data/module_04_cooling_max_pwm96_20260928_101439_464642.csv,468.64,488.47,yes,Instructor-approved course-range exception; 21 of 40 samples below 10 C; final segment after PWM 98

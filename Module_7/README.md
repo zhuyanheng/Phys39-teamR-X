@@ -279,6 +279,11 @@ Files: `Module_7/python/rod_acquisition_gui.py` (a copy of the Module 6 GUI) +
   emitting `SET PWM … DIR HEAT`, a `nan` rod channel **not** shutting down, and both `SHUTDOWN` and a 46 °C
   TEC reading shutting the actuator down — all passing.
 
+The official GUI uses a horizontal layout as of 2026-11-04: control factors on
+the left, A0 with the set temperature at upper right, and A1–A5 at lower right.
+It replaces the previous layout under the same filename and launcher; there is
+no separate copy to choose. `--preview` skips both port discovery and connection.
+
 How to run (needs the project `.venv` with `PySide6`/`pyqtgraph`/`pyserial` installed from
 `requirements.txt`):
 
@@ -360,6 +365,12 @@ expected voltage at each temperature, per-channel fingerprint table, fault injec
   [field record](../docs/module_notes/module_07_rod_instrument.md) (`x = 0, 3.85, 8.95, 14.05, 19.15 cm`,
   `L = 27.15 cm`), overridable with `--positions` / `--length`; add `--diameter-is-measured` only after the
   diameter has really been measured, otherwise the output states that the diameter is nominal.
+  **2026-11-04 measurement:** `d = 12.77 mm`; pass
+  `--diameter 0.01277 --diameter-is-measured` for this rod. The script's generic
+  fallback remains 12.7 mm nominal. Existing A4 and diagnostic outputs predate
+  this measurement and have not been recalculated; see the field record.
+  Measurement method: vernier caliper, operator-reported instrument precision
+  0.01 mm. This specification is recorded separately from statistical fit errors.
 - 22 hardware-free tests: `.venv/bin/python Module_7/python/test_stationary_fin_fit.py` (recovering a known
   `m` from a synthetic profile, the semi-infinite bias, the closed-form `ε_T`, the refusal logic, an unchanged
   raw-file hash, strict and portable JSON).

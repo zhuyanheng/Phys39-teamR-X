@@ -1,0 +1,72 @@
+{
+  "schema": "module_08_plan_v1",
+  "firmware": "module_08_angstrom_v1",
+  "ratio": 3.503450480306341,
+  "pwm_limit": 96,
+  "anti_windup": true,
+  "calibration": [
+    [
+      9.99,
+      -96.0
+    ],
+    [
+      13.4,
+      -72.0
+    ],
+    [
+      16.99,
+      -48.0
+    ],
+    [
+      20.44,
+      -24.0
+    ],
+    [
+      23.44,
+      0.0
+    ],
+    [
+      28.31,
+      11.0
+    ],
+    [
+      34.62,
+      23.0
+    ],
+    [
+      40.42,
+      34.0
+    ],
+    [
+      45.37,
+      45.0
+    ]
+  ],
+  "steps": [
+    {
+      "duration_s": 1800,
+      "Ta_C": 35,
+      "Tb_C": 5,
+      "period_s": 100,
+      "mode": "PI",
+      "Kp": 50,
+      "Ki": 0.3
+    }
+  ],
+  "metadata": {
+    "purpose": "single",
+    "calibration": {
+      "source": "module_04_steady_state.csv",
+      "sha256": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
+      "qualification": "Measured static curve; Module 4 settling audit remains applicable. Revalidate with the rod attached.",
+      "chi_heat_C_per_pwm": 0.49544628875665514,
+      "chi_cool_C_per_pwm": 0.1414166666666667,
+      "heating_to_cooling_ratio": 3.503450480306341
+    },
+    "ratio_source": "Module 4 provisional measured ratio; revalidate",
+    "ambient_C": null,
+    "ambient_method": "not yet recorded",
+    "settling_criterion": "not yet specified; fixed duration does not certify settling",
+    "settings_status": "planning defaults; tune on the actual apparatus"
+  }
+}

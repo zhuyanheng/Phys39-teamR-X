@@ -1,0 +1,247 @@
+{
+  "status": "fitted",
+  "criterion": {
+    "selection": "last 600 s before operator stop",
+    "relaxed": true,
+    "original_slope_limit_C_per_min": 0.02,
+    "original_drift_budget_C": 0.1,
+    "original_hold_s": 600
+  },
+  "measurement_rows": 1160,
+  "rows_used": 1160,
+  "steady_window": {
+    "start_s": 1705.95,
+    "stop_s": 2306.24,
+    "duration_s": 600.2899999999997,
+    "rows": 1160,
+    "worst_slope_C_per_min": 0.0267094193461524,
+    "slope_channel": "rod4_C",
+    "worst_drift_C": 0.18525906735756337,
+    "drift_channel": "rod4_C"
+  },
+  "window_means_C": {
+    "tec_C": 40.00381896551717,
+    "rod1_C": 36.877086206896564,
+    "rod2_C": 35.22507758620693,
+    "rod3_C": 34.0119913793102,
+    "rod4_C": 33.16726724137935,
+    "rod5_C": 32.309663793103475
+  },
+  "window_std_C": {
+    "tec_C": 0.0074299711809878485,
+    "rod1_C": 0.06474048132159503,
+    "rod2_C": 0.08112769160077536,
+    "rod3_C": 0.08876732250246362,
+    "rod4_C": 0.09096186779959693,
+    "rod5_C": 0.08687643024594234
+  },
+  "ambient_mode": "fitted",
+  "ambient_C": 29.975933954205008,
+  "positions_m": [
+    0.0,
+    0.0385,
+    0.0895,
+    0.1405,
+    0.1915
+  ],
+  "analysis_length_m": 0.2715,
+  "geometry": {
+    "diameter_m": 0.01277,
+    "radius_m": 0.006385,
+    "area_m2": 0.00012807715615989574,
+    "perimeter_m": 0.040118138186341655,
+    "area_over_perimeter_m": 0.0031925
+  },
+  "diameter_is_measured": true,
+  "finite_model": {
+    "m_per_m": 6.784361910746365,
+    "ssr_C2": 0.06711555336773917,
+    "rms_C": 0.1158581489302666,
+    "theta0_measured_C": 6.901152252691556,
+    "sigma_m_per_m": null,
+    "sigma_note": "not computed: m and T_inf were fitted together",
+    "one_over_m_m": 0.1473977970449969,
+    "degrees_of_freedom": 3
+  },
+  "semi_infinite_model": {
+    "m_per_m": 5.6829210956156135,
+    "ssr_C2": 0.10789555651768881,
+    "rms_C": 0.14689830258902845,
+    "method": "log-linear, theta_0 fixed at x = 0"
+  },
+  "epsilon_table": [
+    {
+      "x_m": 0.0,
+      "theta_finite_normalised": 1.0,
+      "theta_semi_normalised": 1.0,
+      "epsilon_T": 0.0
+    },
+    {
+      "x_m": 0.0385,
+      "theta_finite_normalised": 0.7830778511442001,
+      "theta_semi_normalised": 0.7701284702555028,
+      "epsilon_T": 0.016536517882323274
+    },
+    {
+      "x_m": 0.0895,
+      "theta_finite_normalised": 0.5765006305489148,
+      "theta_semi_normalised": 0.5448741703803756,
+      "epsilon_T": 0.0548593678699468
+    },
+    {
+      "x_m": 0.1405,
+      "theta_finite_normalised": 0.4396320430849139,
+      "theta_semi_normalised": 0.38550433208787244,
+      "epsilon_T": 0.12312048643503178
+    },
+    {
+      "x_m": 0.1915,
+      "theta_finite_normalised": 0.35592237198668275,
+      "theta_semi_normalised": 0.2727484585198263,
+      "epsilon_T": 0.23368554497599403
+    }
+  ],
+  "probe_offset_sensitivity": {
+    "offset_C": 0.5,
+    "base_m_per_m": 6.784361910746365,
+    "probes": [
+      {
+        "label": "rod1",
+        "x_m": 0.0,
+        "offset_C": 0.5,
+        "m_per_m": 10.549698752736065,
+        "delta_m_per_m": 3.7653368419896998,
+        "relative_delta_m": 0.5550023556416472
+      },
+      {
+        "label": "rod2",
+        "x_m": 0.0385,
+        "offset_C": 0.5,
+        "m_per_m": 2.552975231912261,
+        "delta_m_per_m": -4.231386678834104,
+        "relative_delta_m": -0.6236970749056927
+      },
+      {
+        "label": "rod3",
+        "x_m": 0.0895,
+        "offset_C": 0.5,
+        "m_per_m": 2.52850662819517,
+        "delta_m_per_m": -4.255855282551195,
+        "relative_delta_m": -0.627303693190359
+      },
+      {
+        "label": "rod4",
+        "x_m": 0.1405,
+        "offset_C": 0.5,
+        "m_per_m": 6.828568411504162,
+        "delta_m_per_m": 0.044206500757796974,
+        "relative_delta_m": 0.006515940826767259
+      },
+      {
+        "label": "rod5",
+        "x_m": 0.1915,
+        "offset_C": 0.5,
+        "m_per_m": 10.694750151358921,
+        "delta_m_per_m": 3.910388240612556,
+        "relative_delta_m": 0.576382612256952
+      }
+    ]
+  },
+  "theta_tip_finite": 0.30924506443963773,
+  "bi_parallel": 3.39279549139224,
+  "bi_perp": 0.0004691155471853877,
+  "profiles": [
+    {
+      "label": "rod1",
+      "x_m": 0.0,
+      "temperature_C": 36.877086206896564,
+      "std_C": 0.06474048132159503,
+      "samples": 1160,
+      "theta_C": 6.901152252691556,
+      "theta_finite_model_C": 6.901152252691556,
+      "theta_semi_model_C": 6.901152252691556,
+      "residual_finite_C": 0.0,
+      "residual_semi_C": 0.0
+    },
+    {
+      "label": "rod2",
+      "x_m": 0.0385,
+      "temperature_C": 35.22507758620693,
+      "std_C": 0.08112769160077536,
+      "samples": 1160,
+      "theta_C": 5.249143632001921,
+      "theta_finite_model_C": 5.40413947645666,
+      "theta_semi_model_C": 5.544996161872007,
+      "residual_finite_C": 0.15499584445473857,
+      "residual_semi_C": 0.2958525298700856
+    },
+    {
+      "label": "rod3",
+      "x_m": 0.0895,
+      "temperature_C": 34.0119913793102,
+      "std_C": 0.08876732250246362,
+      "samples": 1160,
+      "theta_C": 4.036057425105195,
+      "theta_finite_model_C": 3.9785186251907456,
+      "theta_semi_model_C": 4.149828270348617,
+      "residual_finite_C": -0.057538799914449434,
+      "residual_semi_C": 0.11377084524342163
+    },
+    {
+      "label": "rod4",
+      "x_m": 0.1405,
+      "temperature_C": 33.16726724137935,
+      "std_C": 0.09096186779959693,
+      "samples": 1160,
+      "theta_C": 3.1913332871743414,
+      "theta_finite_model_C": 3.0339676644908447,
+      "theta_semi_model_C": 3.1056964099990845,
+      "residual_finite_C": -0.15736562268349674,
+      "residual_semi_C": -0.08563687717525692
+    },
+    {
+      "label": "rod5",
+      "x_m": 0.1915,
+      "temperature_C": 32.309663793103475,
+      "std_C": 0.08687643024594234,
+      "samples": 1160,
+      "theta_C": 2.333729838898467,
+      "theta_finite_model_C": 2.4562744792192177,
+      "theta_semi_model_C": 2.32427694900033,
+      "residual_finite_C": 0.12254464032075063,
+      "residual_semi_C": -0.009452889898136974
+    }
+  ],
+  "source": "Module_7/data/raw/module_07_rod_20261104_095908_593628.csv",
+  "source_sha256": "d8b3a4fe907e9e33175a521776e4a0487be74f8d904c28b4ad78ef77bbe27492",
+  "interpretation": "operator_selected_stationary_approximation",
+  "operator_selection_date": "2026-11-04",
+  "strict_criterion_passed": false,
+  "strict_window_check": {
+    "start": null,
+    "stop": null,
+    "worst_slope_C_per_min": 0.0267094193461524,
+    "slope_channel": "rod4_C",
+    "worst_drift_C": 0.18525906735756337,
+    "drift_channel": "rod4_C",
+    "reason": "the slope is above the criterion"
+  },
+  "ambient_note": "No independent thermometer; ambient is jointly fitted with m.",
+  "diameter_method": "vernier caliper",
+  "instrument_precision_mm": 0.01,
+  "instrument_precision_is_standard_uncertainty": false,
+  "time_quality": {
+    "largest_gap_s": 0.5200000000004366,
+    "safety_counts": {
+      "OK": 1160
+    }
+  },
+  "channel_slopes_C_per_min": {
+    "tec_C": 0.00028880267672226894,
+    "rod1_C": 0.017902837436228534,
+    "rod2_C": 0.022262631445476414,
+    "rod3_C": 0.02598581494173373,
+    "rod4_C": 0.026709419346425147,
+    "rod5_C": 0.026261897528037023
+  }
+}

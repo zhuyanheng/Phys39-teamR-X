@@ -94,6 +94,20 @@ class AcquisitionTests(unittest.TestCase):
             self.assertTrue(math.isfinite(float(rows[0][name])))
         self.assertTrue(all("PWM 0 " in command for command in self.serial.commands))
 
+    def test_preview_never_discovers_or_opens_serial(self):
+        with patch.object(gui.list_ports, "comports", side_effect=AssertionError("Port discovery")), \
+             patch.object(gui.serial, "Serial", side_effect=AssertionError("Serial open")):
+            preview = gui.RodAcquisitionWindow(preview=True)
+            try:
+                preview.timer.stop()
+                preview.refresh_ports()
+                preview.connect_port()
+                self.assertIsNone(preview.serial_port)
+                self.assertIsNone(preview.csv_file)
+                self.assertFalse(preview.connect_button.isEnabled())
+            finally:
+                preview.close()
+
     def test_raw_csv_is_lf_and_starts_with_the_protocol_header(self):
         """The quality JSON quotes this file's SHA-256, so its bytes must not depend on the csv default."""
         self.feed(tec=25.5, rods=[25.4, 25.3, 25.2, 25.1, 25.0])

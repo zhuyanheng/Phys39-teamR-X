@@ -141,6 +141,12 @@ script's own functions (`1/cosh(mL)`, `(mL)²`, `(mR/2)²`, `epsilon_table()`), 
 
 ## 6. Two substitute checks that remain possible without the soak calibration
 
+2026-11-04 clarification: these are optional robustness checks. The current
+course uses raw readings after a common-temperature spread below 1 C and does
+not require a second stationary setpoint. The instructor-authorized raw-data
+route is retained. Differences between profiles at two temperatures would not
+uniquely diagnose sensor gain: changing heat loss or contact can also contribute.
+
 1. **Re-fit with a different reference probe.** Treat rod2 as `x = 0` (shifting the other positions by
    the relative distances) and fit the same window again. If the two `m` agree within 5 %, the
    per-probe bias is not concentrated on the base probe; this is a *relative*-bias test and needs no
