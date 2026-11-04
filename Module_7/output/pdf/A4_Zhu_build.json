@@ -1,10 +1,14 @@
 {
   "author": "Yanheng Zhu",
   "source": "docs/assessments/a4_finite_length_biot.md",
-  "source_sha256": "4f05d7202c360a8b6c34a2b56b8fa7e4894251e096ed4dad5d054cd6b237f019",
-  "git_source_checkpoint": "0c844b8b17f42da73b3ab9caa6707169eaff2a2c",
-  "git_base_checkpoint": "0c844b8b17f42da73b3ab9caa6707169eaff2a2c",
+  "source_sha256": "db1288129a26fa4a1614198d277783629cc6fa2df985624aaa9b65fadc1fa8ff",
+  "git_source_checkpoint": "49dd633ff35c6315a0143fa682a442d85e098bdc",
+  "git_base_checkpoint": "49dd633ff35c6315a0143fa682a442d85e098bdc",
   "source_committed": true,
-  "diameter_status": "nominal_not_measured",
-  "pdf_sha256": "bfdc8747efb19698d1946643fc32570abcc6b45cd0386b8b00d5b73197e4ff0f"
+  "diameter_status": "measured",
+  "diameter_m": 0.01277,
+  "diameter_method": "vernier caliper",
+  "instrument_precision_mm": 0.01,
+  "due_at": "2026-11-09T09:05:00-05:00",
+  "pdf_sha256": "691ac25e089a0d634aef62c463d1960f0e48fe4721484f8a65fcbc03838b0dcf"
 }
