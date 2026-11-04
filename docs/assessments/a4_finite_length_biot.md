@@ -129,8 +129,6 @@ $$\frac{d^2\Theta}{d\xi^2}=(mL)^2\Theta,\qquad \Theta(0)=1,\qquad \left.\frac{d\
 
 The geometric coordinate xi puts the tip at 1. The alternative coordinate mx is also dimensionless, but puts the tip at mL. For an insulated tip there is no tip coefficient h_L in the boundary condition, so no independent tip Biot number is needed. The transverse Biot number remains a separate validity test.
 
-<!-- pagebreak -->
-
 ### Solve the finite insulated-tip problem
 
 The dimensional general solution of the second-order equation is
