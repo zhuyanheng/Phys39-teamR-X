@@ -1,6 +1,6 @@
 # A4: Finite-Rod Model and Validity Checks
 
-**Yanheng Zhu | Phys 39 | Updated 2026-11-05**
+**Yanheng Zhu | Phys 39 | Updated 2026-11-06**
 
 **Assignment A4 | Due Monday, November 9, 2026, 9:05 AM (America/New_York)**
 
@@ -351,11 +351,13 @@ https://sethfraden.github.io/Phys39F26-course/labs/theory-bridge-chapter-1/
 
 Geometry provenance: the operator's 2026-10-30 record in `docs/module_notes/module_07_rod_instrument.md`, not a fit of the temperature data. Geometry uses physical holes 2, 5, 7, 8 and 9 and x = 0 at hole 2.
 
-Reproduce the numerical tables and figure from the repository root:
+Recompute the numerical tables and regenerate the figure from the repository root:
 
 ```text
 .venv/bin/python Module_7/python/analysis/a4_theory_checks.py
 ```
+
+Numerical results are reproducible; PNG bytes can vary with plotting-library and font versions. Release verification checks the manuscript, code, numerical evidence and exact committed PDF; it permits a regenerated PNG to differ. The submitted PDF preserves the figure used for that release.
 
 Numerical evidence is saved separately under `Module_7/data/processed/a4_predictions/`. The script verifies the boundary conditions, both long-rod limits, two independent relative-error expressions, the Biot identity, the silver check and Problem 4.20's 3.67% answer. Its outputs are provisional calculations, not sensor measurements.
 

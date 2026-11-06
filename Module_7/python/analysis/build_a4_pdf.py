@@ -29,11 +29,11 @@ SOURCE_INPUTS = (
     "docs/assessments/a4_finite_length_biot.md",
     "Module_7/python/analysis/build_a4_pdf.py",
     "Module_7/python/analysis/a4_theory_checks.py",
-    "Module_7/figures/a4/a4_finite_length_prediction.png",
     "Module_7/data/processed/a4_predictions/a4_numeric_checks.json",
     "Module_7/data/processed/a4_predictions/a4_sensor_predictions.csv",
     "Module_7/data/processed/a4_predictions/a4_problem_1_3.csv",
 )
+RENDERED_ASSETS = ("Module_7/figures/a4/a4_finite_length_prediction.png",)
 
 
 def digest(path):
@@ -50,7 +50,7 @@ def resolve_commit(ref):
 
 
 def check_source(commit, hashes=None):
-    """Require every PDF-generating input to match its cited source commit."""
+    """Check the manuscript, code and numerical evidence, excluding raster outputs."""
     hashes = hashes or {name: digest(ROOT / name) for name in SOURCE_INPUTS}
     if set(hashes) != set(SOURCE_INPUTS):
         raise ValueError("Source-input manifest is incomplete")
@@ -253,6 +253,8 @@ def render(source_ref=None):
               "source_sha256": digest(SOURCE), "git_source_checkpoint": commit,
               "git_base_checkpoint": commit, "source_committed": True,
               "source_input_sha256": source_hashes,
+              "rendered_asset_sha256": {name: digest(ROOT / name) for name in RENDERED_ASSETS},
+              "rendered_asset_scope": "Bytes used for this PDF; regenerated PNGs may differ with plotting/font versions and are not checked against the working copy during release verification.",
               "pdf_artifact_commit_record": str(RELEASE_RECORD.relative_to(ROOT)),
               "checkpoint_scope": "source and calculation inputs only; exact PDF commit is in the separate release record",
               "diameter_status": "measured", "diameter_m": 0.01277,

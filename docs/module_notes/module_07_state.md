@@ -43,6 +43,12 @@ one step-response figure test errors because its synthetic ISO timestamp
 failures are in the unchanged figure tests/analysis and are separate from the
 acquisition UI; the whole suite is not currently green.
 
+2026-11-06 A4 verification update: four release-integrity regression tests pass.
+The full suite now runs 106 tests: 102 pass; the same three figure-event
+assertions and one timestamp-parsing error remain. A4 release verification
+pins manuscript/code/numerical evidence and exact PDF bytes, while allowing
+environment-dependent PNG raster output to differ after recalculation.
+
 ## Data and figures
 
 | Path | State |
@@ -61,7 +67,7 @@ acquisition UI; the whole suite is not currently green.
 | [Step 1 integration check](module_07_step1_integration_check.md) | Complete: wiring, expected voltages, per-channel fingerprints, fault injection |
 | [rod instrument record](module_07_rod_instrument.md) | Partial: holes 2, 5, 7, 8, 9, the measured distances, the skip decision and the 2026-11-02 runs (incl. the 45 °C interlock trip, the ≈ 30 min settling estimate and the 31 min confirmation run) are in; residuals and the `h` inversion are not |
 | [stationary fin note](module_07_stationary_fin.md) | Method, criteria and two-layer uncertainty complete. §9: all three runs refused, so **no certified steady profile**. §10: the diagnostic fit the 31-minute record supports (`m = 4.83 ± 0.07 1/m` on its trailing window) with the five systematics, the `T∞ = 23.95 °C` self-ambient derivation, and a ready-to-quote paragraph that keeps the diagnosis attached |
-| [`a4_finite_length_biot.md`](../assessments/a4_finite_length_biot.md) | Four-part theoretical draft updated 2026-11-04 for Yanheng Zhu, with exact textbook problem checks and installed geometry. Diameter is measured 12.77 mm; all dependent tables/figure updated. PDF: `Module_7/output/pdf/A4_Zhu.pdf`. Student review and submission are not confirmed |
+| [`a4_finite_length_biot.md`](../assessments/a4_finite_length_biot.md) | Four-part theoretical draft revised 2026-11-06 for Yanheng Zhu, with exact textbook problem checks and installed geometry. Diameter is measured 12.77 mm; numerical predictions unchanged. Source/PDF release records distinguish generated PNGs from reproducible numerical evidence. PDF: `Module_7/output/pdf/A4_Zhu.pdf`. Student review and submission are not confirmed |
 | `Module_7/README.md`, `Module_7/data/README.md`, `Module_7/docs/README.md` | Current, English |
 
 ## What is actually missing
