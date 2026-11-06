@@ -1,14 +1,25 @@
 {
   "author": "Yanheng Zhu",
   "source": "docs/assessments/a4_finite_length_biot.md",
-  "source_sha256": "db1288129a26fa4a1614198d277783629cc6fa2df985624aaa9b65fadc1fa8ff",
-  "git_source_checkpoint": "49dd633ff35c6315a0143fa682a442d85e098bdc",
-  "git_base_checkpoint": "49dd633ff35c6315a0143fa682a442d85e098bdc",
+  "source_sha256": "9bef313abbd11250b83c83b24351724f0e4c8c8758d6d29c8637963aa032d1b8",
+  "git_source_checkpoint": "64b8e7416f492d5c6f9b41f2a3849c07cdad7f70",
+  "git_base_checkpoint": "64b8e7416f492d5c6f9b41f2a3849c07cdad7f70",
   "source_committed": true,
+  "source_input_sha256": {
+    "docs/assessments/a4_finite_length_biot.md": "9bef313abbd11250b83c83b24351724f0e4c8c8758d6d29c8637963aa032d1b8",
+    "Module_7/python/analysis/build_a4_pdf.py": "d9a9e2608693764dd7d5c3c221896e161b2ab0ffe5fc1a0d8d8a184ecd7ecbb0",
+    "Module_7/python/analysis/a4_theory_checks.py": "e603174509070ff6dff0266e22bdef2b209516dffe01da31a5ee46e93957f4c4",
+    "Module_7/figures/a4/a4_finite_length_prediction.png": "0a3374e77f25e6b676f3c2ace7df1d0b7e331085727a035bef45add07b94266d",
+    "Module_7/data/processed/a4_predictions/a4_numeric_checks.json": "c544b6a22f446e15da0268a28d939d32464a2853d02bb5cf623d08754b8fa246",
+    "Module_7/data/processed/a4_predictions/a4_sensor_predictions.csv": "1a81bb763c925487baccea856619ef2b3cdbab255a8f02fedee7f6d47928a18f",
+    "Module_7/data/processed/a4_predictions/a4_problem_1_3.csv": "0113208033eab1d72d3cda9940641d5f0029be301ed3d9f51be2219a3f2731bf"
+  },
+  "pdf_artifact_commit_record": "Module_7/output/pdf/A4_Zhu_release.json",
+  "checkpoint_scope": "source and calculation inputs only; exact PDF commit is in the separate release record",
   "diameter_status": "measured",
   "diameter_m": 0.01277,
   "diameter_method": "vernier caliper",
   "instrument_precision_mm": 0.01,
   "due_at": "2026-11-09T09:05:00-05:00",
-  "pdf_sha256": "691ac25e089a0d634aef62c463d1960f0e48fe4721484f8a65fcbc03838b0dcf"
+  "pdf_sha256": "1358692168bab09533168f61368b6f6c8e09203de27e890a2462dbf8f11434d2"
 }
