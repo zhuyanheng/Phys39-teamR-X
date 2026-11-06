@@ -148,9 +148,9 @@ stays at the TEC base and does not take one of the five rod holes.
 | --- | ---: | --- |
 | bottom reference point → hole 2 | 3 | cm, stated explicitly by the operator |
 | hole 2 → hole 5 | 3.85 | cm, stated explicitly by the operator |
-| hole 5 → hole 7 | 5.1 | assumed cm; the operator did not repeat the unit |
-| hole 7 → hole 8 | 5.1 | assumed cm; the operator did not repeat the unit |
-| hole 8 → hole 9 | 5.1 | assumed cm; the operator did not repeat the unit |
+| hole 5 → hole 7 | 5.1 | cm; confirmed in the 2026-11-05 review of the 2026-10-30 installation record |
+| hole 7 → hole 8 | 5.1 | cm; confirmed in the 2026-11-05 review of the 2026-10-30 installation record |
+| hole 8 → hole 9 | 5.1 | cm; confirmed in the 2026-11-05 review of the 2026-10-30 installation record |
 | hole 9 → top end (rod tip) | 8 | cm, added by the operator afterwards |
 
 ### Cumulative position table
@@ -180,7 +180,7 @@ confirmed to be the physical bottom end.
 ### Still to complete
 
 - Confirm the actual channel → probe → hole assignment.
-- Confirm that the unit of the last three 5.1 segments is cm.
+- Units confirmed: the last three 5.10 segments are in cm (2026-11-05 review).
 - Overall physical length, position/length measurement methods and uncertainties.
   Diameter is 12.77 mm, measured by vernier caliper with operator-reported
   precision 0.01 mm; repeated-reading scatter has not been supplied.

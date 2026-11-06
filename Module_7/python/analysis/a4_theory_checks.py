@@ -148,7 +148,7 @@ def main():
     axes[1].axhline(5, color="#666666", ls="--", label="5% criterion")
     for ax in axes:
         for x in POSITIONS_M:
-            ax.axvline(x, color="#aaaaaa", alpha=.45, lw=.8)
+            ax.axvline(x, color="#666666", alpha=.75, lw=1.2, ls=":", zorder=1)
         ax.grid(alpha=.2)
         ax.set_xlabel("x from physical hole 2 (m)")
         ax.legend(fontsize=10)

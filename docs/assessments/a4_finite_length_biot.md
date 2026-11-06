@@ -1,12 +1,12 @@
 # A4: Finite-Rod Model and Validity Checks
 
-**Yanheng Zhu | Phys 39 | Updated 2026-11-04**
+**Yanheng Zhu | Phys 39 | Updated 2026-11-05**
 
 **Assignment A4 | Due Monday, November 9, 2026, 9:05 AM (America/New_York)**
 
 Repository: https://github.com/zhuyanheng/Phys39-teamR-X
 
-The exact Git source checkpoint is embedded in the generated PDF and its build record. This is a provisional theoretical prediction, not a fit of the measured temperature profile. The rod diameter is measured; h and the conductivity range remain provisional theory inputs. A4 concerns Module 7 Parts I and II, not the Module 8 Angstrom measurement. References [1]-[4] are listed at the end.
+This is a provisional theory calculation using measured geometry, literature k and h = 10 W/(m^2 K), not a fit of temperature data. The first-page checkpoint identifies the source and calculations only. The exact PDF commit and SHA-256 are recorded separately in `Module_7/output/pdf/A4_Zhu_release.json`. References [1]-[4] are listed at the end.
 
 ## Geometry, property sources, and conventions
 
@@ -35,7 +35,7 @@ The 6061-T6 table lists k = 166 at 0 C, 167 at 20 C and 172 W/(m K) at 100 C. Th
 | A5 / T5 | 9 | 0.1915 |
 | Actual tip, no probe | - | 0.2715 |
 
-The reported segments 3.85 + 5.1 + 5.1 + 5.1 + 8 cm give L = 27.15 cm; hole 9 remains 8 cm from the tip. The 5.1 units are assumed cm pending confirmation. T1 is the rod boundary; A0 remains the separate TEC feedback/safety sensor.
+The reported segments 3.85 + 5.1 + 5.1 + 5.1 + 8 cm give L = 27.15 cm; hole 9 remains 8 cm from the tip. The 5.10 cm spacings are confirmed by the installation record dated 2026-10-30; position uncertainties have not been supplied. T1 is the rod boundary; A0 remains the separate TEC feedback/safety sensor.
 
 <!-- pagebreak -->
 
@@ -331,17 +331,17 @@ Every heat-flux calculation in Part 1 has units W/m^2, every heat-rate calculati
 
 <!-- pagebreak -->
 
-## References, reproducibility, and completion status
+## References and reproducibility
 
 [1] J. H. Lienhard IV and J. H. Lienhard V, *A Heat Transfer Textbook*, 6th ed., version supplied by the course. Problem 1.3: textbook p. 37 (PDF p. 51); fin derivation: Section 4.5, pp. 163-173; Example 4.8: p. 172 (PDF p. 186); Problems 4.12 and 4.20: pp. 186-187 (PDF pp. 200-201); Table A.1: pp. 739-740 (PDF pp. 753-754); Table A.2: pp. 742-744 (PDF pp. 756-758).
 
 https://sethfraden.github.io/Phys39F26-course/references/lienhard-heat-transfer-textbook-v6.pdf
 
-[2] Phys 39, Module 7 Part II, *Finite and Infinite Rod Theory*, course source checked 2026-11-03; submission requirements updated from the student-provided Moodle text on 2026-11-04. Equations (4.27)-(4.51), dimensionless variables and the distinction between transverse and parallel resistance ratios.
+[2] Phys 39, Module 7 Part II, *Finite and Infinite Rod Theory*, course source checked 2026-11-03. Equations (4.27)-(4.51), dimensionless variables and the distinction between transverse and parallel resistance ratios.
 
 https://sethfraden.github.io/Phys39F26-course/labs/fin-design-derivation/
 
-[3] Phys 39, Module 7 Part III, *A4: Finite-Rod Model and Validity Checks*, course source checked 2026-11-03; submission requirements updated from the student-provided Moodle text on 2026-11-04. Four-part requirements; provisional h = 10 W/(m^2 K); no measured stationary-profile data required.
+[3] Phys 39, Module 7 Part III, *A4: Finite-Rod Model and Validity Checks*, course source checked 2026-11-03. Four-part requirements; provisional h = 10 W/(m^2 K); no measured stationary-profile data required.
 
 https://github.com/SethFraden/Phys39F26-course/blob/main/course/labs/lab-08/index.md#a4-finite-rod-model-and-validity-checks
 
@@ -359,8 +359,6 @@ Reproduce the numerical tables and figure from the repository root:
 
 Numerical evidence is saved separately under `Module_7/data/processed/a4_predictions/`. The script verifies the boundary conditions, both long-rod limits, two independent relative-error expressions, the Biot identity, the silver check and Problem 4.20's 3.67% answer. Its outputs are provisional calculations, not sensor measurements.
 
-Theoretical content completed: Parts 1-4, dimensional checks, stated 5% error criterion, actual installed positions, explicit coordinate origin, and separate length and radius conclusions. The superseded spacecraft-radiator application question is not used; the current airflow question is answered.
+Measurement record updated 2026-11-04: d = 12.77 mm, vernier caliper, reported instrument precision 0.01 mm. Position/length uncertainties and repeated diameter readings have not been provided; no ruler precision or experimental certification is invented. The latest measured temperature record is not an input to these A4 predictions.
 
-Measurement record updated 2026-11-04: d = 12.77 mm, vernier caliper, reported instrument precision 0.01 mm. Position/length uncertainties and repeated diameter readings have not been provided; no ruler precision or experimental certification is invented. The individual submission deadline above follows the student-provided Moodle assignment text, which supersedes the older public course calendar. The latest measured temperature record is not an input to these A4 predictions.
-
-AI assistance disclosure: Codex assisted with the derivations, calculation script, drafting and document preparation. The named student must review the reasoning, verify the reported setup and be able to explain the work. No AI-generated number is presented as a measurement.
+AI assistance: Codex assisted with drafting, the calculation script, and document preparation.
