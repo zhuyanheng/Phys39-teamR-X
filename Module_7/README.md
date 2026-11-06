@@ -116,7 +116,9 @@ Prepared 2026-11-03: the full theoretical draft for Yanheng Zhu is in
 `docs/assessments/a4_finite_length_biot.md`, with a PDF at `Module_7/output/pdf/A4_Zhu.pdf`.
 Updated 2026-11-04: it uses physical hole 2 as origin and `L = 0.2715 m`;
 `d = 12.77 mm` is measured by vernier caliper, reported precision 0.01 mm.
-The nine-page PDF cites source checkpoint `49dd633ff35c6315a0143fa682a442d85e098bdc`. Predictions use `h = 10 W/(m² K)` and the same 6061-T6 table's 166-172 W/(m K)
+The nine-page PDF distinguishes its source-only checkpoint from the exact PDF
+commit. Both are tracked with checksums in `output/pdf/A4_Zhu_release.json`;
+run `.venv/bin/python Module_7/python/analysis/build_a4_pdf.py --verify-release` from the project root to check them. Predictions use `h = 10 W/(m² K)` and the same 6061-T6 table's 166-172 W/(m K)
 envelope. The spacecraft application question in the older checklist has been replaced by the
 current still-air versus forced-airflow question. Student review and submission are not confirmed.
 

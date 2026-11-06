@@ -180,7 +180,6 @@ confirmed to be the physical bottom end.
 ### Still to complete
 
 - Confirm the actual channel → probe → hole assignment.
-- Units confirmed: the last three 5.10 segments are in cm (2026-11-05 review).
 - Overall physical length, position/length measurement methods and uncertainties.
   Diameter is 12.77 mm, measured by vernier caliper with operator-reported
   precision 0.01 mm; repeated-reading scatter has not been supplied.

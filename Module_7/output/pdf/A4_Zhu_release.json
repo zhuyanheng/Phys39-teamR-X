@@ -1,0 +1,10 @@
+{
+  "source_checkpoint": "64b8e7416f492d5c6f9b41f2a3849c07cdad7f70",
+  "pdf_commit": "96bb1057223c2aab90cdbb1a99cceeaf60cd2a61",
+  "pdf_path": "Module_7/output/pdf/A4_Zhu.pdf",
+  "pdf_sha256": "1358692168bab09533168f61368b6f6c8e09203de27e890a2462dbf8f11434d2",
+  "source_path": "docs/assessments/a4_finite_length_biot.md",
+  "source_sha256": "9bef313abbd11250b83c83b24351724f0e4c8c8758d6d29c8637963aa032d1b8",
+  "build_record": "Module_7/output/pdf/A4_Zhu_build.json",
+  "versioning": "The PDF cites its source-only checkpoint; this separate receipt identifies the exact committed PDF without a self-referential commit hash."
+}

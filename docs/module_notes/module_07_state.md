@@ -166,7 +166,9 @@ room measurement and a joint-fit m standard error is not asserted.
 
 A4 is rebuilt using measured d=12.77 mm, vernier caliper precision 0.01 mm;
 the due date is Nov. 9, 09:05 per the student-provided Moodle text. The PDF
-source checkpoint is `49dd633ff35c6315a0143fa682a442d85e098bdc`. The four parts,
+source-only checkpoint and exact PDF commit are recorded separately in
+`Module_7/output/pdf/A4_Zhu_release.json`, with byte-level verification available
+through `build_a4_pdf.py --verify-release`. The four parts,
 all geometry-dependent numeric tables and plot, and the nine-page PDF are done.
 Student review/submission remain. A subsequent external push synchronized the
 source/PDF; connected GitHub reads verified their blob hashes against the local
