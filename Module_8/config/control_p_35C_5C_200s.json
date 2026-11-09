@@ -1,0 +1,75 @@
+{
+  "schema": "module_08_plan_v1",
+  "firmware": "module_08_angstrom_v1",
+  "ratio": 3.503450480306341,
+  "pwm_limit": 96,
+  "anti_windup": true,
+  "calibration": [
+    [
+      9.99,
+      -96.0
+    ],
+    [
+      13.4,
+      -72.0
+    ],
+    [
+      16.99,
+      -48.0
+    ],
+    [
+      20.44,
+      -24.0
+    ],
+    [
+      23.44,
+      0.0
+    ],
+    [
+      28.31,
+      11.0
+    ],
+    [
+      34.62,
+      23.0
+    ],
+    [
+      40.42,
+      34.0
+    ],
+    [
+      45.37,
+      45.0
+    ]
+  ],
+  "steps": [
+    {
+      "duration_s": 1200,
+      "Ta_C": 35,
+      "Tb_C": 5,
+      "period_s": 200,
+      "mode": "P",
+      "Kp": 50,
+      "Ki": 0
+    }
+  ],
+  "metadata": {
+    "purpose": "boundary_control_comparison_p_200s",
+    "calibration": {
+      "source": "module_04_steady_state.csv",
+      "sha256": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
+      "qualification": "Measured static curve; Module 4 settling audit remains applicable. Revalidate with the rod attached.",
+      "chi_heat_C_per_pwm": 0.49544628875665514,
+      "chi_cool_C_per_pwm": 0.1414166666666667,
+      "heating_to_cooling_ratio": 3.503450480306341
+    },
+    "ratio_source": "Module 4 provisional measured ratio; revalidate",
+    "ambient_C": null,
+    "ambient_method": "not yet recorded",
+    "settling_criterion": "Planning starting tolerances: consecutive complete cycles change in mean <=0.1 C, amplitude <=5%, phase <=0.1 rad; justify against measured noise and repeatability before declaring settled.",
+    "settings_status": "Proposed matched control comparison; no hardware action performed.",
+    "rationale": "Match the existing PI 200 s mean/amplitude/period, ratio and PWM cap. Reuse qualified PI TEC/T1 intervals for boundary-control metrics; this does not certify the old record for three-rod Angstrom inference.",
+    "duration_note": "20 minutes is a planning budget for a boundary-control comparison. Retain at least three settled cycles (600 s at this period); allow extra settling if necessary. Six channels remain logged.",
+    "minimum_retained_duration_s": 600
+  }
+}

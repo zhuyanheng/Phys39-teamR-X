@@ -1,0 +1,85 @@
+{
+  "source_snapshot": "Module_8/data/processed/pilot_checks/module_08_rod_20261109_095722_597413_cycle_settling.json",
+  "as_of_host_time": "2026-11-09T10:39:43.509614-05:00",
+  "raw_source": "Module_8/data/raw/module_08_rod_20261109_095722_597413.csv",
+  "snapshot_prefix_bytes": 1752318,
+  "snapshot_prefix_sha256": "9639d3a6c206c190eefc5373b63ea735b3295876561024fd81cde3319e1e49d4",
+  "complete_cycles": 12,
+  "elapsed_running_s": 2530.984,
+  "last_five_cycle_numbers": [
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "planning_tolerances": {
+    "mean_change_C": 0.1,
+    "amplitude_change_fraction": 0.05,
+    "phase_change_rad": 0.1
+  },
+  "channels": {
+    "tec_C": {
+      "mean_span_C": 0.0020276480515803996,
+      "amplitude_range_C": [
+        4.795062504013768,
+        4.798716024604939
+      ],
+      "amplitude_span_fraction": 0.0007616742986008705,
+      "phase_span_rad": 0.0007036120328123285,
+      "passes_planning_span_limits": true
+    },
+    "rod1_C": {
+      "mean_span_C": 0.07519019557303608,
+      "amplitude_range_C": [
+        1.6609319506185263,
+        1.708407679749899
+      ],
+      "amplitude_span_fraction": 0.028144946094322543,
+      "phase_span_rad": 0.010529263839468062,
+      "passes_planning_span_limits": true
+    },
+    "rod2_C": {
+      "mean_span_C": 0.0926406961233468,
+      "amplitude_range_C": [
+        0.9025490100728046,
+        0.9447394147122995
+      ],
+      "amplitude_span_fraction": 0.04596405355696122,
+      "phase_span_rad": 0.03579095681296929,
+      "passes_planning_span_limits": true
+    },
+    "rod3_C": {
+      "mean_span_C": 0.0911832269366144,
+      "amplitude_range_C": [
+        0.40058693330677647,
+        0.43467354435171934
+      ],
+      "amplitude_span_fraction": 0.08058811449555281,
+      "phase_span_rad": 0.1402097635829085,
+      "passes_planning_span_limits": false
+    },
+    "rod4_C": {
+      "mean_span_C": 0.0784887505093188,
+      "amplitude_range_C": [
+        0.1846990949069456,
+        0.21851250040821307
+      ],
+      "amplitude_span_fraction": 0.16968026801470276,
+      "phase_span_rad": 0.23727611299717255,
+      "passes_planning_span_limits": false
+    },
+    "rod5_C": {
+      "mean_span_C": 0.06406120039517305,
+      "amplitude_range_C": [
+        0.06902672619683992,
+        0.11985785754621885
+      ],
+      "amplitude_span_fraction": 0.5176864536978997,
+      "phase_span_rad": 0.4722702608900927,
+      "passes_planning_span_limits": false
+    }
+  },
+  "classification": "pilot; no retained three-rod five-cycle interval certified by this check",
+  "note": "Cycle spans use the same five-cycle range criterion as the offline fitter. Tolerances remain planning choices requiring justification against noise. This check does not require or infer unknown geometry."
+}

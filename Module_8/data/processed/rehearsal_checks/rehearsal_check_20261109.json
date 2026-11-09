@@ -1,0 +1,268 @@
+{
+  "date": "2026-11-09",
+  "checks": [
+    {
+      "source": "Module_8/data/raw/module_08_rod_20261109_093936_011209.csv",
+      "sha256": "43017658d379631910429cb150732d090c94c81c9c9e81843d492ea103e66c29",
+      "serial_sha256": "4a7c3722cbf3fbd4f0e240d08f6960e6d763bb41533cc9518b75d0c587c0db06",
+      "raw_unchanged": true,
+      "first_host_time": "2026-11-09T09:39:37.323104-05:00",
+      "last_host_time": "2026-11-09T09:42:59.524090-05:00",
+      "measurement_rows": 405,
+      "serial_data_lines": 405,
+      "malformed_serial_data_lines": 0,
+      "csv_serial_sequence_match": true,
+      "missing_sequence_records": 0,
+      "nonadvancing_sequence": 0,
+      "sample_interval_min_s": 0.4989999999999952,
+      "sample_interval_max_s": 0.5010000000000048,
+      "channel_ranges": {
+        "tec_C": {
+          "invalid_count": 0,
+          "min_C": 22.99304,
+          "max_C": 30.59357
+        },
+        "rod1_C": {
+          "invalid_count": 0,
+          "min_C": 22.9884,
+          "max_C": 24.79877
+        },
+        "rod2_C": {
+          "invalid_count": 0,
+          "min_C": 22.80216,
+          "max_C": 23.9538
+        },
+        "rod3_C": {
+          "invalid_count": 0,
+          "min_C": 22.69244,
+          "max_C": 23.67328
+        },
+        "rod4_C": {
+          "invalid_count": 0,
+          "min_C": 23.04974,
+          "max_C": 23.37723
+        },
+        "rod5_C": {
+          "invalid_count": 0,
+          "min_C": 22.8317,
+          "max_C": 22.99826
+        }
+      },
+      "max_heartbeat_age_ms": 701,
+      "fault_counts": {
+        "NONE": 405
+      },
+      "firmware_errors": [],
+      "events": [
+        "#EVENT,STEP,117839,0",
+        "#EVENT,STEP,123170,1",
+        "#EVENT,STEP,128169,2",
+        "#EVENT,DONE,133170"
+      ],
+      "runs": [
+        {
+          "run_id": "1",
+          "active_samples": 30,
+          "steps": [
+            {
+              "duration_s": 5.0,
+              "Ta_C": 35.0,
+              "Tb_C": 2.0,
+              "period_s": 100.0,
+              "mode": "PI",
+              "Kp": 50.0,
+              "Ki": 0.3
+            },
+            {
+              "duration_s": 5.0,
+              "Ta_C": 35.0,
+              "Tb_C": 2.0,
+              "period_s": 150.0,
+              "mode": "PI",
+              "Kp": 50.0,
+              "Ki": 0.3
+            },
+            {
+              "duration_s": 5.0,
+              "Ta_C": 35.0,
+              "Tb_C": 2.0,
+              "period_s": 240.0,
+              "mode": "PI",
+              "Kp": 50.0,
+              "Ki": 0.3
+            }
+          ],
+          "saturated_samples": 30,
+          "saturated_fraction": 1.0,
+          "max_phase_generation_error_rad": 4.877025541638602e-06,
+          "max_setpoint_generation_error_C": 7.221436653992441e-06,
+          "done_samples": 130,
+          "all_done_outputs_zero": true,
+          "mean_changed_between_steps": false,
+          "maximum_possible_cycles_per_step": [
+            0.05,
+            0.03333333333333333,
+            0.020833333333333332
+          ]
+        }
+      ],
+      "limitation": "Rehearsal validates acquisition, timing and output-off sequence; it does not establish settled sinusoidal tracking or a production dataset."
+    },
+    {
+      "source": "Module_8/data/raw/module_08_rod_20261109_094442_064803.csv",
+      "sha256": "e1f57abe677c489aba8aa328fb6ed7357aa611d3424972ea85c548ec25353c72",
+      "serial_sha256": "b53957132a62f7bec33a21840f70c6373c411900e5c2b5a094a747877f3e1d0e",
+      "raw_unchanged": true,
+      "first_host_time": "2026-11-09T09:44:43.324586-05:00",
+      "last_host_time": "2026-11-09T09:48:56.026899-05:00",
+      "measurement_rows": 506,
+      "serial_data_lines": 506,
+      "malformed_serial_data_lines": 0,
+      "csv_serial_sequence_match": true,
+      "missing_sequence_records": 0,
+      "nonadvancing_sequence": 0,
+      "sample_interval_min_s": 0.4989999999999952,
+      "sample_interval_max_s": 0.5010000000000048,
+      "channel_ranges": {
+        "tec_C": {
+          "invalid_count": 0,
+          "min_C": 20.32059,
+          "max_C": 32.93994
+        },
+        "rod1_C": {
+          "invalid_count": 0,
+          "min_C": 22.78174,
+          "max_C": 27.20422
+        },
+        "rod2_C": {
+          "invalid_count": 0,
+          "min_C": 23.08005,
+          "max_C": 25.42014
+        },
+        "rod3_C": {
+          "invalid_count": 0,
+          "min_C": 23.55252,
+          "max_C": 24.63907
+        },
+        "rod4_C": {
+          "invalid_count": 0,
+          "min_C": 23.60342,
+          "max_C": 24.22485
+        },
+        "rod5_C": {
+          "invalid_count": 0,
+          "min_C": 23.2847,
+          "max_C": 23.73102
+        }
+      },
+      "max_heartbeat_age_ms": 487,
+      "fault_counts": {
+        "NONE": 506
+      },
+      "firmware_errors": [],
+      "events": [
+        "#EVENT,STEP,31417,0",
+        "#EVENT,STEP,36670,1",
+        "#EVENT,STEP,41670,2",
+        "#EVENT,DONE,46670",
+        "#EVENT,STEP,75851,0",
+        "#EVENT,STEP,126170,1",
+        "#EVENT,STEP,176169,2",
+        "#EVENT,DONE,226170"
+      ],
+      "runs": [
+        {
+          "run_id": "1",
+          "active_samples": 30,
+          "steps": [
+            {
+              "duration_s": 5.0,
+              "Ta_C": 20.0,
+              "Tb_C": 2.0,
+              "period_s": 100.0,
+              "mode": "PI",
+              "Kp": 50.0,
+              "Ki": 0.3
+            },
+            {
+              "duration_s": 5.0,
+              "Ta_C": 35.0,
+              "Tb_C": 2.0,
+              "period_s": 150.0,
+              "mode": "PI",
+              "Kp": 50.0,
+              "Ki": 0.3
+            },
+            {
+              "duration_s": 5.0,
+              "Ta_C": 20.0,
+              "Tb_C": 2.0,
+              "period_s": 240.0,
+              "mode": "PI",
+              "Kp": 50.0,
+              "Ki": 0.3
+            }
+          ],
+          "saturated_samples": 30,
+          "saturated_fraction": 1.0,
+          "max_phase_generation_error_rad": 4.8066249527245475e-06,
+          "max_setpoint_generation_error_C": 6.45939036303389e-06,
+          "done_samples": 55,
+          "all_done_outputs_zero": true,
+          "mean_changed_between_steps": true,
+          "maximum_possible_cycles_per_step": [
+            0.05,
+            0.03333333333333333,
+            0.020833333333333332
+          ]
+        },
+        {
+          "run_id": "2",
+          "active_samples": 300,
+          "steps": [
+            {
+              "duration_s": 50.0,
+              "Ta_C": 20.0,
+              "Tb_C": 2.0,
+              "period_s": 100.0,
+              "mode": "PI",
+              "Kp": 50.0,
+              "Ki": 0.3
+            },
+            {
+              "duration_s": 50.0,
+              "Ta_C": 35.0,
+              "Tb_C": 2.0,
+              "period_s": 150.0,
+              "mode": "PI",
+              "Kp": 50.0,
+              "Ki": 0.3
+            },
+            {
+              "duration_s": 50.0,
+              "Ta_C": 20.0,
+              "Tb_C": 2.0,
+              "period_s": 240.0,
+              "mode": "PI",
+              "Kp": 50.0,
+              "Ki": 0.3
+            }
+          ],
+          "saturated_samples": 154,
+          "saturated_fraction": 0.5133333333333333,
+          "max_phase_generation_error_rad": 2.5269228666857657e-05,
+          "max_setpoint_generation_error_C": 4.710237170613141e-05,
+          "done_samples": 55,
+          "all_done_outputs_zero": true,
+          "mean_changed_between_steps": true,
+          "maximum_possible_cycles_per_step": [
+            0.5,
+            0.3333333333333333,
+            0.20833333333333334
+          ]
+        }
+      ],
+      "limitation": "Rehearsal validates acquisition, timing and output-off sequence; it does not establish settled sinusoidal tracking or a production dataset."
+    }
+  ]
+}

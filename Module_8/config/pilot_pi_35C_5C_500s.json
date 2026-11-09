@@ -1,0 +1,75 @@
+{
+  "schema": "module_08_plan_v1",
+  "firmware": "module_08_angstrom_v1",
+  "ratio": 3.503450480306341,
+  "pwm_limit": 96,
+  "anti_windup": true,
+  "calibration": [
+    [
+      9.99,
+      -96.0
+    ],
+    [
+      13.4,
+      -72.0
+    ],
+    [
+      16.99,
+      -48.0
+    ],
+    [
+      20.44,
+      -24.0
+    ],
+    [
+      23.44,
+      0.0
+    ],
+    [
+      28.31,
+      11.0
+    ],
+    [
+      34.62,
+      23.0
+    ],
+    [
+      40.42,
+      34.0
+    ],
+    [
+      45.37,
+      45.0
+    ]
+  ],
+  "steps": [
+    {
+      "duration_s": 3600,
+      "Ta_C": 35,
+      "Tb_C": 5,
+      "period_s": 500,
+      "mode": "PI",
+      "Kp": 50,
+      "Ki": 0.3
+    }
+  ],
+  "metadata": {
+    "purpose": "pilot_pi_500s",
+    "calibration": {
+      "source": "module_04_steady_state.csv",
+      "sha256": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
+      "qualification": "Measured static curve; Module 4 settling audit remains applicable. Revalidate with the rod attached.",
+      "chi_heat_C_per_pwm": 0.49544628875665514,
+      "chi_cool_C_per_pwm": 0.1414166666666667,
+      "heating_to_cooling_ratio": 3.503450480306341
+    },
+    "ratio_source": "Module 4 provisional measured ratio; revalidate",
+    "ambient_C": null,
+    "ambient_method": "not yet recorded",
+    "settling_criterion": "Planning starting tolerances: consecutive complete cycles change in mean <=0.1 C, amplitude <=5%, phase <=0.1 rad; justify against measured noise and repeatability before declaring settled.",
+    "settings_status": "Second-period pilot; gains retained as a starting point, not certified tuning.",
+    "rationale": "The 200 s pilot has repeatable TEC/T1/T2 responses but T3 fails the provisional five-cycle amplitude/phase span limits. Test a longer period to increase downstream response without moving sensors or changing mean/amplitude.",
+    "minimum_retained_duration_s": 2500,
+    "duration_note": "3600 s allows 7.2 cycles in total; at least five complete settled cycles are needed. If transients last too long, the retained interval may still be insufficient."
+  }
+}
