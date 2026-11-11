@@ -1,4 +1,4 @@
-"""Fixed Module 8 v1 serial record. Inactive numeric fields use nan.
+"""Fixed Module 8 v2 serial record, with read compatibility for saved v1 lines.
 
 A legacy Module 7 DATA line is rejected; it cannot enable the new controller.
 The exact incoming bytes, including errors/events, are separately saved by the GUI.
@@ -10,13 +10,14 @@ CHANNELS = ('tec', 'rod1', 'rod2', 'rod3', 'rod4', 'rod5')
 ROD_CHANNELS = CHANNELS[1:]
 CHANNEL_FIELDS = ('time_s', 'tec_C') + tuple(f'{c}_C' for c in ROD_CHANNELS)
 DATA_PREFIX, DIAGNOSTIC_PREFIX = 'DATA,', '#'
-FIELD_NAMES = CHANNEL_FIELDS + (
+V1_FIELD_NAMES = CHANNEL_FIELDS + (
     'pwm','heat_cool','heat_pwm','cool_pwm','limit_C','safety','rod_ok',
     'run_state','control_mode','step','Ta_C','Tb_C','period_s','setpoint_C',
     'feedforward_pwm','controller_pwm','heating_to_cooling_ratio','signed_pwm','phase_rad',
     'Kp_pwm_per_C','Ki_pwm_per_C_s','pwm_limit','anti_windup','error_C',
     'integral_error_C_s','compensated_pwm','saturated','integration_blocked',
     'rod_base_limit_C','operating_max_C','heartbeat_age_ms','fault_code','time_ms','seq')
+FIELD_NAMES = V1_FIELD_NAMES + ('Ua_pwm','Ub_pwm')
 TEXT_FIELDS = {'safety','run_state','control_mode','fault_code'}
 INT_FIELDS = {'pwm','heat_cool','heat_pwm','cool_pwm','rod_ok','step','signed_pwm',
               'pwm_limit','anti_windup','saturated','integration_blocked','heartbeat_age_ms','time_ms','seq'}
@@ -52,10 +53,12 @@ class RodSample:
 
 def parse_data_line(line):
     cells=line.strip().split(',')
-    if len(cells)!=len(FIELD_NAMES)+1 or cells[0]!='DATA': return None
+    if cells[0]!='DATA': return None
+    names=FIELD_NAMES if len(cells)==len(FIELD_NAMES)+1 else V1_FIELD_NAMES if len(cells)==len(V1_FIELD_NAMES)+1 else None
+    if names is None:return None
     try:
-        values={}
-        for name,text in zip(FIELD_NAMES,cells[1:]):
+        values={'Ua_pwm':math.nan,'Ub_pwm':math.nan}
+        for name,text in zip(names,cells[1:]):
             if name in TEXT_FIELDS:
                 values[name]=text
             else:
@@ -70,20 +73,34 @@ def parse_data_line(line):
         if v['heat_cool'] not in (0,1) or not 0<=v['rod_ok']<=5: return None
         if any(v[k] not in (0,1) for k in ('anti_windup','saturated','integration_blocked')): return None
         if v['safety'] not in ('OK','SHUTDOWN') or v['run_state'] not in ('IDLE','RUNNING','DONE','FAULT'): return None
-        if v['control_mode'] not in ('OFF','OPEN','P','PI') or not -1<=v['step']<12: return None
+        raw=v['control_mode'] in ('RAW_ZERO','RAW_POS')
+        if v['control_mode'] not in ('OFF','OPEN','P','PI','RAW_ZERO','RAW_POS') or not -1<=v['step']<12: return None
+        if raw and names is V1_FIELD_NAMES:return None
         if not 1<=v['pwm_limit']<=255 or min(v['heartbeat_age_ms'],v['time_ms'],v['seq'])<0: return None
         if v['heat_pwm']!=max(v['signed_pwm'],0) or v['cool_pwm']!=max(-v['signed_pwm'],0): return None
         if v['pwm']!=abs(v['signed_pwm']) or v['heat_cool']!=int(v['signed_pwm']>0): return None
         if v['rod_ok']!=sum(math.isfinite(v[f'{c}_C']) for c in ROD_CHANNELS): return None
         if v['run_state']!='RUNNING' and v['signed_pwm']!=0: return None
         if v['run_state']=='RUNNING':
-            required=('Ta_C','Tb_C','period_s','setpoint_C','phase_rad','heating_to_cooling_ratio',
-                      'Kp_pwm_per_C','Ki_pwm_per_C_s','error_C','integral_error_C_s','compensated_pwm')
+            required=('period_s','phase_rad','heating_to_cooling_ratio','integral_error_C_s','compensated_pwm')
             if not all(math.isfinite(v[k]) for k in required): return None
             if v['step']<0 or v['control_mode']=='OFF' or v['period_s']<100: return None
-            if not 10<=v['Ta_C']-v['Tb_C']<=v['Ta_C']+v['Tb_C']<=45: return None
-            if v['Tb_C']<0 or not 10<=v['setpoint_C']<=45 or not 0<v['heating_to_cooling_ratio']<=20: return None
+            if not 0<v['heating_to_cooling_ratio']<=20:return None
             if abs(v['signed_pwm'])>v['pwm_limit']: return None
+            if raw:
+                if not all(math.isfinite(v[k]) for k in ('Ua_pwm','Ub_pwm','controller_pwm')):return None
+                if not all(math.isnan(v[k]) for k in ('Ta_C','Tb_C','setpoint_C','Kp_pwm_per_C','Ki_pwm_per_C_s','error_C','feedforward_pwm')):return None
+                ua,ub=v['Ua_pwm'],v['Ub_pwm']
+                if ub<=0 or abs(ua)+ub>v['pwm_limit']:return None
+                if v['control_mode']=='RAW_ZERO' and ua!=0:return None
+                if v['control_mode']=='RAW_POS' and ua<=ub:return None
+                if v['integral_error_C_s']!=0 or v['integration_blocked']!=0 or v['saturated']!=0:return None
+                if abs(v['compensated_pwm']-v['controller_pwm'])>.0001:return None
+            else:
+                if not all(math.isfinite(v[k]) for k in ('Ta_C','Tb_C','setpoint_C','Kp_pwm_per_C','Ki_pwm_per_C_s','error_C')):return None
+                if not 10<=v['Ta_C']-v['Tb_C']<=v['Ta_C']+v['Tb_C']<=45:return None
+                if v['Tb_C']<0 or not 10<=v['setpoint_C']<=45:return None
+                if not all(math.isnan(v[k]) for k in ('Ua_pwm','Ub_pwm')):return None
             source='feedforward_pwm' if v['control_mode']=='OPEN' else 'controller_pwm'
             if not math.isfinite(v[source]): return None
         return RodSample(values)

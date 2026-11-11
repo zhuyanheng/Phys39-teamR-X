@@ -150,3 +150,84 @@ conversion, settling and finite/radial checks, and residual inspection. See
 no real periodic parameters or final experimental completion are claimed.
 The Nov. 4 Module 7 record is now a user-selected stationary approximation
 with strict-criterion failure and fitted ambient recorded in the reference JSON.
+
+## P boundary comparison, 2026-11-11
+
+Recorded `Module_8/data/raw/module_08_rod_20261111_094156_728168.csv`
+with its serial log and immutable plan snapshot. Operator confirmed TEC supply
+on before control start. Firmware STEP began at device time 177.356 s,
+09:44:54 local time. Exclude the preceding 354 passive measurements from P
+analysis, but preserve the complete original record: Stage 1/S18.2 and Stage 5
+require unchanged raw data. The proposed raw deletion was cancelled after the
+operator prioritized course requirements and agreed to this preservation policy.
+
+The 1200 s P schedule completed six full 200 s cycles (2400 active samples),
+Kp=50 PWM/C, Ki=0, mean 35 C, amplitude 5 C, limit 96. Final firmware state
+was DONE/PWM 0 with no fault; GUI was disconnected afterward to close logging.
+All six temperatures are finite, with no sequence gaps and maximum sample gap
+0.501 s. Forty startup samples saturated; cycles 2–6 did not saturate.
+
+Cycles 4–6 have TEC mean span 0.0054 C, amplitude span 0.132%, phase span
+0.00037 rad. T1 spans 0.1259 C, 2.864%, and 0.0527 rad: its mean exceeds the
+provisional 0.1 C full-window tolerance. Although cycles 5–6 are more repeatable,
+three settled boundary cycles are not yet certified. Do not classify this as
+a complete production dataset or declare the whole module complete.
+
+Exact per-cycle fits, coverage, provisional thresholds, and the closed-file hash:
+`Module_8/data/processed/pilot_checks/module_08_rod_20261111_094156_728168_p_control_review.json`.
+The control-start sidecar records the analysis exclusion without removing samples.
+
+## Raw PWM feature update, 2026-11-11
+
+Firmware/GUI v2 now adds RAW_ZERO (`Ua=0, Ub>0`) and RAW_POS (`Ua>Ub>0`),
+both using `u=Ua+Ub*sin(phase)` without feedback, lookup or cooling compensation.
+Ua/Ub are separate PWM-count fields. Raw STEP temperature/gain slots are zero;
+their measured-record fields are nan. The record appends Ua_pwm/Ub_pwm (44 fields),
+and the parser still reads saved v1 temperature records. Old temperature-plan
+JSON files load unchanged and migrate in memory; a v2 firmware handshake is required.
+
+Both validators reject raw peaks above the chosen limit rather than clipping.
+Only the new diagnostic plans use limit 100; existing 96-limit comparison plans
+and all temperature, link, physical-cutoff and zero-output protections remain.
+The GUI adds two presets, editable Ua/Ub columns and a linked applied-PWM plot.
+Four diagnostic JSON files are available in config/ and at Module_8 top level.
+Positive-only Ua=32, Ub=5 is an initial static-curve estimate, requiring measured
+mean verification rather than assuming 40 C is achieved.
+
+The complete 89-test suite and Uno compilation pass (16474 bytes flash,
+1238 bytes global RAM, 810 bytes remaining). Firmware was uploaded with verify
+to the detected Arduino Uno at /dev/cu.usbmodem1101. Passive GUI validation
+`module_08_rod_20261111_104447_604409.csv` records the v2 handshake and accepted
+raw plan, 94 valid six-channel samples, and zero output throughout; no START
+command was issued. It is software/connection evidence, not a raw-PWM trial.
+The GUI was disconnected after verification and remains open with the first
+100 s, +/-100 PWM, 900 s planning configuration loaded. Actual diagnostic
+waveforms, settling and safety behavior still need measurement on the apparatus.
+
+## Raw PWM temperature-stop review, 2026-11-11
+
+The 11:23 and 11:25 RAW_ZERO trials both tripped TEC_RANGE near 45.1 C;
+T1 was 31.15 and 32.68 C, respectively. This is the preserved TEC operating
+limit, not the T1 limit or a demonstrated failure of the 60 C backup.
+No protection or physical cutoff was raised or bypassed. Failed records remain.
+
+The course page fetched again today has changed its S18.3 protocol: begin near
+room temperature at 300 s with initial Ua=0, Ub=50, reduce Ub if approaching the
+software cutoff, and use the selected safe amplitude unchanged at 300/200/100 s.
+The earlier +/-100, 100/200/500 s guidance is superseded for new raw trials.
+New 50-PWM plans for 300/200/100 s are in config/ and Module_8 top level.
+The existing GUI preset and older 100-PWM files are historical defaults; explicitly
+load RAW_ZERO_50PWM_300s_25min.json for the revised initial safety pilot.
+No controller was restarted and no thermal limit was changed during this review.
+Evidence: data/processed/pilot_checks/raw_pwm_temperature_limit_review_20261111.json.
+
+## End of session, 2026-11-11
+
+Operator ended the day and accepted the partial 300 s raw-PWM record for today:
+`module_08_rod_20261111_113001_400415.csv` and its unchanged log/plan.
+This is retained partial evidence, not automatic production qualification.
+The GUI logged STOP and disconnect at 11:44:19, then closed. At review the
+Arduino serial device was absent; no post-STOP zero-output measurement was saved.
+The user was instructed to switch off the TEC supply. No acquisition was restarted.
+Exact settings, elapsed duration, hash and shutdown limitation are in the matching
+`_end_of_day.json` under Module_8/data/processed/pilot_checks.

@@ -3,7 +3,7 @@
 #include <string.h>
 #include "angstrom_core.h"
 
-// Module 8 v1: firmware owns timing, waveform, schedule, control and fail-off.
+// Module 8 v2: firmware owns timing, waveform, schedule, control and fail-off.
 // A0 is TEC feedback; A1 is the separately monitored rod-base boundary.
 // Physical thermal switch remains independent. Never energize both directions.
 using namespace angstrom;
@@ -49,7 +49,7 @@ void command(char* text) {
   }
   if(!n) return;
   if(n==1 && strcmp(tokens[0],"PING")==0) { lastHeartbeat=millis(); return; }
-  if(n==1 && strcmp(tokens[0],"HELLO")==0) { ack(F("HELLO,module_08_angstrom_v1")); return; }
+  if(n==1 && strcmp(tokens[0],"HELLO")==0) { ack(F("HELLO,module_08_angstrom_v2")); return; }
   if(n==1 && strcmp(tokens[0],"STOP")==0) {
     engine.stop(); applyOutput(); ack(F("STOP")); return;
   }
@@ -68,7 +68,7 @@ void command(char* text) {
     engine.clear(); ack(F("CLEAR")); return;
   }
   if(engine.state==FAULT) { error(F("CLEAR_FAULT_FIRST")); return; }
-  float values[7];
+  float values[8];
   if(n==4 && strcmp(tokens[0],"CONFIG")==0) {
     for(uint8_t i=0;i<3;++i) if(!number(tokens[i+1],values[i])) { error(F("NUMBER")); return; }
     if(values[0]<=0 || values[0]>20 || values[1]<1 || values[1]>255 || floorf(values[1])!=values[1]
@@ -83,13 +83,17 @@ void command(char* text) {
        || values[1]<=engine.points[engine.pointCount-1].pwm)) { error(F("CAL_ORDER")); return; }
     engine.points[engine.pointCount++]={values[0],values[1]}; engine.prepared=false; ack(F("CAL")); return;
   }
-  if(n==8 && strcmp(tokens[0],"STEP")==0) {
-    // STEP duration mean amplitude period mode kp ki. No AVR scanf-float dependency.
+  if((n==8 || n==10) && strcmp(tokens[0],"STEP")==0) {
+    // Raw modes append ua/ub PWM counts; old temperature STEP syntax is retained.
     if(engine.count>=MAX_STEPS) { error(F("STEP_COUNT")); return; }
     for(uint8_t i=0;i<4;++i) if(!number(tokens[i+1],values[i])) { error(F("NUMBER")); return; }
     if(!number(tokens[6],values[4]) || !number(tokens[7],values[5])) { error(F("NUMBER")); return; }
-    Mode mode=strcmp(tokens[5],"OPEN")==0 ? OPEN : strcmp(tokens[5],"P")==0 ? P : strcmp(tokens[5],"PI")==0 ? PI_MODE : OFF;
-    engine.steps[engine.count++]={values[0],values[1],values[2],values[3],values[4],values[5],mode};
+    Mode mode=strcmp(tokens[5],"OPEN")==0 ? OPEN : strcmp(tokens[5],"P")==0 ? P : strcmp(tokens[5],"PI")==0 ? PI_MODE
+      : strcmp(tokens[5],"RAW_ZERO")==0 ? RAW_ZERO : strcmp(tokens[5],"RAW_POS")==0 ? RAW_POS : OFF;
+    values[6]=values[7]=0;
+    if(isRaw(mode) && n!=10) { error(F("RAW_PWM_FIELDS")); return; }
+    if(n==10 && (!number(tokens[8],values[6]) || !number(tokens[9],values[7]))) { error(F("NUMBER")); return; }
+    engine.steps[engine.count++]={values[0],values[1],values[2],values[3],values[4],values[5],mode,values[6],values[7]};
     engine.prepared=false; ack(F("STEP")); return;
   }
   if(n==3 && strcmp(tokens[0],"COMMIT")==0) {
@@ -126,25 +130,26 @@ void printMeasurement(uint32_t now) {
   cell(TEC_LIMIT_C); Serial.print(','); Serial.print(engine.state==FAULT?F("SHUTDOWN"):F("OK"));
   Serial.print(','); Serial.print(rodOk); Serial.print(','); Serial.print(stateName(engine.state));
   Serial.print(','); Serial.print(s?modeName(s->mode):"OFF"); Serial.print(','); Serial.print(s?engine.index:-1);
-  cell(s?s->ta:NAN); cell(s?s->tb:NAN); cell(s?s->period:NAN); cell(engine.setpoint);
+  bool raw=s && isRaw(s->mode);
+  cell(s && !raw?s->ta:NAN); cell(s && !raw?s->tb:NAN); cell(s?s->period:NAN); cell(engine.setpoint);
   cell(engine.out.feedforward); cell(engine.out.controller); cell(engine.ratio);
-  Serial.print(','); Serial.print(pwm); cell(engine.phase); cell(s?s->kp:NAN); cell(s?s->ki:NAN);
+  Serial.print(','); Serial.print(pwm); cell(engine.phase); cell(s && !raw?s->kp:NAN); cell(s && !raw?s->ki:NAN);
   Serial.print(','); Serial.print(engine.pwmLimit); Serial.print(','); Serial.print(engine.antiWindup?1:0);
   cell(engine.out.error); cell(engine.integral); cell(engine.out.compensated);
   Serial.print(','); Serial.print(engine.out.saturated?1:0);
   Serial.print(','); Serial.print(engine.out.integrationBlocked?1:0);
   cell(BASE_LIMIT_C); cell(MAX_C); Serial.print(','); Serial.print(now-lastHeartbeat);
   Serial.print(','); Serial.print(faultName(engine.fault)); Serial.print(','); Serial.print(now);
-  Serial.print(','); Serial.println(sequence++);
+  Serial.print(','); Serial.print(sequence++); cell(raw?s->ua:NAN); cell(raw?s->ub:NAN); Serial.println();
 }
 void setup() {
   pinMode(A0,INPUT); for(uint8_t i=0;i<5;++i) pinMode(ROD_PINS[i],INPUT);
   pinMode(HEAT_PWM_PIN,OUTPUT); pinMode(COOL_PWM_PIN,OUTPUT); applyOutput();
   Serial.begin(115200);
-  Serial.println(F("#firmware,module_08_angstrom_v1,2026-11-04"));
+  Serial.println(F("#firmware,module_08_angstrom_v2,2026-11-11"));
   Serial.println(F("#channels,tec=A0,rod1=A1,rod2=A2,rod3=A3,rod4=A4,rod5=A5"));
   Serial.println(F("#pins,heat=D9,cool=D10,baud=115200,report_ms=500"));
-  Serial.println(F("#DATA,time_s,tec_C,rod1_C,rod2_C,rod3_C,rod4_C,rod5_C,pwm,heat_cool,heat_pwm,cool_pwm,limit_C,safety,rod_ok,run_state,control_mode,step,Ta_C,Tb_C,period_s,setpoint_C,feedforward_pwm,controller_pwm,heating_to_cooling_ratio,signed_pwm,phase_rad,Kp_pwm_per_C,Ki_pwm_per_C_s,pwm_limit,anti_windup,error_C,integral_error_C_s,compensated_pwm,saturated,integration_blocked,rod_base_limit_C,operating_max_C,heartbeat_age_ms,fault_code,time_ms,seq"));
+  Serial.println(F("#DATA,time_s,tec_C,rod1_C,rod2_C,rod3_C,rod4_C,rod5_C,pwm,heat_cool,heat_pwm,cool_pwm,limit_C,safety,rod_ok,run_state,control_mode,step,Ta_C,Tb_C,period_s,setpoint_C,feedforward_pwm,controller_pwm,heating_to_cooling_ratio,signed_pwm,phase_rad,Kp_pwm_per_C,Ki_pwm_per_C_s,pwm_limit,anti_windup,error_C,integral_error_C_s,compensated_pwm,saturated,integration_blocked,rod_base_limit_C,operating_max_C,heartbeat_age_ms,fault_code,time_ms,seq,Ua_pwm,Ub_pwm"));
 }
 void loop() {
   readSerialCommands(); uint32_t now=millis();

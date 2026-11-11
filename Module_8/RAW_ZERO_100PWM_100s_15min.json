@@ -1,0 +1,32 @@
+{
+  "schema": "module_08_plan_v2",
+  "firmware": "module_08_angstrom_v2",
+  "ratio": 1.0,
+  "pwm_limit": 100,
+  "anti_windup": false,
+  "calibration": [],
+  "steps": [
+    {
+      "duration_s": 900,
+      "Ta_C": 0,
+      "Tb_C": 0,
+      "period_s": 100,
+      "mode": "RAW_ZERO",
+      "Kp": 0,
+      "Ki": 0,
+      "Ua_pwm": 0,
+      "Ub_pwm": 100
+    }
+  ],
+  "metadata": {
+    "purpose": "raw_zero_100pwm_100s",
+    "ambient_C": null,
+    "ambient_method": "not yet recorded",
+    "settling_criterion": "Compare complete-cycle mean, amplitude and phase; select settled cycles from measured noise and repeatability.",
+    "settings_status": "Planning diagnostic; preserve 10\u201345 C TEC protection and physical cutoff.",
+    "drive_equation": "u = Ua_pwm + Ub_pwm*sin(phase_rad); no feedback, lookup or cooling multiplier",
+    "duration_note": "Duration is a planning budget, not proof of settling. Keep the full raw record.",
+    "positive_only_note": "",
+    "start_note": "Begin zero-centered diagnostics near measured room temperature. Record room temperature independently."
+  }
+}

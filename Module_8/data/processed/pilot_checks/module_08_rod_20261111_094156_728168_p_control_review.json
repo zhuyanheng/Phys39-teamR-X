@@ -1,0 +1,479 @@
+{
+  "source_csv": "Module_8/data/raw/module_08_rod_20261111_094156_728168.csv",
+  "source_sha256": "3c38060d8b12e2141cd475d66ad2fd3ad6021cc55e85bf40c99bee2a229458e4",
+  "source_bytes": 916904,
+  "raw_files_unchanged": true,
+  "logging_closed": true,
+  "control_start_host_time": "2026-11-11T09:44:54.816252-05:00",
+  "control_start_device_time_s": 177.356,
+  "control_duration_s": 1200,
+  "period_s": 200,
+  "completed_cycles": 6,
+  "pre_control_baseline_measurements_excluded_from_analysis": 354,
+  "quality": {
+    "measurement_count": 2804,
+    "running_measurements": 2400,
+    "missing_sequence_records": 0,
+    "max_sampling_gap_s": 0.5010000000000332,
+    "all_six_temperatures_finite": true,
+    "non_OK_measurements": 0,
+    "final_record_state": "DONE",
+    "final_pwm": 0
+  },
+  "cycle_coverage": [
+    {
+      "cycle": 1,
+      "samples": 400,
+      "saturated_samples": 40
+    },
+    {
+      "cycle": 2,
+      "samples": 400,
+      "saturated_samples": 0
+    },
+    {
+      "cycle": 3,
+      "samples": 400,
+      "saturated_samples": 0
+    },
+    {
+      "cycle": 4,
+      "samples": 400,
+      "saturated_samples": 0
+    },
+    {
+      "cycle": 5,
+      "samples": 400,
+      "saturated_samples": 0
+    },
+    {
+      "cycle": 6,
+      "samples": 400,
+      "saturated_samples": 0
+    }
+  ],
+  "per_cycle_fits": {
+    "tec_C": [
+      {
+        "mean_C": 33.971807245252016,
+        "amplitude_C": 4.652729584466317,
+        "phase_rad": -1.8786276430097049,
+        "rms_residual_C": 1.6105439355086706,
+        "amplitude_se_C": 0.11431213306617999,
+        "phase_se_rad": 0.024568831489590544
+      },
+      {
+        "mean_C": 34.529871636534246,
+        "amplitude_C": 4.712610804556624,
+        "phase_rad": -1.6569956203897858,
+        "rms_residual_C": 0.00521090043207506,
+        "amplitude_se_C": 0.00036985587309747175,
+        "phase_se_rad": 7.848215953002825e-05
+      },
+      {
+        "mean_C": 34.537161388410254,
+        "amplitude_C": 4.714021978880821,
+        "phase_rad": -1.6563143974864212,
+        "rms_residual_C": 0.004713158541899953,
+        "amplitude_se_C": 0.000334527475542612,
+        "phase_se_rad": 7.096434365326612e-05
+      },
+      {
+        "mean_C": 34.5452434364292,
+        "amplitude_C": 4.70996000461284,
+        "phase_rad": -1.6567070511998991,
+        "rms_residual_C": 0.00587211432498708,
+        "amplitude_se_C": 0.00041678707911565853,
+        "phase_se_rad": 8.849057710468304e-05
+      },
+      {
+        "mean_C": 34.550648663323685,
+        "amplitude_C": 4.716202562468254,
+        "phase_rad": -1.6568511182607744,
+        "rms_residual_C": 0.004880013755490701,
+        "amplitude_se_C": 0.00034637041546463387,
+        "phase_se_rad": 7.344265031196185e-05
+      },
+      {
+        "mean_C": 34.54552033663369,
+        "amplitude_C": 4.715129184053227,
+        "phase_rad": -1.6564838288227859,
+        "rms_residual_C": 0.004767937700419798,
+        "amplitude_se_C": 0.0003384155548783085,
+        "phase_se_rad": 7.177227633011541e-05
+      }
+    ],
+    "rod1_C": [
+      {
+        "mean_C": 28.980492275298587,
+        "amplitude_C": 1.904423666215206,
+        "phase_rad": 3.049243142861701,
+        "rms_residual_C": 0.9695220687985721,
+        "amplitude_se_C": 0.06881410146636467,
+        "phase_se_rad": 0.03613381976465643
+      },
+      {
+        "mean_C": 30.7029846628631,
+        "amplitude_C": 1.4753753986608993,
+        "phase_rad": -2.524554663847392,
+        "rms_residual_C": 0.11254379108894107,
+        "amplitude_se_C": 0.007988059066568128,
+        "phase_se_rad": 0.005414255729952751
+      },
+      {
+        "mean_C": 31.108826357820323,
+        "amplitude_C": 1.521166558119472,
+        "phase_rad": -2.453837003879617,
+        "rms_residual_C": 0.0461624831748039,
+        "amplitude_se_C": 0.0032764905855698083,
+        "phase_se_rad": 0.002153932652834544
+      },
+      {
+        "mean_C": 31.395733893112737,
+        "amplitude_C": 1.5749919053142367,
+        "phase_rad": -2.466336788154668,
+        "rms_residual_C": 0.04377481017176995,
+        "amplitude_se_C": 0.003107019638569204,
+        "phase_se_rad": 0.0019727211802087405
+      },
+      {
+        "mean_C": 31.51433792920895,
+        "amplitude_C": 1.6077299540019823,
+        "phase_rad": -2.4268065136777426,
+        "rms_residual_C": 0.018713123587257484,
+        "amplitude_se_C": 0.0013282078658319206,
+        "phase_se_rad": 0.0008261385905593004
+      },
+      {
+        "mean_C": 31.521627546748313,
+        "amplitude_C": 1.6208574248339507,
+        "phase_rad": -2.413622871205213,
+        "rms_residual_C": 0.017951767204438026,
+        "amplitude_se_C": 0.0012741687064899102,
+        "phase_se_rad": 0.0007861078896198224
+      }
+    ],
+    "rod2_C": [
+      {
+        "mean_C": 27.108201737677348,
+        "amplitude_C": 1.6242071450361357,
+        "phase_rad": 2.427018712580669,
+        "rms_residual_C": 0.6792747629946805,
+        "amplitude_se_C": 0.04821311673421176,
+        "phase_se_rad": 0.02968409577220546
+      },
+      {
+        "mean_C": 28.946213898233584,
+        "amplitude_C": 0.8989171158781865,
+        "phase_rad": 3.0035382109313535,
+        "rms_residual_C": 0.14632860735959083,
+        "amplitude_se_C": 0.010386015957813625,
+        "phase_se_rad": 0.011553919366804182
+      },
+      {
+        "mean_C": 29.499551596524498,
+        "amplitude_C": 0.8527060657196969,
+        "phase_rad": -3.126825949005354,
+        "rms_residual_C": 0.07048127056718176,
+        "amplitude_se_C": 0.00500257343511351,
+        "phase_se_rad": 0.005866703138548318
+      },
+      {
+        "mean_C": 29.858553879705852,
+        "amplitude_C": 0.8910160622414356,
+        "phase_rad": -3.0961524394738347,
+        "rms_residual_C": 0.05282672844540173,
+        "amplitude_se_C": 0.0037495008422765964,
+        "phase_se_rad": 0.004208118216470841
+      },
+      {
+        "mean_C": 30.030613367652933,
+        "amplitude_C": 0.8901689829132536,
+        "phase_rad": -3.019921194518353,
+        "rms_residual_C": 0.01680293083154348,
+        "amplitude_se_C": 0.0011926274232202069,
+        "phase_se_rad": 0.0013397763870329434
+      },
+      {
+        "mean_C": 30.04948675834794,
+        "amplitude_C": 0.8876458746612197,
+        "phase_rad": -2.9900904301917337,
+        "rms_residual_C": 0.01523110226001503,
+        "amplitude_se_C": 0.0010810631658811868,
+        "phase_se_rad": 0.0012178992064336804
+      }
+    ],
+    "rod3_C": [
+      {
+        "mean_C": 25.910388441952932,
+        "amplitude_C": 1.160386384724498,
+        "phase_rad": 1.9016411070026915,
+        "rms_residual_C": 0.41237640131119463,
+        "amplitude_se_C": 0.029269380851632575,
+        "phase_se_rad": 0.025223824582765286
+      },
+      {
+        "mean_C": 27.602713805027076,
+        "amplitude_C": 0.6433669675395314,
+        "phase_rad": 2.151628689950054,
+        "rms_residual_C": 0.18479856890276275,
+        "amplitude_se_C": 0.01311651213147183,
+        "phase_se_rad": 0.020387293346179964
+      },
+      {
+        "mean_C": 28.320570938767577,
+        "amplitude_C": 0.5026617444118948,
+        "phase_rad": 2.2889980485402486,
+        "rms_residual_C": 0.09582425282709044,
+        "amplitude_se_C": 0.0068013506904117,
+        "phase_se_rad": 0.013530672101130766
+      },
+      {
+        "mean_C": 28.782443712751007,
+        "amplitude_C": 0.4966425635583633,
+        "phase_rad": 2.3805025053816746,
+        "rms_residual_C": 0.06617552809210339,
+        "amplitude_se_C": 0.004696963413926247,
+        "phase_se_rad": 0.009457431535957322
+      },
+      {
+        "mean_C": 29.000477659157774,
+        "amplitude_C": 0.44026905684588763,
+        "phase_rad": 2.4998997041111815,
+        "rms_residual_C": 0.017927371299760506,
+        "amplitude_se_C": 0.0012724371553991065,
+        "phase_se_rad": 0.0028901355384265675
+      },
+      {
+        "mean_C": 29.02916721718688,
+        "amplitude_C": 0.41145356774652064,
+        "phase_rad": 2.55284515410563,
+        "rms_residual_C": 0.01386978048589563,
+        "amplitude_se_C": 0.0009844402157227266,
+        "phase_se_rad": 0.0023925911103712316
+      }
+    ],
+    "rod4_C": [
+      {
+        "mean_C": 25.151056878818608,
+        "amplitude_C": 0.7292658824312473,
+        "phase_rad": 1.5396121841965946,
+        "rms_residual_C": 0.2583282836894209,
+        "amplitude_se_C": 0.018335455397003392,
+        "phase_se_rad": 0.025142346582299538
+      },
+      {
+        "mean_C": 26.595202204428492,
+        "amplitude_C": 0.5316941922850948,
+        "phase_rad": 1.6950510021038565,
+        "rms_residual_C": 0.20403747034752517,
+        "amplitude_se_C": 0.014482037984147985,
+        "phase_se_rad": 0.027237531855310585
+      },
+      {
+        "mean_C": 27.433262014097995,
+        "amplitude_C": 0.3659653410268014,
+        "phase_rad": 1.7142809960735899,
+        "rms_residual_C": 0.11230443771374418,
+        "amplitude_se_C": 0.007971070574869538,
+        "phase_se_rad": 0.02178094472449192
+      },
+      {
+        "mean_C": 27.96124491305445,
+        "amplitude_C": 0.31796693996701825,
+        "phase_rad": 1.802735191400277,
+        "rms_residual_C": 0.0742222777413094,
+        "amplitude_se_C": 0.005268100274705275,
+        "phase_se_rad": 0.016568074718458607
+      },
+      {
+        "mean_C": 28.233059033931614,
+        "amplitude_C": 0.2404842534834137,
+        "phase_rad": 1.8355057288647725,
+        "rms_residual_C": 0.03161170325924536,
+        "amplitude_se_C": 0.002243714680746159,
+        "phase_se_rad": 0.009329986335125225
+      },
+      {
+        "mean_C": 28.28490199278948,
+        "amplitude_C": 0.197159853887624,
+        "phase_rad": 1.8749061015344406,
+        "rms_residual_C": 0.02045775979837483,
+        "amplitude_se_C": 0.0014520374983105105,
+        "phase_se_rad": 0.007364772221405144
+      }
+    ],
+    "rod5_C": [
+      {
+        "mean_C": 24.485649065596622,
+        "amplitude_C": 0.40803533799874003,
+        "phase_rad": 1.2196702408361633,
+        "rms_residual_C": 0.16172252505696438,
+        "amplitude_se_C": 0.011478635542938412,
+        "phase_se_rad": 0.02813147295609131
+      },
+      {
+        "mean_C": 25.69033388294027,
+        "amplitude_C": 0.4312403624901542,
+        "phase_rad": 1.5159925315104692,
+        "rms_residual_C": 0.21089612042552902,
+        "amplitude_se_C": 0.014968846549272151,
+        "phase_se_rad": 0.03471114434040376
+      },
+      {
+        "mean_C": 26.598200211313973,
+        "amplitude_C": 0.28587324459581304,
+        "phase_rad": 1.466215109216515,
+        "rms_residual_C": 0.12574088143032974,
+        "amplitude_se_C": 0.008924753820279114,
+        "phase_se_rad": 0.0312192692585313
+      },
+      {
+        "mean_C": 27.16366174175002,
+        "amplitude_C": 0.20851271429749238,
+        "phase_rad": 1.4538669000334419,
+        "rms_residual_C": 0.07558134102752323,
+        "amplitude_se_C": 0.005364562837148429,
+        "phase_se_rad": 0.025727749408659278
+      },
+      {
+        "mean_C": 27.464618030246207,
+        "amplitude_C": 0.134327956094585,
+        "phase_rad": 1.319066585362352,
+        "rms_residual_C": 0.03476391803058958,
+        "amplitude_se_C": 0.0024674506043814255,
+        "phase_se_rad": 0.018368853453246865
+      },
+      {
+        "mean_C": 27.534171796840518,
+        "amplitude_C": 0.08652737038386157,
+        "phase_rad": 1.086113434163052,
+        "rms_residual_C": 0.01737690299815251,
+        "amplitude_se_C": 0.0012333663878584507,
+        "phase_se_rad": 0.014254061502291438
+      }
+    ]
+  },
+  "last_three_cycles": [
+    4,
+    5,
+    6
+  ],
+  "last_three_cycle_window": {
+    "tec_C": {
+      "mean_span_C": 0.00540522689448153,
+      "amplitude_span_fraction": 0.0013243255210219124,
+      "phase_span_rad": 0.0003672894379884717,
+      "cycle_means_C": [
+        34.5452434364292,
+        34.550648663323685,
+        34.54552033663369
+      ],
+      "cycle_amplitudes_C": [
+        4.70996000461284,
+        4.716202562468254,
+        4.715129184053227
+      ],
+      "passes_provisional_window_tolerances": true
+    },
+    "rod1_C": {
+      "mean_span_C": 0.12589365363557548,
+      "amplitude_span_fraction": 0.028644589881789563,
+      "phase_span_rad": 0.05271391694945482,
+      "cycle_means_C": [
+        31.395733893112737,
+        31.51433792920895,
+        31.521627546748313
+      ],
+      "cycle_amplitudes_C": [
+        1.5749919053142367,
+        1.6077299540019823,
+        1.6208574248339507
+      ],
+      "passes_provisional_window_tolerances": false
+    },
+    "rod2_C": {
+      "mean_span_C": 0.1909328786420872,
+      "amplitude_span_fraction": 0.003788386392550154,
+      "phase_span_rad": 0.10606200928210097,
+      "cycle_means_C": [
+        29.858553879705852,
+        30.030613367652933,
+        30.04948675834794
+      ],
+      "cycle_amplitudes_C": [
+        0.8910160622414356,
+        0.8901689829132536,
+        0.8876458746612197
+      ],
+      "passes_provisional_window_tolerances": false
+    },
+    "rod3_C": {
+      "mean_span_C": 0.24672350443587376,
+      "amplitude_span_fraction": 0.189538405234288,
+      "phase_span_rad": 0.17234264872395544,
+      "cycle_means_C": [
+        28.782443712751007,
+        29.000477659157774,
+        29.02916721718688
+      ],
+      "cycle_amplitudes_C": [
+        0.4966425635583633,
+        0.44026905684588763,
+        0.41145356774652064
+      ],
+      "passes_provisional_window_tolerances": false
+    },
+    "rod4_C": {
+      "mean_span_C": 0.3236570797350282,
+      "amplitude_span_fraction": 0.47963996756659066,
+      "phase_span_rad": 0.07217091013416366,
+      "cycle_means_C": [
+        27.96124491305445,
+        28.233059033931614,
+        28.28490199278948
+      ],
+      "cycle_amplitudes_C": [
+        0.31796693996701825,
+        0.2404842534834137,
+        0.197159853887624
+      ],
+      "passes_provisional_window_tolerances": false
+    },
+    "rod5_C": {
+      "mean_span_C": 0.3705100550904987,
+      "amplitude_span_fraction": 0.8523131602425497,
+      "phase_span_rad": 0.3677534658703898,
+      "cycle_means_C": [
+        27.16366174175002,
+        27.464618030246207,
+        27.534171796840518
+      ],
+      "cycle_amplitudes_C": [
+        0.20851271429749238,
+        0.134327956094585,
+        0.08652737038386157
+      ],
+      "passes_provisional_window_tolerances": false
+    }
+  },
+  "provisional_tolerances": {
+    "mean_span_C": 0.1,
+    "amplitude_span_fraction": 0.05,
+    "phase_span_rad": 0.1,
+    "status": "Planning tolerances, not course-prescribed constants; require noise/uncertainty justification."
+  },
+  "interpretation": {
+    "tec_control_repeatability": true,
+    "rod_boundary_repeatability": false,
+    "certified_as_settled_boundary_comparison": false,
+    "certified_as_production_dataset": false,
+    "reason": "The rod-boundary settling evidence must support the selected comparison interval; stable TEC alone is insufficient. No raw samples have been removed."
+  },
+  "course_source": "https://sethfraden.github.io/Phys39F26-course/labs/lab-09/",
+  "operator_decision": {
+    "accept_current_P_trial_for_boundary_control_comparison": true,
+    "request": "Proceed to the next measurement without further P acquisition.",
+    "qualification": "Operator acceptance recorded separately from the measured repeatability result; provisional threshold failure and original data remain unchanged."
+  }
+}

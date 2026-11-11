@@ -2,7 +2,7 @@ import math
 import unittest
 from angstrom_plan import preset
 from native_test_support import firmware
-from rod_protocol import FIELD_NAMES,build_data_line,parse_data_line,parse_lines
+from rod_protocol import FIELD_NAMES,V1_FIELD_NAMES,build_data_line,parse_data_line,parse_lines
 
 class ProtocolTests(unittest.TestCase):
     def test_actual_firmware_header_matches_parser(self):
@@ -14,6 +14,22 @@ class ProtocolTests(unittest.TestCase):
         sample=parse_data_line(build_data_line(rod2_C=26.2))
         self.assertEqual(sample.rods_c,(25.,26.2,25.,25.,25.))
         self.assertEqual(len(sample.measurement),len(FIELD_NAMES))
+
+    def test_saved_v1_temperature_records_remain_readable(self):
+        line=','.join(build_data_line().split(',')[:len(V1_FIELD_NAMES)+1])
+        sample=parse_data_line(line);self.assertIsNotNone(sample)
+        self.assertTrue(math.isnan(sample.values['Ua_pwm']))
+
+    def test_raw_record_uses_pwm_parameters_and_no_temperature_target(self):
+        raw=dict(run_state='RUNNING',control_mode='RAW_ZERO',step=0,period_s=100,
+            Ua_pwm=0,Ub_pwm=100,pwm_limit=100,controller_pwm=-100,compensated_pwm=-100,
+            pwm=100,signed_pwm=-100,cool_pwm=100,phase_rad=3*math.pi/2)
+        self.assertIsNotNone(parse_data_line(build_data_line(**raw)))
+        for changes in ({'setpoint_C':35},{'compensated_pwm':-200},{'Ub_pwm':101},
+                {'control_mode':'RAW_POS'},{'integration_blocked':1},{'saturated':1}):
+            self.assertIsNone(parse_data_line(build_data_line(**{**raw,**changes})))
+        truncated=','.join(build_data_line(**raw).split(',')[:len(V1_FIELD_NAMES)+1])
+        self.assertIsNone(parse_data_line(truncated))
 
     def test_rejects_legacy_truncated_and_noninteger_records(self):
         for line in ('DATA,1,25,25,25,25,25,25,0,0,0,0,60,OK,5',

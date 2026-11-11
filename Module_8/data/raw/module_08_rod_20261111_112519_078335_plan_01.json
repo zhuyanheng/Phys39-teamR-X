@@ -1,0 +1,68 @@
+{
+  "schema": "module_08_plan_v2",
+  "firmware": "module_08_angstrom_v2",
+  "ratio": 1.0,
+  "pwm_limit": 100,
+  "anti_windup": false,
+  "calibration": [],
+  "steps": [
+    {
+      "duration_s": 1200.0,
+      "Ta_C": 0.0,
+      "Tb_C": 0.0,
+      "period_s": 200.0,
+      "mode": "RAW_ZERO",
+      "Kp": 0.0,
+      "Ki": 0.0,
+      "Ua_pwm": 0.0,
+      "Ub_pwm": 100.0
+    }
+  ],
+  "metadata": {
+    "purpose": "raw_zero_100pwm_200s",
+    "ambient_C": null,
+    "ambient_method": "not yet recorded",
+    "settling_criterion": "Compare complete-cycle mean, amplitude and phase; select settled cycles from measured noise and repeatability.",
+    "settings_status": "Planning diagnostic; preserve 10\u201345 C TEC protection and physical cutoff.",
+    "drive_equation": "u = Ua_pwm + Ub_pwm*sin(phase_rad); no feedback, lookup or cooling multiplier",
+    "duration_note": "Duration is a planning budget, not proof of settling. Keep the full raw record.",
+    "positive_only_note": "",
+    "start_note": "Begin zero-centered diagnostics near measured room temperature. Record room temperature independently."
+  },
+  "sensor_map_snapshot": {
+    "status": "pending_module_08_measurement",
+    "channels": {
+      "tec": "A0",
+      "rod1": "A1",
+      "rod2": "A2",
+      "rod3": "A3",
+      "rod4": "A4",
+      "rod5": "A5"
+    },
+    "x_m": null,
+    "position_uncertainty_m": null,
+    "analysis_length_m": null,
+    "diameter_m": 0.01277,
+    "diameter_source": "User-reported caliper measurement on 2026-11-04; instrument precision 0.01 mm, not a complete uncertainty budget.",
+    "inherited_module_07_reference": {
+      "origin": "physical hole 2",
+      "x_m": [
+        0,
+        0.0385,
+        0.0895,
+        0.1405,
+        0.1915
+      ],
+      "analysis_length_m": 0.2715
+    },
+    "note": "Inherited coordinates are reference only. Module 8 starts with T1 at the first hole and downstream probes approximately one inch apart; remeasure all positions and L before production. No acquisition/analysis script treats this pending map as measured Module 8 geometry."
+  },
+  "code_sha256": {
+    "Module_8/arduino/module_08_rod_controller/module_08_rod_controller.ino": "7efb34f8ab839a5c4d6ecd032951ec4bd7d6beca7006cfc871a8a575c883182c",
+    "Module_8/arduino/module_08_rod_controller/angstrom_core.h": "193d84df1cbd7a380b6647829b71f5425f48095899eb243f8406f9c5a840b329",
+    "Module_8/python/rod_acquisition_gui.py": "e639945d25fc4e992229582f5176d4f5ee23f7e46cbbaa659f0f88a59289ada1",
+    "Module_8/python/rod_protocol.py": "7db03d82f95b8940c37970423b8e52f82c8f94b1eff6b493d0d70a9ca4c23d29",
+    "Module_8/python/angstrom_plan.py": "ea0a2dc0096f01669377e29badb4b9a84886f3705e7494850697b423f421b1b2"
+  },
+  "plan_sha256": "02c30cdf6521375780781459e19cb75c56b84e9e6a52b5120e2e84daa6c32e66"
+}

@@ -1,0 +1,151 @@
+{
+  "settings": {
+    "Ta_C": 35,
+    "Tb_C": 5,
+    "period_s": 200
+  },
+  "selection": "Last three complete covered phase-aligned cycles per run; only whole-cycle time-origin shifts.",
+  "processing": "Unmodified observations; gaps are broken, never filled. No averaging, smoothing, amplitude normalization or fitted phase alignment.",
+  "limitations": [
+    "PI and OPEN/P acquired on different days; ambient not recorded.",
+    "P last-three-cycle T1 mean span exceeds provisional 0.1 C tolerance; retained by operator decision, not certified settled.",
+    "Control comparison only; not a transport fit or complete Module 8 qualification."
+  ],
+  "runs": [
+    {
+      "mode": "OPEN",
+      "source": "Module_8/data/raw/module_08_rod_20261111_101207_449492.csv",
+      "source_sha256": "096e5fa4a628e455ee05076c6851021ef2db874619bca809b4500f648c7e943b",
+      "selected_cycles": [
+        4,
+        5,
+        6
+      ],
+      "start_device_s": 608.444,
+      "end_device_s": 1208.444,
+      "first_selected_host_time": "2026-11-11T10:22:17.232810-05:00",
+      "last_selected_host_time": "2026-11-11T10:32:17.209611-05:00",
+      "samples": 1198,
+      "missing_sequence_samples": 2,
+      "max_gap_s": 1.5,
+      "selected_saturated_samples": 0,
+      "Kp": 50.0,
+      "Ki": 0.0,
+      "ratio": 3.50345,
+      "pwm_limit": 96,
+      "metrics": {
+        "tec_C": {
+          "mean_C": 35.23313317367614,
+          "amplitude_C": 1.7714227169070487,
+          "rms_residual_C": 0.041243339856418634,
+          "phase_lag_vs_TEC_setpoint_deg": 58.221179363588085,
+          "cycle_mean_span_C": 0.07096266183715016,
+          "cycle_amplitude_span_fraction": 0.025786448556165055,
+          "cycle_phase_span_rad": 0.0354624620266919,
+          "mean_tracking_error_C": 0.2266084474123541,
+          "amplitude_ratio": 0.3542846992053014,
+          "rms_tracking_error_C": 3.0737015483761567
+        },
+        "rod1_C": {
+          "mean_C": 32.06479821931532,
+          "amplitude_C": 0.643471066415282,
+          "rms_residual_C": 0.11117525228677519,
+          "phase_lag_vs_TEC_setpoint_deg": 104.61707075924015,
+          "cycle_mean_span_C": 0.219308442541287,
+          "cycle_amplitude_span_fraction": 0.0502883577091306,
+          "cycle_phase_span_rad": 0.15186082837053805
+        }
+      }
+    },
+    {
+      "mode": "P",
+      "source": "Module_8/data/raw/module_08_rod_20261111_094156_728168.csv",
+      "source_sha256": "3c38060d8b12e2141cd475d66ad2fd3ad6021cc55e85bf40c99bee2a229458e4",
+      "selected_cycles": [
+        4,
+        5,
+        6
+      ],
+      "start_device_s": 777.356,
+      "end_device_s": 1377.356,
+      "first_selected_host_time": "2026-11-11T09:54:55.625607-05:00",
+      "last_selected_host_time": "2026-11-11T10:04:55.634439-05:00",
+      "samples": 1200,
+      "missing_sequence_samples": 0,
+      "max_gap_s": 0.5009999999999764,
+      "selected_saturated_samples": 0,
+      "Kp": 50.0,
+      "Ki": 0.0,
+      "ratio": 3.50345,
+      "pwm_limit": 96,
+      "metrics": {
+        "tec_C": {
+          "mean_C": 34.54713747885991,
+          "amplitude_C": 4.713763863355536,
+          "rms_residual_C": 0.006095409500329381,
+          "phase_lag_vs_TEC_setpoint_deg": 4.921319910753867,
+          "cycle_mean_span_C": 0.00540522689448153,
+          "cycle_amplitude_span_fraction": 0.0013243255210224777,
+          "cycle_phase_span_rad": 0.0003672894379884717,
+          "mean_tracking_error_C": -0.452862025,
+          "amplitude_ratio": 0.9427530973658975,
+          "rms_tracking_error_C": 0.5770389827030031
+        },
+        "rod1_C": {
+          "mean_C": 31.47723312340579,
+          "amplitude_C": 1.6007939914450218,
+          "rms_residual_C": 0.07083616314558148,
+          "phase_lag_vs_TEC_setpoint_deg": 49.53395918891826,
+          "cycle_mean_span_C": 0.12589365363557548,
+          "cycle_amplitude_span_fraction": 0.02864458988178998,
+          "cycle_phase_span_rad": 0.052713916949454376
+        }
+      }
+    },
+    {
+      "mode": "PI",
+      "source": "Module_8/data/raw/module_08_rod_20261109_095722_597413.csv",
+      "source_sha256": "9639d3a6c206c190eefc5373b63ea735b3295876561024fd81cde3319e1e49d4",
+      "selected_cycles": [
+        10,
+        11,
+        12
+      ],
+      "start_device_s": 1807.186,
+      "end_device_s": 2407.186,
+      "first_selected_host_time": "2026-11-09T10:27:32.380003-05:00",
+      "last_selected_host_time": "2026-11-09T10:37:32.410379-05:00",
+      "samples": 1200,
+      "missing_sequence_samples": 0,
+      "max_gap_s": 0.5010000000002037,
+      "selected_saturated_samples": 0,
+      "Kp": 50.0,
+      "Ki": 0.3,
+      "ratio": 3.50345,
+      "pwm_limit": 96,
+      "metrics": {
+        "tec_C": {
+          "mean_C": 35.00108993715307,
+          "amplitude_C": 4.796836896304886,
+          "rms_residual_C": 0.005950536119531491,
+          "phase_lag_vs_TEC_setpoint_deg": 5.4456188326846275,
+          "cycle_mean_span_C": 0.001750947928513824,
+          "cycle_amplitude_span_fraction": 0.0006927674185420645,
+          "cycle_phase_span_rad": 0.0005326573495822995,
+          "mean_tracking_error_C": 0.0010905499999998962,
+          "amplitude_ratio": 0.9593677803883447,
+          "rms_tracking_error_C": 0.35905582887414605
+        },
+        "rod1_C": {
+          "mean_C": 32.135152121632416,
+          "amplitude_C": 1.6892326814287353,
+          "rms_residual_C": 0.03668628194916306,
+          "phase_lag_vs_TEC_setpoint_deg": 47.937610499558104,
+          "cycle_mean_span_C": 0.07201120106818593,
+          "cycle_amplitude_span_fraction": 0.028104873929403827,
+          "cycle_phase_span_rad": 0.0034409830326227464
+        }
+      }
+    }
+  ]
+}

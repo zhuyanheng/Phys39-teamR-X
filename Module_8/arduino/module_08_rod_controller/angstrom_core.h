@@ -9,11 +9,12 @@ const uint8_t MAX_STEPS = 12, MAX_POINTS = 12;
 const float PHASE_TURN = 6.283185307179586f;
 const float MIN_C = 10.f, MAX_C = 45.f, TEC_LIMIT_C = 60.f, BASE_LIMIT_C = 56.f;
 const uint32_t TIMEOUT_MS = 2000;
-enum Mode { OFF, OPEN, P, PI_MODE };
+enum Mode { OFF, OPEN, P, PI_MODE, RAW_ZERO, RAW_POS };
 enum State { IDLE, RUNNING, DONE, FAULT };
 enum Fault { NONE, TEC_SENSOR, TEC_LIMIT, TEC_RANGE, BASE_SENSOR, BASE_LIMIT,
              LINK_TIMEOUT, TIME_GAP, LOOKUP_RANGE, SERIAL_OVERFLOW, BAD_COMMAND };
-struct Step { float duration, ta, tb, period, kp, ki; Mode mode; };
+struct Step { float duration, ta, tb, period, kp, ki; Mode mode; float ua, ub; };
+inline bool isRaw(Mode mode) { return mode==RAW_ZERO || mode==RAW_POS; }
 struct Point { float temperature, pwm; };
 struct Output {
   float feedforward, controller, compensated, error;
@@ -21,7 +22,8 @@ struct Output {
   bool saturated, integrationBlocked;
 };
 inline const char* modeName(Mode m) {
-  switch(m) { case OPEN:return "OPEN"; case P:return "P"; case PI_MODE:return "PI"; default:return "OFF"; }
+  switch(m) { case OPEN:return "OPEN"; case P:return "P"; case PI_MODE:return "PI";
+    case RAW_ZERO:return "RAW_ZERO"; case RAW_POS:return "RAW_POS"; default:return "OFF"; }
 }
 inline const char* stateName(State s) {
   switch(s) { case RUNNING:return "RUNNING"; case DONE:return "DONE"; case FAULT:return "FAULT"; default:return "IDLE"; }
@@ -76,11 +78,19 @@ class Engine {
     for(uint8_t i=0;i<count;++i) {
       const Step &s=steps[i];
       if(!isfinite(s.duration) || s.duration<1 || !isfinite(s.ta) || !isfinite(s.tb)
-        || s.tb<0 || s.ta-s.tb<MIN_C || s.ta+s.tb>MAX_C
         || !isfinite(s.period) || s.period<100 || s.period>86400
         || !isfinite(s.kp) || s.kp<0 || s.kp>1000
         || !isfinite(s.ki) || s.ki<0 || s.ki>100
-        || (s.mode!=OPEN && s.mode!=P && s.mode!=PI_MODE)) return false;
+        || !isfinite(s.ua) || !isfinite(s.ub)
+        || (s.mode!=OPEN && s.mode!=P && s.mode!=PI_MODE && !isRaw(s.mode))) return false;
+      if(isRaw(s.mode)) {
+        // Raw diagnostic amplitudes are PWM counts, never temperature setpoints.
+        // Refuse clipping rather than silently changing the requested waveform.
+        if(s.ta!=0 || s.tb!=0 || s.kp!=0 || s.ki!=0 || s.ub<=0
+          || fabsf(s.ua)+s.ub>pwmLimit
+          || (s.mode==RAW_ZERO && s.ua!=0)
+          || (s.mode==RAW_POS && s.ua<=s.ub)) return false;
+      } else if(s.tb<0 || s.ta-s.tb<MIN_C || s.ta+s.tb>MAX_C || s.ua!=0 || s.ub!=0) return false;
       total+=s.duration;
       if(s.mode==OPEN && (pointCount<2 || s.ta-s.tb<points[0].temperature
         || s.ta+s.tb>points[pointCount-1].temperature)) return false;
@@ -91,7 +101,7 @@ class Engine {
     if(state==RUNNING || state==FAULT || !prepared || !validate()) return false;
     Fault f=sensorFault(tec,base); if(f!=NONE) { trip(f); return false; }
     index=0; phase=withinStep=integral=0; transitions=0; previousMs=now;
-    setpoint=steps[0].ta; state=RUNNING; fault=NONE; zero(); return true;
+    setpoint=isRaw(steps[0].mode)?NAN:steps[0].ta; state=RUNNING; fault=NONE; zero(); return true;
   }
   float lookup(float t) const {
     if(pointCount<2 || t<points[0].temperature || t>points[pointCount-1].temperature) return NAN;
@@ -123,9 +133,13 @@ class Engine {
         if(steps[index].mode!=old) integral=0;
       }
     }
-    const Step &s=steps[index]; setpoint=s.ta+s.tb*sinf(phase);
+    const Step &s=steps[index]; setpoint=isRaw(s.mode)?NAN:s.ta+s.tb*sinf(phase);
     out.error=setpoint-tec; out.saturated=out.integrationBlocked=false;
-    if(s.mode==OPEN) {
+    if(isRaw(s.mode)) {
+      out.feedforward=NAN; integral=0;
+      out.controller=s.ua+s.ub*sinf(phase);
+      out.compensated=out.controller; // Deliberately no heating/cooling ratio.
+    } else if(s.mode==OPEN) {
       out.feedforward=lookup(setpoint); out.controller=NAN;
       if(!isfinite(out.feedforward)) { trip(LOOKUP_RANGE); return; }
       out.compensated=out.feedforward; integral=0;

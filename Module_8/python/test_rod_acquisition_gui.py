@@ -23,7 +23,7 @@ class FakeSerial:
             line,self.transmit=self.transmit.split(b'\n',1);text=line.decode().strip()
             if not text:continue
             self.commands.append(text);tag=text.split()[0]
-            if tag!='PING':self.pending+=(f'#ACK,{tag}'+(',module_08_angstrom_v1' if tag=='HELLO' else '')+'\n').encode()
+            if tag!='PING':self.pending+=(f'#ACK,{tag}'+(','+gui.FIRMWARE_ID if tag=='HELLO' else '')+'\n').encode()
         return len(command)
     def close(self):self.is_open=False
 
@@ -179,10 +179,30 @@ class GuiTests(unittest.TestCase):
         self.feed();self.assertNotEqual(old,self.window.csv_path);self.assertEqual(old.read_bytes(),before)
 
     def test_two_linked_plots_and_whole_run_view(self):
-        self.feed();self.feed();self.window.redraw();self.assertEqual(len(self.window.plots),2)
-        self.assertEqual(len(self.window.curves),7)
+        self.feed();self.feed();self.window.redraw();self.assertEqual(len(self.window.plots),3)
+        self.assertEqual(len(self.window.curves),8)
         self.window.plots[0].setXRange(1,1.5,padding=0)
         self.assertFalse(self.window.whole_run.isChecked())
         self.window.fit_whole_run();self.assertTrue(self.window.whole_run.isChecked())
+
+    def test_raw_preset_upload_start_record_and_inactive_temperature_fields(self):
+        self.window.populate(gui.preset('raw_zero'))
+        p=self.window.get_plan();self.assertEqual(p.steps[0].Ub_pwm,100)
+        self.assertFalse(self.window.table.item(0,1).flags() & gui.Qt.ItemIsEditable)
+        self.assertTrue(self.window.table.item(0,8).flags() & gui.Qt.ItemIsEditable)
+        self.start()
+        self.feed(run_state='RUNNING',control_mode='RAW_ZERO',step=0,period_s=100,
+            Ua_pwm=0,Ub_pwm=100,pwm_limit=100,controller_pwm=-100,compensated_pwm=-100,
+            pwm=100,signed_pwm=-100,cool_pwm=100,phase_rad=3*math.pi/2)
+        self.assertTrue(self.window.active)
+        self.assertIn('Raw PWM:',self.window.readout.text());self.assertNotIn('Setpoint',self.window.readout.text())
+        self.assertTrue(any('RAW_ZERO' in c for c in self.serial.commands))
+        r=next(r for r in self.rows() if r['event']=='measurement' and r['control_mode']=='RAW_ZERO')
+        self.assertEqual(float(r['Ub_pwm']),100);self.assertTrue(math.isnan(float(r['setpoint_C'])))
+
+    def test_raw_preset_cannot_upload_with_the_old_96_cap(self):
+        self.handshake();self.window.populate(gui.preset('raw_zero'));self.window.limit.setValue(96)
+        with patch.object(gui.QMessageBox,'warning'):self.window.upload_schedule()
+        self.assertFalse(self.window.ready);self.assertNotIn('COMMIT 1 0',self.serial.commands)
 
 if __name__=='__main__':unittest.main()

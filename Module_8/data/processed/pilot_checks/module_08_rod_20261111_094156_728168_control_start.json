@@ -1,0 +1,21 @@
+{
+  "source_csv": "data/raw/module_08_rod_20261111_094156_728168.csv",
+  "control_start_host_time": "2026-11-11T09:44:54.816252-05:00",
+  "control_start_device_time_s": 177.356,
+  "control_elapsed_time_definition": "time_s - control_start_device_time_s",
+  "exclude_before_device_time_s": 177.356,
+  "excluded_baseline_measurements": 354,
+  "control_mode": "P",
+  "period_s": 200,
+  "scheduled_control_duration_s": 1200,
+  "accepted_settled_interval": null,
+  "notes": [
+    "Exclude the initial passive recording from P-control analysis.",
+    "The 1200-second schedule begins at the firmware STEP event, not at logging connection.",
+    "Control startup transients after this event still require separate settling assessment.",
+    "Original raw acquisition file is preserved and remains live."
+  ],
+  "raw_record_policy": "Preserve complete original CSV and serial log unchanged; exclude the pre-control baseline only from analysis.",
+  "raw_record_policy_source": "https://sethfraden.github.io/Phys39F26-course/labs/lab-09/#s182-verify-the-live-display-and-saved-record",
+  "pending_raw_deletion_cancelled": true
+}

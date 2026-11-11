@@ -1,0 +1,36 @@
+{
+  "schema": "module_08_plan_v2",
+  "firmware": "module_08_angstrom_v2",
+  "ratio": 1.0,
+  "pwm_limit": 50,
+  "anti_windup": false,
+  "calibration": [],
+  "steps": [
+    {
+      "duration_s": 1500,
+      "Ta_C": 0,
+      "Tb_C": 0,
+      "period_s": 300,
+      "mode": "RAW_ZERO",
+      "Kp": 0,
+      "Ki": 0,
+      "Ua_pwm": 0,
+      "Ub_pwm": 50
+    }
+  ],
+  "metadata": {
+    "purpose": "raw_zero_safety_pilot_50pwm_300s",
+    "ambient_C": null,
+    "ambient_method": "not yet recorded",
+    "settling_criterion": "Compare complete-cycle mean, amplitude and phase; select settled cycles from measured noise and repeatability.",
+    "settings_status": "Initial safety pilot; no temperature protection changed. No device action performed.",
+    "drive_equation": "u = Ua_pwm + Ub_pwm*sin(phase_rad); no feedback, lookup or cooling multiplier",
+    "duration_note": "Planning budget only. Inspect the first excursion; stop if the software cutoff is approached. Fixed duration does not certify settling.",
+    "positive_only_note": "",
+    "start_note": "Begin zero-centered diagnostics near measured room temperature. Record room temperature independently.",
+    "course_source": "https://sethfraden.github.io/Phys39F26-course/labs/lab-09/#s183-apply-zero-centered-sinusoidal-pwm",
+    "course_checked_date": "2026-11-11",
+    "protocol": "Current handout: begin near measured room temperature at period 300 s, Ua=0 and initial Ub=50. Reduce Ub if cutoff is approached; preserve existing safety limits. Keep the selected safe amplitude fixed for 300, 200 and 100 s.",
+    "supersedes": "Earlier +/-100 PWM protocol for new matched raw-PWM trials; preserve earlier records with their original settings."
+  }
+}

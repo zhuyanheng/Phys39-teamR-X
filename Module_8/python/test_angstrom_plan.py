@@ -10,12 +10,59 @@ from rod_protocol import parse_data_line
 
 class PlanTests(unittest.TestCase):
     def test_presets_and_round_trip(self):
-        for kind in ('comparison','single','rehearsal'):
+        for kind in ('comparison','single','rehearsal','raw_zero','raw_positive'):
             p=preset(kind)
             with tempfile.TemporaryDirectory() as tmp:
                 path=Path(tmp)/'plan.json';p.save(path);self.assertEqual(Plan.load(path).digest(),p.digest())
             self.assertEqual(p.commands()[-1],f'COMMIT {len(p.steps)} {len(p.calibration)}')
         self.assertEqual(len(preset().steps),4)
+
+    def test_v1_temperature_configuration_remains_loadable(self):
+        p=Plan.load(Path(__file__).resolve().parents[1]/'config/control_open_35C_5C_200s.json')
+        self.assertEqual(p.steps[0].mode,'OPEN');self.assertEqual(p.steps[0].Ua_pwm,0)
+        self.assertEqual(p.document()['firmware'],'module_08_angstrom_v2')
+
+    def test_raw_requires_correct_polarity_and_unclipped_peak(self):
+        for kind,changes in (('raw_zero',{'Ua_pwm':1}),('raw_positive',{'Ua_pwm':5}),
+                ('raw_zero',{'Ub_pwm':0}),('raw_zero',{'Ub_pwm':256}),
+                ('raw_zero',{'Ub_pwm':float('nan')}),('raw_zero',{'Ta_C':35}),
+                ('raw_zero',{'Kp':50}),('raw_zero',{'period_s':99})):
+            p=preset(kind);p.steps[0]=dataclasses.replace(p.steps[0],**changes)
+            with self.assertRaises(ValueError):p.validate()
+        p=preset('raw_zero');p.pwm_limit=96
+        with self.assertRaisesRegex(ValueError,'peak'):p.validate()
+
+    def test_raw_firmware_preserves_uncompensated_negative_command(self):
+        p=preset('raw_zero');p.ratio=4
+        commands=p.commands()+['PING','START']
+        for t in range(1500,76501,500):commands.append(f'@T {t} 30 28')
+        lines=firmware(commands)
+        samples=[parse_data_line(s) for s in lines if s.startswith('DATA,')]
+        self.assertTrue(samples);self.assertTrue(all(s is not None for s in samples))
+        self.assertEqual(max(s.signed_pwm for s in samples),100)
+        self.assertEqual(min(s.signed_pwm for s in samples),-100)
+        negative=next(s for s in samples if s.signed_pwm==-100)
+        self.assertAlmostEqual(negative.values['controller_pwm'],negative.values['compensated_pwm'])
+        self.assertEqual(negative.values['Ua_pwm'],0);self.assertEqual(negative.values['Ub_pwm'],100)
+
+    def test_raw_positive_firmware_never_cools_and_stop_zeroes(self):
+        p=preset('raw_positive');commands=p.commands()+['PING','START']
+        for t in range(1500,101001,500):commands.append(f'@T {t} 25 25')
+        commands+=['STOP','@T 101500 25 25']
+        lines=firmware(commands);samples=[parse_data_line(s) for s in lines if s.startswith('DATA,')]
+        self.assertTrue(all(s is not None for s in samples))
+        self.assertEqual(min(s.signed_pwm for s in samples[:-1]),27)
+        self.assertEqual(max(s.signed_pwm for s in samples[:-1]),37)
+        self.assertEqual(samples[-1].signed_pwm,0)
+
+    def test_firmware_rejects_raw_clipping_missing_args_and_bad_polarity(self):
+        for cap,step in ((96,'STEP 900 0 0 100 RAW_ZERO 0 0 0 100'),
+                (100,'STEP 900 0 0 100 RAW_POS 0 0 5 5'),
+                (100,'STEP 900 0 0 100 RAW_ZERO 0 0')):
+            lines=firmware(['CLEAR',f'CONFIG 4 {cap} 0',step,'COMMIT 1 0','PING','START','@T 1500 25 25'])
+            self.assertIn('#ERR,INVALID_PLAN',lines);self.assertIn('#ERR,START_REJECTED',lines)
+            s=parse_data_line(next(x for x in lines if x.startswith('DATA,')))
+            self.assertIsNotNone(s);self.assertEqual(s.signed_pwm,0)
 
     def test_reject_short_period_and_out_of_range_waveform(self):
         for replacement in ({'period_s':99},{'Ta_C':40,'Tb_C':16},{'duration_s':0},{'Tb_C':-1},{'Kp':float('nan')},{'mode':'PID'}):

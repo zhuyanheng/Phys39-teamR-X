@@ -30,6 +30,7 @@ struct SerialPort {
   void print(unsigned char x) { std::cout<<int(x); }
   void print(float x,int decimals) { std::cout<<std::fixed<<std::setprecision(decimals)<<x; }
   template<class T> void println(T x) { print(x);std::cout<<'\n'; }
+  void println() { std::cout<<'\n'; }
 } Serial;
 #include "../../arduino/module_08_rod_controller/module_08_rod_controller.ino"
 int main() {

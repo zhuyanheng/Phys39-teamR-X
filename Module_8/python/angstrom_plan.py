@@ -10,11 +10,13 @@ import math
 from pathlib import Path
 
 MODULE = Path(__file__).resolve().parents[1]
-FIRMWARE_ID = 'module_08_angstrom_v1'
+FIRMWARE_ID = 'module_08_angstrom_v2'
 BAUD = 115200
 MIN_C, MAX_C, BASE_LIMIT_C = 10., 45., 56.
 MAX_STEPS = MAX_POINTS = 12
-MODES = ('OPEN', 'P', 'PI')
+TEMPERATURE_MODES = ('OPEN', 'P', 'PI')
+RAW_MODES = ('RAW_ZERO', 'RAW_POS')
+MODES = TEMPERATURE_MODES + RAW_MODES
 
 @dataclass(frozen=True)
 class Step:
@@ -25,15 +27,28 @@ class Step:
     mode: str
     Kp: float
     Ki: float
+    Ua_pwm: float = 0.
+    Ub_pwm: float = 0.
 
     def validate(self):
-        vals = (self.duration_s, self.Ta_C, self.Tb_C, self.period_s, self.Kp, self.Ki)
+        vals = (self.duration_s, self.Ta_C, self.Tb_C, self.period_s, self.Kp, self.Ki, self.Ua_pwm, self.Ub_pwm)
         if not all(math.isfinite(v) for v in vals):
             raise ValueError('Every schedule value must be finite')
         if self.mode not in MODES or not 1 <= self.duration_s <= 86400:
-            raise ValueError('Choose OPEN/P/PI and duration 1–86400 s')
-        if self.Tb_C < 0 or self.Ta_C-self.Tb_C < MIN_C or self.Ta_C+self.Tb_C > MAX_C:
+            raise ValueError('Choose OPEN/P/PI/RAW_ZERO/RAW_POS and duration 1–86400 s')
+        if self.mode in RAW_MODES:
+            if any(v != 0 for v in (self.Ta_C, self.Tb_C, self.Kp, self.Ki)):
+                raise ValueError('Raw PWM uses Ua/Ub; inactive temperature/gain fields must be zero')
+            if self.Ub_pwm <= 0 or abs(self.Ua_pwm)+self.Ub_pwm > 255:
+                raise ValueError('Raw PWM needs Ub > 0 and |Ua| + Ub <= 255')
+            if self.mode == 'RAW_ZERO' and self.Ua_pwm != 0:
+                raise ValueError('RAW_ZERO requires Ua = 0')
+            if self.mode == 'RAW_POS' and self.Ua_pwm <= self.Ub_pwm:
+                raise ValueError('RAW_POS requires Ua > Ub > 0')
+        elif self.Tb_C < 0 or self.Ta_C-self.Tb_C < MIN_C or self.Ta_C+self.Tb_C > MAX_C:
             raise ValueError('Entire waveform must stay within the existing 10–45 C operating range')
+        elif self.Ua_pwm != 0 or self.Ub_pwm != 0:
+            raise ValueError('Temperature modes do not use Ua/Ub PWM parameters')
         if not 100 <= self.period_s <= 86400:
             raise ValueError('Period must be at least 100 s (also during rehearsal)')
         if not 0 <= self.Kp <= 1000 or not 0 <= self.Ki <= 100:
@@ -128,6 +143,8 @@ class Plan:
             raise ValueError('Total schedule duration cannot exceed 24 hours')
         for step in self.steps:
             step.validate()
+            if step.mode in RAW_MODES and abs(step.Ua_pwm)+step.Ub_pwm > self.pwm_limit:
+                raise ValueError('Raw PWM peak exceeds the PWM limit; choose a limit that preserves the requested waveform')
             if step.mode == 'OPEN':
                 inverse_pwm(step.Ta_C-step.Tb_C, self.calibration)
                 inverse_pwm(step.Ta_C+step.Tb_C, self.calibration)
@@ -137,7 +154,7 @@ class Plan:
 
     def document(self):
         self.validate()
-        return {'schema': 'module_08_plan_v1', 'firmware': FIRMWARE_ID,
+        return {'schema': 'module_08_plan_v2', 'firmware': FIRMWARE_ID,
                 'ratio': self.ratio, 'pwm_limit': self.pwm_limit, 'anti_windup': self.anti_windup,
                 'calibration': [list(p) for p in self.calibration],
                 'steps': [asdict(s) for s in self.steps], 'metadata': self.metadata}
@@ -149,7 +166,11 @@ class Plan:
         self.validate()
         commands = ['STOP', 'CLEAR', f'CONFIG {self.ratio:.9g} {self.pwm_limit} {int(self.anti_windup)}']
         commands += [f'CAL {t:.9g} {u:.9g}' for t, u in self.calibration]
-        commands += [f'STEP {s.duration_s:.9g} {s.Ta_C:.9g} {s.Tb_C:.9g} {s.period_s:.9g} {s.mode} {s.Kp:.9g} {s.Ki:.9g}' for s in self.steps]
+        for s in self.steps:
+            command=f'STEP {s.duration_s:.9g} {s.Ta_C:.9g} {s.Tb_C:.9g} {s.period_s:.9g} {s.mode} {s.Kp:.9g} {s.Ki:.9g}'
+            if s.mode in RAW_MODES:
+                command+=f' {s.Ua_pwm:.9g} {s.Ub_pwm:.9g}'
+            commands.append(command)
         commands.append(f'COMMIT {len(self.steps)} {len(self.calibration)}')
         if any(len(c.encode()) >= 143 for c in commands):
             raise ValueError('Command exceeds firmware buffer')
@@ -158,8 +179,12 @@ class Plan:
     @classmethod
     def load(cls, path):
         data = json.loads(Path(path).read_text())
-        if data.get('schema') != 'module_08_plan_v1' or data.get('firmware') != FIRMWARE_ID:
+        legacy=(data.get('schema'),data.get('firmware')) == ('module_08_plan_v1','module_08_angstrom_v1')
+        current=(data.get('schema'),data.get('firmware')) == ('module_08_plan_v2',FIRMWARE_ID)
+        if not (legacy or current):
             raise ValueError('Unsupported plan/firmware version')
+        if legacy and any(s['mode'] not in TEMPERATURE_MODES for s in data['steps']):
+            raise ValueError('Raw PWM modes require a v2 plan')
         return cls([Step(**s) for s in data['steps']], data['ratio'], data['pwm_limit'],
                    data['anti_windup'], [tuple(p) for p in data['calibration']], data['metadata']).validate()
 
@@ -168,15 +193,25 @@ class Plan:
 
 
 def preset(kind='comparison'):
-    points, source = reference_calibration()
     # Lower-amplitude planning defaults preserve the earlier 10–45 C range.
     # They are not measured gains or a guarantee of adequate settling.
+    if kind in ('raw_zero', 'raw_positive'):
+        zero=kind=='raw_zero'
+        return Plan([Step(900,0,0,100,'RAW_ZERO' if zero else 'RAW_POS',0,0,0 if zero else 32,100 if zero else 5)],
+            1.,100,False,[],{'purpose':kind,'ambient_C':None,'ambient_method':'not yet recorded',
+            'settling_criterion':'Compare complete-cycle mean, amplitude and phase; select settled cycles from measured noise and repeatability.',
+            'settings_status':'Planning diagnostic; preserve 10–45 C TEC protection and physical cutoff.',
+            'drive_equation':'u = Ua_pwm + Ub_pwm*sin(phase_rad); no feedback, lookup or cooling multiplier',
+            'duration_note':'Duration is a planning budget, not proof of settling. Keep the full raw record.',
+            'positive_only_note':'Ua=32, Ub=5 is a measured-static-curve starting estimate near 40 C, not a guaranteed temperature.' if not zero else '',
+            'start_note':'Begin zero-centered diagnostics near measured room temperature. Record room temperature independently.'}).validate()
+    points, source = reference_calibration()
     if kind == 'rehearsal':
         steps = [Step(5, 35, 2, p, 'PI', 50, .3) for p in (100, 150, 240)]
     elif kind == 'single':
         steps = [Step(1800, 35, 5, 100, 'PI', 50, .3)]
     elif kind == 'comparison':
-        steps = [Step(1800, 35, 5, 100, mode, 50, .3) for mode in MODES]
+        steps = [Step(1800, 35, 5, 100, mode, 50, .3) for mode in TEMPERATURE_MODES]
         steps += [Step(1800, 35, 5, 150, 'PI', 50, .3)]
     else:
         raise ValueError('Unknown preset')

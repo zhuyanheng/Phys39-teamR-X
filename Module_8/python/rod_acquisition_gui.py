@@ -30,12 +30,12 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
     QCheckBox, QLineEdit, QMessageBox, QSplitter, QScrollArea, QFrame,
     QTableWidget, QTableWidgetItem, QHeaderView, QFileDialog, QHBoxLayout)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from angstrom_plan import Plan, Step, preset, reference_calibration, FIRMWARE_ID, BAUD
+from angstrom_plan import Plan, Step, preset, reference_calibration, FIRMWARE_ID, BAUD, RAW_MODES
 from rod_protocol import FIELD_NAMES, ROD_CHANNELS, parse_data_line
 
 FIELDS = ['host_time','event','run_id'] + list(FIELD_NAMES) + [
     'control_active','mode','backlog_sample','note','plan_sha256']
-TABLE_FIELDS = ('duration_s','Ta_C','Tb_C','period_s','mode','Kp','Ki')
+TABLE_FIELDS = ('duration_s','Ta_C','Tb_C','period_s','mode','Kp','Ki','Ua_pwm','Ub_pwm')
 CHANNEL_PENS = ['#111111','#245a81','#2f7d4f','#927919','#b45b22','#693f85']
 HISTORY_LIMIT, X_MIN_SPAN = 50000, 60.
 
@@ -88,17 +88,18 @@ class RodAcquisitionWindow(QMainWindow):
         grid.addWidget(self.disconnect_button,2,0,1,2); left.addWidget(connection)
 
         group=QGroupBox('Waveform and frequency schedule'); gl=QVBoxLayout(group)
-        self.preset_combo=QComboBox(); self.preset_combo.addItems(['Comparison: OPEN / P / PI + second period','Single trial / fixed target','Short schedule rehearsal (not production)'])
+        self.preset_combo=QComboBox(); self.preset_combo.addItems(['Comparison: OPEN / P / PI + second period','Single trial / fixed target','Short schedule rehearsal (not production)',
+            'Raw PWM: zero-centered, +/-100, 100 s','Raw PWM: heating only, 32 +/-5, 100 s'])
         use=QPushButton('Use preset'); use.clicked.connect(self.use_preset)
         row=QHBoxLayout(); row.addWidget(self.preset_combo,1); row.addWidget(use); gl.addLayout(row)
-        self.table=QTableWidget(0,len(TABLE_FIELDS)); self.table.setHorizontalHeaderLabels(['Time s','Mean C','Amp C','Period s','Mode','Kp','Ki'])
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table=QTableWidget(0,len(TABLE_FIELDS)); self.table.setHorizontalHeaderLabels(['Time s','Mean C','Amp C','Period s','Mode','Kp','Ki','Ua PWM','Ub PWM'])
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table.setMinimumHeight(180); gl.addWidget(self.table)
         self.table.cellChanged.connect(self.invalidate)
         self.add_button=QPushButton('Add step'); self.add_button.clicked.connect(self.add_step)
         self.remove_button=QPushButton('Remove step'); self.remove_button.clicked.connect(self.remove_step)
         row=QHBoxLayout(); row.addWidget(self.add_button); row.addWidget(self.remove_button); gl.addLayout(row)
-        hint=QLabel('Modes: OPEN / P / PI. Amplitude 0 holds a fixed target. Period >= 100 s.\nDuration includes settling AND at least five retained cycles; choose it from pilot evidence.')
+        hint=QLabel('OPEN/P/PI: use Mean C and Amp C. RAW_ZERO/RAW_POS: use Ua/Ub PWM; no feedback or cooling multiplier.\nRaw PWM: u = Ua + Ub sin(phase). Grey fields are inactive. Period >= 100 s.\nDuration includes settling and retained cycles; elapsed time alone does not establish usability.')
         hint.setWordWrap(True); gl.addWidget(hint); left.addWidget(group)
         self.schedule_group=group
 
@@ -144,17 +145,21 @@ class RodAcquisitionWindow(QMainWindow):
         pg.setConfigOptions(antialias=True,foreground='#222222')
         self.plots=[]; self.curves={}
         series=[('TEC temperature and requested waveform',[('tec_C','A0: measured TEC',CHANNEL_PENS[0]),('setpoint_C','Requested setpoint','#c0392b')]),
-                ('Rod temperatures — remeasure Module 8 positions',[(f'{c}_C',f'A{i} / T{i}',CHANNEL_PENS[i]) for i,c in enumerate(ROD_CHANNELS,1)])]
+                ('Rod temperatures — remeasure Module 8 positions',[(f'{c}_C',f'A{i} / T{i}',CHANNEL_PENS[i]) for i,c in enumerate(ROD_CHANNELS,1)]),
+                ('Applied signed PWM',[('signed_pwm','Applied PWM','#245a81')])]
         for i,(title,channels) in enumerate(series):
             plot=pg.PlotWidget(title=title); plot.setBackground('w'); plot.addLegend(colCount=3,offset=(10,0))
-            plot.showGrid(x=True,y=True,alpha=.2); plot.setLabel('left','Temperature',units='C'); plot.setLabel('bottom','Arduino time',units='s')
+            plot.showGrid(x=True,y=True,alpha=.2)
+            if i==2:plot.setLabel('left','Signed PWM',units='counts')
+            else:plot.setLabel('left','Temperature',units='C')
+            plot.setLabel('bottom','Arduino time',units='s')
             plot.getViewBox().setDefaultPadding(.05); plot.getViewBox().setAutoVisible(y=True)
             for key,label,color in channels:
                 pen=pg.mkPen(color,width=2,style=Qt.DashLine if key=='setpoint_C' else Qt.SolidLine)
                 curve=plot.plot([],[],pen=pen,name=label); curve.setClipToView(True); curve.setDownsampling(auto=True,method='peak'); self.curves[key]=curve
             if self.plots: plot.setXLink(self.plots[0])
             self.plots.append(plot); self.plot_splitter.addWidget(plot)
-        self.plot_splitter.setSizes([330,500])
+        self.plot_splitter.setSizes([260,380,180])
         self.plots[0].getViewBox().sigXRangeChanged.connect(self.x_range_changed)
         self.whole_run.toggled.connect(lambda checked: checked and self.show_whole_run())
         self.populate(preset())
@@ -170,9 +175,13 @@ class RodAcquisitionWindow(QMainWindow):
                 for col,key in enumerate(TABLE_FIELDS):
                     value=getattr(step,key)
                     self.table.setItem(row,col,QTableWidgetItem(value if isinstance(value,str) else f'{value:g}'))
+                self.configure_row_fields(row)
             self.ratio.setValue(plan.ratio); self.limit.setValue(plan.pwm_limit); self.anti.setChecked(plan.anti_windup)
             self.calibration=list(plan.calibration); self.metadata=json.loads(json.dumps(plan.metadata))
-            self.cal_label.setText(f'{len(self.calibration)} measured lookup points · '+self.metadata.get('calibration',{}).get('source','plan file')+'\nStatic calibration is provisional; no extrapolation.')
+            raw_only=all(s.mode in RAW_MODES for s in plan.steps)
+            self.cal_label.setText('Raw PWM: static lookup, heating/cooling ratio and anti-windup are not applied.' if raw_only else
+                f'{len(self.calibration)} measured lookup points · '+self.metadata.get('calibration',{}).get('source','plan file')+'\nStatic calibration is provisional; no extrapolation.')
+            if len(plan.steps)==1 and raw_only:self.preset_combo.setCurrentIndex(3 if plan.steps[0].mode=='RAW_ZERO' else 4)
             self.ambient.setText('' if self.metadata.get('ambient_C') is None else str(self.metadata['ambient_C']))
             self.ambient_method.setText(self.metadata.get('ambient_method',''))
             self.settling.setText(self.metadata.get('settling_criterion',''))
@@ -198,17 +207,46 @@ class RodAcquisitionWindow(QMainWindow):
 
     def invalidate(self,*_):
         if self._loading:return
+        if len(_)==2 and _[1]==4:
+            self._loading=True
+            try:self.configure_row_fields(_[0])
+            finally:self._loading=False
         self.ready=False
         self.update_enabled()
 
+    def configure_row_fields(self,row):
+        mode=self.table.item(row,4).text().strip().upper()
+        raw=mode in RAW_MODES
+        for col in (1,2,5,6,7,8):
+            item=self.table.item(row,col)
+            if item is None:continue
+            enabled=(col in (7,8))==raw
+            item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable | (Qt.ItemIsEditable if enabled else Qt.NoItemFlags))
+            if enabled:item.setData(Qt.ForegroundRole,None)  # Follow light/dark system palette.
+            else:item.setForeground(Qt.gray)
+            item.setToolTip('PWM counts' if enabled and raw else 'Inactive in this mode' if not enabled else '')
+            if not enabled:item.setText('0')
+        if raw:
+            ua=self.table.item(row,7);ub=self.table.item(row,8)
+            if mode=='RAW_ZERO':ua.setText('0')
+            # Fill defaults only when changing modes from inactive/zero fields.
+            try:empty=float(ub.text())==0
+            except ValueError:empty=False
+            if empty:
+                ua.setText('0' if mode=='RAW_ZERO' else '32')
+                ub.setText('100' if mode=='RAW_ZERO' else '5')
+
     def use_preset(self):
-        self.populate(preset(('comparison','single','rehearsal')[self.preset_combo.currentIndex()]))
+        self.populate(preset(('comparison','single','rehearsal','raw_zero','raw_positive')[self.preset_combo.currentIndex()]))
 
     def add_step(self):
         if self.table.rowCount()>=12:return
         row=self.table.rowCount(); self.table.insertRow(row)
-        for col,value in enumerate(('1800','35','5','150','PI','50','0.3')):
+        for col,value in enumerate(('1800','35','5','150','PI','50','0.3','0','0')):
             self.table.setItem(row,col,QTableWidgetItem(value))
+        self._loading=True
+        try:self.configure_row_fields(row)
+        finally:self._loading=False
         self.invalidate()
 
     def remove_step(self):
@@ -424,10 +462,12 @@ class RodAcquisitionWindow(QMainWindow):
         if self.history and sample.time_s<=self.history[-1]['time_s']:self.history=[]
         self.history.append(row)
         if len(self.history)>HISTORY_LIMIT:self.history=self.history[-HISTORY_LIMIT:]
+        drive=(f"Raw PWM: {v['Ua_pwm']:g} + {v['Ub_pwm']:g} sin(phase) · period {v['period_s']:g} s · no feedback / ratio"
+            if v['control_mode'] in RAW_MODES else f"Setpoint {v['setpoint_C']:.2f} C · period {v['period_s']:g} s")
         self.readout.setText(
             f"{v['run_state']} · mode {v['control_mode']} · step {v['step']}\n"
             f"TEC {sample.tec_c:.2f} C · T1 {sample.rods_c[0]:.2f} C · rods valid {sample.rod_ok}/5\n"
-            f"Setpoint {v['setpoint_C']:.2f} C · period {v['period_s']:g} s\n"
+            f"{drive}\n"
             f"PWM applied {sample.signed_pwm:+d} · raw {v['controller_pwm']:.2f} · feedforward {v['feedforward_pwm']:.2f}\n"
             f"Safety {v['safety']} / {v['fault_code']} · good/bad/missing {self.accepted}/{self.rejected}/{self.missing}")
 

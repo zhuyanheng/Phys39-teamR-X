@@ -1,0 +1,22 @@
+{
+  "source_csv": "Module_8/data/raw/module_08_rod_20261111_113001_400415.csv",
+  "source_sha256": "c72c753f800a211eb20f113d0f878ce0255f50e56925c585197a453ffb281d9b",
+  "operator_decision": "End today; retain partial run as sufficient for today.",
+  "control_mode": "RAW_ZERO",
+  "period_s": 300.0,
+  "Ua_pwm": 0.0,
+  "Ub_pwm": 50.0,
+  "elapsed_running_s": 852.748,
+  "running_samples": 1706,
+  "complete_periods_by_last_sample": 2,
+  "observed_fault_codes": [
+    "NONE"
+  ],
+  "STOP_command_logged": true,
+  "disconnect_logged": true,
+  "post_STOP_zero_measurement_recorded": false,
+  "device_port_present_at_review": false,
+  "shutdown_note": "GUI closed and serial device absent; STOP is recorded but final zero output was not independently observed. User should switch off TEC supply.",
+  "qualified_as_complete_production_dataset": false,
+  "raw_record_unchanged": true
+}

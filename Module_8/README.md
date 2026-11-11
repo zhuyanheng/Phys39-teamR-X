@@ -1,7 +1,8 @@
 # Module 8: Angstrom Experiment And Final Thermal Transport
 
 The Module 8 controller now generates sinusoidal setpoints, compares calibrated
-open-loop/P/PI control, and executes an editable multi-step frequency schedule
+open-loop/P/PI control, adds uncompensated zero-centered and heating-only PWM
+diagnostics, and executes an editable multi-step frequency schedule
 on the Arduino. The horizontal Python GUI displays all six thermistors and saves
 complete measurement, event and plan evidence inside this module.
 
@@ -14,8 +15,9 @@ See the [lab runbook](../docs/module_notes/module_08_lab_day_runbook_2026-11-04.
 
 1. Upload `arduino/module_08_rod_controller/module_08_rod_controller.ino` with
    Arduino IDE, selecting the actual board and port. The adjacent `angstrom_core.h`
-   must remain in the sketch folder. This task compiled for Uno but did **not** upload
-   to a device or energize the TEC. Close other serial applications before connecting.
+   must remain in the sketch folder. Use the v2 sketch with the updated GUI;
+   current build/upload evidence is in `docs/verification.json`.
+   Close other serial applications before connecting.
 2. Double-click `run_rod_acquisition.command`. The GUI and firmware use **115200 baud**;
    earlier Module 7 firmware is incompatible. A version handshake blocks starting with old firmware.
 3. Select the port and **Connect (output off)**. Confirm six plausible live readings.
@@ -51,12 +53,28 @@ change the setpoint immediately; keep both fixed when comparing frequencies.
 | Comparison | OPEN, P, PI at 100 s, then PI at 150 s; each step 1800 s; Ta=35 C, Tb=5 C | Editable planning defaults for the four measurement segments |
 | Single trial / fixed target | One PI step, 1800 s, 100 s period, 35 +/- 5 C | Tune one trial; set amplitude to 0 for a fixed temperature; choose OPEN or P if needed |
 | Short rehearsal | Three 5-second PI steps with periods 100, 150, 240 s; Ta=35 C, Tb=2 C | Test two automatic frequency changes and completion; not production data |
+| Raw zero-centered | RAW_ZERO, Ua=0, Ub=100 PWM, 100 s period, 900 s budget | Uncompensated +/-100 sinusoidal PWM; begin near measured room temperature |
+| Raw heating only | RAW_POS, Ua=32, Ub=5 PWM, 100 s period, 900 s budget | Positive-only diagnostic; adjust Ua from measured mean, initially estimated near 40 C |
 
 The 1800-second durations and Kp=50, Ki=0.3 are starting values, **not a verified
 periodic tuning or settling guarantee**. Retune on the actual apparatus and budget
 settling plus at least five accepted cycles at each retained period. Rehearsal
 shortens step durations; it never reduces the sinusoidal period below 100 s.
 Plans can be saved/loaded as JSON in `config/` and contain at most 12 steps.
+
+Ready-to-load diagnostic files are also placed at the top level of `Module_8`:
+`RAW_ZERO_100PWM_100s_15min.json`, `RAW_ZERO_100PWM_200s_20min.json`,
+`RAW_ZERO_100PWM_500s_2500s.json`, and `RAW_POS_32_5PWM_100s_15min.json`.
+Durations are planning budgets, not settling certificates. Change period only
+after inspecting the live data. Raw PWM uses separate Ua/Ub table columns;
+inactive temperature and gain cells are grey. The third live plot shows actual
+applied signed PWM, linked to all six temperature histories.
+
+- **RAW_ZERO / RAW_POS:** `u = Ua + Ub*sin(phase)`. No temperature feedback,
+  lookup or cooling multiplier. RAW_ZERO requires Ua=0, Ub>0; RAW_POS requires
+  Ua>Ub>0. Raw plans use limit 100, independently of the existing comparison
+  plans' limit 96. A raw peak above the selected limit is rejected, not clipped.
+  The same measured-temperature limits, watchdogs and stop behavior apply.
 
 - **OPEN:** piecewise-linear inverse of measured steady-state temperature vs signed
   PWM. No extrapolation. It is not a sine PWM and receives no second cooling multiplier.
@@ -97,7 +115,7 @@ STOP is always accepted. Both bridge directions are set off before applying one.
 | `arduino/module_08_rod_controller/angstrom_core.h` | Portable schedule, phase, lookup, P/PI and fail-off logic used by firmware and native tests |
 | `python/rod_acquisition_gui.py` | Plan editor/uploader, live six-channel display, events, watchdog heartbeats and logging |
 | `python/angstrom_plan.py` | Plan validation, measured calibration inversion and ratio, presets and command encoding |
-| `python/rod_protocol.py` | Strict version-1 record parser |
+| `python/rod_protocol.py` | Strict v2 parser with saved v1 temperature-record compatibility |
 | `python/analysis/acquisition_check.py` | Data continuity/channel diagnostics and temperature plot; no Angstrom parameter fit |
 | `python/analysis/cross_calibration_fit.py` | Optional actual common-bath correction fits; do not use heated-rod gradients as calibration |
 | `python/pi_controller.py` | Earlier copied host-side arithmetic kept as reference; not used by the new firmware-controlled GUI |
@@ -131,14 +149,18 @@ Course notes remain in repository-root `docs/module_notes/` and `docs/assessment
 QT_QPA_PLATFORM=offscreen .venv/bin/python -m unittest discover -s Module_8/python -t Module_8/python
 ```
 
-The acquisition baseline has 65 hardware-free tests; the offline analysis/viewer adds 15 tests. The full 80-test suite is verified below. The native tests compile the actual sketch/core with a host C++ compiler and do
-not access hardware. Uno compilation also passes: 15,542 bytes flash and 1,122
-bytes global RAM, leaving 926 bytes for locals/stack. Physical gain tuning,
+The full 89-test suite includes the earlier 80 tests and nine raw-mode integration
+and compatibility tests, plus expanded native-core safety and waveform checks.
+The native tests compile the actual sketch/core with a host C++ compiler and do
+not access hardware. Uno compilation also passes: 16,474 bytes flash and 1,238
+bytes global RAM, leaving 810 bytes for locals/stack. Physical gain tuning,
 interlock validation and the on-apparatus rehearsal remain to be performed.
 
 ## Experiment and deliverables
 
-Plan four measurement segments: matched OPEN/P/PI comparisons at one period,
+Include the raw zero-centered PWM trials at 100, 200 and 500 s and a positive-only
+diagnostic. These are separate from calibrated OPEN temperature feedforward.
+Then plan matched OPEN/P/PI comparisons at one period,
 then another usable period with the selected controller. A qualifying comparison
 trial can supply the first retained dataset. Otherwise repeat it. At each of two
 usable periods, retain **at least five complete cycles after quantitative settling**,
@@ -149,7 +171,7 @@ rehearsal does not satisfy this requirement. See the runbook for acceptance chec
 | --- | --- |
 | Nov. 4 | Pilot fits and production plan |
 | Nov. 9 | Two-period production record and data-readiness check |
-| Nov. 11, 09:05 | Individual A5 PDF and `docs/assessments/a5_angstrom_derivation_plan.md` |
+| Nov. 11 | A5 analysis checkpoint; check the course page/Moodle for the final submission deadline |
 | Nov. 16 | P4 and runnable formative modeling-app check |
 | Nov. 18–23 | Conductivity, heat transfer, uncertainty and model comparison |
 | Nov. 30, 11:55 | C6 demonstration/receipt citing the frozen pushed analysis commit |
