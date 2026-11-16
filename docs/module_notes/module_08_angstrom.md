@@ -250,3 +250,32 @@ Next prepared trial: PI_35C_5C_100s_20min.json, 1200 s, Ta35/Tb5, period100,
 Kp50/Ki.3, ratio3.50345, cap96, anti-windup ON. This is a budgeted control/rod
 pilot with unchanged safeguards, not proof of five settled production cycles.
 No device was started while preparing these files.
+
+### Nov. 16 PI 100 s pilot and prepared 300 s trial
+
+`module_08_rod_20261116_104519_503645.csv` completed 1200 s / 12 cycles,
+2400 active samples, no sequence gaps, no fault, maximum TEC 39.698 C and
+final DONE/PWM0. Last five cycles show repeatable TEC, but T3 amplitude span
+25.9%, phase span .181 rad and mean span .168 C. Retain as a pilot; no
+three-rod production interval is certified. The matching pilot_review.json
+records exact intervals, fits and raw hash. Prepared PI_35C_5C_300s_40min.json:
+Ta35/Tb5, Kp50/Ki.3, period300, budget2400 s, cap96, ratio3.50345, anti-windup
+on. Longer-period downstream signal and settling still require measurement.
+No hardware action was performed while preparing this plan.
+
+## End of session, 2026-11-16
+
+Operator stopped for today. The 300 s PI run actually completed all 2400 s /
+8 cycles, 4800 active samples, final DONE/PWM0, no fault, and logging closed.
+Do not restart or schedule more acquisition this session. User should switch
+off the TEC supply. Last-five-cycle T3 amplitude span is about 25% and phase
+span .268 rad; full production qualification is still pending.
+
+PI records now exist at 100, 200, 300 and 500 s. The only completely unmeasured
+required PI period is 400 s. Review the existing four before assigning repeats;
+100/300 and the earlier 200/500 pilots have unresolved qualification concerns.
+Five retained 400 s cycles alone take 2000 s (33 min 20 s), excluding settling.
+The two remaining computer-simulation evidence groups are the S18.3 table/check
+and the focused 100 s P/PI comparison; no saved results were found in the repo.
+Exact sources/hashes and remaining work: Module_8/data/processed/pilot_checks/
+session_inventory_20261116.json. No claim that all measured periods are qualified.

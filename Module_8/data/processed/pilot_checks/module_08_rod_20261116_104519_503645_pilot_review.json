@@ -1,0 +1,245 @@
+{
+  "source_csv": "Module_8/data/raw/module_08_rod_20261116_104519_503645.csv",
+  "sha256": "e3de91d694879f45b2ee2b3c4263872314f3f6a588eb740b68fc6325ab4811b9",
+  "last_five_cycles": [
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "interval_device_s": [
+    704.983,
+    1204.983
+  ],
+  "active_samples": 2400,
+  "missing_sequence_records": 0,
+  "per_sensor_repeatability": {
+    "tec_C": {
+      "cycle_fits": [
+        {
+          "mean_C": 34.99276192173735,
+          "amplitude_C": 4.6905824087151915,
+          "phase_rad": -1.7332644236138075,
+          "rms_residual_C": 0.014960829537681287
+        },
+        {
+          "mean_C": 35.000543817933874,
+          "amplitude_C": 4.693045852140288,
+          "phase_rad": -1.7339596432050455,
+          "rms_residual_C": 0.017147441761236042
+        },
+        {
+          "mean_C": 34.99730093843004,
+          "amplitude_C": 4.692215341076701,
+          "phase_rad": -1.7338584633402516,
+          "rms_residual_C": 0.016098848923416967
+        },
+        {
+          "mean_C": 34.99355177150132,
+          "amplitude_C": 4.690035161486404,
+          "phase_rad": -1.7336634090605043,
+          "rms_residual_C": 0.01403986939707347
+        },
+        {
+          "mean_C": 35.00281182153856,
+          "amplitude_C": 4.6924451776729414,
+          "phase_rad": -1.7340448075999317,
+          "rms_residual_C": 0.01657430768929181
+        }
+      ],
+      "mean_span_C": 0.01004989980120996,
+      "amplitude_span_fraction": 0.0006417105206332043,
+      "phase_span_rad": 0.0007803839861242334
+    },
+    "rod1_C": {
+      "cycle_fits": [
+        {
+          "mean_C": 32.091274633602914,
+          "amplitude_C": 1.185005300756243,
+          "phase_rad": -2.7121142994766756,
+          "rms_residual_C": 0.02001918528840483
+        },
+        {
+          "mean_C": 32.11638375145332,
+          "amplitude_C": 1.2043928821474137,
+          "phase_rad": -2.7004080333347007,
+          "rms_residual_C": 0.018132374091332077
+        },
+        {
+          "mean_C": 32.154345274438086,
+          "amplitude_C": 1.2222588328215247,
+          "phase_rad": -2.7060555143850467,
+          "rms_residual_C": 0.019368879189216974
+        },
+        {
+          "mean_C": 32.18301209471433,
+          "amplitude_C": 1.2315661876198216,
+          "phase_rad": -2.7046503806051594,
+          "rms_residual_C": 0.021388272096795308
+        },
+        {
+          "mean_C": 32.19720377979631,
+          "amplitude_C": 1.223300513263923,
+          "phase_rad": -2.689044342922389,
+          "rms_residual_C": 0.01744611010259986
+        }
+      ],
+      "mean_span_C": 0.10592914619339666,
+      "amplitude_span_fraction": 0.03837526154896925,
+      "phase_span_rad": 0.023069956554286453
+    },
+    "rod2_C": {
+      "cycle_fits": [
+        {
+          "mean_C": 30.54892220577257,
+          "amplitude_C": 0.532801057239435,
+          "phase_rad": 2.6827638074891915,
+          "rms_residual_C": 0.021900972916989628
+        },
+        {
+          "mean_C": 30.57661121304133,
+          "amplitude_C": 0.5069965957455641,
+          "phase_rad": 2.746880165233827,
+          "rms_residual_C": 0.020130074295626837
+        },
+        {
+          "mean_C": 30.617514674700452,
+          "amplitude_C": 0.5466044146935989,
+          "phase_rad": 2.7325388598855453,
+          "rms_residual_C": 0.02162020585032998
+        },
+        {
+          "mean_C": 30.65736610804312,
+          "amplitude_C": 0.5284184150133395,
+          "phase_rad": 2.729939791226584,
+          "rms_residual_C": 0.02117837152122042
+        },
+        {
+          "mean_C": 30.683355402801013,
+          "amplitude_C": 0.5255267845618944,
+          "phase_rad": 2.750456567835472,
+          "rms_residual_C": 0.01755679902108993
+        }
+      ],
+      "mean_span_C": 0.13443319702844292,
+      "amplitude_span_fraction": 0.0750049424165898,
+      "phase_span_rad": 0.06769276034628069
+    },
+    "rod3_C": {
+      "cycle_fits": [
+        {
+          "mean_C": 29.44603566670917,
+          "amplitude_C": 0.21862519592985152,
+          "phase_rad": 1.6071404163651595,
+          "rms_residual_C": 0.019920921033528056
+        },
+        {
+          "mean_C": 29.47734321380119,
+          "amplitude_C": 0.16922272831406326,
+          "phase_rad": 1.561779036205019,
+          "rms_residual_C": 0.015012430430415566
+        },
+        {
+          "mean_C": 29.533130916448336,
+          "amplitude_C": 0.20125002252396984,
+          "phase_rad": 1.7426133811671505,
+          "rms_residual_C": 0.023434342863003072
+        },
+        {
+          "mean_C": 29.57295795650195,
+          "amplitude_C": 0.18399214337138275,
+          "phase_rad": 1.6707834531472372,
+          "rms_residual_C": 0.018902095518517053
+        },
+        {
+          "mean_C": 29.613727713321016,
+          "amplitude_C": 0.18063909235099845,
+          "phase_rad": 1.6907215733392684,
+          "rms_residual_C": 0.014035821054624344
+        }
+      ],
+      "mean_span_C": 0.1676920466118439,
+      "amplitude_span_fraction": 0.2589963090297517,
+      "phase_span_rad": 0.18083434496213147
+    },
+    "rod4_C": {
+      "cycle_fits": [
+        {
+          "mean_C": 28.591579659161386,
+          "amplitude_C": 0.11517433112329521,
+          "phase_rad": 1.0129991981894435,
+          "rms_residual_C": 0.03173592634029979
+        },
+        {
+          "mean_C": 28.643970603609493,
+          "amplitude_C": 0.07670652450638343,
+          "phase_rad": 0.5389511783681162,
+          "rms_residual_C": 0.026026255672112118
+        },
+        {
+          "mean_C": 28.701255704162296,
+          "amplitude_C": 0.06119491441400386,
+          "phase_rad": 1.1598380690740608,
+          "rms_residual_C": 0.02920988714860434
+        },
+        {
+          "mean_C": 28.73175224121809,
+          "amplitude_C": 0.059463667867485206,
+          "phase_rad": 0.5880923855219874,
+          "rms_residual_C": 0.024190601577663565
+        },
+        {
+          "mean_C": 28.783186604905346,
+          "amplitude_C": 0.06377746510034717,
+          "phase_rad": 0.8998398063945352,
+          "rms_residual_C": 0.02418062693057017
+        }
+      ],
+      "mean_span_C": 0.19160694574395976,
+      "amplitude_span_fraction": 0.7402094193747301,
+      "phase_span_rad": 0.6208868907059446
+    },
+    "rod5_C": {
+      "cycle_fits": [
+        {
+          "mean_C": 27.75744115485351,
+          "amplitude_C": 0.06055478595955918,
+          "phase_rad": 1.0479077888847816,
+          "rms_residual_C": 0.03425196312820066
+        },
+        {
+          "mean_C": 27.839594499398995,
+          "amplitude_C": 0.03283315275808404,
+          "phase_rad": -0.3004221756977691,
+          "rms_residual_C": 0.02623489464790626
+        },
+        {
+          "mean_C": 27.88378490039017,
+          "amplitude_C": 0.004982476503417738,
+          "phase_rad": 2.0381134202899744,
+          "rms_residual_C": 0.028680844141612646
+        },
+        {
+          "mean_C": 27.910371702411847,
+          "amplitude_C": 0.02217632750432636,
+          "phase_rad": -0.5447259816634664,
+          "rms_residual_C": 0.025622545706920474
+        },
+        {
+          "mean_C": 27.970304051210405,
+          "amplitude_C": 0.016242364615254863,
+          "phase_rad": 0.8216891843500985,
+          "rms_residual_C": 0.024025342416557405
+        }
+      ],
+      "mean_span_C": 0.2128628963568957,
+      "amplitude_span_fraction": 2.031313404134996,
+      "phase_span_rad": 2.582839401953441
+    }
+  },
+  "production_qualified": false,
+  "scope": "Pilot repeatability check, not full transport inference. T3 amplitude/phase and mean remain variable. Planning tolerance constants are not course-mandated cutoffs.",
+  "operator_geometry_confirmation": "Unchanged Module 7 coordinates, confirmed 2026-11-16.",
+  "next_trial": "PI at 300 s; unchanged mean, amplitude, gains, compensation and temperature safeguards."
+}

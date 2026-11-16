@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-16",
+  "operator_decision": "End the session today. No further acquisition is authorized for this session.",
+  "latest_completed_run": "module_08_rod_20261116_111157_767223.csv",
+  "latest_run_done_pwm_zero_and_closed": true,
+  "required_production_periods_s": [
+    100,
+    200,
+    300,
+    400,
+    500
+  ],
+  "missing_periods_with_no_PI_record_s": [
+    400
+  ],
+  "existing_periods_to_review_before_repeating": [
+    {
+      "period_s": 100,
+      "source": "Module_8/data/raw/module_08_rod_20261116_104519_503645.csv",
+      "sha256": "e3de91d694879f45b2ee2b3c4263872314f3f6a588eb740b68fc6325ab4811b9",
+      "active_samples": 2400,
+      "acceptance_status": "pending_full_analysis_not_automatically_production_qualified"
+    },
+    {
+      "period_s": 200,
+      "source": "Module_8/data/raw/module_08_rod_20261109_095722_597413.csv",
+      "sha256": "9639d3a6c206c190eefc5373b63ea735b3295876561024fd81cde3319e1e49d4",
+      "active_samples": 5062,
+      "acceptance_status": "pending_full_analysis_not_automatically_production_qualified"
+    },
+    {
+      "period_s": 300,
+      "source": "Module_8/data/raw/module_08_rod_20261116_111157_767223.csv",
+      "sha256": "babd76d900497eafcafffcc1343ba77ea8aa3345facd499f91c88d8abdfcc4bd",
+      "active_samples": 4800,
+      "acceptance_status": "pending_full_analysis_not_automatically_production_qualified"
+    },
+    {
+      "period_s": 500,
+      "source": "Module_8/data/raw/module_08_rod_20261109_104354_009745.csv",
+      "sha256": "4f8d0c54061cbf2ef591a7cf32def86e3cc6a00686bce3da6375340d5770b64c",
+      "active_samples": 7200,
+      "acceptance_status": "pending_full_analysis_not_automatically_production_qualified"
+    }
+  ],
+  "known_review_concerns": [
+    "100 s T3 last-five-cycle amplitude span about 26%.",
+    "300 s T3 last-five-cycle amplitude span about 25%; completion alone is not settling.",
+    "Earlier 200/500 s pilots have unresolved three-rod repeatability/model/uncertainty qualification."
+  ],
+  "minimum_retained_time_for_missing_400s_period_s": 2000,
+  "remaining_computer_work": [
+    "S18.3 raw-PWM simulation table, analytical/numerical check and measurement comparison; saved evidence not found in repository.",
+    "Focused 100 s P-vs-PI simulation at the same Kp; saved evidence not found in repository.",
+    "Five-period fit intervals, spatial inference, uncertainty/residual checks and final model comparison."
+  ],
+  "next_session_order": [
+    "Review the existing four PI periods and raw/control records, identifying usable intervals and only necessary repeats.",
+    "Collect the missing 400 s PI period during a supervised lab session; retain five settled cycles at >=3 rod sensors.",
+    "Repeat only intervals that cannot be qualified; do not repeat a usable run merely to change its label."
+  ],
+  "course_source": "https://sethfraden.github.io/Phys39F26-course/labs/lab-09/"
+}
