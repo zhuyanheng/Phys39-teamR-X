@@ -231,3 +231,22 @@ Arduino serial device was absent; no post-STOP zero-output measurement was saved
 The user was instructed to switch off the TEC supply. No acquisition was restarted.
 Exact settings, elapsed duration, hash and shutdown limitation are in the matching
 `_end_of_day.json` under Module_8/data/processed/pilot_checks.
+
+## Session continuation, 2026-11-16
+
+Raw +/-50 PWM records at 200 s and 100 s completed without a fault; the
+300 s partial run remains accepted by the operator for today, not certified as
+production. RAW_POS Ua=32, Ub=5 at 100 s also completed: the final cycle TEC
+mean was 38.002 C (not 40 C), final-three-cycle mean span 0.165 C. Preserve
+this measured result and the safety-reduced amplitude qualification.
+
+Operator confirmed T1–T5 have exactly the Module 7 hole positions and explicitly
+authorized reuse. sensor_map.json now selects x=[0,.0385,.0895,.1405,.1915] m,
+L=.2715 m, T1 origin physical hole 2; uncertainty values remain unknown. Do not
+require remeasurement solely because a new module began. Qualify downstream
+signals using the pilot before deciding whether repositioning is necessary.
+
+Next prepared trial: PI_35C_5C_100s_20min.json, 1200 s, Ta35/Tb5, period100,
+Kp50/Ki.3, ratio3.50345, cap96, anti-windup ON. This is a budgeted control/rod
+pilot with unchanged safeguards, not proof of five settled production cycles.
+No device was started while preparing these files.

@@ -1,5 +1,5 @@
 {
-  "status": "pending_module_08_measurement",
+  "status": "operator_confirmed_unchanged_module_07_geometry",
   "channels": {
     "tec": "A0",
     "rod1": "A1",
@@ -8,9 +8,15 @@
     "rod4": "A4",
     "rod5": "A5"
   },
-  "x_m": null,
+  "x_m": [
+    0,
+    0.0385,
+    0.0895,
+    0.1405,
+    0.1915
+  ],
   "position_uncertainty_m": null,
-  "analysis_length_m": null,
+  "analysis_length_m": 0.2715,
   "diameter_m": 0.01277,
   "diameter_source": "User-reported caliper measurement on 2026-11-04; instrument precision 0.01 mm, not a complete uncertainty budget.",
   "inherited_module_07_reference": {
@@ -24,5 +30,16 @@
     ],
     "analysis_length_m": 0.2715
   },
-  "note": "Inherited coordinates are reference only. Module 8 starts with T1 at the first hole and downstream probes approximately one inch apart; remeasure all positions and L before production. No acquisition/analysis script treats this pending map as measured Module 8 geometry."
+  "note": "Module 7 coordinates explicitly reused after operator confirmation; not newly remeasured. Position/length uncertainty remains unknown. Pilot data must establish measurable amplitudes/phases at at least three rod sensors before production acceptance.",
+  "origin": "T1 / A1 at physical hole 2; x=0",
+  "physical_holes": [
+    2,
+    5,
+    7,
+    8,
+    9
+  ],
+  "confirmation_date": "2026-11-16",
+  "confirmation": "Operator explicitly confirmed T1\u2013T5 remain in exactly the Module 7 holes and authorized reuse of the measured coordinates.",
+  "geometry_source": "docs/module_notes/module_07_rod_instrument.md: cumulative position table"
 }
