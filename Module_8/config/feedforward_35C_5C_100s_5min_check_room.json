@@ -1,0 +1,55 @@
+{
+  "schema": "module_08_plan_v2",
+  "firmware": "module_08_angstrom_v2",
+  "ratio": 1.0,
+  "pwm_limit": 96,
+  "anti_windup": false,
+  "calibration": [],
+  "steps": [
+    {
+      "duration_s": 300,
+      "Ta_C": 0,
+      "Tb_C": 0,
+      "period_s": 100,
+      "mode": "RAW_POS",
+      "Kp": 0,
+      "Ki": 0,
+      "Ua_pwm": 23.3325,
+      "Ub_pwm": 10.09191
+    }
+  ],
+  "metadata": {
+    "purpose": "S18.5_S18.6_physical_100s_scalar_feedforward_trial",
+    "experiment_kind": "physical_Arduino_TEC_measurement_not_simulation",
+    "settings_status": "Prepared and schema-validated; update PWM offset from current measured room temperature before starting.",
+    "requested_comparison_waveform": {
+      "mean_C": 35.0,
+      "amplitude_C": 5.0,
+      "period_s": 100.0
+    },
+    "drive_equation": "u(t) = Ua_pwm + Ub_pwm*sin(phase_rad)",
+    "implementation": "RAW_POS implements prescribed positive-only sinusoidal PWM feedforward, without temperature feedback. OPEN in this firmware is a different inverse-calibration-table feedforward method.",
+    "calibration": {
+      "source": "module_04_steady_state.csv",
+      "sha256": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
+      "qualification": "Measured static curve; Module 4 settling audit remains applicable. Revalidate with the rod attached.",
+      "chi_heat_C_per_pwm": 0.49544628875665514,
+      "chi_cool_C_per_pwm": 0.1414166666666667,
+      "heating_to_cooling_ratio": 3.503450480306341
+    },
+    "ambient_C": null,
+    "ambient_method": "Current room temperature not yet measured or supplied.",
+    "calibration_reference_ambient_C": 23.44,
+    "offset_reference_note": "Ua in this draft uses the historical Module 4 zero-PWM baseline 23.44 C. This is not a measurement of current room temperature.",
+    "before_start": "Measure current room temperature, record it as ambient_C and recompute Ua_pwm=(35-ambient_C)/chi_heat_C_per_pwm. Reload/upload the updated file. Editing ambient metadata alone does not automatically change Ua.",
+    "Ua_formula": "(35 - measured_current_room_C) / 0.49544628875665514",
+    "Ub_formula": "5 / 0.49544628875665514",
+    "pwm_min": 13.24059,
+    "pwm_max": 33.42441,
+    "duration_note": "300 simulated-firmware seconds of actual operation = three full 100 s cycles, following operator instruction to ignore settling as a repeat trigger. This duration alone does not certify a settled interval.",
+    "setpoint_note": "RAW_POS reports no firmware temperature setpoint. For tracking comparison reconstruct T_set(t)=35+5*sin(phase_rad) from this metadata and recorded phase_rad. Zero Ta/Tb fields are inactive firmware placeholders, not a 0 C temperature request.",
+    "gain_note": "Kp and Ki are zero and unused; no feedback or cooling multiplier is applied. anti_windup=false is inactive in this raw mode.",
+    "safety_note": "Existing firmware TEC 10-45 C operating guard, 60 C backup limit and 56 C rod-base guard are unchanged. No hardware commands were sent while preparing this file.",
+    "course_source": "https://sethfraden.github.io/Phys39F26-course/labs/lab-09/#s185-specify-the-setpoint-and-construct-feedforward"
+  }
+}

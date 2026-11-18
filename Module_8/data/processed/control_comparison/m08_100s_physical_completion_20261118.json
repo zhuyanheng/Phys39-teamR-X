@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-18",
+  "scope": "Hardware trial coverage, per operator instruction to ignore settling as a repeat trigger. Does not certify settled production intervals.",
+  "new_trials": [
+    {
+      "source": "Module_8/data/raw/module_08_rod_20261118_113619_678440.csv",
+      "mode": "RAW_POS",
+      "start_host_time": "2026-11-18T11:36:27.265380-05:00",
+      "start_device_s": 6.956,
+      "last_running_device_s": 306.67,
+      "duration_s": 300.0,
+      "period_s": 100,
+      "complete_cycles": 3,
+      "samples": 600,
+      "missing_sequence_samples": 0,
+      "fault_samples": 0,
+      "nonfinite_temperature_values": 0,
+      "latest_state": "DONE",
+      "latest_pwm": "0",
+      "ambient_C": null,
+      "snapshot_prefix_bytes": 224967,
+      "snapshot_prefix_sha256": "1da144d2f21a71dca9286242614bd9de59d79ade9deb874120cf64fa00164f1c"
+    },
+    {
+      "source": "Module_8/data/raw/module_08_rod_20261118_114204_147029.csv",
+      "mode": "P",
+      "start_host_time": "2026-11-18T11:42:11.868605-05:00",
+      "start_device_s": 7.186,
+      "last_running_device_s": 307.17,
+      "duration_s": 300.0,
+      "period_s": 100,
+      "complete_cycles": 3,
+      "samples": 600,
+      "missing_sequence_samples": 0,
+      "fault_samples": 0,
+      "nonfinite_temperature_values": 0,
+      "latest_state": "DONE",
+      "latest_pwm": "0",
+      "ambient_C": null,
+      "snapshot_prefix_bytes": 221262,
+      "snapshot_prefix_sha256": "8f124ca5318ef45b587cd0e16257ed764d3ecabdbbc3fa0515ec80f5b315041e"
+    }
+  ],
+  "all_planned_hardware_trial_types_have_records": true,
+  "remaining_computer_work": [
+    "S18.4 matched zero-centered/positive-only simulation and half-peak-to-peak residual worksheet",
+    "Stage 3 100 s P/PI six-sensor rod simulation",
+    "Stage 6 matched 300 s theory/measurement/TEC-rod model comparison and final synthesis"
+  ],
+  "device_commands_sent": false
+}

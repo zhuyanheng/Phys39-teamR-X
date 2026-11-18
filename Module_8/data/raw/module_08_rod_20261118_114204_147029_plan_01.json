@@ -1,0 +1,142 @@
+{
+  "schema": "module_08_plan_v2",
+  "firmware": "module_08_angstrom_v2",
+  "ratio": 3.50345,
+  "pwm_limit": 96,
+  "anti_windup": true,
+  "calibration": [
+    [
+      9.99,
+      -96.0
+    ],
+    [
+      13.4,
+      -72.0
+    ],
+    [
+      16.99,
+      -48.0
+    ],
+    [
+      20.44,
+      -24.0
+    ],
+    [
+      23.44,
+      0.0
+    ],
+    [
+      28.31,
+      11.0
+    ],
+    [
+      34.62,
+      23.0
+    ],
+    [
+      40.42,
+      34.0
+    ],
+    [
+      45.37,
+      45.0
+    ]
+  ],
+  "steps": [
+    {
+      "duration_s": 300.0,
+      "Ta_C": 35.0,
+      "Tb_C": 5.0,
+      "period_s": 100.0,
+      "mode": "P",
+      "Kp": 50.0,
+      "Ki": 0.0,
+      "Ua_pwm": 0.0,
+      "Ub_pwm": 0.0
+    }
+  ],
+  "metadata": {
+    "purpose": "S18.7_physical_P_only_100s_control_comparison",
+    "experiment_kind": "physical_Arduino_TEC_measurement_not_simulation",
+    "settings_status": "Prepared, loaded and validated offline; no upload or hardware start.",
+    "comparison_group": "100 s feedforward / P / PI at nominal 35 +/- 5 C",
+    "calibration": {
+      "source": "module_04_steady_state.csv",
+      "sha256": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
+      "qualification": "Measured static curve; Module 4 settling audit remains applicable. Revalidate with the rod attached.",
+      "chi_heat_C_per_pwm": 0.49544628875665514,
+      "chi_cool_C_per_pwm": 0.1414166666666667,
+      "heating_to_cooling_ratio": 3.503450480306341
+    },
+    "ratio_source": "Same Module 4 measured heating/cooling ratio as the existing P200 and PI100 records.",
+    "ambient_C": null,
+    "ambient_method": "Record current measured room temperature before this new physical run; no previous-day ambient is substituted.",
+    "control_equation": "u_raw = Kp*(T_set-T_TEC); negative commands multiplied by ratio, then clamped to +/-pwm_limit. Ki=0 and integral is inactive.",
+    "setpoint_equation": "T_set(t) = 35 + 5*sin(phase_rad), period 100 s",
+    "gains_source": "Kp=50 PWM/C, Ki=0; match the existing P200 proportional gain and PI100 Kp for the P/PI comparison.",
+    "anti_windup_note": "Enabled in the plan for consistency; P-only control has no integral term to wind up.",
+    "Ua_Ub_note": "Ua_pwm and Ub_pwm are zero inactive placeholders in temperature modes. Do not reuse the feedforward raw-PWM Ua/Ub in this P plan.",
+    "duration_note": "300 s = three full 100 s cycles, per operator instruction to ignore settling as a repeat trigger. Keep startup in the raw file; elapsed time alone does not certify a settled comparison.",
+    "expected_startup": "Kp=50 can reach the existing PWM cap during a cold start. Record saturation including startup; it is not silently excluded or claimed absent.",
+    "safety_note": "Existing firmware TEC 10-45 C operating guard, 60 C backup limit and 56 C rod-base guard are unchanged.",
+    "comparison_sources": {
+      "existing_P200": "Module_8/data/raw/m08_p_p200s_20261111_094156_728168.csv",
+      "existing_PI100": "Module_8/data/raw/m08_pi_p100s_20261116_104519_503645.csv"
+    },
+    "course_source": "https://sethfraden.github.io/Phys39F26-course/labs/lab-09/#s187-repeat-with-p-and-pi-control",
+    "settling_criterion": ""
+  },
+  "sensor_map_snapshot": {
+    "status": "operator_confirmed_unchanged_module_07_geometry",
+    "channels": {
+      "tec": "A0",
+      "rod1": "A1",
+      "rod2": "A2",
+      "rod3": "A3",
+      "rod4": "A4",
+      "rod5": "A5"
+    },
+    "x_m": [
+      0,
+      0.0385,
+      0.0895,
+      0.1405,
+      0.1915
+    ],
+    "position_uncertainty_m": null,
+    "analysis_length_m": 0.2715,
+    "diameter_m": 0.01277,
+    "diameter_source": "User-reported caliper measurement on 2026-11-04; instrument precision 0.01 mm, not a complete uncertainty budget.",
+    "inherited_module_07_reference": {
+      "origin": "physical hole 2",
+      "x_m": [
+        0,
+        0.0385,
+        0.0895,
+        0.1405,
+        0.1915
+      ],
+      "analysis_length_m": 0.2715
+    },
+    "note": "Module 7 coordinates explicitly reused after operator confirmation; not newly remeasured. Position/length uncertainty remains unknown. Pilot data must establish measurable amplitudes/phases at at least three rod sensors before production acceptance.",
+    "origin": "T1 / A1 at physical hole 2; x=0",
+    "physical_holes": [
+      2,
+      5,
+      7,
+      8,
+      9
+    ],
+    "confirmation_date": "2026-11-16",
+    "confirmation": "Operator explicitly confirmed T1\u2013T5 remain in exactly the Module 7 holes and authorized reuse of the measured coordinates.",
+    "geometry_source": "docs/module_notes/module_07_rod_instrument.md: cumulative position table"
+  },
+  "code_sha256": {
+    "Module_8/arduino/module_08_rod_controller/module_08_rod_controller.ino": "7efb34f8ab839a5c4d6ecd032951ec4bd7d6beca7006cfc871a8a575c883182c",
+    "Module_8/arduino/module_08_rod_controller/angstrom_core.h": "193d84df1cbd7a380b6647829b71f5425f48095899eb243f8406f9c5a840b329",
+    "Module_8/python/rod_acquisition_gui.py": "e639945d25fc4e992229582f5176d4f5ee23f7e46cbbaa659f0f88a59289ada1",
+    "Module_8/python/rod_protocol.py": "7db03d82f95b8940c37970423b8e52f82c8f94b1eff6b493d0d70a9ca4c23d29",
+    "Module_8/python/angstrom_plan.py": "ea0a2dc0096f01669377e29badb4b9a84886f3705e7494850697b423f421b1b2"
+  },
+  "plan_sha256": "590c6e45afd6b0763ab638003a72e1097ddcbe18f563af2d86210ef7a2a54682"
+}

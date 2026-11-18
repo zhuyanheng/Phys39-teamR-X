@@ -396,3 +396,64 @@ ambient temperature and drift. Today's room temperature cannot retrospectively
 replace missing ambient values from the older runs. Geometry is confirmed
 unchanged, but instrument resolution/position-reading uncertainty remains
 incompletely documented. No hardware commands were sent for this audit.
+
+## Prepared physical 100 s feedforward parameter file, 2026-11-18
+
+Clarified that the missing 100 s feedforward trial is a physical Arduino/TEC
+measurement, separate from the already completed six teaching simulations.
+Created FEEDFORWARD_35C_5C_100s_5min_CHECK_ROOM.json at Module_8 root and an
+identical config/feedforward_35C_5C_100s_5min_check_room.json. Both load through
+the current v2 plan validator and have positive, unclipped PWM commands.
+
+The current course scalar formula is implemented using RAW_POS: period100,
+duration300, Ua23.3325/Ub10.09191 PWM, cap96, no feedback or cooling multiplier.
+The 35+/-5 C comparison request is metadata; RAW_POS Ta/Tb zero placeholders
+are inactive, and the firmware records phase for reconstructing the comparison
+setpoint in analysis. This differs from the existing OPEN inverse-table mode.
+
+IMPORTANT: the draft Ua uses the historical Module 4 zero-PWM baseline23.44 C,
+not current measured ambient. Actual ambient remains null. Before starting,
+measure room temperature and update Ua=(35-Troom)/0.49544628875665514 as well
+as the ambient metadata, then reload/upload. Do not silently relabel23.44 C as
+a current measurement. No device access or upload/start occurred. Duration is
+three cycles under the operator's instruction to ignore settling in this list;
+it is not automatic certification of three settled cycles.
+
+## Prepared next physical P-only trial, 2026-11-18
+
+At operator request, prepared P_35C_5C_100s_5min.json at Module_8 root and an
+identical config/comparison_p_35C_5C_100s_5min.json. This is the physical P-only
+trial after feedforward: mode P, duration300 s, period100 s, Ta35/Tb5 C,
+Kp50 PWM/C, Ki0, cap96, ratio3.503450480306341. Anti-windup is enabled but
+inactive in P mode; Ua/Ub zero placeholders are inactive. Gains match existing
+P200/PI100, geometry and firmware protections remain unchanged. Current ambient
+is unknown and must be recorded for the new run, but the P control law does not
+need it to compute its feedback command. A cold start can saturate the PWM cap;
+the plan explicitly requires retaining that evidence. Both files round-trip
+through the v2 validator and produce the expected schedule command offline.
+No serial/device access, upload or start occurred. The feedforward file still
+awaits current ambient confirmation; preparing this next plan does not complete
+or start either physical trial.
+
+## Physical-trial coverage completed, 2026-11-18
+
+Verified two new actual acquisitions: module_08_rod_20261118_113619_678440
+is scalar feedforward implemented as RAW_POS (Ua23.3325/Ub10.0919), and
+module_08_rod_20261118_114204_147029 is P-only at35+/-5 C, Kp50/Ki0.
+Both completed300 s / three100 s cycles with600 RUNNING samples, no sequence
+gaps, no nonfinite temperature readings or recorded RUNNING faults, followed
+by DONE/PWM0. No hardware commands were sent for this verification.
+
+Under the operator's explicit instruction to ignore settling as a reason for
+more measurements, all planned hardware trial types now have records. This is
+trial coverage, not certification of settled production intervals. Both new
+plan snapshots still have ambient_C null; feedforward used the historical
+23.44 C calibration reference. Preserve that limitation rather than asserting
+measured ambient or exactly matched current feedforward prediction.
+
+Remaining work is on the computer: S18.4 paired simulation and residual
+amplitude worksheets,100 s P/PI six-sensor simulation, matched300 s
+theory/measurement/numerical-rod comparison, integrating the two new control
+records into the100 s control figure/table, and final A5 synthesis. No new
+hardware trial is initiated by this status check. Completion receipt:
+Module_8/data/processed/control_comparison/m08_100s_physical_completion_20261118.json.
