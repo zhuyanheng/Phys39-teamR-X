@@ -1,0 +1,42 @@
+{
+  "100": {
+    "raw": "Module_8/data/raw/m08_pi_p100s_20261116_104519_503645.csv",
+    "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p100s_20261116_104519_503645.csv",
+    "prefix_bytes": 877605,
+    "sha256": "e3de91d694879f45b2ee2b3c4263872314f3f6a588eb740b68fc6325ab4811b9",
+    "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p100s_20261116_104519_503645_plan_01.json",
+    "plan_sha256": "7c49d62baf4c1d7a18f5be87a468f824ab44672fe4ecfb69cc167df424ecc3b2"
+  },
+  "200": {
+    "raw": "Module_8/data/raw/m08_pi_p200s_20261109_095722_597413.csv",
+    "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p200s_20261109_095722_597413.csv",
+    "prefix_bytes": 1752318,
+    "sha256": "9639d3a6c206c190eefc5373b63ea735b3295876561024fd81cde3319e1e49d4",
+    "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p200s_20261109_095722_597413_plan_01.json",
+    "plan_sha256": "d899842e3c442e2ed53591e9dc24795dd5ab5660648d3f53c11c40af2737d864"
+  },
+  "300": {
+    "raw": "Module_8/data/raw/m08_pi_p300s_20261116_111157_767223.csv",
+    "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p300s_20261116_111157_767223.csv",
+    "prefix_bytes": 1712403,
+    "sha256": "babd76d900497eafcafffcc1343ba77ea8aa3345facd499f91c88d8abdfcc4bd",
+    "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p300s_20261116_111157_767223_plan_01.json",
+    "plan_sha256": "c8904c2bc03e6d31cf3dfc650d41c18e074be8bf63728fe3e410f918b223f9b9"
+  },
+  "400": {
+    "raw": "Module_8/data/raw/m08_pi_p400s_20261118_092100_447310.csv",
+    "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p400s_20261118_092100_447310.csv",
+    "prefix_bytes": 2812071,
+    "sha256": "c16ac1c93102b60ca38fe3d018b7d45ce48c1d7a8750680594069402a4fa6530",
+    "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p400s_20261118_092100_447310_plan_01.json",
+    "plan_sha256": "ef0574517bc568931735c66086e710e31aa60af17bfcf6b3802455f08b667778"
+  },
+  "500": {
+    "raw": "Module_8/data/raw/m08_pi_p500s_20261109_104354_009745.csv",
+    "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p500s_20261109_104354_009745.csv",
+    "prefix_bytes": 2536460,
+    "sha256": "4f8d0c54061cbf2ef591a7cf32def86e3cc6a00686bce3da6375340d5770b64c",
+    "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p500s_20261109_104354_009745_plan_01.json",
+    "plan_sha256": "0a27d71335e307ce13769b0ee5757e55624206d0e5d5f3aba56ea4dadc4bad49"
+  }
+}

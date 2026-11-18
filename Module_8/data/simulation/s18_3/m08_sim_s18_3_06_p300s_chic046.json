@@ -1,0 +1,46 @@
+{
+  "kind": "mathematical_simulation_not_measurement",
+  "setup": {
+    "case_id": "s18_3_06_p300s_chic046",
+    "period_s": 300,
+    "chi_c_C_per_pwm": 0.46,
+    "chi_h_C_per_pwm": 0.46,
+    "ambient_C": 22.0,
+    "initial_C": 22.0,
+    "thermal_time_constant_s": 80.0,
+    "ua_pwm": 0.0,
+    "ub_pwm": 50.0,
+    "pwm_limit": 255.0,
+    "dt_s": 0.05,
+    "duration_s": 3000,
+    "normalization_H_W_per_K": 1.0
+  },
+  "setup_file": "Module_8/config/simulation/s18_3_06_p300s_chic046.json",
+  "setup_sha256": "a5d6174d3fcda3dbe496920c9171a412c966fa53a44476247906f38c1fd50fc0",
+  "copied_module6_solver_sha256": "5821449dc609cb1a9544697ad53fd54c85af94889282d5afef56dbb9b6fa91ba",
+  "adapter_sha256": "349446d2ad0cef2e45e1f0bcf2e08d7b86e97954ae5a78438ce99242072caf93",
+  "csv": "Module_8/data/simulation/s18_3/m08_sim_s18_3_06_p300s_chic046.csv",
+  "csv_sha256": "169faf289679a49a6aff0bb67f8918fe13f1e6dd6f1b8a56912211609bba0ad1",
+  "metrics": {
+    "mean_C": 22.000000003862638,
+    "mean_minus_room_C": 3.8626382092843414e-09,
+    "fundamental_amplitude_C": 11.790067932460197,
+    "phase_lag_deg": 59.192057169774344,
+    "sinusoidal_residual_rms_C": 1.0823941484747236e-08,
+    "retained_start_s": 1500,
+    "retained_end_s": 3000,
+    "retained_cycles": 5,
+    "cycle_mean_span_C": 1.8859534378634635e-08,
+    "cycle_amplitude_span_fraction": 1.719244368269434e-12,
+    "cycle_phase_span_rad": 1.6399614999329515e-09,
+    "selected_saturated_samples": 0,
+    "interpretation": "Last five complete simulated cycles; inspect repeatability and residuals. Run duration alone does not establish settling."
+  },
+  "independent_fourier_prediction": {
+    "mean_minus_room_C": 0.0,
+    "fundamental_amplitude_C": 11.787350531257719,
+    "phase_lag_deg": 59.16993618810118
+  },
+  "maximum_equal_chi_time_solution_error_C": 0.0054435531989547314,
+  "normalization": "H=1 W/K is arbitrary. C=H*tau and P_u=H*chi preserve the measured-form one-lump ODE; these are not separately measured heat-loss/capacitance values."
+}

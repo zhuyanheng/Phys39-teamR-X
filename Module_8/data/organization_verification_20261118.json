@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-18",
+  "status": "passed",
+  "renamed_files": 92,
+  "indexed_sessions": 17,
+  "unchanged_raw_and_snapshot_files": 63,
+  "raw_file_count": 53,
+  "open_file_prefixes_verified": 2,
+  "original_content_verification": "Closed raw/snapshot files: full SHA-256 unchanged. Open raw files: SHA-256 unchanged over the captured prefix; subsequent passive samples may append.",
+  "exactly_unchanged_numeric_csvs": [
+    "Module_8/data/processed/five_period_review/m08_pi_five_period_summary.csv",
+    "Module_8/data/processed/five_period_review/m08_pi_five_period_harmonic_fits.csv",
+    "Module_8/data/processed/five_period_review/m08_pi_five_period_cycle_fits.csv"
+  ],
+  "control_metrics_max_absolute_float_roundoff": 4.973799150320701e-14,
+  "numeric_comparison_rtol": 1e-12,
+  "numeric_comparison_atol": 1e-12,
+  "english_translation_checked": true,
+  "navigation_links_checked": true,
+  "compatibility_links_checked": true,
+  "five_period_analysis_rerun": "passed, same central estimates",
+  "control_comparison_rerun": "passed, numerical differences only at floating-point roundoff",
+  "related_automated_tests_passed": 33,
+  "hardware_commands_sent": false
+}

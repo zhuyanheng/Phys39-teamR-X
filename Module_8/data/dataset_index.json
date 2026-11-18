@@ -1,0 +1,300 @@
+{
+  "schema": "module_08_dataset_index_v1",
+  "sessions": [
+    {
+      "run_id": "m08_rehearsal_pi_multi_period_20261109_093936_011209",
+      "original_run_id": "module_08_rod_20261109_093936_011209",
+      "category": "rehearsal",
+      "mode": "PI",
+      "periods_s": [
+        100.0,
+        150.0,
+        240.0
+      ],
+      "active_samples": 30,
+      "purpose": "rehearsal",
+      "raw_csv": "Module_8/data/raw/m08_rehearsal_pi_multi_period_20261109_093936_011209.csv",
+      "serial_log": "Module_8/data/raw/m08_rehearsal_pi_multi_period_20261109_093936_011209.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_rehearsal_pi_multi_period_20261109_093936_011209_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_rehearsal_pi_multi_period_20261109_094442_064803",
+      "original_run_id": "module_08_rod_20261109_094442_064803",
+      "category": "rehearsal",
+      "mode": "PI",
+      "periods_s": [
+        100.0,
+        150.0,
+        240.0
+      ],
+      "active_samples": 330,
+      "purpose": "rehearsal",
+      "raw_csv": "Module_8/data/raw/m08_rehearsal_pi_multi_period_20261109_094442_064803.csv",
+      "serial_log": "Module_8/data/raw/m08_rehearsal_pi_multi_period_20261109_094442_064803.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_rehearsal_pi_multi_period_20261109_094442_064803_plan_01.json",
+        "Module_8/data/raw/m08_rehearsal_pi_multi_period_20261109_094442_064803_plan_02.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_pi_p200s_20261109_095722_597413",
+      "original_run_id": "module_08_rod_20261109_095722_597413",
+      "category": "rod_pi",
+      "mode": "PI",
+      "periods_s": [
+        200.0
+      ],
+      "active_samples": 5062,
+      "purpose": "pilot_pi_200s",
+      "raw_csv": "Module_8/data/raw/m08_pi_p200s_20261109_095722_597413.csv",
+      "serial_log": "Module_8/data/raw/m08_pi_p200s_20261109_095722_597413.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_pi_p200s_20261109_095722_597413_plan_01.json"
+      ],
+      "qualification": "diagnostic review available; not certified settled"
+    },
+    {
+      "run_id": "m08_pi_p500s_20261109_104354_009745",
+      "original_run_id": "module_08_rod_20261109_104354_009745",
+      "category": "rod_pi",
+      "mode": "PI",
+      "periods_s": [
+        500.0
+      ],
+      "active_samples": 7200,
+      "purpose": "pilot_pi_500s",
+      "raw_csv": "Module_8/data/raw/m08_pi_p500s_20261109_104354_009745.csv",
+      "serial_log": "Module_8/data/raw/m08_pi_p500s_20261109_104354_009745.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_pi_p500s_20261109_104354_009745_plan_01.json"
+      ],
+      "qualification": "diagnostic review available; not certified settled"
+    },
+    {
+      "run_id": "m08_p_p200s_20261111_094156_728168",
+      "original_run_id": "module_08_rod_20261111_094156_728168",
+      "category": "boundary_control",
+      "mode": "P",
+      "periods_s": [
+        200.0
+      ],
+      "active_samples": 2400,
+      "purpose": "boundary_control_comparison_p_200s",
+      "raw_csv": "Module_8/data/raw/m08_p_p200s_20261111_094156_728168.csv",
+      "serial_log": "Module_8/data/raw/m08_p_p200s_20261111_094156_728168.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_p_p200s_20261111_094156_728168_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_open_p200s_20261111_101207_449492",
+      "original_run_id": "module_08_rod_20261111_101207_449492",
+      "category": "boundary_control",
+      "mode": "OPEN",
+      "periods_s": [
+        200.0
+      ],
+      "active_samples": 2398,
+      "purpose": "boundary_control_comparison_open_200s",
+      "raw_csv": "Module_8/data/raw/m08_open_p200s_20261111_101207_449492.csv",
+      "serial_log": "Module_8/data/raw/m08_open_p200s_20261111_101207_449492.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_open_p200s_20261111_101207_449492_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_setup_raw_zero_p100s_ua0_ub100_20261111_104447_604409",
+      "original_run_id": "module_08_rod_20261111_104447_604409",
+      "category": "setup",
+      "mode": "RAW_ZERO",
+      "periods_s": [
+        100.0
+      ],
+      "active_samples": 0,
+      "purpose": "raw_zero_100pwm_100s",
+      "raw_csv": "Module_8/data/raw/m08_setup_raw_zero_p100s_ua0_ub100_20261111_104447_604409.csv",
+      "serial_log": "Module_8/data/raw/m08_setup_raw_zero_p100s_ua0_ub100_20261111_104447_604409.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_setup_raw_zero_p100s_ua0_ub100_20261111_104447_604409_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_raw_zero_p100s_ua0_ub100_20261111_110422_487267",
+      "original_run_id": "module_08_rod_20261111_110422_487267",
+      "category": "raw_pwm",
+      "mode": "RAW_ZERO",
+      "periods_s": [
+        100.0
+      ],
+      "active_samples": 1800,
+      "purpose": "raw_zero_100pwm_100s",
+      "raw_csv": "Module_8/data/raw/m08_raw_zero_p100s_ua0_ub100_20261111_110422_487267.csv",
+      "serial_log": "Module_8/data/raw/m08_raw_zero_p100s_ua0_ub100_20261111_110422_487267.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_raw_zero_p100s_ua0_ub100_20261111_110422_487267_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_raw_zero_p200s_ua0_ub100_20261111_112302_678979",
+      "original_run_id": "module_08_rod_20261111_112302_678979",
+      "category": "raw_pwm",
+      "mode": "RAW_ZERO",
+      "periods_s": [
+        200.0
+      ],
+      "active_samples": 122,
+      "purpose": "raw_zero_100pwm_200s",
+      "raw_csv": "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub100_20261111_112302_678979.csv",
+      "serial_log": "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub100_20261111_112302_678979.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub100_20261111_112302_678979_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_raw_zero_p200s_ua0_ub100_20261111_112519_078335",
+      "original_run_id": "module_08_rod_20261111_112519_078335",
+      "category": "raw_pwm",
+      "mode": "RAW_ZERO",
+      "periods_s": [
+        200.0
+      ],
+      "active_samples": 104,
+      "purpose": "raw_zero_100pwm_200s",
+      "raw_csv": "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub100_20261111_112519_078335.csv",
+      "serial_log": "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub100_20261111_112519_078335.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub100_20261111_112519_078335_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_raw_zero_p300s_ua0_ub50_20261111_113001_400415",
+      "original_run_id": "module_08_rod_20261111_113001_400415",
+      "category": "raw_pwm",
+      "mode": "RAW_ZERO",
+      "periods_s": [
+        300.0
+      ],
+      "active_samples": 1706,
+      "purpose": "raw_zero_safety_pilot_50pwm_300s",
+      "raw_csv": "Module_8/data/raw/m08_raw_zero_p300s_ua0_ub50_20261111_113001_400415.csv",
+      "serial_log": "Module_8/data/raw/m08_raw_zero_p300s_ua0_ub50_20261111_113001_400415.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_raw_zero_p300s_ua0_ub50_20261111_113001_400415_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_raw_zero_p200s_ua0_ub50_20261116_093755_907199",
+      "original_run_id": "module_08_rod_20261116_093755_907199",
+      "category": "raw_pwm",
+      "mode": "RAW_ZERO",
+      "periods_s": [
+        200.0
+      ],
+      "active_samples": 2400,
+      "purpose": "raw_zero_safety_pilot_50pwm_200s",
+      "raw_csv": "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub50_20261116_093755_907199.csv",
+      "serial_log": "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub50_20261116_093755_907199.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub50_20261116_093755_907199_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_raw_zero_p100s_ua0_ub50_20261116_100248_724317",
+      "original_run_id": "module_08_rod_20261116_100248_724317",
+      "category": "raw_pwm",
+      "mode": "RAW_ZERO",
+      "periods_s": [
+        100.0
+      ],
+      "active_samples": 1800,
+      "purpose": "raw_zero_safety_pilot_50pwm_100s",
+      "raw_csv": "Module_8/data/raw/m08_raw_zero_p100s_ua0_ub50_20261116_100248_724317.csv",
+      "serial_log": "Module_8/data/raw/m08_raw_zero_p100s_ua0_ub50_20261116_100248_724317.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_raw_zero_p100s_ua0_ub50_20261116_100248_724317_plan_01.json",
+        "Module_8/data/raw/m08_raw_zero_p100s_ua0_ub50_20261116_100248_724317_plan_02.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_raw_pos_p100s_ua32_ub5_20261116_102227_751202",
+      "original_run_id": "module_08_rod_20261116_102227_751202",
+      "category": "raw_pwm",
+      "mode": "RAW_POS",
+      "periods_s": [
+        100.0
+      ],
+      "active_samples": 1800,
+      "purpose": "S18.4_positive_only_100s_safety_reduced_amplitude",
+      "raw_csv": "Module_8/data/raw/m08_raw_pos_p100s_ua32_ub5_20261116_102227_751202.csv",
+      "serial_log": "Module_8/data/raw/m08_raw_pos_p100s_ua32_ub5_20261116_102227_751202.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_raw_pos_p100s_ua32_ub5_20261116_102227_751202_plan_01.json"
+      ],
+      "qualification": "not assigned production qualification"
+    },
+    {
+      "run_id": "m08_pi_p100s_20261116_104519_503645",
+      "original_run_id": "module_08_rod_20261116_104519_503645",
+      "category": "rod_pi",
+      "mode": "PI",
+      "periods_s": [
+        100.0
+      ],
+      "active_samples": 2400,
+      "purpose": "PI_100s_control_and_rod_pilot",
+      "raw_csv": "Module_8/data/raw/m08_pi_p100s_20261116_104519_503645.csv",
+      "serial_log": "Module_8/data/raw/m08_pi_p100s_20261116_104519_503645.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_pi_p100s_20261116_104519_503645_plan_01.json"
+      ],
+      "qualification": "diagnostic review available; not certified settled"
+    },
+    {
+      "run_id": "m08_pi_p300s_20261116_111157_767223",
+      "original_run_id": "module_08_rod_20261116_111157_767223",
+      "category": "rod_pi",
+      "mode": "PI",
+      "periods_s": [
+        300.0
+      ],
+      "active_samples": 4800,
+      "purpose": "PI_300s_control_and_rod_pilot",
+      "raw_csv": "Module_8/data/raw/m08_pi_p300s_20261116_111157_767223.csv",
+      "serial_log": "Module_8/data/raw/m08_pi_p300s_20261116_111157_767223.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_pi_p300s_20261116_111157_767223_plan_01.json"
+      ],
+      "qualification": "diagnostic review available; not certified settled"
+    },
+    {
+      "run_id": "m08_pi_p400s_20261118_092100_447310",
+      "original_run_id": "module_08_rod_20261118_092100_447310",
+      "category": "rod_pi",
+      "mode": "PI",
+      "periods_s": [
+        400.0
+      ],
+      "active_samples": 6400,
+      "purpose": "PI_400s_missing_period_candidate_production",
+      "raw_csv": "Module_8/data/raw/m08_pi_p400s_20261118_092100_447310.csv",
+      "serial_log": "Module_8/data/raw/m08_pi_p400s_20261118_092100_447310.serial.log",
+      "plans": [
+        "Module_8/data/raw/m08_pi_p400s_20261118_092100_447310_plan_01.json"
+      ],
+      "qualification": "diagnostic review available; not certified settled"
+    }
+  ]
+}

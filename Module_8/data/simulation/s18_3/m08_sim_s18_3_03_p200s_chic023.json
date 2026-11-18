@@ -1,0 +1,46 @@
+{
+  "kind": "mathematical_simulation_not_measurement",
+  "setup": {
+    "case_id": "s18_3_03_p200s_chic023",
+    "period_s": 200,
+    "chi_c_C_per_pwm": 0.23,
+    "chi_h_C_per_pwm": 0.46,
+    "ambient_C": 22.0,
+    "initial_C": 22.0,
+    "thermal_time_constant_s": 80.0,
+    "ua_pwm": 0.0,
+    "ub_pwm": 50.0,
+    "pwm_limit": 255.0,
+    "dt_s": 0.05,
+    "duration_s": 2000,
+    "normalization_H_W_per_K": 1.0
+  },
+  "setup_file": "Module_8/config/simulation/s18_3_03_p200s_chic023.json",
+  "setup_sha256": "62433ffdcdd2ee22295f3ef5b060e24d67156c7f0284dbff1af835fc2c785d01",
+  "copied_module6_solver_sha256": "5821449dc609cb1a9544697ad53fd54c85af94889282d5afef56dbb9b6fa91ba",
+  "adapter_sha256": "349446d2ad0cef2e45e1f0bcf2e08d7b86e97954ae5a78438ce99242072caf93",
+  "csv": "Module_8/data/simulation/s18_3/m08_sim_s18_3_03_p200s_chic023.csv",
+  "csv_sha256": "26e2383f0c98b95460db06f6b60642078b1b3dad70c5a878049d3b7cebd71e98",
+  "metrics": {
+    "mean_C": 25.660563641128412,
+    "mean_minus_room_C": 3.6605636411284124,
+    "fundamental_amplitude_C": 6.379009651999824,
+    "phase_lag_deg": 68.34186330608898,
+    "sinusoidal_residual_rms_C": 0.33870687599305843,
+    "retained_start_s": 1000,
+    "retained_end_s": 2000,
+    "retained_cycles": 5,
+    "cycle_mean_span_C": 3.2251310919662046e-06,
+    "cycle_amplitude_span_fraction": 5.872968228316425e-10,
+    "cycle_phase_span_rad": 3.739277798509022e-07,
+    "selected_saturated_samples": 0,
+    "interpretation": "Last five complete simulated cycles; inspect repeatability and residuals. Run duration alone does not establish settling."
+  },
+  "independent_fourier_prediction": {
+    "mean_minus_room_C": 3.660563691113593,
+    "fundamental_amplitude_C": 6.377287870575924,
+    "phase_lag_deg": 68.30301602845995
+  },
+  "maximum_equal_chi_time_solution_error_C": null,
+  "normalization": "H=1 W/K is arbitrary. C=H*tau and P_u=H*chi preserve the measured-form one-lump ODE; these are not separately measured heat-loss/capacitance values."
+}

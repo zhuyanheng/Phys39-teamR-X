@@ -20,9 +20,9 @@ from angstrom_fit import fit_trace, safe
 
 MODULE = Path(__file__).resolve().parents[2]
 SOURCES = {
-    'OPEN': 'module_08_rod_20261111_101207_449492.csv',
-    'P': 'module_08_rod_20261111_094156_728168.csv',
-    'PI': 'module_08_rod_20261109_095722_597413.csv',
+    'OPEN': 'm08_open_p200s_20261111_101207_449492.csv',
+    'P': 'm08_p_p200s_20261111_094156_728168.csv',
+    'PI': 'm08_pi_p200s_20261109_095722_597413.csv',
 }
 COLORS = {'OPEN': '#D55E00', 'P': '#0072B2', 'PI': '#009E73'}
 
@@ -134,7 +134,7 @@ def main():
     fig.text(.075, .043, f'Raw traces; only whole-cycle time shifts. OPEN: {missing} missing samples (unfilled). P/T1 mean span: {p_span:.3f} C.', fontsize=9)
     fig.text(.075, .023, 'PI: Nov 9; OPEN/P: Nov 11. Ambient temperature not recorded. Selected windows are not a full settling certification.', fontsize=9, color='#555555')
     fig.subplots_adjust(left=.075, right=.985, top=.855, bottom=.105, hspace=.35)
-    stem = 'module_08_open_p_pi_comparison_200s'
+    stem = 'm08_open_p_pi_p200s_comparison'
     figures = MODULE / 'figures/control_comparison'; figures.mkdir(parents=True, exist_ok=True)
     processed = MODULE / 'data/processed/control_comparison'; processed.mkdir(parents=True, exist_ok=True)
     fig.savefig(figures/(stem+'.png'), dpi=200)

@@ -1,0 +1,19 @@
+{
+  "schema": "module_08_one_lump_sine_v1",
+  "kind": "simulation_setup",
+  "case_id": "s18_3_03_p200s_chic023",
+  "period_s": 200,
+  "chi_c_C_per_pwm": 0.23,
+  "chi_h_C_per_pwm": 0.46,
+  "ambient_C": 22.0,
+  "initial_C": 22.0,
+  "thermal_time_constant_s": 80.0,
+  "ua_pwm": 0.0,
+  "ub_pwm": 50.0,
+  "pwm_limit": 255.0,
+  "dt_s": 0.05,
+  "duration_s": 2000,
+  "normalization_H_W_per_K": 1.0,
+  "course_source": "https://sethfraden.github.io/Phys39F26-course/labs/lab-09/#simulate-the-time-varying-temperature",
+  "qualification": "Course-prescribed teaching scenario. 22 C is a simulation input, not a measured lab ambient. Ten cycles is a run budget, not automatic settling certification."
+}

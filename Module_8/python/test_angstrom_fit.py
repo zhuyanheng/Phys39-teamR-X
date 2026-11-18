@@ -15,6 +15,15 @@ a=importlib.util.module_from_spec(spec);spec.loader.exec_module(a)
 
 
 class AngstromFitTests(unittest.TestCase):
+    def test_production_requires_all_five_distinct_qualified_periods(self):
+        rows=[{'period_s':p,'status':'candidate'} for p in (100,200,300,500)]
+        self.assertFalse(a.production_coverage(rows)['production_record_complete'])
+        self.assertEqual(a.production_coverage(rows)['missing_candidate_periods_s'],[400])
+        rows.append({'period_s':400,'status':'diagnostic_only'})
+        self.assertFalse(a.production_coverage(rows)['production_record_complete'])
+        rows[-1]['status']='candidate'
+        self.assertTrue(a.production_coverage(rows)['production_record_complete'])
+
     def setUp(self):
         self.x=[0,.0254,.0508,.0762,.1016]
         self.geometry={'x_m':self.x,'analysis_length_m':.2715,'diameter_m':.01277}

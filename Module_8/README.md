@@ -11,6 +11,33 @@ and [Part II](https://sethfraden.github.io/Phys39F26-course/labs/lab-10/).
 See the [lab runbook](../docs/module_notes/module_08_lab_day_runbook_2026-11-04.md),
 [status note](../docs/module_notes/module_08_angstrom.md) and [serial protocol](docs/serial_protocol.md).
 
+## Stage 2 simulator, plots and worksheet
+
+Double-click `run_simulation.command` for the offline S18.3 simulator. Select one
+of six presets, then **Run**. **Apply / Reset** starts a fresh run after editing
+settings; **Save CSV + results + figures** exports the full history, including
+startup. These are simulated seconds and no TEC connection is needed.
+
+The original Module 6 model source is copied byte-for-byte into
+`python/simulation/tec_model_v3.py`; the new frontend uses its one-lump solver
+with raw sinusoidal PWM. Equal heating/cooling susceptibility uses direct
+normalized constants, avoiding the singular measured-parameter TEC inversion.
+The root project Python environment supplies the GUI dependencies. Module 6's
+source, environment and data are preserved.
+
+Setups, the completed six-row table and all Stage 2 figures are in
+[Stage 2 results](docs/stage2_results.md). Six editable setup files are in
+`config/simulation/`; mathematical outputs go to `data/simulation/s18_3/`, with
+figure exports in `figures/simulation/s18_3/`. Reproduce the batch worksheet
+and four figure groups with:
+
+```sh
+.venv/bin/python Module_8/python/analysis/stage2_raw_pwm.py
+```
+
+This one-lump tool addresses Stage 2. Stage 3's focused P/PI rod comparison
+requires the separate six-sensor Angstrom simulator.
+
 ## Run the instrument
 
 1. Upload `arduino/module_08_rod_controller/module_08_rod_controller.ino` with

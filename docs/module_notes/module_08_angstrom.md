@@ -66,8 +66,8 @@ The 40 +/- 16 C handout trial is rejected by the retained 10–45 C range.
 No experimental data was acquired during the original software implementation.
 On Nov. 9, the operator completed the hardware rehearsal:
 
-- Raw sessions: `module_08_rod_20261109_093936_011209` and
-  `module_08_rod_20261109_094442_064803` in `Module_8/data/raw/`.
+- Raw sessions: `m08_rehearsal_pi_multi_period_20261109_093936_011209` and
+  `m08_rehearsal_pi_multi_period_20261109_094442_064803` in `Module_8/data/raw/`.
 - 405 + 506 = 911 measurement rows, all six temperatures finite, 0 missing sequence
   records, 0 malformed DATA lines, and no firmware errors or safety faults.
   Sample intervals were 0.499–0.501 s. CSV and exact serial-log sequence lists agree.
@@ -98,7 +98,7 @@ configuration during this run and resolve the pending map before spatial inferen
 
 ### First full-period pilot result, Nov. 9
 
-`module_08_rod_20261109_095722_597413.csv` records the 200 s PI pilot.
+`m08_pi_p200s_20261109_095722_597413.csv` records the 200 s PI pilot.
 Its last saved measurement is at 10:39:43, approximately 2531 s after Start;
 STOP/Disconnected follows. This is about 42 min, not an automatic 2700 s completion.
 The command log contains STOP, but no subsequent measurement confirms zero output;
@@ -111,7 +111,7 @@ approximately 0.40–0.43 C; T4/T5 are weaker and less repeatable. The final fiv
 cycles contain no PWM saturation. Preserve this as a pilot; no qualifying
 three-rod production interval is certified by this check.
 
-Review: `Module_8/data/processed/pilot_checks/module_08_rod_20261109_095722_597413_final_pilot_review.json`.
+Review: `Module_8/data/processed/pilot_checks/m08_pi_p200s_20261109_095722_597413_final_pilot_review.json`.
 Its input snapshot length and hash preserve the exact data basis.
 
 Next proposed test: `Module_8/config/pilot_pi_35C_5C_500s.json`, one PI step,
@@ -153,7 +153,7 @@ with strict-criterion failure and fitted ambient recorded in the reference JSON.
 
 ## P boundary comparison, 2026-11-11
 
-Recorded `Module_8/data/raw/module_08_rod_20261111_094156_728168.csv`
+Recorded `Module_8/data/raw/m08_p_p200s_20261111_094156_728168.csv`
 with its serial log and immutable plan snapshot. Operator confirmed TEC supply
 on before control start. Firmware STEP began at device time 177.356 s,
 09:44:54 local time. Exclude the preceding 354 passive measurements from P
@@ -174,7 +174,7 @@ three settled boundary cycles are not yet certified. Do not classify this as
 a complete production dataset or declare the whole module complete.
 
 Exact per-cycle fits, coverage, provisional thresholds, and the closed-file hash:
-`Module_8/data/processed/pilot_checks/module_08_rod_20261111_094156_728168_p_control_review.json`.
+`Module_8/data/processed/pilot_checks/m08_p_p200s_20261111_094156_728168_p_control_review.json`.
 The control-start sidecar records the analysis exclusion without removing samples.
 
 ## Raw PWM feature update, 2026-11-11
@@ -197,7 +197,7 @@ mean verification rather than assuming 40 C is achieved.
 The complete 89-test suite and Uno compilation pass (16474 bytes flash,
 1238 bytes global RAM, 810 bytes remaining). Firmware was uploaded with verify
 to the detected Arduino Uno at /dev/cu.usbmodem1101. Passive GUI validation
-`module_08_rod_20261111_104447_604409.csv` records the v2 handshake and accepted
+`m08_setup_raw_zero_p100s_ua0_ub100_20261111_104447_604409.csv` records the v2 handshake and accepted
 raw plan, 94 valid six-channel samples, and zero output throughout; no START
 command was issued. It is software/connection evidence, not a raw-PWM trial.
 The GUI was disconnected after verification and remains open with the first
@@ -224,7 +224,7 @@ Evidence: data/processed/pilot_checks/raw_pwm_temperature_limit_review_20261111.
 ## End of session, 2026-11-11
 
 Operator ended the day and accepted the partial 300 s raw-PWM record for today:
-`module_08_rod_20261111_113001_400415.csv` and its unchanged log/plan.
+`m08_raw_zero_p300s_ua0_ub50_20261111_113001_400415.csv` and its unchanged log/plan.
 This is retained partial evidence, not automatic production qualification.
 The GUI logged STOP and disconnect at 11:44:19, then closed. At review the
 Arduino serial device was absent; no post-STOP zero-output measurement was saved.
@@ -253,7 +253,7 @@ No device was started while preparing these files.
 
 ### Nov. 16 PI 100 s pilot and prepared 300 s trial
 
-`module_08_rod_20261116_104519_503645.csv` completed 1200 s / 12 cycles,
+`m08_pi_p100s_20261116_104519_503645.csv` completed 1200 s / 12 cycles,
 2400 active samples, no sequence gaps, no fault, maximum TEC 39.698 C and
 final DONE/PWM0. Last five cycles show repeatable TEC, but T3 amplitude span
 25.9%, phase span .181 rad and mean span .168 C. Retain as a pilot; no
@@ -279,3 +279,120 @@ The two remaining computer-simulation evidence groups are the S18.3 table/check
 and the focused 100 s P/PI comparison; no saved results were found in the repo.
 Exact sources/hashes and remaining work: Module_8/data/processed/pilot_checks/
 session_inventory_20261116.json. No claim that all measured periods are qualified.
+
+## Session plan, 2026-11-18
+
+Confirmed there are no newer runs after Nov. 16 and no 400 s PI record.
+Prepared PI_35C_5C_400s_53min20s.json (also config/production_pi_35C_5C_400s.json):
+period400, duration3200 s / 8 cycles, Ta35/Tb5, Kp50/Ki.3, cap96,
+ratio3.50345, anti-windup ON. Temperature safeguards and confirmed geometry
+remain unchanged. This is the missing-period candidate record, not automatic
+production qualification. Record current room temperature. After acquisition,
+review all five periods before deciding on repeats. No hardware was accessed
+or started while preparing this configuration.
+
+## Five-period offline analysis, 2026-11-18
+
+The 400 s PI run completed 8 cycles / 6400 active samples with DONE/PWM0
+and no fault. All five required PI periods now have measured records. The
+operator confirms no room-temperature record; Module 6/7 were searched for
+geometry uncertainty. The caliper specification is 0.01 mm, not a supplied
+standard error; the old +/-1 mm ruler calculation is retained as sensitivity
+only, because the original geometry note and A4 leave standard errors unknown.
+
+Completed fixed-last-five T1-T3 harmonic/finite-rod analysis, all contiguous
+five-cycle stationarity checks, conditional joint uncertainty, geometry/trend/
+extra-sensor sensitivity, residuals and finite-vs-infinite comparisons. No
+source CSV edited and no hardware command sent. All five fail the original
+provisional full-window settling tolerances; none is silently certified.
+Diagnostic kappa centers are 6.66-6.99e-5 m2/s; 100 s nu is negative and changes
+sign under a linear-baseline sensitivity fit, so it is not a credible positive
+loss determination. The production-coverage helper now requires all five
+specified periods, fixing obsolete two-period completeness logic.
+
+Working results: Module_8/docs/five_period_review_2026-11-18.md.
+Runnable analysis: Module_8/python/analysis/five_period_review.py.
+Numerical provenance and frozen prefixes: Module_8/data/processed/five_period_review/.
+Scientific PNG/PDF figures: Module_8/figures/five_period_review/.
+
+## English translation and file organization, 2026-11-18
+
+Translated the full five-period review into English at the same document path.
+Standardized 17 acquired session stems by mode, period, raw-PWM settings where
+applicable, and original acquisition timestamp. CSV, exact serial log and
+immutable plan files retain matching stems. Renamed 92 files in total,
+including 53 raw session files, analysis snapshots, derived results and figures.
+No raw/snapshot content was edited. File mapping and captured hashes are in
+Module_8/data/file_renames_20261118.csv and .json; the grouped entry point is
+Module_8/data/DATASET_INDEX.md (machine-readable dataset_index.json).
+
+Updated active configuration references, analysis scripts and derived paths.
+Immutable plan contents and historical verification receipts keep capture-time
+names and hashes, resolved through the mapping. The still-connected November 18
+GUI retains two old CSV/log paths as symlinks to the canonical m08_pi_p400s
+files; keep these aliases until that GUI session closes. No hardware commands
+or GUI controls were used during organization.
+
+Both analyses reran successfully. The three five-period numeric CSVs remained
+byte-identical; OPEN/P/PI metric differences were floating-point roundoff only
+(maximum about 5e-14). All 63 renamed raw/snapshot files passed full-content or
+live-prefix hash verification; navigation links and 33 related tests passed.
+Receipt: Module_8/data/organization_verification_20261118.json.
+
+## Stage 2 simulator, figures and completed worksheet, 2026-11-18
+
+Copied Module 6's Lab_6_7_modeling_tec_v3.py byte-for-byte to
+Module_8/python/simulation/tec_model_v3.py. Module 6 remains unchanged. Added
+an offline Module 8 frontend and raw-sine adapter, six JSON presets, full startup
+CSV export, first-harmonic readout and equal-chi analytical overlay. Launch:
+Module_8/run_simulation.command. Outputs are explicitly mathematical simulation
+data in data/simulation/s18_3, separate from measured raw records.
+
+Completed the S18.3 six-row worksheet at periods 100/200/300 s and chi_c=.23/.46,
+with ambient=initial22 C, tau80 s, chi_h=.46, Ua0/Ub50 PWM. These are prescribed
+teaching inputs, not substitutes for missing laboratory ambient readings.
+All simulations use ten-cycle budgets and report the last five complete cycles,
+with explicit cycle-span diagnostics, Euler dt=.05 and independent Fourier/
+complete-transient checks. Six mathematical/export tests passed; GUI preset
+loading and completed-response readout checked without device access.
+
+Stage 2 figures now include measured zero-centered raw PWM at 300/200/100 s,
+measured zero-vs-positive 100 s comparison, all six simulated responses, and the
+300 s equal-chi analytical/startup comparison. Every figure has PNG/PDF copies.
+The measured 300 s run has only two complete cycles and remains diagnostic.
+Positive-only uses Ua32/Ub5 versus zero-centered Ua0/Ub50; different amplitude
+and mean prevent a claim that polarity alone explains residual changes.
+All four measured source hashes remain unchanged. No hardware commands sent.
+
+Working notes/table/links: Module_8/docs/stage2_results.md.
+Exact five-column worksheet: Module_8/data/processed/stage2/m08_stage2_s18_3_filled_table.csv.
+Reproduce: .venv/bin/python Module_8/python/analysis/stage2_raw_pwm.py.
+The Stage 3 focused P/PI task still needs the separate six-sensor rod simulator;
+the copied one-lump simulator is not presented as that task's completion.
+
+## Measurement-gap review against current course page, 2026-11-18
+
+The current live Part I page (retrieved November 18, 878 lines, versus the
+earlier cached 781-line version) explicitly requires a common-setting 100 s
+feedforward/P/PI tracking comparison in S18.6-S18.8. The inventory has OPEN/P
+only at 200 s. The existing 200 s figure remains useful evidence but does not
+by itself fill that specified 100 s table. Acquire the missing 100 s OPEN and
+P records if following the current checklist; independently review the existing
+100 s PI record for reuse as control evidence (three settled cycles), without
+claiming its five-cycle production qualification.
+
+Prioritize review/improvement of PI100 and PI300, whose final-five T3 amplitude
+spans are about 26% and 25%; RAW_ZERO300 has only two complete cycles including
+startup, so it lacks a demonstrated settled Stage 2 interval. PI200/400/500 also
+remain diagnostic under the original provisional span limits. Failure of those
+planning limits is not itself proof that every record must automatically be
+repeated; preserve the curves, noise checks and model limitations for review.
+
+The current S18.4 worksheet defines residual amplitude as half peak-to-peak,
+not residual RMS. Existing Stage 2 outputs report RMS and need that additional
+calculation and the paired positive-only simulation/table; these are computer
+tasks, not additional hardware measurements. New measurements must record real
+ambient temperature and drift. Today's room temperature cannot retrospectively
+replace missing ambient values from the older runs. Geometry is confirmed
+unchanged, but instrument resolution/position-reading uncertainty remains
+incompletely documented. No hardware commands were sent for this audit.

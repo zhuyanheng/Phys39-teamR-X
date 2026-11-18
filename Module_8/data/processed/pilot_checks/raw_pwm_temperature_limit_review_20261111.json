@@ -3,13 +3,13 @@
   "decision": "Preserve TEC operating maximum 45 C, TEC backup 60 C and T1 limit 56 C. No firmware, GUI or physical cutoff change.",
   "failed_trials": [
     {
-      "file": "module_08_rod_20261111_112302_678979.csv",
+      "file": "m08_raw_zero_p200s_ua0_ub100_20261111_112302_678979.csv",
       "first_fault_tec_C": 45.11746,
       "first_fault_T1_C": 31.14911,
       "fault": "TEC_RANGE"
     },
     {
-      "file": "module_08_rod_20261111_112519_078335.csv",
+      "file": "m08_raw_zero_p200s_ua0_ub100_20261111_112519_078335.csv",
       "first_fault_tec_C": 45.08893,
       "first_fault_T1_C": 32.68411,
       "fault": "TEC_RANGE"

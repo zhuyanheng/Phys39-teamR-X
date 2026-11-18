@@ -18,6 +18,16 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[3]
 MODULE=ROOT/'Module_8'
 CHANNELS=('tec_C','rod1_C','rod2_C','rod3_C','rod4_C','rod5_C')
+REQUIRED_PRODUCTION_PERIODS=frozenset((100,200,300,400,500))
+
+
+def production_coverage(results):
+    """Course Stage 5 needs five distinct qualified periods, not two pilots."""
+    periods={r['period_s'] for r in results if r['status']=='candidate'}
+    return {'distinct_candidate_periods':len(periods),
+            'required_production_periods_s':sorted(REQUIRED_PRODUCTION_PERIODS),
+            'missing_candidate_periods_s':sorted(REQUIRED_PRODUCTION_PERIODS-periods),
+            'production_record_complete':REQUIRED_PRODUCTION_PERIODS.issubset(periods)}
 
 
 def number(x):
@@ -308,6 +318,7 @@ def analyse_interval(rows,geometry,plan):
         'spatial_fit':sf,'q_qprime_covariance_of_mean':cov,'transport':physical,
         'main_inference_model':'finite_insulated_tip','finite_periodic_fit':finite_fit,
         'finite_q_qprime_covariance_of_mean':finite_cov,
+        'finite_cycle_q_qprime':finite_params,
         'uncertainty_budget':budget,
         'semi_infinite_transport':semi_physical,'finite_length_errors':eps,
         'finite_error_tolerance':tolerance,'bi_perp':bi,'reconstruction_rms':recon,'boundary_waveforms':waveform,
@@ -338,8 +349,7 @@ def analyse_plan(plan_path):
     out=safe({'kind':'measured_periodic_analysis','source':portable(raw),'source_sha256':digest,'raw_unchanged':True,
         'analysis_plan':portable(path),'plan_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
         'analysis_source_sha256':code_sha,'sensor_map_sha256':hashlib.sha256(map_path.read_bytes()).hexdigest(),
-        'intervals':results,'frequency_consistency':consistency,'distinct_candidate_periods':len({r['period_s'] for r in results if r['status']=='candidate'}),
-        'production_record_complete':len({r['period_s'] for r in results if r['status']=='candidate'})>=2})
+        'intervals':results,'frequency_consistency':consistency,**production_coverage(results)})
     folder=MODULE/'data/processed';folder.mkdir(parents=True,exist_ok=True)
     target=folder/(path.stem+'_angstrom.json');target.write_text(json.dumps(out,indent=2,allow_nan=False)+'\n')
     return target,out

@@ -69,10 +69,11 @@ The command-line equivalent is:
     .venv/bin/python Module_8/python/analysis/angstrom_fit.py \
         --config Module_8/config/analysis_plan.json
 
-The supplied plan is explicitly a template. Replace its raw filename and times,
-justify its settling/noise thresholds and supply actual x_m/L in sensor_map.json.
-The map remains pending: full-length Module 7 coordinates are reference only.
-No real Module 8 periodic record has been collected in this task.
+The supplied `analysis_plan.json` remains a template for a single source. The
+five measured PI records are reviewed by `python/analysis/five_period_review.py`;
+see [the measured-data review](five_period_review_2026-11-18.md). The operator
+confirmed the unchanged Module 7 coordinates on November 16; those coordinates
+are now the selected map. Measurement uncertainties remain incompletely recorded.
 
 The fitter refuses a Module 7 constant-setpoint schema, unknown geometry,
 clock reset/duplicates, large gaps, missing retained probes, safety/stopped
@@ -110,12 +111,12 @@ room temperature; mean excess-temperature comparisons must preserve that gap.
 The reconstruction compares oscillations about the measured per-sensor means;
 it does not independently validate the stationary mean-profile model.
 
-The minimum operational Part I production target remains two usable periods,
-with >=5 complete accepted cycles and >=3 useful rod sensors at each, plus the
-matched OPEN/P/PI comparison and measured T1 waveform check. The later Part II
-page mentions a one-frequency minimum with additional frequencies as an extension;
-use the stricter current Part I two-period acquisition plan unless the instructor
-explicitly revises it. No new hardware upload/start was performed here.
+The current Part I Stage 5 production requirement is **100, 200, 300, 400 and
+500 s**, each with at least five complete settled cycles and at least three
+measurable rod sensors. Two usable periods are a pilot milestone, not a complete
+production record. Current Stage 6 additionally requires uncertainty, residual,
+frequency-consistency and model checks. The November 18 review is offline;
+it neither uploads firmware nor starts an acquisition.
 
 ## Sources and AI assistance
 

@@ -1,7 +1,7 @@
 {
   "date": "2026-11-16",
   "operator_decision": "End the session today. No further acquisition is authorized for this session.",
-  "latest_completed_run": "module_08_rod_20261116_111157_767223.csv",
+  "latest_completed_run": "m08_pi_p300s_20261116_111157_767223.csv",
   "latest_run_done_pwm_zero_and_closed": true,
   "required_production_periods_s": [
     100,
@@ -16,28 +16,28 @@
   "existing_periods_to_review_before_repeating": [
     {
       "period_s": 100,
-      "source": "Module_8/data/raw/module_08_rod_20261116_104519_503645.csv",
+      "source": "Module_8/data/raw/m08_pi_p100s_20261116_104519_503645.csv",
       "sha256": "e3de91d694879f45b2ee2b3c4263872314f3f6a588eb740b68fc6325ab4811b9",
       "active_samples": 2400,
       "acceptance_status": "pending_full_analysis_not_automatically_production_qualified"
     },
     {
       "period_s": 200,
-      "source": "Module_8/data/raw/module_08_rod_20261109_095722_597413.csv",
+      "source": "Module_8/data/raw/m08_pi_p200s_20261109_095722_597413.csv",
       "sha256": "9639d3a6c206c190eefc5373b63ea735b3295876561024fd81cde3319e1e49d4",
       "active_samples": 5062,
       "acceptance_status": "pending_full_analysis_not_automatically_production_qualified"
     },
     {
       "period_s": 300,
-      "source": "Module_8/data/raw/module_08_rod_20261116_111157_767223.csv",
+      "source": "Module_8/data/raw/m08_pi_p300s_20261116_111157_767223.csv",
       "sha256": "babd76d900497eafcafffcc1343ba77ea8aa3345facd499f91c88d8abdfcc4bd",
       "active_samples": 4800,
       "acceptance_status": "pending_full_analysis_not_automatically_production_qualified"
     },
     {
       "period_s": 500,
-      "source": "Module_8/data/raw/module_08_rod_20261109_104354_009745.csv",
+      "source": "Module_8/data/raw/m08_pi_p500s_20261109_104354_009745.csv",
       "sha256": "4f8d0c54061cbf2ef591a7cf32def86e3cc6a00686bce3da6375340d5770b64c",
       "active_samples": 7200,
       "acceptance_status": "pending_full_analysis_not_automatically_production_qualified"

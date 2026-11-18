@@ -1,0 +1,198 @@
+{
+  "kind": "measured_five_period_diagnostic_review",
+  "results": [
+    {
+      "period_s": 100,
+      "total_complete_cycles": 12,
+      "retained_first_cycle": 8,
+      "retained_last_cycle": 12,
+      "last_five_stationary": false,
+      "any_five_stationary": false,
+      "q_per_m": 21.25835202619137,
+      "q_prime_per_m": 21.88858487504515,
+      "kappa_m2_s": 6.751536089470935e-05,
+      "kappa_conditional_se_m2_s": 1.286607847041169e-06,
+      "nu_per_s": -0.0018359193479002235,
+      "nu_conditional_se_per_s": 0.001536870142392859,
+      "positive_loss": false,
+      "max_mean_span_C": 0.1676920466118439,
+      "max_amplitude_span_fraction": 0.2589963090297517,
+      "max_phase_span_rad": 0.18083434496213147,
+      "overall_status": "diagnostic_only"
+    },
+    {
+      "period_s": 200,
+      "total_complete_cycles": 12,
+      "retained_first_cycle": 8,
+      "retained_last_cycle": 12,
+      "last_five_stationary": false,
+      "any_five_stationary": false,
+      "q_per_m": 15.652954586965228,
+      "q_prime_per_m": 15.060693326160088,
+      "kappa_m2_s": 6.66313460141441e-05,
+      "kappa_conditional_se_m2_s": 1.351366087049326e-06,
+      "nu_per_s": 0.001212057755331615,
+      "nu_conditional_se_per_s": 0.0004892559511617685,
+      "positive_loss": true,
+      "max_mean_span_C": 0.0926406961233397,
+      "max_amplitude_span_fraction": 0.08058811449555366,
+      "max_phase_span_rad": 0.14020976358291026,
+      "overall_status": "diagnostic_only"
+    },
+    {
+      "period_s": 300,
+      "total_complete_cycles": 8,
+      "retained_first_cycle": 4,
+      "retained_last_cycle": 8,
+      "last_five_stationary": false,
+      "any_five_stationary": false,
+      "q_per_m": 12.74737475340649,
+      "q_prime_per_m": 12.035821494649594,
+      "kappa_m2_s": 6.825463151187697e-05,
+      "kappa_conditional_se_m2_s": 3.360964823943154e-06,
+      "nu_per_s": 0.0012036406712907205,
+      "nu_conditional_se_per_s": 0.000932813148061014,
+      "positive_loss": true,
+      "max_mean_span_C": 0.16610943267913925,
+      "max_amplitude_span_fraction": 0.25282032959603506,
+      "max_phase_span_rad": 0.2684001632051123,
+      "overall_status": "diagnostic_only"
+    },
+    {
+      "period_s": 400,
+      "total_complete_cycles": 8,
+      "retained_first_cycle": 4,
+      "retained_last_cycle": 8,
+      "last_five_stationary": false,
+      "any_five_stationary": false,
+      "q_per_m": 11.416682180558558,
+      "q_prime_per_m": 9.835301511969833,
+      "kappa_m2_s": 6.994590470580498e-05,
+      "kappa_conditional_se_m2_s": 1.8846089850653863e-06,
+      "nu_per_s": 0.0023507053263257683,
+      "nu_conditional_se_per_s": 0.0005681996106690662,
+      "positive_loss": true,
+      "max_mean_span_C": 0.31083115000000205,
+      "max_amplitude_span_fraction": 0.0749013544245756,
+      "max_phase_span_rad": 0.19148158789576453,
+      "overall_status": "diagnostic_only"
+    },
+    {
+      "period_s": 500,
+      "total_complete_cycles": 7,
+      "retained_first_cycle": 3,
+      "retained_last_cycle": 7,
+      "last_five_stationary": false,
+      "any_five_stationary": false,
+      "q_per_m": 10.515098591306916,
+      "q_prime_per_m": 8.845892809111804,
+      "kappa_m2_s": 6.75499212157918e-05,
+      "kappa_conditional_se_m2_s": 3.025084640504757e-06,
+      "nu_per_s": 0.002183043146468845,
+      "nu_conditional_se_per_s": 0.0005766424057753236,
+      "positive_loss": true,
+      "max_mean_span_C": 0.12879361002702794,
+      "max_amplitude_span_fraction": 0.06934448144619383,
+      "max_phase_span_rad": 0.22443798061373688,
+      "overall_status": "diagnostic_only"
+    }
+  ],
+  "frequency_comparisons": [
+    {
+      "periods_s": [
+        100,
+        200
+      ],
+      "kappa_difference_over_conditional_se": 0.47377621482994847,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    },
+    {
+      "periods_s": [
+        100,
+        300
+      ],
+      "kappa_difference_over_conditional_se": -0.20542076590439284,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    },
+    {
+      "periods_s": [
+        100,
+        400
+      ],
+      "kappa_difference_over_conditional_se": -1.0651359551566038,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    },
+    {
+      "periods_s": [
+        100,
+        500
+      ],
+      "kappa_difference_over_conditional_se": -0.010513209125425459,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    },
+    {
+      "periods_s": [
+        200,
+        300
+      ],
+      "kappa_difference_over_conditional_se": -0.44811588967588367,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    },
+    {
+      "periods_s": [
+        200,
+        400
+      ],
+      "kappa_difference_over_conditional_se": -1.4292812078228108,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    },
+    {
+      "periods_s": [
+        200,
+        500
+      ],
+      "kappa_difference_over_conditional_se": -0.277246714637307,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    },
+    {
+      "periods_s": [
+        300,
+        400
+      ],
+      "kappa_difference_over_conditional_se": -0.4389167863771006,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    },
+    {
+      "periods_s": [
+        300,
+        500
+      ],
+      "kappa_difference_over_conditional_se": 0.15584521217198852,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    },
+    {
+      "periods_s": [
+        400,
+        500
+      ],
+      "kappa_difference_over_conditional_se": 0.6722527458379652,
+      "interpretation": "Diagnostic comparison only; drift and shared systematics are not covered by these SEs."
+    }
+  ],
+  "selection": "Same T1-T3 and fixed last five complete cycles at every period. All contiguous five-cycle windows enumerated independently of physical fit results.",
+  "settling_criterion": {
+    "max_mean_change_C": 0.1,
+    "max_amplitude_change_fraction": 0.05,
+    "max_phase_change_rad": 0.1
+  },
+  "criterion_status": "Existing provisional planning tolerances; not a course-mandated noise-calibrated certification.",
+  "geometry_inputs": "Confirmed Module 7 map; +/-1 mm geometry is sensitivity only; 0.01 mm caliper specification is not assumed 1-sigma.",
+  "ambient": "Not recorded; no ambient substitution or mean-profile fit.",
+  "uncertainty": "Conditional cycle-repeat SE, not a confidence interval or total uncertainty. Drift violates independent identical cycle assumptions. Calibration, contact, scan and geometry covariances unresolved.",
+  "material_constants": "No sourced density/cp and their uncertainties supplied; k and h not computed.",
+  "production_record_complete": false,
+  "qualified_periods_s": [],
+  "raw_prefixes_verified_unchanged": true,
+  "analysis_sha256": "b7977151095942a23c21d14a203ca1d9d225db7114b02a3fa7e9f6c220487efe",
+  "core_analysis_sha256": "9293e0cdc0b53d954abfbda7f1bfbec8db942dc93ac448eba56d7945edd5fe10"
+}

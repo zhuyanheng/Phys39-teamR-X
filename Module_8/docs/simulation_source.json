@@ -1,0 +1,13 @@
+{
+  "copied_from": "Module_6/python/Lab_6_7_modeling_tec_v3.py",
+  "destination": "Module_8/python/simulation/tec_model_v3.py",
+  "source_sha256": "5821449dc609cb1a9544697ad53fd54c85af94889282d5afef56dbb9b6fa91ba",
+  "copy_sha256": "5821449dc609cb1a9544697ad53fd54c85af94889282d5afef56dbb9b6fa91ba",
+  "source_content_modified": false,
+  "module8_additions": [
+    "Sinusoidal raw PWM using the copied one-lump advance_model solver",
+    "Six S18.3 setups",
+    "Complete simulated time-history export and settled-response diagnostics"
+  ],
+  "scope": "One/two-lump source copied intact. The Module 8 frontend uses its one-lump model for S18.3. It does not replace the six-sensor rod simulator required for focused S19 P/PI work."
+}

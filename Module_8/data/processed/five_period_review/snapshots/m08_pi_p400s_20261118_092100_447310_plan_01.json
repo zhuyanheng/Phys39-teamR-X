@@ -1,0 +1,135 @@
+{
+  "schema": "module_08_plan_v2",
+  "firmware": "module_08_angstrom_v2",
+  "ratio": 3.50345,
+  "pwm_limit": 96,
+  "anti_windup": true,
+  "calibration": [
+    [
+      9.99,
+      -96.0
+    ],
+    [
+      13.4,
+      -72.0
+    ],
+    [
+      16.99,
+      -48.0
+    ],
+    [
+      20.44,
+      -24.0
+    ],
+    [
+      23.44,
+      0.0
+    ],
+    [
+      28.31,
+      11.0
+    ],
+    [
+      34.62,
+      23.0
+    ],
+    [
+      40.42,
+      34.0
+    ],
+    [
+      45.37,
+      45.0
+    ]
+  ],
+  "steps": [
+    {
+      "duration_s": 3200.0,
+      "Ta_C": 35.0,
+      "Tb_C": 5.0,
+      "period_s": 400.0,
+      "mode": "PI",
+      "Kp": 50.0,
+      "Ki": 0.3,
+      "Ua_pwm": 0.0,
+      "Ub_pwm": 0.0
+    }
+  ],
+  "metadata": {
+    "purpose": "PI_400s_missing_period_candidate_production",
+    "calibration": {
+      "source": "module_04_steady_state.csv",
+      "sha256": "419ce710c1c420d76d8b0778fb737a71860f2d635f1e1744f82043dcdcbbae6c",
+      "qualification": "Measured static curve; Module 4 settling audit remains applicable. Revalidate with the rod attached.",
+      "chi_heat_C_per_pwm": 0.49544628875665514,
+      "chi_cool_C_per_pwm": 0.1414166666666667,
+      "heating_to_cooling_ratio": 3.503450480306341
+    },
+    "ratio_source": "Module 4 provisional measured ratio; revalidate",
+    "ambient_C": null,
+    "ambient_method": "not yet recorded",
+    "settling_criterion": "Planning starting tolerances: consecutive complete cycles change in mean <=0.1 C, amplitude <=5%, phase <=0.1 rad; justify against measured noise and repeatability before declaring settled.",
+    "settings_status": "Prepared 2026-11-18; configuration validated, no device access or controller start.",
+    "rationale": "Fill the only forcing period with no existing PI record. Match the existing 35 +/-5 C trials, unchanged gains, compensation, geometry and safeguards.",
+    "duration_note": "3200 s = 8 complete 400 s cycles (53 min 20 s). Planning allowance: up to 3 cycles for settling and at least 5 retained cycles. Only measured settling and signal quality establish usability.",
+    "minimum_retained_duration_s": 2000,
+    "geometry_note": "Operator confirmed unchanged Module 7 probe positions on 2026-11-16; current sensor_map.json is selected, uncertainties remain pending.",
+    "safety_departure": "Use 35 +/-5 C as documented reduced-temperature trial within preserved 10\u201345 C TEC operating protection; do not claim the full 40 +/-16 C course target.",
+    "course_source": "https://sethfraden.github.io/Phys39F26-course/labs/lab-09/#stage-5-production-data",
+    "next_analysis": "Review all five measured PI periods together before assigning repeats. Existing 100/200/300/500 records are not presumed qualified.",
+    "ambient_note": "Enter the actual measured room temperature for this run; do not substitute a previous day value."
+  },
+  "sensor_map_snapshot": {
+    "status": "operator_confirmed_unchanged_module_07_geometry",
+    "channels": {
+      "tec": "A0",
+      "rod1": "A1",
+      "rod2": "A2",
+      "rod3": "A3",
+      "rod4": "A4",
+      "rod5": "A5"
+    },
+    "x_m": [
+      0,
+      0.0385,
+      0.0895,
+      0.1405,
+      0.1915
+    ],
+    "position_uncertainty_m": null,
+    "analysis_length_m": 0.2715,
+    "diameter_m": 0.01277,
+    "diameter_source": "User-reported caliper measurement on 2026-11-04; instrument precision 0.01 mm, not a complete uncertainty budget.",
+    "inherited_module_07_reference": {
+      "origin": "physical hole 2",
+      "x_m": [
+        0,
+        0.0385,
+        0.0895,
+        0.1405,
+        0.1915
+      ],
+      "analysis_length_m": 0.2715
+    },
+    "note": "Module 7 coordinates explicitly reused after operator confirmation; not newly remeasured. Position/length uncertainty remains unknown. Pilot data must establish measurable amplitudes/phases at at least three rod sensors before production acceptance.",
+    "origin": "T1 / A1 at physical hole 2; x=0",
+    "physical_holes": [
+      2,
+      5,
+      7,
+      8,
+      9
+    ],
+    "confirmation_date": "2026-11-16",
+    "confirmation": "Operator explicitly confirmed T1\u2013T5 remain in exactly the Module 7 holes and authorized reuse of the measured coordinates.",
+    "geometry_source": "docs/module_notes/module_07_rod_instrument.md: cumulative position table"
+  },
+  "code_sha256": {
+    "Module_8/arduino/module_08_rod_controller/module_08_rod_controller.ino": "7efb34f8ab839a5c4d6ecd032951ec4bd7d6beca7006cfc871a8a575c883182c",
+    "Module_8/arduino/module_08_rod_controller/angstrom_core.h": "193d84df1cbd7a380b6647829b71f5425f48095899eb243f8406f9c5a840b329",
+    "Module_8/python/rod_acquisition_gui.py": "e639945d25fc4e992229582f5176d4f5ee23f7e46cbbaa659f0f88a59289ada1",
+    "Module_8/python/rod_protocol.py": "7db03d82f95b8940c37970423b8e52f82c8f94b1eff6b493d0d70a9ca4c23d29",
+    "Module_8/python/angstrom_plan.py": "ea0a2dc0096f01669377e29badb4b9a84886f3705e7494850697b423f421b1b2"
+  },
+  "plan_sha256": "0074fd39598b598089e31572c52ebc1d4398ccc18dff7fb4a1026c3a15815f52"
+}
