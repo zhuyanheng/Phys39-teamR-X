@@ -1,0 +1,1519 @@
+{
+  "kind": "module_8_transport_conversion_offline",
+  "created": "2026-11-18",
+  "supersedes_field": "five_period_review summary field 'material_constants: k and h not computed'",
+  "inputs": {
+    "analysis_json_sha256": {
+      "100": "adf38663825dd778e8ba3a19e195eeac04990b0e8051bcd5aa0011452f107774",
+      "200": "650c7a4db52e55f346a37c1cc91349628937c6d66f7f2428520d5fd72fa0d725",
+      "300": "47739e5daf87dbdeb7e808b7da21844ecec9b5c4e94943165f403ff377abcd77",
+      "400": "24431eac85819d490769e7dd414e3fb4ee74d4b5ff1d6bd4a83b746e1c732eef",
+      "500": "22f49dc2c38d093ea1a701cccf212ce124493e8108072511e08a5ffcab2d0980"
+    },
+    "sensor_map_sha256": "3dd0c12ef7e5598000eb71c44020c44f9ff3ad802b26f774567d75cdbc6a3ad9",
+    "module_07_reference_sha256": "ae0b1d3304c25748e74a926fe4438d39b11481b97862af0edaa92e996e24bad0",
+    "module_07_reference": {
+      "kind": "prior_module_reference_not_module8_measurement",
+      "source": "Module_7/data/processed/module_07_rod_20261104_095908_593628_selected_stationary.json",
+      "source_raw": "Module_7/data/raw/module_07_rod_20261104_095908_593628.csv",
+      "source_raw_sha256": "d8b3a4fe907e9e33175a521776e4a0487be74f8d904c28b4ad78ef77bbe27492",
+      "interpretation": "operator_selected_stationary_approximation",
+      "strict_criterion_passed": false,
+      "ambient_mode": "fitted",
+      "ambient_C": 29.975933954205008,
+      "m_per_m": 6.784361910746365,
+      "m_squared_per_m2": 46.027566535986075,
+      "one_over_m_m": 0.1473977970449969,
+      "sigma_m_per_m": null,
+      "warning": "Operator-selected stationary approximation. Ambient jointly fitted; no independent room thermometer, so m is strongly dependent on ambient/model. Not a certified stationary result or a periodic measurement."
+    },
+    "code_sha256": "f25c361f0c8ad87d60a625ebfb339b8903820fe51e2bb4e0ffe97e3998a5a592",
+    "core_sha256": "9293e0cdc0b53d954abfbda7f1bfbec8db942dc93ac448eba56d7945edd5fe10"
+  },
+  "material": {
+    "density_kg_m3": 2700.0,
+    "density_bound_kg_m3": 27.0,
+    "specific_heat_J_kgK": 896.0,
+    "specific_heat_bound_J_kgK": 18.0,
+    "source": "Al 6061-T6 handbook values (rho 2680-2720 kg/m3, c 890-900 J/(kg K)); k compared with Lienhard Table A.1, 166-172 W/(m K)"
+  },
+  "records": [
+    {
+      "period_s": 100,
+      "source": {
+        "raw": "Module_8/data/raw/m08_pi_p100s_20261116_104519_503645.csv",
+        "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p100s_20261116_104519_503645.csv",
+        "prefix_bytes": 877605,
+        "sha256": "e3de91d694879f45b2ee2b3c4263872314f3f6a588eb740b68fc6325ab4811b9",
+        "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p100s_20261116_104519_503645_plan_01.json",
+        "plan_sha256": "7c49d62baf4c1d7a18f5be87a468f824ab44672fe4ecfb69cc167df424ecc3b2"
+      },
+      "analysis_json_sha256": "adf38663825dd778e8ba3a19e195eeac04990b0e8051bcd5aa0011452f107774",
+      "model": "finite_insulated_tip",
+      "q_per_m": 21.25835202619137,
+      "q_prime_per_m": 21.88858487504515,
+      "kappa_m2_s": 6.751536089470935e-05,
+      "kappa_fit_se_m2_s": 1.286607847041169e-06,
+      "nu_per_s": null,
+      "nu_fit_se_per_s": 0.001536870142392859,
+      "physical_positive_loss": false,
+      "m_per_m_from_slopes": null,
+      "conditioning_factor": null,
+      "k_W_mK": 163.33316107648085,
+      "h_W_m2K": null,
+      "drift": {
+        "cycles": 5,
+        "kappa_range_m2_s": [
+          6.400532183036884e-05,
+          7.138839344899352e-05
+        ],
+        "kappa_range_fraction": 0.10910485262153702,
+        "nu_range_per_s": [
+          0.0001936035521044764,
+          0.0007138551953352416
+        ],
+        "nu_sign_changes": false,
+        "note": "Cycle-to-cycle spread under a drifting mean field; not a confidence interval."
+      },
+      "mean_profile_fit": {
+        "mu_mL": 1.450000000000001,
+        "m_per_m": 5.340699815837941,
+        "ambient_C_fitted": 24.10000000000013,
+        "ambient_at_grid_bound": false,
+        "base_C_fitted": 32.08447618397854,
+        "ssr_C2": 0.06236134798972991,
+        "rms_residual_C": 0.11167931589128764,
+        "residuals_C": [
+          -0.06396772228573155,
+          0.1562212591914509,
+          -0.06462664537068363,
+          -0.134884761033927,
+          0.10720958269154579
+        ],
+        "one_over_m_m": 0.1872413793103447,
+        "free_parameters": 2,
+        "data_points": 5
+      },
+      "mean_fit_ambient_sensitivity": [
+        {
+          "ambient_C_fixed": 20.0,
+          "mu_mL": 1.0380000000000007,
+          "m_per_m": 3.823204419889505,
+          "rms_residual_C": 0.11528117830556074,
+          "h_from_mean_W_m2K": 7.621848506608061
+        },
+        {
+          "ambient_C_fixed": 22.0,
+          "mu_mL": 1.1900000000000008,
+          "m_per_m": 4.383057090239413,
+          "rms_residual_C": 0.11332899367366524,
+          "h_from_mean_W_m2K": 10.017504083931671
+        },
+        {
+          "ambient_C_fixed": 24.0,
+          "mu_mL": 1.434000000000001,
+          "m_per_m": 5.281767955801109,
+          "rms_residual_C": 0.11169604742317246,
+          "h_from_mean_W_m2K": 14.546680762670295
+        },
+        {
+          "ambient_C_fixed": 26.0,
+          "mu_mL": 1.9280000000000015,
+          "m_per_m": 7.101289134438311,
+          "rms_residual_C": 0.1185291891685305,
+          "h_from_mean_W_m2K": 26.295392910617515
+        },
+        {
+          "ambient_C_fixed": 28.0,
+          "mu_mL": 3.616000000000003,
+          "m_per_m": 13.318600368324136,
+          "rms_residual_C": 0.25123518893708846,
+          "h_from_mean_W_m2K": 92.49589286015741
+        }
+      ],
+      "nu_from_mean_profile_per_s": 0.0019257456702397036,
+      "h_from_mean_profile_W_m2K": 14.873103831979622,
+      "bi_perp": null,
+      "bi_perp_suppressed_reason": "m^2 <= 0 makes the transverse Biot number meaningless",
+      "boundary_relative_rms": 0.038099532352249374,
+      "cycle_stationarity_passed": false,
+      "interval_s": [
+        704.983,
+        1204.983
+      ],
+      "per_sensor": {
+        "rod1_C": {
+          "mean_C": 32.14844390626427,
+          "amplitude_C": 1.2132690058620192,
+          "phase_rad": -2.7024023387634264,
+          "amplitude_se_C": 0.002070351927386603,
+          "phase_se_rad": 0.001706424412736553,
+          "rms_residual_C": 0.04622498174082144,
+          "finite_error": 6.538159971713656e-23
+        },
+        "rod2_C": {
+          "mean_C": 30.61675392075341,
+          "amplitude_C": 0.5279145717850539,
+          "phase_rad": 2.7282971783847794,
+          "amplitude_se_C": 0.0024714631767927837,
+          "phase_se_rad": 0.004681558958200461,
+          "rms_residual_C": 0.055180639189611254,
+          "finite_error": 5.1869565816943924e-05
+        },
+        "rod3_C": {
+          "mean_C": 29.52863909285282,
+          "amplitude_C": 0.19036686987342122,
+          "phase_rad": 1.655791433687937,
+          "amplitude_se_C": 0.002938012907303575,
+          "phase_se_rad": 0.015433425936430737,
+          "rms_residual_C": 0.06559734871634502,
+          "finite_error": 0.0004429197140746298
+        },
+        "rod4_C": {
+          "mean_C": 28.690348961106814,
+          "amplitude_C": 0.07321843017940409,
+          "phase_rad": 0.8545156502505731,
+          "amplitude_se_C": 0.003346418560187853,
+          "phase_se_rad": 0.0457045919286698,
+          "rms_residual_C": 0.07471586624527275,
+          "finite_error": 0.0037897183342714184
+        },
+        "rod5_C": {
+          "mean_C": 27.872299260240975,
+          "amplitude_C": 0.020253810442430867,
+          "phase_rad": 0.4893134965760489,
+          "amplitude_se_C": 0.0035325264967512554,
+          "phase_se_rad": 0.17441292720073245,
+          "rms_residual_C": 0.07887111879586652,
+          "finite_error": 0.03440405104439501
+        }
+      },
+      "limitations": [
+        "Selected interval fails supplied cycle-stationarity tolerances; diagnostic only",
+        "q <= q_prime: nonpositive inferred lateral loss; investigate uncertainty and model",
+        "Density/specific heat not supplied: k and h remain uncomputed",
+        "Errors are conditional cycle-repeat fit errors; material/geometry, sensor bias, timing and contact systematic errors are not included",
+        "Spatial phase uses nearest-branch unwrapping; verify alias choice with geometry, residuals and other periods",
+        "No channel scan-time correction supplied; consider sequential scan timing in phase uncertainty"
+      ],
+      "budget": {
+        "k_W_mK": 163.33316107648085,
+        "k_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "fit_se": 0.019056520323540042,
+          "position_1mm": 0.025959544228750506
+        },
+        "k_combined_relative": 0.03471179487690051,
+        "k_absolute": 5.669587183882554,
+        "h_W_m2K": null,
+        "h_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "diameter": 0.0004521145412604744,
+          "fit_se": null,
+          "position_1mm": 0.025959544228750506,
+          "scan_skew_assumed": null
+        },
+        "h_combined_relative": 0.029016583952852563,
+        "h_absolute": null,
+        "position_corners": {
+          "corners": [
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.932644053538777e-05,
+              "nu_per_s": null,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.932644053538777e-05,
+              "nu_per_s": null,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 7.26889929977847e-05,
+              "nu_per_s": null,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 7.26889929977847e-05,
+              "nu_per_s": null,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.901165756842824e-05,
+              "nu_per_s": null,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.901165756842824e-05,
+              "nu_per_s": null,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 7.228569720874025e-05,
+              "nu_per_s": null,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 7.228569720874025e-05,
+              "nu_per_s": null,
+              "length_m": 0.2725
+            }
+          ],
+          "kappa_range_m2_s": [
+            6.901165756842824e-05,
+            7.26889929977847e-05
+          ],
+          "kappa_half_range_fraction": 0.025959544228750506,
+          "nu_range_per_s": null
+        },
+        "nu_drift_range_per_s": [
+          0.0001936035521044764,
+          0.0007138551953352416
+        ],
+        "excluded": [
+          "channel cross-calibration bias",
+          "contact resistance and probe lag",
+          "nonuniform side convection",
+          "unmeasured scan skew",
+          "model discrepancy and finite-length residual",
+          "temperature drift of rho and c"
+        ],
+        "material": {
+          "density_kg_m3": 2700.0,
+          "density_bound_kg_m3": 27.0,
+          "specific_heat_J_kgK": 896.0,
+          "specific_heat_bound_J_kgK": 18.0,
+          "source": "Al 6061-T6 handbook values (rho 2680-2720 kg/m3, c 890-900 J/(kg K)); k compared with Lienhard Table A.1, 166-172 W/(m K)"
+        },
+        "diameter_m": 0.01277,
+        "scan_skew_assumed_s": 0.17
+      },
+      "actuator": {
+        "samples": 1000,
+        "pwm_amplitude": 57.33730181591131,
+        "pwm_mean": 17.28299978888192,
+        "tec_amplitude_C": 4.69166460771348,
+        "gain_C_per_pwm": 0.08182569564882325,
+        "phase_lag_rad": 1.1806799088301965,
+        "pwm_rms_residual": 8.623212541194333,
+        "tec_rms_residual_C": 0.01632132334397525
+      }
+    },
+    {
+      "period_s": 200,
+      "source": {
+        "raw": "Module_8/data/raw/m08_pi_p200s_20261109_095722_597413.csv",
+        "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p200s_20261109_095722_597413.csv",
+        "prefix_bytes": 1752318,
+        "sha256": "9639d3a6c206c190eefc5373b63ea735b3295876561024fd81cde3319e1e49d4",
+        "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p200s_20261109_095722_597413_plan_01.json",
+        "plan_sha256": "d899842e3c442e2ed53591e9dc24795dd5ab5660648d3f53c11c40af2737d864"
+      },
+      "analysis_json_sha256": "650c7a4db52e55f346a37c1cc91349628937c6d66f7f2428520d5fd72fa0d725",
+      "model": "finite_insulated_tip",
+      "q_per_m": 15.652954586965228,
+      "q_prime_per_m": 15.060693326160088,
+      "kappa_m2_s": 6.66313460141441e-05,
+      "kappa_fit_se_m2_s": 1.351366087049326e-06,
+      "nu_per_s": 0.001212057755331615,
+      "nu_fit_se_per_s": 0.0004892559511617685,
+      "physical_positive_loss": true,
+      "m_per_m_from_slopes": 4.265032688849261,
+      "conditioning_factor": 25.938779650936844,
+      "k_W_mK": 161.19455227741742,
+      "h_W_m2K": 9.361080813521642,
+      "drift": {
+        "cycles": 5,
+        "kappa_range_m2_s": [
+          6.369214488439257e-05,
+          7.076512311786735e-05
+        ],
+        "kappa_range_fraction": 0.10597479326466924,
+        "nu_range_per_s": [
+          0.0009084049965887869,
+          0.002084118964294335
+        ],
+        "nu_sign_changes": false,
+        "note": "Cycle-to-cycle spread under a drifting mean field; not a confidence interval."
+      },
+      "mean_profile_fit": {
+        "mu_mL": 1.6600000000000013,
+        "m_per_m": 6.114180478821367,
+        "ambient_C_fitted": 25.698000000000153,
+        "ambient_at_grid_bound": false,
+        "base_C_fitted": 32.09165225055754,
+        "ssr_C2": 0.05633241359762714,
+        "rms_residual_C": 0.10614368902353746,
+        "residuals_C": [
+          -0.05689174743233849,
+          0.14188568443363536,
+          -0.057508053571176276,
+          -0.1347328532473071,
+          0.10725706156153691
+        ],
+        "one_over_m_m": 0.16355421686746976,
+        "free_parameters": 2,
+        "data_points": 5
+      },
+      "mean_fit_ambient_sensitivity": [
+        {
+          "ambient_C_fixed": 20.0,
+          "mu_mL": 0.9760000000000006,
+          "m_per_m": 3.594843462246779,
+          "rms_residual_C": 0.11457457229235321,
+          "h_from_mean_W_m2K": 6.650299948691785
+        },
+        {
+          "ambient_C_fixed": 22.0,
+          "mu_mL": 1.1120000000000008,
+          "m_per_m": 4.0957642725598555,
+          "rms_residual_C": 0.11202344472587619,
+          "h_from_mean_W_m2K": 8.63278992936536
+        },
+        {
+          "ambient_C_fixed": 24.0,
+          "mu_mL": 1.328000000000001,
+          "m_per_m": 4.891344383057094,
+          "rms_residual_C": 0.10852509946164139,
+          "h_from_mean_W_m2K": 12.312259163272703
+        },
+        {
+          "ambient_C_fixed": 26.0,
+          "mu_mL": 1.7480000000000013,
+          "m_per_m": 6.438305709023946,
+          "rms_residual_C": 0.10643146756331391,
+          "h_from_mean_W_m2K": 21.331650277172166
+        },
+        {
+          "ambient_C_fixed": 28.0,
+          "mu_mL": 3.0940000000000025,
+          "m_per_m": 11.395948434622476,
+          "rms_residual_C": 0.17121695854787555,
+          "h_from_mean_W_m2K": 66.83165517463688
+        }
+      ],
+      "nu_from_mean_profile_per_s": 0.002490893129385899,
+      "h_from_mean_profile_W_m2K": 19.237904942613593,
+      "bi_perp": 0.00018539863832206334,
+      "bi_perp_suppressed_reason": null,
+      "boundary_relative_rms": 0.02033117901381343,
+      "cycle_stationarity_passed": false,
+      "interval_s": [
+        1407.186,
+        2407.1859999999997
+      ],
+      "per_sensor": {
+        "rod1_C": {
+          "mean_C": 32.148543997989876,
+          "amplitude_C": 1.6868172775885608,
+          "phase_rad": -2.4054068957610055,
+          "amplitude_se_C": 0.0010853169033935006,
+          "phase_se_rad": 0.0006434110764038592,
+          "rms_residual_C": 0.034294984034246453,
+          "finite_error": 1.1102230254031805e-16
+        },
+        "rod2_C": {
+          "mean_C": 30.714746975457924,
+          "amplitude_C": 0.9178230003506379,
+          "phase_rad": -2.983760443873126,
+          "amplitude_se_C": 0.001346313285598437,
+          "phase_se_rad": 0.0014668550339561638,
+          "rms_residual_C": 0.0425422217035816,
+          "finite_error": 0.000626183621754183
+        },
+        "rod3_C": {
+          "mean_C": 29.711116857827548,
+          "amplitude_C": 0.42231006646204877,
+          "phase_rad": 2.5290175709646814,
+          "amplitude_se_C": 0.0013512012633979723,
+          "phase_se_rad": 0.003199547794518003,
+          "rms_residual_C": 0.042696676776090674,
+          "finite_error": 0.0035302617173817597
+        },
+        "rod4_C": {
+          "mean_C": 28.973062933442662,
+          "amplitude_C": 0.19834740749239974,
+          "phase_rad": 1.7936379629336376,
+          "amplitude_se_C": 0.0012695677027723764,
+          "phase_se_rad": 0.006400727458989206,
+          "rms_residual_C": 0.040117134021289955,
+          "finite_error": 0.016842102567236103
+        },
+        "rod5_C": {
+          "mean_C": 28.22362243440842,
+          "amplitude_C": 0.0970232654560791,
+          "phase_rad": 0.9739202580007625,
+          "amplitude_se_C": 0.0010767005689029396,
+          "phase_se_rad": 0.01109734434310109,
+          "rms_residual_C": 0.03402271604893836,
+          "finite_error": 0.0866731159755846
+        }
+      },
+      "limitations": [
+        "Selected interval fails supplied cycle-stationarity tolerances; diagnostic only",
+        "Density/specific heat not supplied: k and h remain uncomputed",
+        "Errors are conditional cycle-repeat fit errors; material/geometry, sensor bias, timing and contact systematic errors are not included",
+        "Spatial phase uses nearest-branch unwrapping; verify alias choice with geometry, residuals and other periods",
+        "No channel scan-time correction supplied; consider sequential scan timing in phase uncertainty"
+      ],
+      "budget": {
+        "k_W_mK": 161.19455227741742,
+        "k_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "fit_se": 0.02028123650334883,
+          "position_1mm": 0.025456543466523818
+        },
+        "k_combined_relative": 0.03503175644380187,
+        "k_absolute": 5.6469282954501745,
+        "h_W_m2K": 9.361080813521642,
+        "h_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "diameter": 0.0004521145412604744,
+          "fit_se": 0.4036572919150289,
+          "position_1mm": 0.025456543466523818,
+          "scan_skew_assumed": 0.19762231713914524
+        },
+        "h_combined_relative": 0.4503441898821514,
+        "h_absolute": 4.215708355386755,
+        "position_corners": {
+          "corners": [
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.600525195489162e-05,
+              "nu_per_s": 0.0007960153198534926,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.600525195489162e-05,
+              "nu_per_s": 0.0007960153198534926,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.918635658361473e-05,
+              "nu_per_s": 0.000791891755520582,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.918635658361473e-05,
+              "nu_per_s": 0.000791891755520582,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.575234161057471e-05,
+              "nu_per_s": 0.0008059947144053355,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.575234161057471e-05,
+              "nu_per_s": 0.0008059947144053355,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.885033496710967e-05,
+              "nu_per_s": 0.0008016342127962535,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.885033496710967e-05,
+              "nu_per_s": 0.0008016342127962535,
+              "length_m": 0.2725
+            }
+          ],
+          "kappa_range_m2_s": [
+            6.575234161057471e-05,
+            6.918635658361473e-05
+          ],
+          "kappa_half_range_fraction": 0.025456543466523818,
+          "nu_range_per_s": [
+            0.000791891755520582,
+            0.0008059947144053355
+          ]
+        },
+        "nu_drift_range_per_s": [
+          0.0009084049965887869,
+          0.002084118964294335
+        ],
+        "excluded": [
+          "channel cross-calibration bias",
+          "contact resistance and probe lag",
+          "nonuniform side convection",
+          "unmeasured scan skew",
+          "model discrepancy and finite-length residual",
+          "temperature drift of rho and c"
+        ],
+        "material": {
+          "density_kg_m3": 2700.0,
+          "density_bound_kg_m3": 27.0,
+          "specific_heat_J_kgK": 896.0,
+          "specific_heat_bound_J_kgK": 18.0,
+          "source": "Al 6061-T6 handbook values (rho 2680-2720 kg/m3, c 890-900 J/(kg K)); k compared with Lienhard Table A.1, 166-172 W/(m K)"
+        },
+        "diameter_m": 0.01277,
+        "scan_skew_assumed_s": 0.17
+      },
+      "actuator": {
+        "samples": 2000,
+        "pwm_amplitude": 27.16105214672112,
+        "pwm_mean": 22.42150014549191,
+        "tec_amplitude_C": 4.7966965466653955,
+        "gain_C_per_pwm": 0.17660201529580483,
+        "phase_lag_rad": 1.017334682256795,
+        "pwm_rms_residual": 1.494478789496995,
+        "tec_rms_residual_C": 0.005653443564941218
+      }
+    },
+    {
+      "period_s": 300,
+      "source": {
+        "raw": "Module_8/data/raw/m08_pi_p300s_20261116_111157_767223.csv",
+        "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p300s_20261116_111157_767223.csv",
+        "prefix_bytes": 1712403,
+        "sha256": "babd76d900497eafcafffcc1343ba77ea8aa3345facd499f91c88d8abdfcc4bd",
+        "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p300s_20261116_111157_767223_plan_01.json",
+        "plan_sha256": "c8904c2bc03e6d31cf3dfc650d41c18e074be8bf63728fe3e410f918b223f9b9"
+      },
+      "analysis_json_sha256": "47739e5daf87dbdeb7e808b7da21844ecec9b5c4e94943165f403ff377abcd77",
+      "model": "finite_insulated_tip",
+      "q_per_m": 12.74737475340649,
+      "q_prime_per_m": 12.035821494649594,
+      "kappa_m2_s": 6.825463151187697e-05,
+      "kappa_fit_se_m2_s": 3.360964823943154e-06,
+      "nu_per_s": 0.0012036406712907205,
+      "nu_fit_se_per_s": 0.000932813148061014,
+      "physical_positive_loss": true,
+      "m_per_m_from_slopes": 4.199352813555438,
+      "conditioning_factor": 17.42921238291213,
+      "k_W_mK": 165.12160455353276,
+      "h_W_m2K": 9.296073182016935,
+      "drift": {
+        "cycles": 5,
+        "kappa_range_m2_s": [
+          6.131636478968108e-05,
+          7.99590134573531e-05
+        ],
+        "kappa_range_fraction": 0.2704779972410935,
+        "nu_range_per_s": [
+          0.0013814417366751273,
+          0.0034862184472243757
+        ],
+        "nu_sign_changes": false,
+        "note": "Cycle-to-cycle spread under a drifting mean field; not a confidence interval."
+      },
+      "mean_profile_fit": {
+        "mu_mL": 1.6098000000000012,
+        "m_per_m": 5.929281767955805,
+        "ambient_C_fitted": 24.25000000000013,
+        "ambient_at_grid_bound": false,
+        "base_C_fitted": 31.816465879013702,
+        "ssr_C2": 0.05864587404700758,
+        "rms_residual_C": 0.10830131490153531,
+        "residuals_C": [
+          -0.058871726999885965,
+          0.14797396850234534,
+          -0.06433858733579356,
+          -0.13246030006748555,
+          0.10769639519682883
+        ],
+        "one_over_m_m": 0.16865449124114784,
+        "free_parameters": 2,
+        "data_points": 5
+      },
+      "mean_fit_ambient_sensitivity": [
+        {
+          "ambient_C_fixed": 20.0,
+          "mu_mL": 1.0980000000000008,
+          "m_per_m": 4.044198895027627,
+          "rms_residual_C": 0.11471185770278336,
+          "h_from_mean_W_m2K": 8.621837207434082
+        },
+        {
+          "ambient_C_fixed": 22.0,
+          "mu_mL": 1.270000000000001,
+          "m_per_m": 4.6777163904235755,
+          "rms_residual_C": 0.11136279451545761,
+          "h_from_mean_W_m2K": 11.53460110606006
+        },
+        {
+          "ambient_C_fixed": 24.0,
+          "mu_mL": 1.5580000000000012,
+          "m_per_m": 5.73848987108656,
+          "rms_residual_C": 0.1083387542239972,
+          "h_from_mean_W_m2K": 17.359213515537466
+        },
+        {
+          "ambient_C_fixed": 26.0,
+          "mu_mL": 2.1940000000000017,
+          "m_per_m": 8.081031307550651,
+          "rms_residual_C": 0.12255581041556246,
+          "h_from_mean_W_m2K": 34.42455894957563
+        },
+        {
+          "ambient_C_fixed": 28.0,
+          "mu_mL": 4.638000000000004,
+          "m_per_m": 17.082872928176812,
+          "rms_residual_C": 0.38057476595304,
+          "h_from_mean_W_m2K": 153.83552105828434
+        }
+      ],
+      "nu_from_mean_profile_per_s": 0.002399585918072344,
+      "h_from_mean_profile_W_m2K": 18.532712322704462,
+      "bi_perp": 0.00017973246876950918,
+      "bi_perp_suppressed_reason": null,
+      "boundary_relative_rms": 0.040269117658068974,
+      "cycle_stationarity_passed": false,
+      "interval_s": [
+        905.805,
+        2405.805
+      ],
+      "per_sensor": {
+        "rod1_C": {
+          "mean_C": 31.875337606013588,
+          "amplitude_C": 2.0195354031299644,
+          "phase_rad": -2.2903952702360106,
+          "amplitude_se_C": 0.0021008507995944233,
+          "phase_se_rad": 0.001040264411171879,
+          "rms_residual_C": 0.08132490876327629,
+          "finite_error": 6.545581232441471e-21
+        },
+        "rod2_C": {
+          "mean_C": 30.258131874162466,
+          "amplitude_C": 1.2283057307793965,
+          "phase_rad": -2.7539506358624943,
+          "amplitude_se_C": 0.002438151606814155,
+          "phase_se_rad": 0.0019849712916535267,
+          "rms_residual_C": 0.09438197939396051,
+          "finite_error": 0.0021819084027760276
+        },
+        "rod3_C": {
+          "mean_C": 29.08835835310066,
+          "amplitude_C": 0.650614688973697,
+          "phase_rad": 2.9285126611453487,
+          "amplitude_se_C": 0.0026519676717500786,
+          "phase_se_rad": 0.004076095595336361,
+          "rms_residual_C": 0.1026588982225029,
+          "finite_error": 0.010265568859451719
+        },
+        "rod4_C": {
+          "mean_C": 28.214275402888823,
+          "amplitude_C": 0.35318289603156156,
+          "phase_rad": 2.3330976049431325,
+          "amplitude_se_C": 0.002654973006042954,
+          "phase_se_rad": 0.007517275118492423,
+          "rms_residual_C": 0.10277523599692016,
+          "finite_error": 0.037739557995630404
+        },
+        "rod5_C": {
+          "mean_C": 27.384980082977645,
+          "amplitude_C": 0.20402615740335794,
+          "phase_rad": 1.6681170964203442,
+          "amplitude_se_C": 0.0024966117189776688,
+          "phase_se_rad": 0.012236723706920067,
+          "rms_residual_C": 0.09664499728893126,
+          "finite_error": 0.13525306815036933
+        }
+      },
+      "limitations": [
+        "Selected interval fails supplied cycle-stationarity tolerances; diagnostic only",
+        "Density/specific heat not supplied: k and h remain uncomputed",
+        "Errors are conditional cycle-repeat fit errors; material/geometry, sensor bias, timing and contact systematic errors are not included",
+        "Spatial phase uses nearest-branch unwrapping; verify alias choice with geometry, residuals and other periods",
+        "No channel scan-time correction supplied; consider sequential scan timing in phase uncertainty"
+      ],
+      "budget": {
+        "k_W_mK": 165.12160455353276,
+        "k_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "fit_se": 0.049241564264519,
+          "position_1mm": 0.025588439386719987
+        },
+        "k_combined_relative": 0.05698560942584247,
+        "k_absolute": 9.40955526485603,
+        "h_W_m2K": 9.296073182016935,
+        "h_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "diameter": 0.0004521145412604744,
+          "fit_se": 0.7749930442785011,
+          "position_1mm": 0.025588439386719987,
+          "scan_skew_assumed": 0.10860642073245753
+        },
+        "h_combined_relative": 0.7830915691937632,
+        "h_absolute": 7.279676535445701,
+        "position_corners": {
+          "corners": [
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.822302847359384e-05,
+              "nu_per_s": 0.0012986698880972196,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.822302847359384e-05,
+              "nu_per_s": 0.0012986698880972196,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 7.151653438527342e-05,
+              "nu_per_s": 0.0012977862803542392,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 7.151653438527342e-05,
+              "nu_per_s": 0.0012977862803542392,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.794893373817407e-05,
+              "nu_per_s": 0.0013008080131677669,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.794893373817407e-05,
+              "nu_per_s": 0.0013008080131677669,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 7.115622645792376e-05,
+              "nu_per_s": 0.00129987380788465,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 7.115622645792376e-05,
+              "nu_per_s": 0.00129987380788465,
+              "length_m": 0.2725
+            }
+          ],
+          "kappa_range_m2_s": [
+            6.794893373817407e-05,
+            7.151653438527342e-05
+          ],
+          "kappa_half_range_fraction": 0.025588439386719987,
+          "nu_range_per_s": [
+            0.0012977862803542392,
+            0.0013008080131677669
+          ]
+        },
+        "nu_drift_range_per_s": [
+          0.0013814417366751273,
+          0.0034862184472243757
+        ],
+        "excluded": [
+          "channel cross-calibration bias",
+          "contact resistance and probe lag",
+          "nonuniform side convection",
+          "unmeasured scan skew",
+          "model discrepancy and finite-length residual",
+          "temperature drift of rho and c"
+        ],
+        "material": {
+          "density_kg_m3": 2700.0,
+          "density_bound_kg_m3": 27.0,
+          "specific_heat_J_kgK": 896.0,
+          "specific_heat_bound_J_kgK": 18.0,
+          "source": "Al 6061-T6 handbook values (rho 2680-2720 kg/m3, c 890-900 J/(kg K)); k compared with Lienhard Table A.1, 166-172 W/(m K)"
+        },
+        "diameter_m": 0.01277,
+        "scan_skew_assumed_s": 0.17
+      },
+      "actuator": {
+        "samples": 3000,
+        "pwm_amplitude": 20.22515022600168,
+        "pwm_mean": 25.553000024465746,
+        "tec_amplitude_C": 4.82891166279752,
+        "gain_C_per_pwm": 0.23875776490349213,
+        "phase_lag_rad": 0.8726862800050936,
+        "pwm_rms_residual": 0.5286847456662506,
+        "tec_rms_residual_C": 0.008860057138989706
+      }
+    },
+    {
+      "period_s": 400,
+      "source": {
+        "raw": "Module_8/data/raw/m08_pi_p400s_20261118_092100_447310.csv",
+        "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p400s_20261118_092100_447310.csv",
+        "prefix_bytes": 2812071,
+        "sha256": "c16ac1c93102b60ca38fe3d018b7d45ce48c1d7a8750680594069402a4fa6530",
+        "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p400s_20261118_092100_447310_plan_01.json",
+        "plan_sha256": "ef0574517bc568931735c66086e710e31aa60af17bfcf6b3802455f08b667778"
+      },
+      "analysis_json_sha256": "24431eac85819d490769e7dd414e3fb4ee74d4b5ff1d6bd4a83b746e1c732eef",
+      "model": "finite_insulated_tip",
+      "q_per_m": 11.416682180558558,
+      "q_prime_per_m": 9.835301511969833,
+      "kappa_m2_s": 6.994590470580498e-05,
+      "kappa_fit_se_m2_s": 1.8846089850653863e-06,
+      "nu_per_s": 0.0023507053263257683,
+      "nu_fit_se_per_s": 0.0005681996106690662,
+      "physical_positive_loss": true,
+      "m_per_m_from_slopes": 5.797195544444506,
+      "conditioning_factor": 6.756645057887745,
+      "k_W_mK": 169.2131326642834,
+      "h_W_m2K": 18.1551930439905,
+      "drift": {
+        "cycles": 5,
+        "kappa_range_m2_s": [
+          6.442812215177394e-05,
+          7.396642563487898e-05
+        ],
+        "kappa_range_fraction": 0.1357054742290186,
+        "nu_range_per_s": [
+          0.0006849036667318218,
+          0.0037970842423554045
+        ],
+        "nu_sign_changes": false,
+        "note": "Cycle-to-cycle spread under a drifting mean field; not a confidence interval."
+      },
+      "mean_profile_fit": {
+        "mu_mL": 1.6250000000000013,
+        "m_per_m": 5.985267034990796,
+        "ambient_C_fitted": 25.350000000000147,
+        "ambient_at_grid_bound": false,
+        "base_C_fitted": 32.12978356877328,
+        "ssr_C2": 0.05906266854121543,
+        "rms_residual_C": 0.1086854806689614,
+        "residuals_C": [
+          -0.060485786226713856,
+          0.15086462093371367,
+          -0.06553526956895439,
+          -0.1309035780401473,
+          0.1058932767227958
+        ],
+        "one_over_m_m": 0.16707692307692296,
+        "free_parameters": 2,
+        "data_points": 5
+      },
+      "mean_fit_ambient_sensitivity": [
+        {
+          "ambient_C_fixed": 20.0,
+          "mu_mL": 1.0000000000000007,
+          "m_per_m": 3.683241252302028,
+          "rms_residual_C": 0.11642411503028405,
+          "h_from_mean_W_m2K": 7.328672317433336
+        },
+        {
+          "ambient_C_fixed": 22.0,
+          "mu_mL": 1.1420000000000008,
+          "m_per_m": 4.2062615101289165,
+          "rms_residual_C": 0.11376846193491472,
+          "h_from_mean_W_m2K": 9.557790604193132
+        },
+        {
+          "ambient_C_fixed": 24.0,
+          "mu_mL": 1.368000000000001,
+          "m_per_m": 5.038674033149174,
+          "rms_residual_C": 0.11032534669560919,
+          "h_from_mean_W_m2K": 13.715053262980362
+        },
+        {
+          "ambient_C_fixed": 26.0,
+          "mu_mL": 1.8120000000000014,
+          "m_per_m": 6.674033149171275,
+          "rms_residual_C": 0.10975680512880144,
+          "h_from_mean_W_m2K": 24.062552281410845
+        },
+        {
+          "ambient_C_fixed": 28.0,
+          "mu_mL": 3.2620000000000027,
+          "m_per_m": 12.014732965009218,
+          "rms_residual_C": 0.19362566778540458,
+          "h_from_mean_W_m2K": 77.98179312246313
+        }
+      ],
+      "nu_from_mean_profile_per_s": 0.002505701625086285,
+      "h_from_mean_profile_W_m2K": 19.352275338222405,
+      "bi_perp": 0.0003425292876524687,
+      "bi_perp_suppressed_reason": null,
+      "boundary_relative_rms": 0.03849016587363262,
+      "cycle_stationarity_passed": false,
+      "interval_s": [
+        1374.687,
+        3374.687
+      ],
+      "per_sensor": {
+        "rod1_C": {
+          "mean_C": 32.19026935499999,
+          "amplitude_C": 2.2858442080885095,
+          "phase_rad": -2.1776014641834083,
+          "amplitude_se_C": 0.00196808718770406,
+          "phase_se_rad": 0.0008609892050997793,
+          "rms_residual_C": 0.08798252273060912,
+          "finite_error": 8.171838247507741e-20
+        },
+        "rod2_C": {
+          "mean_C": 30.701235792499993,
+          "amplitude_C": 1.464442835648335,
+          "phase_rad": -2.556793511424852,
+          "amplitude_se_C": 0.0025226416799231724,
+          "phase_se_rad": 0.0017225948452992046,
+          "rms_residual_C": 0.11277365166120713,
+          "finite_error": 0.0036922769886161104
+        },
+        "rod3_C": {
+          "mean_C": 29.667823672499992,
+          "amplitude_C": 0.8149317159846773,
+          "phase_rad": -3.047362216012626,
+          "amplitude_se_C": 0.0030505977955055945,
+          "phase_se_rad": 0.0037433784152327092,
+          "rms_residual_C": 0.13637571117879563,
+          "finite_error": 0.016414233988933855
+        },
+        "rod4_C": {
+          "mean_C": 28.882680319999995,
+          "amplitude_C": 0.4475309796956073,
+          "phase_rad": 2.717084236233182,
+          "amplitude_se_C": 0.0032902984110862663,
+          "phase_se_rad": 0.0073521131728672634,
+          "rms_residual_C": 0.14709142793698962,
+          "finite_error": 0.054409684089420166
+        },
+        "rod5_C": {
+          "mean_C": 28.114807014999997,
+          "amplitude_C": 0.2661325402387813,
+          "phase_rad": 2.087471920388028,
+          "amplitude_se_C": 0.003249627600994015,
+          "phase_se_rad": 0.012210560941094847,
+          "rms_residual_C": 0.14527325621382114,
+          "finite_error": 0.1606056375842991
+        }
+      },
+      "limitations": [
+        "Selected interval fails supplied cycle-stationarity tolerances; diagnostic only",
+        "Density/specific heat not supplied: k and h remain uncomputed",
+        "Errors are conditional cycle-repeat fit errors; material/geometry, sensor bias, timing and contact systematic errors are not included",
+        "Spatial phase uses nearest-branch unwrapping; verify alias choice with geometry, residuals and other periods",
+        "No channel scan-time correction supplied; consider sequential scan timing in phase uncertainty"
+      ],
+      "budget": {
+        "k_W_mK": 169.2131326642834,
+        "k_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "fit_se": 0.02694380740362314,
+          "position_1mm": 0.025444179423573673
+        },
+        "k_combined_relative": 0.03925856370414759,
+        "k_absolute": 6.643064548279147,
+        "h_W_m2K": 18.1551930439905,
+        "h_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "diameter": 0.0004521145412604744,
+          "fit_se": 0.24171452044871203,
+          "position_1mm": 0.025444179423573673,
+          "scan_skew_assumed": 0.0349266983339476
+        },
+        "h_combined_relative": 0.245888702722449,
+        "h_absolute": 4.464156865262455,
+        "position_corners": {
+          "corners": [
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.871350731768518e-05,
+              "nu_per_s": 0.002697123724703235,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.871350731768518e-05,
+              "nu_per_s": 0.002697123724703235,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 7.202461410820544e-05,
+              "nu_per_s": 0.002697959869881346,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 7.202461410820544e-05,
+              "nu_per_s": 0.002697959869881346,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.845141711109165e-05,
+              "nu_per_s": 0.0026951001957947786,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.845141711109165e-05,
+              "nu_per_s": 0.0026951001957947786,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 7.167603292674271e-05,
+              "nu_per_s": 0.0026959843747897116,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 7.167603292674271e-05,
+              "nu_per_s": 0.0026959843747897116,
+              "length_m": 0.2725
+            }
+          ],
+          "kappa_range_m2_s": [
+            6.845141711109165e-05,
+            7.202461410820544e-05
+          ],
+          "kappa_half_range_fraction": 0.025444179423573673,
+          "nu_range_per_s": [
+            0.0026951001957947786,
+            0.002697959869881346
+          ]
+        },
+        "nu_drift_range_per_s": [
+          0.0006849036667318218,
+          0.0037970842423554045
+        ],
+        "excluded": [
+          "channel cross-calibration bias",
+          "contact resistance and probe lag",
+          "nonuniform side convection",
+          "unmeasured scan skew",
+          "model discrepancy and finite-length residual",
+          "temperature drift of rho and c"
+        ],
+        "material": {
+          "density_kg_m3": 2700.0,
+          "density_bound_kg_m3": 27.0,
+          "specific_heat_J_kgK": 896.0,
+          "specific_heat_bound_J_kgK": 18.0,
+          "source": "Al 6061-T6 handbook values (rho 2680-2720 kg/m3, c 890-900 J/(kg K)); k compared with Lienhard Table A.1, 166-172 W/(m K)"
+        },
+        "diameter_m": 0.01277,
+        "scan_skew_assumed_s": 0.17
+      },
+      "actuator": {
+        "samples": 4000,
+        "pwm_amplitude": 17.53740411306709,
+        "pwm_mean": 23.827499999999993,
+        "tec_amplitude_C": 4.852507182270791,
+        "gain_C_per_pwm": 0.2766947235169882,
+        "phase_lag_rad": 0.7649869640943443,
+        "pwm_rms_residual": 0.5476972133292648,
+        "tec_rms_residual_C": 0.008966696925239543
+      }
+    },
+    {
+      "period_s": 500,
+      "source": {
+        "raw": "Module_8/data/raw/m08_pi_p500s_20261109_104354_009745.csv",
+        "snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p500s_20261109_104354_009745.csv",
+        "prefix_bytes": 2536460,
+        "sha256": "4f8d0c54061cbf2ef591a7cf32def86e3cc6a00686bce3da6375340d5770b64c",
+        "plan_snapshot": "Module_8/data/processed/five_period_review/snapshots/m08_pi_p500s_20261109_104354_009745_plan_01.json",
+        "plan_sha256": "0a27d71335e307ce13769b0ee5757e55624206d0e5d5f3aba56ea4dadc4bad49"
+      },
+      "analysis_json_sha256": "22f49dc2c38d093ea1a701cccf212ce124493e8108072511e08a5ffcab2d0980",
+      "model": "finite_insulated_tip",
+      "q_per_m": 10.515098591306916,
+      "q_prime_per_m": 8.845892809111804,
+      "kappa_m2_s": 6.75499212157918e-05,
+      "kappa_fit_se_m2_s": 3.025084640504757e-06,
+      "nu_per_s": 0.002183043146468845,
+      "nu_fit_se_per_s": 0.0005766424057753236,
+      "physical_positive_loss": true,
+      "m_per_m_from_slopes": 5.6848464178558755,
+      "conditioning_factor": 5.842569563523601,
+      "k_W_mK": 163.4167694052435,
+      "h_W_m2K": 16.860288400950243,
+      "drift": {
+        "cycles": 5,
+        "kappa_range_m2_s": [
+          5.965491260815197e-05,
+          7.521289653448738e-05
+        ],
+        "kappa_range_fraction": 0.22825273426817386,
+        "nu_range_per_s": [
+          0.0010217441341593746,
+          0.004242823821165714
+        ],
+        "nu_sign_changes": false,
+        "note": "Cycle-to-cycle spread under a drifting mean field; not a confidence interval."
+      },
+      "mean_profile_fit": {
+        "mu_mL": 1.7310000000000012,
+        "m_per_m": 6.3756906077348106,
+        "ambient_C_fitted": 25.65000000000015,
+        "ambient_at_grid_bound": false,
+        "base_C_fitted": 31.918446420943845,
+        "ssr_C2": 0.056538043993438605,
+        "rms_residual_C": 0.10633724088336842,
+        "residuals_C": [
+          -0.0578389988073873,
+          0.14237886730189686,
+          -0.05503633531042951,
+          -0.1361489474784534,
+          0.10656180484738798
+        ],
+        "one_over_m_m": 0.15684575389947997,
+        "free_parameters": 2,
+        "data_points": 5
+      },
+      "mean_fit_ambient_sensitivity": [
+        {
+          "ambient_C_fixed": 20.0,
+          "mu_mL": 0.9980000000000007,
+          "m_per_m": 3.675874769797424,
+          "rms_residual_C": 0.11746227636045233,
+          "h_from_mean_W_m2K": 7.049347849415544
+        },
+        {
+          "ambient_C_fixed": 22.0,
+          "mu_mL": 1.1440000000000008,
+          "m_per_m": 4.21362799263352,
+          "rms_residual_C": 0.11423628923818943,
+          "h_from_mean_W_m2K": 9.26274925306796
+        },
+        {
+          "ambient_C_fixed": 24.0,
+          "mu_mL": 1.376000000000001,
+          "m_per_m": 5.0681399631675905,
+          "rms_residual_C": 0.1096862931913767,
+          "h_from_mean_W_m2K": 13.400614890838796
+        },
+        {
+          "ambient_C_fixed": 26.0,
+          "mu_mL": 1.8460000000000014,
+          "m_per_m": 6.799263351749544,
+          "rms_residual_C": 0.10671778250310084,
+          "h_from_mean_W_m2K": 24.118553194584504
+        },
+        {
+          "ambient_C_fixed": 28.0,
+          "mu_mL": 3.498000000000003,
+          "m_per_m": 12.883977900552496,
+          "rms_residual_C": 0.2039427106774355,
+          "h_from_mean_W_m2K": 86.6019097140574
+        }
+      ],
+      "nu_from_mean_profile_per_s": 0.002745865842978221,
+      "h_from_mean_profile_W_m2K": 21.207134681610324,
+      "bi_perp": 0.00032938156173283484,
+      "bi_perp_suppressed_reason": null,
+      "boundary_relative_rms": 0.02253512101533094,
+      "cycle_stationarity_passed": false,
+      "interval_s": [
+        1006.788,
+        3506.788
+      ],
+      "per_sensor": {
+        "rod1_C": {
+          "mean_C": 31.976285419751232,
+          "amplitude_C": 2.3386674129678515,
+          "phase_rad": -2.117223153516997,
+          "amplitude_se_C": 0.0010543594168188491,
+          "phase_se_rad": 0.0004508376926707925,
+          "rms_residual_C": 0.052702153165841474,
+          "finite_error": 1.9602580169187198e-19
+        },
+        "rod2_C": {
+          "mean_C": 30.506220501836403,
+          "amplitude_C": 1.5510900208030147,
+          "phase_rad": -2.455311413908546,
+          "amplitude_se_C": 0.001314986973035252,
+          "phase_se_rad": 0.000847782501503902,
+          "rms_residual_C": 0.06572962100899366,
+          "finite_error": 0.005322007299994624
+        },
+        "rod3_C": {
+          "mean_C": 29.477360988374404,
+          "amplitude_C": 0.8941307397127656,
+          "phase_rad": -2.90998334842731,
+          "amplitude_se_C": 0.0016372255767886617,
+          "phase_se_rad": 0.001831080743286237,
+          "rms_residual_C": 0.08183671683788961,
+          "finite_error": 0.02254529932803696
+        },
+        "rod4_C": {
+          "mean_C": 28.734570171725277,
+          "amplitude_C": 0.5326070611619641,
+          "phase_rad": 2.8723839503119377,
+          "amplitude_se_C": 0.001827923836263446,
+          "phase_se_rad": 0.0034320307895274274,
+          "rms_residual_C": 0.09136876875069601,
+          "finite_error": 0.06917941571169757
+        },
+        "rod5_C": {
+          "mean_C": 27.98244643148667,
+          "amplitude_C": 0.36372504447043486,
+          "phase_rad": 2.3040280131610333,
+          "amplitude_se_C": 0.001956023631230255,
+          "phase_se_rad": 0.0053777534806143295,
+          "rms_residual_C": 0.0977718366211561,
+          "finite_error": 0.1809852742828905
+        }
+      },
+      "limitations": [
+        "Selected interval fails supplied cycle-stationarity tolerances; diagnostic only",
+        "Density/specific heat not supplied: k and h remain uncomputed",
+        "Errors are conditional cycle-repeat fit errors; material/geometry, sensor bias, timing and contact systematic errors are not included",
+        "Spatial phase uses nearest-branch unwrapping; verify alias choice with geometry, residuals and other periods",
+        "No channel scan-time correction supplied; consider sequential scan timing in phase uncertainty"
+      ],
+      "budget": {
+        "k_W_mK": 163.4167694052435,
+        "k_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "fit_se": 0.044782948463270064,
+          "position_1mm": 0.025146722714936273
+        },
+        "k_combined_relative": 0.05296914136113461,
+        "k_absolute": 8.656045959406281,
+        "h_W_m2K": 16.860288400950243,
+        "h_relative_parts": {
+          "density": 0.005773502691896258,
+          "specific_heat": 0.01159855451497016,
+          "diameter": 0.0004521145412604744,
+          "fit_se": 0.26414613321228425,
+          "position_1mm": 0.025146722714936273,
+          "scan_skew_assumed": 0.026133642233352263
+        },
+        "h_combined_relative": 0.26693926054144423,
+        "h_absolute": 4.500672918265147,
+        "position_corners": {
+          "corners": [
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.46024447402618e-05,
+              "nu_per_s": 0.00243907475535635,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.46024447402618e-05,
+              "nu_per_s": 0.00243907475535635,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.77036731348187e-05,
+              "nu_per_s": 0.0024389799699363252,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": -0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.77036731348187e-05,
+              "nu_per_s": 0.0024389799699363252,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.438313696081024e-05,
+              "nu_per_s": 0.002439304214887887,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": -0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.438313696081024e-05,
+              "nu_per_s": 0.002439304214887887,
+              "length_m": 0.2725
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": -0.001,
+              "kappa_m2_s": 6.740370166187012e-05,
+              "nu_per_s": 0.0024392039401809323,
+              "length_m": 0.2705
+            },
+            {
+              "dx2_m": 0.001,
+              "dx3_m": 0.001,
+              "dL_m": 0.001,
+              "kappa_m2_s": 6.740370166187012e-05,
+              "nu_per_s": 0.0024392039401809323,
+              "length_m": 0.2725
+            }
+          ],
+          "kappa_range_m2_s": [
+            6.438313696081024e-05,
+            6.77036731348187e-05
+          ],
+          "kappa_half_range_fraction": 0.025146722714936273,
+          "nu_range_per_s": [
+            0.0024389799699363252,
+            0.002439304214887887
+          ]
+        },
+        "nu_drift_range_per_s": [
+          0.0010217441341593746,
+          0.004242823821165714
+        ],
+        "excluded": [
+          "channel cross-calibration bias",
+          "contact resistance and probe lag",
+          "nonuniform side convection",
+          "unmeasured scan skew",
+          "model discrepancy and finite-length residual",
+          "temperature drift of rho and c"
+        ],
+        "material": {
+          "density_kg_m3": 2700.0,
+          "density_bound_kg_m3": 27.0,
+          "specific_heat_J_kgK": 896.0,
+          "specific_heat_bound_J_kgK": 18.0,
+          "source": "Al 6061-T6 handbook values (rho 2680-2720 kg/m3, c 890-900 J/(kg K)); k compared with Lienhard Table A.1, 166-172 W/(m K)"
+        },
+        "diameter_m": 0.01277,
+        "scan_skew_assumed_s": 0.17
+      },
+      "actuator": {
+        "samples": 5000,
+        "pwm_amplitude": 15.482842057260742,
+        "pwm_mean": 22.000200023700128,
+        "tec_amplitude_C": 4.874106483921698,
+        "gain_C_per_pwm": 0.31480696282346726,
+        "phase_lag_rad": 0.6820908772987413,
+        "pwm_rms_residual": 0.423085458011032,
+        "tec_rms_residual_C": 0.006096738589904903
+      }
+    }
+  ],
+  "frequency_consistency": {
+    "kappa_mean_m2_s": 6.797943286846544e-05,
+    "kappa_sem_across_periods_m2_s": 5.549741887595945e-07,
+    "kappa_span_fraction": 0.04875825748758852,
+    "kappa_largest_pairwise_difference_over_combined_se": 1.4292812078228108,
+    "nu_positive_periods_s": [
+      200,
+      300,
+      400,
+      500
+    ],
+    "nu_unphysical_periods_s": [
+      100
+    ],
+    "nu_range_positive_per_s": [
+      0.0012036406712907205,
+      0.0023507053263257683
+    ],
+    "interpretation": "kappa is over-determined and consistent; nu is not, and the spread is drift- plus conditioning-limited rather than statistical."
+  },
+  "literature_bands": {
+    "k_6061_T6_W_mK": [
+      166.0,
+      172.0
+    ],
+    "kappa_implied_m2_s": [
+      6.861772486772487e-05,
+      7.10978835978836e-05
+    ],
+    "course_provisional_h_W_m2K": 10.0
+  },
+  "limitations": [
+    "No record passes the provisional settled-periodic span limits; these are diagnostic transport estimates with drift-dominated systematics, not certified production values.",
+    "Cycle-to-cycle ranges under drift are reported instead of a confidence interval.",
+    "nu is a difference of nearly equal quantities: (q^2+q'^2)/(q^2-q'^2) = 6-26, so nu is far less constrained than kappa; at 100 s q' > q, which no passive lateral loss can produce.",
+    "The mean-profile ambient is fitted, not measured; there is no independent room thermometer.",
+    "Channel cross-calibration was not performed; common-mode bias cancels in spatial slopes but not in the absolute mean profile.",
+    "The material constants are handbook values, not measurements of this rod."
+  ]
+}
