@@ -1,0 +1,119 @@
+{
+  "method": "Estimated centers of sample blocks using Module 1 conversion timing and Module 8 scan order.",
+  "limitations": "The recorded timestamp follows the scan. Firmware overhead was not timed in this run. This is a sensitivity scenario and does not set measured sample_time_offsets_s.",
+  "timing_evidence": "docs/module_notes/module_01_evidence.md",
+  "firmware": "Module_8/arduino/module_08_rod_controller/module_08_rod_controller.ino",
+  "firmware_sha256": "7efb34f8ab839a5c4d6ecd032951ec4bd7d6beca7006cfc871a8a575c883182c",
+  "seconds_per_conversion": 0.000112012,
+  "estimated_adc_scan_duration_s": 0.16869007199999997,
+  "estimated_midpoint_offsets_relative_to_T1_s": {
+    "tec_C": -0.061718612,
+    "rod1_C": 0.0,
+    "rod2_C": 0.01131321199999999,
+    "rod3_C": 0.022626424000000006,
+    "rod4_C": 0.033939635999999995,
+    "rod5_C": 0.045252847999999984
+  },
+  "records": [
+    {
+      "period_s": 100,
+      "source": "Module_8/data/processed/five_period_review/m08_pi_p100s_analysis.json",
+      "source_sha256": "905a3a3dd96d8d9dc024bd1f261c953b870063f3602013e193e3123b8b0f9df3",
+      "phase_adjustment_rad": {
+        "rod1_C": -0.0,
+        "rod2_C": -0.0007108300741540772,
+        "rod3_C": -0.001421660148308156
+      },
+      "baseline": {
+        "kappa_m2_s": 6.751536089470935e-05,
+        "nu_per_s": -0.0018359193479002235
+      },
+      "timing_scenario": {
+        "kappa_m2_s": 6.746150334503649e-05,
+        "nu_per_s": -0.0018859334130442774
+      },
+      "kappa_change_percent": -0.079770809130153,
+      "nu_change_per_s": -5.0014065144053915e-05
+    },
+    {
+      "period_s": 200,
+      "source": "Module_8/data/processed/five_period_review/m08_pi_p200s_analysis.json",
+      "source_sha256": "2b4303e11c3392477f784e45c44116272076e72c74d6aee8ec8b8834802b7998",
+      "phase_adjustment_rad": {
+        "rod1_C": -0.0,
+        "rod2_C": -0.0003554150370770386,
+        "rod3_C": -0.000710830074154078
+      },
+      "baseline": {
+        "kappa_m2_s": 6.66313460141441e-05,
+        "nu_per_s": 0.001212057755331615
+      },
+      "timing_scenario": {
+        "kappa_m2_s": 6.659375020675287e-05,
+        "nu_per_s": 0.0011944204845427296
+      },
+      "kappa_change_percent": -0.05642360486496356,
+      "nu_change_per_s": -1.763727078888549e-05
+    },
+    {
+      "period_s": 300,
+      "source": "Module_8/data/processed/five_period_review/m08_pi_p300s_analysis.json",
+      "source_sha256": "5f33c7cd456f24bcfabf7234103284a536abf6a4fb5e34075c34082633acd1dc",
+      "phase_adjustment_rad": {
+        "rod1_C": -0.0,
+        "rod2_C": -0.00023694335805135903,
+        "rod3_C": -0.00047388671610271865
+      },
+      "baseline": {
+        "kappa_m2_s": 6.825463151187697e-05,
+        "nu_per_s": 0.0012036406712907205
+      },
+      "timing_scenario": {
+        "kappa_m2_s": 6.822147957399934e-05,
+        "nu_per_s": 0.0011940388136262995
+      },
+      "kappa_change_percent": -0.0485709718788363,
+      "nu_change_per_s": -9.601857664420961e-06
+    },
+    {
+      "period_s": 400,
+      "source": "Module_8/data/processed/five_period_review/m08_pi_p400s_analysis.json",
+      "source_sha256": "3237bdcfea38041f707dde997ddab639256664406ab5dcaa05ffd516c1dd6bda",
+      "phase_adjustment_rad": {
+        "rod1_C": -0.0,
+        "rod2_C": -0.0001777075185385193,
+        "rod3_C": -0.000355415037077039
+      },
+      "baseline": {
+        "kappa_m2_s": 6.994590470580498e-05,
+        "nu_per_s": 0.0023507053263257683
+      },
+      "timing_scenario": {
+        "kappa_m2_s": 6.991360471266439e-05,
+        "nu_per_s": 0.0023436990937224216
+      },
+      "kappa_change_percent": -0.046178533648888465,
+      "nu_change_per_s": -7.006232603346679e-06
+    },
+    {
+      "period_s": 500,
+      "source": "Module_8/data/processed/five_period_review/m08_pi_p500s_analysis.json",
+      "source_sha256": "18e246e2927777eb8f128954b0362b619b6362550ee6727b0590c18a7fb6bc2e",
+      "phase_adjustment_rad": {
+        "rod1_C": -0.0,
+        "rod2_C": -0.00014216601483081544,
+        "rod3_C": -0.0002843320296616312
+      },
+      "baseline": {
+        "kappa_m2_s": 6.75499212157918e-05,
+        "nu_per_s": 0.002183043146468845
+      },
+      "timing_scenario": {
+        "kappa_m2_s": 6.752194723235278e-05,
+        "nu_per_s": 0.0021777990822637984
+      },
+      "kappa_change_percent": -0.04141231097761766,
+      "nu_change_per_s": -5.244064205046396e-06
+    }
+  ]
+}

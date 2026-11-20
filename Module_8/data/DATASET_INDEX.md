@@ -48,6 +48,10 @@ Updated November 18, 2026. Names describe recorded settings, not production qual
 
 ## Derived results
 
+- [100 s feedforward, P and PI plot](../figures/control_comparison/m08_feedforward_p_pi_p100s_comparison.pdf)
+- [100 s control comparison metrics](processed/control_comparison/m08_feedforward_p_pi_p100s_comparison_metrics.csv)
+- [ADC timing sensitivity by period](processed/transport_note/m08_scan_timing_sensitivity.json)
+
 - [Initial TEC room references by acquisition](processed/m08_initial_tec_room_references.json)
 - [Transport fits with initial TEC references and ruler-error scenarios](../docs/transport_and_model_note_2026-11-18.md)
 

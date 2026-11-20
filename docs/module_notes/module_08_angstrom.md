@@ -475,3 +475,27 @@ between T1 and the tip, then accumulates the errors in the positions and L.
 Both mean and oscillatory refits use all 32 sign combinations. The ruler
 ranges are reported separately from conditional fit errors. See
 Module_8/docs/transport_and_model_note_2026-11-18.md for the updated results.
+
+## ADC timing and 100 s control comparison, 2026-11-20
+
+Item 4. Module 8 records one timestamp after the six-channel scan. Module 1
+Part 3D measured 112.012 microseconds per ADC conversion. Applying this timing
+to the firmware's channel order and sample counts gives estimated block-center
+offsets of 0, 11.31 and 22.63 ms for T1–T3, relative to T1. The full ADC scan
+is about 169 ms. The Module 8 firmware overhead and channel timing remain
+unmeasured. Applying the estimated offsets as a sensitivity scenario changes
+the finite-fit diffusivity by 0.04–0.08% across the five periods. Record
+block start/end timestamps with Arduino micros() in a passive timing check if
+direct Module 8 offsets are needed. Start/end brackets should exclude serial
+printing, and the scan-end timestamp should share the same clock. The
+sensitivity output is data/processed/transport_note/m08_scan_timing_sensitivity.json.
+
+Item 6. The November 18 feedforward and P captures and the November 16 PI
+capture are combined in the 100 s control comparison. The comparison uses
+the nominal 35 ± 5 °C request. Feedforward was applied in RAW_POS mode using
+the historic 23.44 °C calibration baseline. The analysis reconstructs its
+requested temperature from the plan and recorded phase. Feedforward and P use
+cycles 1–3, including startup. PI uses cycles 10–12. TEC RMS tracking errors
+for those windows are 5.46, 1.19 and 0.60 °C, respectively. Unequal initial
+conditions and cycle windows limit attribution of the differences to the
+controllers alone.
