@@ -40,7 +40,7 @@
       ],
       "analysis_length_m": 0.2715
     },
-    "note": "Module 7 coordinates explicitly reused after operator confirmation; not newly remeasured. Position/length uncertainty remains unknown. Pilot data must establish measurable amplitudes/phases at at least three rod sensors before production acceptance.",
+    "note": "Module 7 coordinates explicitly reused after operator confirmation. The ruler error is a bound per ruler reading; cumulative coordinates share segment errors. Coordinate standard uncertainties remain unspecified.",
     "origin": "T1 / A1 at physical hole 2; x=0",
     "physical_holes": [
       2,
@@ -51,7 +51,9 @@
     ],
     "confirmation_date": "2026-11-16",
     "confirmation": "Operator explicitly confirmed T1\u2013T5 remain in exactly the Module 7 holes and authorized reuse of the measured coordinates.",
-    "geometry_source": "docs/module_notes/module_07_rod_instrument.md: cumulative position table"
+    "geometry_source": "docs/module_notes/module_07_rod_instrument.md: cumulative position table",
+    "ruler_segment_error_bound_m": 0.001,
+    "ruler_error_source": "Operator confirmed the original ruler error as \u00b11 mm on 2026-11-20. Applied as a bound per recorded gap in sensitivity calculations."
   },
   "audit": {
     "start_device_s": 4.983,
@@ -88,7 +90,14 @@
       ]
     },
     "ambient_C": null,
-    "ambient_status": "not measured, confirmed by operator 2026-11-18"
+    "room_reference": {
+      "room_reference_C": 24.12543,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-16T10:45:20.811397-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    }
   },
   "cycles": [
     {
@@ -432,7 +441,7 @@
         ],
         "analysis_length_m": 0.2715
       },
-      "note": "Module 7 coordinates explicitly reused after operator confirmation; not newly remeasured. Position/length uncertainty remains unknown. Pilot data must establish measurable amplitudes/phases at at least three rod sensors before production acceptance.",
+      "note": "Module 7 coordinates explicitly reused after operator confirmation. The ruler error is a bound per ruler reading; cumulative coordinates share segment errors. Coordinate standard uncertainties remain unspecified.",
       "origin": "T1 / A1 at physical hole 2; x=0",
       "physical_holes": [
         2,
@@ -443,7 +452,9 @@
       ],
       "confirmation_date": "2026-11-16",
       "confirmation": "Operator explicitly confirmed T1\u2013T5 remain in exactly the Module 7 holes and authorized reuse of the measured coordinates.",
-      "geometry_source": "docs/module_notes/module_07_rod_instrument.md: cumulative position table"
+      "geometry_source": "docs/module_notes/module_07_rod_instrument.md: cumulative position table",
+      "ruler_segment_error_bound_m": 0.001,
+      "ruler_error_source": "Operator confirmed the original ruler error as \u00b11 mm on 2026-11-20. Applied as a bound per recorded gap in sensitivity calculations."
     },
     "settling_tolerances": {
       "max_mean_change_C": 0.1,
@@ -6810,15 +6821,497 @@
     },
     "geometry_scenario": {
       "bound_m": 0.001,
-      "source": "Module 7 stationary-fin note section 10.2; sensitivity scenario, not a supplied standard error",
-      "coordinate_correlation": "independent +/-1 mm perturbations of relative x2,x3,L; exploratory corner envelope",
+      "source": "Operator confirmed the original ruler error as \u00b11 mm on 2026-11-20. Applied as a bound per recorded gap in sensitivity calculations.",
+      "coordinate_correlation": "Five gap-reading errors accumulate from T1 through the rod tip. Ranges summarize the 32 sign combinations.",
+      "corners": [
+        {
+          "segment_errors_m": [
+            -0.001,
+            -0.001,
+            -0.001,
+            -0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.423368478814593e-05,
+          "nu_per_s": -0.0018294406623133145,
+          "m_squared_per_m2": -28.481016904870614,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            -0.001,
+            -0.001,
+            -0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.42329075728978e-05,
+          "nu_per_s": -0.0018302040645557151,
+          "m_squared_per_m2": -28.493246432580065,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            -0.001,
+            -0.001,
+            0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.42329075728978e-05,
+          "nu_per_s": -0.0018302040645557151,
+          "m_squared_per_m2": -28.493246432580065,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            -0.001,
+            -0.001,
+            0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.423215899850412e-05,
+          "nu_per_s": -0.0018308858306128615,
+          "m_squared_per_m2": -28.504192590747266,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            -0.001,
+            0.001,
+            -0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.42329075728978e-05,
+          "nu_per_s": -0.0018302040645557151,
+          "m_squared_per_m2": -28.493246432580065,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            -0.001,
+            0.001,
+            -0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.423215899850412e-05,
+          "nu_per_s": -0.0018308858306128615,
+          "m_squared_per_m2": -28.504192590747266,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            -0.001,
+            0.001,
+            0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.423215899850412e-05,
+          "nu_per_s": -0.0018308858306128615,
+          "m_squared_per_m2": -28.504192590747266,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            -0.001,
+            0.001,
+            0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.423144668267036e-05,
+          "nu_per_s": -0.0018314888518001693,
+          "m_squared_per_m2": -28.513896952196546,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            0.001,
+            -0.001,
+            -0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.53277345939665e-05,
+          "nu_per_s": -0.0017718773480822271,
+          "m_squared_per_m2": -27.122895950625434,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            0.001,
+            -0.001,
+            -0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.532682584565227e-05,
+          "nu_per_s": -0.0017727811242328401,
+          "m_squared_per_m2": -27.137107938190525,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            0.001,
+            -0.001,
+            0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.532682584565227e-05,
+          "nu_per_s": -0.0017727811242328401,
+          "m_squared_per_m2": -27.137107938190525,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            0.001,
+            -0.001,
+            0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.532596461135004e-05,
+          "nu_per_s": -0.001773610749566324,
+          "m_squared_per_m2": -27.15016548348325,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            0.001,
+            0.001,
+            -0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.532682584565227e-05,
+          "nu_per_s": -0.0017727811242328401,
+          "m_squared_per_m2": -27.137107938190525,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            0.001,
+            0.001,
+            -0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.532596461135004e-05,
+          "nu_per_s": -0.001773610749566324,
+          "m_squared_per_m2": -27.15016548348325,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            0.001,
+            0.001,
+            0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.532596461135004e-05,
+          "nu_per_s": -0.001773610749566324,
+          "m_squared_per_m2": -27.15016548348325,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            -0.001,
+            0.001,
+            0.001,
+            0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.532515478718521e-05,
+          "nu_per_s": -0.0017743672141411816,
+          "m_squared_per_m2": -27.162082048204468,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            -0.001,
+            -0.001,
+            -0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.968277272906791e-05,
+          "nu_per_s": -0.0018649392054008859,
+          "m_squared_per_m2": -26.763274943893464,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            -0.001,
+            -0.001,
+            -0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.968220255816482e-05,
+          "nu_per_s": -0.001865932785562247,
+          "m_squared_per_m2": -26.777752669409722,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            -0.001,
+            -0.001,
+            0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.968220255816482e-05,
+          "nu_per_s": -0.001865932785562247,
+          "m_squared_per_m2": -26.777752669409722,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            -0.001,
+            -0.001,
+            0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.968158462232131e-05,
+          "nu_per_s": -0.0018668195145145475,
+          "m_squared_per_m2": -26.790715576186017,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            -0.001,
+            0.001,
+            -0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.968220255816482e-05,
+          "nu_per_s": -0.001865932785562247,
+          "m_squared_per_m2": -26.777752669409722,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            -0.001,
+            0.001,
+            -0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.968158462232131e-05,
+          "nu_per_s": -0.0018668195145145475,
+          "m_squared_per_m2": -26.790715576186017,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            -0.001,
+            0.001,
+            0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 6.968158462232131e-05,
+          "nu_per_s": -0.0018668195145145475,
+          "m_squared_per_m2": -26.790715576186017,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            -0.001,
+            0.001,
+            0.001,
+            0.001
+          ],
+          "kappa_m2_s": 6.968093507368904e-05,
+          "nu_per_s": -0.0018676054020285587,
+          "m_squared_per_m2": -26.802243684783036,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            0.001,
+            -0.001,
+            -0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 7.087996123118507e-05,
+          "nu_per_s": -0.0018384915144015058,
+          "m_squared_per_m2": -25.938099887004796,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            0.001,
+            -0.001,
+            -0.001,
+            0.001
+          ],
+          "kappa_m2_s": 7.087920771730272e-05,
+          "nu_per_s": -0.0018395718383413379,
+          "m_squared_per_m2": -25.953617394798698,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            0.001,
+            -0.001,
+            0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 7.087920771730272e-05,
+          "nu_per_s": -0.0018395718383413379,
+          "m_squared_per_m2": -25.953617394798698,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            0.001,
+            -0.001,
+            0.001,
+            0.001
+          ],
+          "kappa_m2_s": 7.087842314326314e-05,
+          "nu_per_s": -0.0018405650855098114,
+          "m_squared_per_m2": -25.96791807556957,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            0.001,
+            0.001,
+            -0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 7.087920771730272e-05,
+          "nu_per_s": -0.0018395718383413379,
+          "m_squared_per_m2": -25.953617394798698,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            0.001,
+            0.001,
+            -0.001,
+            0.001
+          ],
+          "kappa_m2_s": 7.087842314326314e-05,
+          "nu_per_s": -0.0018405650855098114,
+          "m_squared_per_m2": -25.96791807556957,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            0.001,
+            0.001,
+            0.001,
+            -0.001
+          ],
+          "kappa_m2_s": 7.087842314326314e-05,
+          "nu_per_s": -0.0018405650855098114,
+          "m_squared_per_m2": -25.96791807556957,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        },
+        {
+          "segment_errors_m": [
+            0.001,
+            0.001,
+            0.001,
+            0.001,
+            0.001
+          ],
+          "kappa_m2_s": 7.087762399706072e-05,
+          "nu_per_s": -0.0018414724445490992,
+          "m_squared_per_m2": -25.98101263419136,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": null,
+          "nu_se_per_s": null
+        }
+      ],
       "kappa_range_m2_s": [
-        6.478288127003129e-05,
-        7.028492963479572e-05
+        6.423144668267036e-05,
+        7.087996123118507e-05
       ],
       "nu_range_per_s": [
-        -0.0018719414958188341,
-        -0.0017352811877511102
+        -0.0018676054020285587,
+        -0.0017718773480822271
       ]
     },
     "finite_model_residuals": {

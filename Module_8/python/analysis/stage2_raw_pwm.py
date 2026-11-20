@@ -20,6 +20,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from angstrom_fit import ROOT,MODULE,CHANNELS,fit_trace,safe
+from initial_tec_reference import initial_tec_reference
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'simulation'))
 from periodic_model import Simulation,load_setup,equal_chi_solution,SOURCE
 
@@ -60,6 +61,7 @@ def measured(filename):
     seq=np.array([int(r['seq']) for r in active]);miss=int(np.maximum(np.diff(seq)-1,0).sum())
     fits={ch:fit_trace(t[keep],T[i,keep],P) for i,ch in enumerate(CHANNELS)}
     f=fits['tec_C'];fu=fit_trace(t[keep],u[keep],P)
+    room=initial_tec_reference(rows)
     lag=np.degrees((fu['phase_rad']-f['phase_rad']+np.pi)%(2*np.pi)-np.pi)
     cycles=[fit_trace(t[(t>=a+j*P)&(t<a+(j+1)*P)],T[0,(t>=a+j*P)&(t<a+(j+1)*P)],P) for j in range(retained)]
     info={'kind':'measured_raw_pwm_diagnostic','source':str(path.relative_to(ROOT)),'source_sha256':sha(content),
@@ -74,7 +76,8 @@ def measured(filename):
         'selected_cycle_amplitude_span_fraction':float(np.ptp([v['amplitude_C'] for v in cycles])/np.mean([v['amplitude_C'] for v in cycles])),
         'selected_cycle_phase_span_rad':float(np.ptp(np.unwrap([v['phase_rad'] for v in cycles]))),
         'selected_saturated_samples':sum(r['saturated']=='1' for i,r in enumerate(active) if keep[i]),
-        'ambient_C':None,'qualification':'Descriptive final complete-cycle fits; not automatic settling certification.',
+        'ambient_C':None,**room,'mean_minus_room_reference_C':f['mean_C']-room['room_reference_C'],
+        'qualification':'Descriptive final complete-cycle fits; not automatic settling certification.',
         'short_run_warning':'Only two complete cycles at 300 s; selected interval includes startup and is diagnostic.' if complete<3 else None}
     assert sha(path.read_bytes())==info['source_sha256']
     return {'info':info,'path':path,'t':t,'T':T,'u':u,'keep':keep,'fits':fits}
@@ -181,14 +184,14 @@ def documentation(simrows,runs):
         '## Analytical startup check','',
         'For χh=χc=χ and Ua=0, let a=χUb/[1+(ωτ)²], b=−aωτ. Then T(t)=Troom+a sin(ωt)+b cos(ωt)+C exp(−t/τ), with C=Tinitial−Troom−b. At t=0 this gives Tinitial. Substitution yields τ d(T−Troom)/dt+(T−Troom)=χUb sin(ωt): the homogeneous term cancels and the sine/cosine coefficients satisfy a−ωτb=χUb and b+ωτa=0. The dashed overlay retains this startup term.','',
         '## Measured Stage 2 records','',
-        '| Mode | Period (s) | Ua / Ub (PWM) | Fit cycles | TEC mean (°C) | Fundamental amplitude (°C) | Lag vs applied PWM (°) | Fit RMS (°C) |',
-        '|---|---:|---|---|---:|---:|---:|---:|']
+        '| Mode | Period (s) | Ua / Ub (PWM) | Fit cycles | Initial TEC reference (°C) | TEC mean (°C) | Mean − reference (°C) | Fundamental amplitude (°C) | Lag vs applied PWM (°) | Fit RMS (°C) |',
+        '|---|---:|---|---|---:|---:|---:|---:|---:|---:|']
     for key in (300,200,100,'positive'):
-        r=runs[key]['info'];cs=r['selected_complete_cycles'];lines.append(f'| {r["mode"]} | {r["period_s"]:g} | {r["ua_pwm"]:g} / {r["ub_pwm"]:g} | {cs[0]}–{cs[-1]} | {r["mean_tec_C"]:.3f} | {r["fundamental_amplitude_C"]:.3f} | {r["phase_lag_vs_applied_pwm_deg"]:.2f} | {r["sinusoidal_residual_rms_C"]:.3f} |')
+        r=runs[key]['info'];cs=r['selected_complete_cycles'];lines.append(f'| {r["mode"]} | {r["period_s"]:g} | {r["ua_pwm"]:g} / {r["ub_pwm"]:g} | {cs[0]}–{cs[-1]} | {r["room_reference_C"]:.3f} | {r["mean_tec_C"]:.3f} | {r["mean_minus_room_reference_C"]:.3f} | {r["fundamental_amplitude_C"]:.3f} | {r["phase_lag_vs_applied_pwm_deg"]:.2f} | {r["sinusoidal_residual_rms_C"]:.3f} |')
     lines+=['',
         'Measured plots retain the RUNNING history including startup; only time origins are shifted to each STEP event. Shading identifies descriptive fitting intervals. The 300 s record contains only two complete cycles plus a partial tail; its fit includes startup and is diagnostic. The other records use their final three complete cycles, with per-cycle spans saved for review. These figures do not certify settling.','',
         'The 100 s positive-only trial uses Ua=32, Ub=5 PWM, whereas its zero-centered baseline uses Ua=0, Ub=50 PWM. The amplitude was reduced for safety and the mean operating temperature changed. Absolute residual reductions therefore cannot isolate polarity reversal. Inspect RMS/B as well as absolute residuals; do not equate a smaller absolute residual with a uniquely identified mechanism. The positive-only measured mean is reported as measured, not relabelled 40 °C.','',
-        'Room temperature was not recorded during these measurements. The prescribed 22 °C simulation input is not substituted for the missing lab ambient. A fully matched measured-ambient simulation/experiment comparison remains qualified by this missing input.','',
+        'The measured table uses each acquisition’s first finite TEC reading as the room reference. Independent air temperature and drift are unknown. The six teaching simulations use the course-prescribed 22 °C.','',
         '## Files','',
         '- [Completed five-column worksheet (CSV)](../data/processed/stage2/m08_stage2_s18_3_filled_table.csv)',
         '- [Simulation fit diagnostics (CSV)](../data/processed/stage2/m08_stage2_s18_3_simulation_table.csv)',

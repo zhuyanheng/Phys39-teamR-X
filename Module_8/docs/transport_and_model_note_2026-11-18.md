@@ -39,55 +39,50 @@ uncertainties before C6 quotes k or h as measured values.**
 
 ## Results
 
-| Period (s) | q (1/m) | q' (1/m) | m = sqrt(q^2-q'^2) | kappa (1e-5 m2/s) | cond. | k (W/(m K)) | h from q,q' (W/(m2 K)) | m from mean fit (1/m) | h from mean fit |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 100 | 21.26 | 21.89 | - | 6.75 | - | 163.3 +/- 5.7 | not defined | 5.34 | 14.9 |
-| 200 | 15.65 | 15.06 | 4.27 | 6.66 | 25.9 | 161.2 +/- 5.6 | 9.4 +/- 4.2 | 6.11 | 19.2 |
-| 300 | 12.75 | 12.04 | 4.20 | 6.83 | 17.4 | 165.1 +/- 9.4 | 9.3 +/- 7.3 | 5.93 | 18.5 |
-| 400 | 11.42 | 9.84 | 5.80 | 6.99 | 6.8 | 169.2 +/- 6.6 | 18.2 +/- 4.5 | 5.99 | 19.4 |
-| 500 | 10.52 | 8.85 | 5.68 | 6.75 | 5.8 | 163.4 +/- 8.7 | 16.9 +/- 4.5 | 6.38 | 21.2 |
+| Period (s) | q (1/m) | q′ (1/m) | κ (10⁻⁵ m²/s) | Initial TEC (°C) | Mean-profile m (1/m) | Mean-profile h (W/m²K) | Ruler scenario range for mean-profile h (W/m²K) | Oscillatory h (W/m²K) |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 100 | 21.26 | 21.89 | 6.75 | 24.13 | 5.36 | 14.96 | 14.16–15.78 | — |
+| 200 | 15.65 | 15.06 | 6.66 | 24.02 | 4.90 | 12.37 | 11.78–12.97 | 9.36 |
+| 300 | 12.75 | 12.04 | 6.83 | 23.90 | 5.67 | 16.94 | 16.16–17.73 | 9.30 |
+| 400 | 11.42 | 9.84 | 6.99 | 22.99 | 4.56 | 11.24 | 10.67–11.84 | 18.16 |
+| 500 | 10.52 | 8.85 | 6.75 | 25.25 | 5.97 | 18.61 | 17.67–19.59 | 16.86 |
 
-`cond.` is (q^2+q'^2)/|q^2-q'^2|, the factor by which relative errors in q and q' are
+The conditioning factor is (q^2+q'^2)/|q^2-q'^2|, the factor by which relative errors in q and q' are
 amplified in m^2 and therefore in nu. kappa mean = 6.80e-5 m2/s; span across periods 4.9 %;
 largest pairwise difference 1.43 x the combined fit SE. k = 164.5 W/(m K) at the mean kappa.
 
 ## What these records establish
 
 **F1. kappa is over-determined and consistent.** Five independent periods agree to 4.9 %,
-and no pair disagrees by more than 1.5 combined standard errors. The implied
-k = 161-169 W/(m K) brackets the 166-172 W/(m K) tabulated range for 6061-T6, so the
-oscillatory method reproduces the accepted value without being told it. This is the
-strongest result in Module 8 and it does not depend on the ambient temperature. Averaging
-does not shrink the bar: the dominant terms (position, material) are common to all five
-periods, so the defensible statement is k = 164.5 W/(m K) with a common systematic of
-roughly 6-9 W/(m K), i.e. 4-5 %.
+and no pair disagrees by more than 1.5 combined standard errors. The implied k = 161–169 W/(m K) overlaps the 166–172 W/(m K) reference range.
+Geometry and material inputs are shared across periods, so averaging does not remove their systematic effects.
+The confirmed ruler bound is applied to five recorded gaps. Its 32 sign combinations give κ ranges with
+half-widths of roughly 5% relative to the nominal values. These ranges are separate from the conditional
+uncertainty bars. The listed parameter estimates remain diagnostic under the original cycle checks.
 
 **F2. nu is not over-determined, and its ordering is explained by conditioning.** The
 amplification factor is 5.8-6.8 at 400-500 s but 17-26 at 200-300 s, and the m^2 estimate
 degenerates at 100 s. The 200/300 s pairs therefore give h = 9.3-9.4 W/(m2 K) while the
-better-conditioned 400/500 s pairs give 16.9-18.2. The difference is a conditioning and
-drift effect, not physics, and the pair with the worse conditioning is the one that
-disagrees with the independent route in F3.
+better-conditioned 400/500 s pairs give 16.9-18.2. Sensitivity and drift can contribute to the difference. Comparing with the mean-profile route requires checking the room reference for each run.
 
 
-**F3. The mean profile supplies an independent route to the same loss.** Fitting
-a(xi) = T_inf + (a0 - T_inf) cosh[mu(1-xi)]/cosh(mu) to all five sensors gives
-m = 5.3-6.4 1/m with residuals of 0.11 C, and, with the same kappa,
-h = 15-21 W/(m2 K) at the fitted ambient. At 400 s the two routes agree to 7 % in h and 3 %
-in m; at 200/300 s the oscillatory value is roughly half the mean-profile value. This is the
-first time the Module 7 and Module 8 routes have been compared on Module 8 data.
+**F3. The mean-profile fit uses the initial TEC reference.** As specified on November 20,
+the first finite TEC measurement in each acquisition sets `T∞`. For the five PI records these
+readings were taken while IDLE with zero PWM. We fit the finite insulated-tip mean profile to all five
+rod means with the base mean free and `T∞` fixed. The fit gives m = 4.56–5.97 1/m with
+residual RMS of 0.107–0.112 °C. The h estimates combine that m with the same κ used in the
+oscillatory analysis. They therefore share the κ input.
 
-**F4. The 400 s record is the internally consistent one.** It is the only record where
-m from the two routes, h from the two routes, and the Module 7 values (4.83-6.78 1/m) all
-overlap. C6 should quote 400 s as the primary dataset and present the other periods as
-consistency checks rather than as five equal measurements.
+**F4. The room reference changes the comparison.** At 400 s the mean-profile estimate falls to
+11.24 W/(m² K), compared with 18.16 W/(m² K) from the oscillatory fit. At 500 s the corresponding
+estimates are 18.61 and 16.86 W/(m² K). The earlier free-ambient fit showed closer agreement at
+400 s. That agreement depended on allowing the room reference to vary in the fit.
 
-**F5. Ambient is fitted, not measured, and it dominates the mean route.** The fitted T_inf is
-24.1-25.7 C at every period, which is self-consistent but is not a measurement. Fixing
-T_inf at 20/22/24/26/28 C moves m from about 3.6-4.0 to 7-17 1/m, and h scales as m^2
-(6.7-8.6 / 8.6-11.5 / 12-17 / 21-34 / 67-154 W/(m2 K) for those five choices). Without a
-room thermometer the mean-profile route cannot produce an absolute h; only the oscillatory
-route can.
+**F5. The room reference describes the TEC at acquisition startup.** Independent air temperature
+and drift are unknown. Initial TEC temperature can retain heat from previous operation. For example,
+the November 18 P-only run starts at 29.31 °C. The source row for each acquisition is in the
+[room-reference record](../data/processed/m08_initial_tec_room_references.json).
+The JSON also retains fixed-temperature sensitivity scenarios for the mean-profile fit.
 
 **F6. The measured actuator is far from static.** From the raw records,
 |dT_A0/dPWM| / chi_static = 0.165, 0.356, 0.482, 0.558, 0.635 at 100-500 s, with lag
@@ -105,12 +100,10 @@ with period. Bi_perp = 1.8-3.4e-4 wherever m^2 > 0, so the one-dimensional assum
 At 100 s m^2 < 0 makes Bi_perp meaningless; `angstrom_fit.py` currently writes a negative
 Bi_perp there, which should be suppressed rather than reported.
 
-**F8. A fixed spatial residual appears at every period.** The mean-profile residuals are
--0.06, +0.15, -0.06, -0.13, +0.11 C at T1-T5, identical at all five periods to better than
-0.01 C. This is not drift: it is a static discrepancy that looks like a per-probe offset or a
-position error at T2/T3, exactly the pair that sets the spatial slope. It is the one
-systematic that a common-bath cross-calibration and a re-measured position table would
-remove, and it maps directly into q and therefore into kappa.
+**F8. The mean-profile residuals have a recurring spatial pattern.** T2 residuals range
+from +0.15 to +0.18 °C and T4 residuals from −0.14 to −0.13 °C. Channel offsets,
+probe placement, contact and model discrepancy can all contribute. The analysis uses the
+recorded channel readings directly, per the operator’s decision to skip common-bath calibration.
 
 ## What these records do not establish
 
@@ -119,10 +112,9 @@ remove, and it maps directly into q and therefore into kappa.
   10.6-27.0 %, five to ten times the pooled fit SE; that spread, not the SE, is the honest
   scale of the period-to-period reliability.
 - The 100 s sign of nu depends on the estimator: the five-cycle pooled finite-rod fit gives
-  m^2 < 0, while the per-cycle spatial fits give nu = +1.9e-4 to +7.1e-4 1/s. No h is
-  reported there.
-- There is no common-bath cross-calibration, so a per-channel gain bias is not bounded; F8
-  suggests one exists.
+  m^2 < 0, while some per-cycle spatial fits return positive loss. The pooled oscillatory
+  result has no physical h at 100 s. The mean-profile h in the table uses the initial TEC reference.
+- Channel-dependent offsets and gains remain unquantified.
 - The scan skew is an assumed 0.17 s, not a measured value; it contributes 3-20 % of the h
   budget at 200-500 s.
 - The material constants are handbook values, not measurements of this rod.
@@ -136,23 +128,14 @@ remove, and it maps directly into q and therefore into kappa.
 |---|---|
 | `m08_transport_kappa_nu.png` | kappa with the literature band and the single-cycle spread; nu with conditioning factors and the unphysical 100 s point |
 | `m08_transport_k_h.png` | k against the tabulated range; h from both routes against the provisional 10 W/(m2 K) |
-| `m08_mean_profile_fit.png` | normalised mean profile with the finite insulated-tip fit, and the repeated residual pattern of F8 |
+| `m08_mean_profile_fit.png` | normalised mean profile with the initial TEC reference, finite insulated-tip fit and residuals |
 | `m08_actuator_frf.png` | measured absolute dT/dPWM relative to the static susceptibility, and the measured lag, versus period |
 | `m08_spatial_per_sensor.png` | amplitude decay and phase lag at all five sensors, showing the T5 departure from the T1-T4 line |
 
-## Missing measurements this analysis exposes
+## Measurement decisions
 
-1. **Room temperature and its drift** (highest value). Removes the F5 degeneracy, makes the
-   mean profile absolute, and lets the finite-rod fit provide a real h cross-check.
-2. **Common-bath cross-calibration** of all six channels with the 0.2 C criterion, to convert
-   F8 from a suspicion into a bounded correction.
-3. **Re-measured position table with uncertainties**, because +-1 mm alone moves kappa by
-   2.5-2.6 % and the T2/T3 residual pattern is position-like.
-4. **Measured scan skew** (or an interleaved/duplicated-channel test) instead of the assumed
-   0.17 s.
-5. **One repeat of the 200 s or 400 s programme with a longer settle**, to test whether the
-   cycle spread is environmental drift or a slow transient of the apparatus.
-6. **100 s OPEN and P trials at the same mean and amplitude as PI**, to complete the control
-   comparison at the period the course specifies.
-7. **A slow static ramp with the rod attached**, to revalidate the heat/cool ratio and the
-   feedforward curve, which are still Module 4 values.
+The start-of-acquisition TEC reference is used throughout the current analysis. The team chose to
+skip the six-channel common-bath calibration. The original ±1 mm ruler error is documented and
+included as a per-gap sensitivity bound for positions and L. Absolute ambient temperature and drift,
+probe contact, and scan timing still limit interpretation of the uncertainty. The 100 s scalar
+feedforward and P-only trials already have recorded data.

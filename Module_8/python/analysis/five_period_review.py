@@ -18,6 +18,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from angstrom_fit import (ROOT, MODULE, CHANNELS, fit_trace, analyse_interval,
                           safe, spatial, finite_response, infer)
+from initial_tec_reference import initial_tec_reference
 
 OUT=MODULE/'data/processed/five_period_review'
 FIG=MODULE/'figures/five_period_review'
@@ -62,7 +63,14 @@ def freeze_sources():
         assert digest(snap)==entry['sha256']
         assert digest((ROOT/entry['raw']).read_bytes()[:entry['prefix_bytes']])==entry['sha256']
         assert digest((ROOT/entry['plan_snapshot']).read_bytes())==entry['plan_sha256']
-    return manifest,json.loads((folder/'sensor_map.json').read_text())
+    geometry=json.loads((folder/'sensor_map.json').read_text())
+    current=json.loads((MODULE/'config/sensor_map.json').read_text())
+    for key in ('x_m','analysis_length_m','diameter_m'):
+        if current[key]!=geometry[key]:
+            raise ValueError(f'Frozen and current geometry differ for {key}')
+    for key in ('ruler_segment_error_bound_m','ruler_error_source','note'):
+        geometry[key]=current[key]
+    return manifest,geometry
 
 
 def unpack(entry,period):
@@ -92,7 +100,7 @@ def unpack(entry,period):
         'latest_state':next(r for r in reversed(rows) if r['event']=='measurement')['run_state'],
         'settings':{key:sorted({r[key] for r in active}) for key in
                     ('Ta_C','Tb_C','Kp_pwm_per_C','Ki_pwm_per_C_s','pwm_limit','anti_windup')},
-        'ambient_C':None,'ambient_status':'not measured, confirmed by operator 2026-11-18'}
+        'ambient_C':None,'room_reference':initial_tec_reference(rows)}
     cycles=[];fits={ch:[] for ch in CHANNELS}
     for i in range(count):
         a=start+i*period;b=a+period
@@ -163,11 +171,13 @@ def supplements(active,start,period,result,geometry):
         trend_fits.append({'amplitude_C':np.hypot(coef[1],coef[2]),'phase_rad':np.arctan2(-coef[2],coef[1])})
     trend_z=np.array([v['amplitude_C']*np.exp(1j*v['phase_rad']) for v in trend_fits[1:4]])
     trend_p,_=independent_complex_fit(xs,trend_z,L,(q,qp))
-    # Legacy +/-1mm is a scenario bound, not a measured standard uncertainty.
+    # Each coordinate and L inherit the errors of the gaps used to build them.
+    bound=geometry['ruler_segment_error_bound_m']
     scenarios=[]
-    for dx2,dx3,dL in itertools.product((-.001,.001),repeat=3):
-        p,_=independent_complex_fit(xs+[0,dx2,dx3],z,L+dL,(q,qp))
-        scenarios.append(infer(*p,period))
+    for errors in itertools.product((-bound,bound),repeat=5):
+        offsets=np.r_[0.,np.cumsum(errors)]
+        p,_=independent_complex_fit(xs+offsets[:3],z,L+offsets[-1],(q,qp))
+        scenarios.append({'segment_errors_m':list(errors),**infer(*p,period)})
     response=z/z[0];pred=finite_response(q,qp,L,xs)
     phase_residual=np.angle(response/pred)
     amp_error=abs(response)/abs(pred)-1
@@ -183,8 +193,9 @@ def supplements(active,start,period,result,geometry):
         'finite_tip_kappa_shift_fraction':result['transport']['kappa_m2_s']/comparable_semi['kappa_m2_s']-1,
         'linear_baseline_sensitivity':{'baseline_slopes_C_s':slopes,'transport':infer(*trend_p,period),
                                      'interpretation':'Sensitivity only; detrending is not proof of settled cycles.'},
-        'geometry_scenario':{'bound_m':.001,'source':'Module 7 stationary-fin note section 10.2; sensitivity scenario, not a supplied standard error',
-            'coordinate_correlation':'independent +/-1 mm perturbations of relative x2,x3,L; exploratory corner envelope',
+        'geometry_scenario':{'bound_m':bound,'source':geometry['ruler_error_source'],
+            'coordinate_correlation':'Five gap-reading errors accumulate from T1 through the rod tip. Ranges summarize the 32 sign combinations.',
+            'corners':scenarios,
             'kappa_range_m2_s':[min(v['kappa_m2_s'] for v in scenarios),max(v['kappa_m2_s'] for v in scenarios)],
             'nu_range_per_s':[min(v['nu_per_s'] for v in scenarios),max(v['nu_per_s'] for v in scenarios)]},
         'finite_model_residuals':{'relative_amplitude_error':amp_error,'phase_error_rad':phase_residual},
@@ -339,8 +350,8 @@ def main():
     write_json(OUT/'m08_pi_five_period_summary.json',{'kind':'measured_five_period_diagnostic_review','results':table,'frequency_comparisons':comparisons,
         'selection':'Same T1-T3 and fixed last five complete cycles at every period. All contiguous five-cycle windows enumerated independently of physical fit results.',
         'settling_criterion':TOL,'criterion_status':'Existing provisional planning tolerances; not a course-mandated noise-calibrated certification.',
-        'geometry_inputs':'Confirmed Module 7 map; +/-1 mm geometry is sensitivity only; 0.01 mm caliper specification is not assumed 1-sigma.',
-        'ambient':'Not recorded; no ambient substitution or mean-profile fit.',
+        'geometry_inputs':'Confirmed Module 7 map. Operator-confirmed +/-1 mm per ruler gap is propagated as a bounded scenario. The 0.01 mm caliper specification is not assumed 1-sigma.',
+        'ambient':'Initial TEC references are recorded per acquisition. See the transport note for the mean-profile refit. Independent air temperature and drift are unknown.',
         'uncertainty':'Conditional cycle-repeat SE, not a confidence interval or total uncertainty. Drift violates independent identical cycle assumptions. Calibration, contact, scan and geometry covariances unresolved.',
         'material_constants':'No sourced density/cp and their uncertainties supplied; k and h not computed.',
         'production_record_complete':False,'qualified_periods_s':[],

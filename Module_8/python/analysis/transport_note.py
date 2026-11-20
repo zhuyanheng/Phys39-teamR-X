@@ -18,6 +18,7 @@ import math
 from pathlib import Path
 
 import numpy as np
+from initial_tec_reference import initial_tec_reference
 
 ROOT = Path(__file__).resolve().parents[3]
 MODULE = ROOT / "Module_8"
@@ -68,11 +69,11 @@ def material_conversion(kappa, nu):
     return k, h
 
 
-def cosh_fit(x, means, length):
+def cosh_fit(x, means, length, *, fixed_room_C=None):
     """Fit a(xi) = Tinf + (a0 - Tinf) cosh[mu(1-xi)]/cosh(mu) with a0 profiled out.
 
-    Two free parameters (mu, Tinf) on a grid, then quadratic refinement.
-    No scipy in this environment; the profile likelihood is 2-D and smooth.
+    With a supplied room reference, fit only mu after profiling out the base
+    temperature. The free-ambient form is kept for diagnostic comparisons.
     """
     x = np.asarray(x, float)
     a = np.asarray(means, float)
@@ -84,6 +85,31 @@ def cosh_fit(x, means, length):
         beta = float(c @ (a - tinf)) / float(c @ c)
         r = tinf + beta * c - a
         return float(r @ r), tinf + beta
+
+    if fixed_room_C is not None:
+        tinf = float(fixed_room_C)
+        if not math.isfinite(tinf):
+            raise ValueError("Room reference must be finite")
+        # Search the full physical interval first, then refine the best basin.
+        grid = np.linspace(0.0, 8.0, 1601)
+        mu = min(grid, key=lambda value: ssr(value, tinf)[0])
+        for step in (0.001, 0.0002, 0.00004):
+            candidates = np.clip(mu + step * np.arange(-5, 6), grid[0], grid[-1])
+            mu = min(candidates, key=lambda value: ssr(value, tinf)[0])
+        s0, a0 = ssr(mu, tinf)
+        resid = tinf + (a0 - tinf) * np.cosh(mu * (1 - xi)) / math.cosh(mu) - a
+        return {
+            "mu_mL": float(mu),
+            "m_per_m": float(mu / length),
+            "room_reference_C": tinf,
+            "mu_at_search_bound": bool(mu == grid[0] or mu == grid[-1]),
+            "base_C_fitted": a0,
+            "ssr_C2": s0,
+            "rms_residual_C": float(np.sqrt(np.mean(resid ** 2))),
+            "residuals_C": resid.tolist(),
+            "one_over_m_m": float(length / mu) if mu > 0 else None,
+            "data_points": int(a.size),
+        }
 
     best = (np.inf, None, None)
     for mu in np.arange(0.2, 8.0001, 0.005):
@@ -185,25 +211,17 @@ def analyse_period(period, run, source_sha):
     # Mean-temperature finite-rod fit, all five rod sensors (better SNR than the
     # oscillation at T4/T5 because 1/m > 1/q).
     means = [a["channel_fits"][ch]["mean_C"] for ch in ROD]
-    mean_fit = cosh_fit(x, means, length)
+    with (ROOT / src["snapshot"]).open(newline="") as stream:
+        room_reference = initial_tec_reference(csv.DictReader(stream))
+    mean_fit = cosh_fit(x, means, length, fixed_room_C=room_reference["room_reference_C"])
     # Ambient sensitivity: how mu and m move if Tinf is fixed at a plausible room value.
     sensitivity = []
     for tinf_guess in (20.0, 22.0, 24.0, 26.0, 28.0):
-        best = None
-        for mu in np.arange(0.2, 8.0001, 0.002):
-            c = np.cosh(mu * (1 - x / length)) / math.cosh(mu)
-            beta = float(c @ (np.asarray(means) - tinf_guess)) / float(c @ c)
-            r = tinf_guess + beta * c - np.asarray(means)
-            s = float(r @ r)
-            if best is None or s < best[0]:
-                best = (s, mu, tinf_guess + beta)
-        sensitivity.append({"ambient_C_fixed": tinf_guess, "mu_mL": float(best[1]),
-                            "m_per_m": float(best[1]) / length,
-                            "rms_residual_C": float(np.sqrt(best[0] / len(means))),
-                            "h_from_mean_W_m2K": (kappa * (float(best[1]) / length) ** 2
-                                                  * MATERIAL["density_kg_m3"]
-                                                  * MATERIAL["specific_heat_J_kgK"]
-                                                  * DIAMETER_M / 4)})
+        fit = cosh_fit(x, means, length, fixed_room_C=tinf_guess)
+        _, h_scenario = material_conversion(kappa, kappa * fit["m_per_m"] ** 2)
+        sensitivity.append({"ambient_C_fixed": tinf_guess, "mu_mL": fit["mu_mL"],
+                            "m_per_m": fit["m_per_m"], "rms_residual_C": fit["rms_residual_C"],
+                            "h_from_mean_W_m2K": h_scenario})
 
     # Cross-check route 2: nu from the mean profile and the oscillation kappa.
     nu_from_mean = kappa * mean_fit["m_per_m"] ** 2
@@ -235,6 +253,7 @@ def analyse_period(period, run, source_sha):
         "k_W_mK": k, "h_W_m2K": h,
         "drift": drift,
         "mean_profile_fit": mean_fit,
+        "room_reference": room_reference,
         "mean_fit_ambient_sensitivity": sensitivity,
         "nu_from_mean_profile_per_s": nu_from_mean,
         "h_from_mean_profile_W_m2K": h_from_mean,
@@ -289,34 +308,40 @@ def actuator_response(period, run):
     }
 
 
-def position_budget(period, rec):
-    """Eight +/-1 mm corners on (x2, x3, L): refit the spatial slopes, no time refit."""
-    geom = load_json(SENSOR_MAP)
-    x0 = np.asarray(geom["x_m"], float)[:3]
-    amps = [rec["per_sensor"][ch]["amplitude_C"] for ch in ROD[:3]]
-    phases = list(np.unwrap([rec["per_sensor"][ch]["phase_rad"] for ch in ROD[:3]]))
-    length0 = float(geom["analysis_length_m"])
-    out = []
-    for dx2 in (-1e-3, 1e-3):
-        for dx3 in (-1e-3, 1e-3):
-            for dL in (-1e-3, 1e-3):
-                x = x0 + np.array([0.0, dx2, dx3])
-                la = np.polyfit(x, np.log(amps), 1)
-                lf = np.polyfit(x, phases, 1)
-                kc, nc, _ = cycle_transport(float(-la[0]), float(-lf[0]), period)
-                out.append({"dx2_m": dx2, "dx3_m": dx3, "dL_m": dL,
-                            "kappa_m2_s": kc, "nu_per_s": nc, "length_m": length0 + dL})
-    kaps = [o["kappa_m2_s"] for o in out]
-    nus = [o["nu_per_s"] for o in out if o["nu_per_s"] is not None]
+def position_budget(rec, ruler_scenarios, geometry):
+    """Reuse the oscillation refits and propagate the same gaps to the mean fit."""
+    x = np.asarray(geometry["x_m"], float)
+    length = float(geometry["analysis_length_m"])
+    means = [rec["per_sensor"][ch]["mean_C"] for ch in ROD]
+    room = rec["room_reference"]["room_reference_C"]
+    corner_results = []
+    for corner in ruler_scenarios["corners"]:
+        offsets = np.r_[0.0, np.cumsum(corner["segment_errors_m"])]
+        fit = cosh_fit(x + offsets[:-1], means, length + offsets[-1], fixed_room_C=room)
+        kappa = corner["kappa_m2_s"]
+        _, h_mean = material_conversion(kappa, kappa * fit["m_per_m"] ** 2)
+        k, h = material_conversion(kappa, corner["nu_per_s"] if corner["physical_positive_loss"] else None)
+        corner_results.append({
+            "segment_errors_m": corner["segment_errors_m"],
+            "k_W_mK": k, "h_W_m2K": h,
+            "m_from_mean_per_m": fit["m_per_m"], "h_from_mean_W_m2K": h_mean,
+        })
+    ranges = {}
+    for key in ("k_W_mK", "h_W_m2K", "m_from_mean_per_m", "h_from_mean_W_m2K"):
+        values = [corner[key] for corner in corner_results if corner[key] is not None]
+        ranges[key] = [min(values), max(values)] if values else None
     return {
-        "corners": out,
-        "kappa_range_m2_s": [min(kaps), max(kaps)],
-        "kappa_half_range_fraction": (max(kaps) - min(kaps)) / 2 / float(np.mean(kaps)),
-        "nu_range_per_s": [min(nus), max(nus)] if nus else None,
+        "reading_error_bound_m": ruler_scenarios["bound_m"],
+        "source": ruler_scenarios["source"],
+        "method": "Ranges across the 32 sign combinations of the five ruler-gap error bounds. Coordinates and L share cumulative gap errors.",
+        "kappa_range_m2_s": ruler_scenarios["kappa_range_m2_s"],
+        "nu_range_per_s": ruler_scenarios["nu_range_per_s"],
+        "ranges": ranges,
+        "corners": corner_results,
     }
 
 
-def budget(period, rec):
+def budget(period, rec, run):
     """Reported uncertainty plus an explicit list of what is not included."""
     rho = MATERIAL["density_kg_m3"]
     c = MATERIAL["specific_heat_J_kgK"]
@@ -327,32 +352,31 @@ def budget(period, rec):
     u_d = DIAMETER_BOUND_M / math.sqrt(3)
     u_kap = rec["kappa_fit_se_m2_s"] or 0.0
     u_nu = rec["nu_fit_se_per_s"] or 0.0
-    pos = position_budget(period, rec)
+    pos = position_budget(rec, run["supplement"]["geometry_scenario"], run["geometry"])
     skew_phase = 2 * math.pi / period * SCAN_SKEW_S
     skew_qp = 2 * skew_phase / 0.0895
     skew_nu = abs(2 * kappa * skew_qp * rec["q_prime_per_m"]) if nu is not None else None
 
-    k_parts = [u_rho / rho, u_c / c, u_kap / kappa, pos["kappa_half_range_fraction"]]
+    k_parts = [u_rho / rho, u_c / c, u_kap / kappa]
     h_parts = [u_rho / rho, u_c / c, u_d / DIAMETER_M,
-               u_nu / abs(nu) if nu else None, pos["kappa_half_range_fraction"],
+               u_nu / abs(nu) if nu else None,
                (skew_nu / abs(nu)) if (nu and skew_nu) else None]
     comb = lambda parts: math.sqrt(sum(p * p for p in parts if p))
     return {
         "k_W_mK": k,
         "k_relative_parts": {"density": u_rho / rho, "specific_heat": u_c / c,
-                             "fit_se": u_kap * rho * c / k if k else None,
-                             "position_1mm": pos["kappa_half_range_fraction"]},
+                             "fit_se": u_kap * rho * c / k if k else None},
         "k_combined_relative": comb(k_parts),
         "k_absolute": comb(k_parts) * k if k else None,
         "h_W_m2K": h,
         "h_relative_parts": {"density": u_rho / rho, "specific_heat": u_c / c,
                              "diameter": u_d / DIAMETER_M,
                              "fit_se": (u_nu * rho * c * DIAMETER_M / 4 / abs(h)) if h else None,
-                             "position_1mm": pos["kappa_half_range_fraction"],
                              "scan_skew_assumed": (skew_nu / abs(nu)) if (nu and skew_nu) else None},
         "h_combined_relative": comb(h_parts),
         "h_absolute": comb(h_parts) * abs(h) if h else None,
         "position_corners": pos,
+        "position_note": "The ruler corner ranges are reported separately from the quadrature terms.",
         "nu_drift_range_per_s": rec["drift"]["nu_range_per_s"],
         "excluded": ["channel cross-calibration bias", "contact resistance and probe lag",
                      "nonuniform side convection", "unmeasured scan skew",
@@ -420,14 +444,14 @@ def figures(records, frf, path=FIG):
     ax[0].axhspan(166, 172, color="#b45b22", alpha=.15, label="Lienhard Table A.1, 6061-T6")
     ax[0].set_xlabel("drive period (s)")
     ax[0].set_ylabel("k (W/(m K))")
-    ax[0].set_title("Thermal conductivity")
+    ax[0].set_title("Thermal conductivity (bars exclude ruler scenarios)")
     ax[0].legend(fontsize=8)
 
     ax[1].errorbar(P, [r["h_W_m2K"] if r["h_W_m2K"] is not None else np.nan for r in records],
                    yerr=[r["budget"]["h_absolute"] or 0 for r in records], fmt="o",
                    color="#b45b22", label="from q, q'")
     ax[1].plot(P, [r["h_from_mean_profile_W_m2K"] for r in records], "s", mfc="none",
-               color="#245a81", label="from mean-profile m, same kappa")
+               color="#245a81", label="mean profile with initial TEC reference")
     ax[1].axhline(10, color="#666666", ls="--", lw=1, label="course provisional h = 10")
     ax[1].set_xlabel("drive period (s)")
     ax[1].set_ylabel("h (W/(m$^2$ K))")
@@ -442,14 +466,14 @@ def figures(records, frf, path=FIG):
     grid = np.linspace(0, 1, 200)
     for r in records:
         f = r["mean_profile_fit"]
-        base, amb = f["base_C_fitted"], f["ambient_C_fitted"]
+        base, amb = f["base_C_fitted"], f["room_reference_C"]
         ax[0].plot(xi, [(r["per_sensor"][ch]["mean_C"] - amb) / (base - amb) for ch in ROD],
                    "o", ms=4)
         ax[0].plot(grid, np.cosh(f["mu_mL"] * (1 - grid)) / math.cosh(f["mu_mL"]),
                    lw=1, label="%d s: m = %.2f 1/m" % (r["period_s"], f["m_per_m"]))
     ax[0].set_xlabel("xi = x / L")
     ax[0].set_ylabel("(a - T_inf) / (a0 - T_inf)")
-    ax[0].set_title("Mean profile: finite insulated-tip fit, 5 sensors")
+    ax[0].set_title("Mean profile with initial TEC reference")
     ax[0].legend(fontsize=7)
     for r in records:
         ax[1].plot(xi, r["mean_profile_fit"]["residuals_C"], "o-", ms=3, lw=1,
@@ -457,7 +481,7 @@ def figures(records, frf, path=FIG):
     ax[1].axhline(0, color="#666666", lw=1)
     ax[1].set_xlabel("xi = x / L")
     ax[1].set_ylabel("residual (C)")
-    ax[1].set_title("Same residual pattern at every period: a fixed spatial error")
+    ax[1].set_title("Mean-profile residuals by drive period")
     ax[1].legend(fontsize=7)
     fig.savefig(path / "m08_mean_profile_fit.png", dpi=180)
     plt.close(fig)
@@ -509,7 +533,7 @@ def main():
     for period in PERIODS:
         run, sha = load_period(period)
         rec = analyse_period(period, run, sha)
-        rec["budget"] = budget(period, rec)
+        rec["budget"] = budget(period, rec, run)
         rec["actuator"] = actuator_response(period, run)
         records.append(rec)
         hashes[str(period)] = sha
@@ -529,6 +553,7 @@ def main():
     result = {
         "kind": "module_8_transport_conversion_offline",
         "created": "2026-11-18",
+        "room_reference_revision": "2026-11-20",
         "supersedes_field": "five_period_review summary field 'material_constants: k and h not computed'",
         "inputs": {
             "analysis_json_sha256": hashes,
@@ -565,9 +590,9 @@ def main():
             "Cycle-to-cycle ranges under drift are reported instead of a confidence interval.",
             "nu is a difference of nearly equal quantities: (q^2+q'^2)/(q^2-q'^2) = 6-26, so nu is far "
             "less constrained than kappa; at 100 s q' > q, which no passive lateral loss can produce.",
-            "The mean-profile ambient is fitted, not measured; there is no independent room thermometer.",
-            "Channel cross-calibration was not performed; common-mode bias cancels in spatial slopes but "
-            "not in the absolute mean profile.",
+            "Each mean-profile fit fixes the room reference to that acquisition's first finite TEC reading. "
+            "Independent air temperature and room drift remain unknown.",
+            "Fits use recorded channel readings directly. Channel-dependent offsets and gains remain unquantified.",
             "The material constants are handbook values, not measurements of this rod.",
         ],
     }
@@ -578,7 +603,7 @@ def main():
         w.writerow(["period_s", "q_per_m", "q_prime_per_m", "m_from_slopes_per_m", "kappa_m2_s",
                     "kappa_fit_se_m2_s", "nu_per_s", "nu_fit_se_per_s", "conditioning_factor",
                     "k_W_mK", "k_absolute", "h_W_m2K", "h_absolute", "m_from_mean_profile_per_m",
-                    "ambient_C_fitted", "mean_fit_rms_C", "h_from_mean_profile_W_m2K",
+                    "room_reference_C", "mean_fit_rms_C", "h_from_mean_profile_W_m2K",
                     "bi_perp", "boundary_relative_rms", "actuator_gain_C_per_pwm",
                     "actuator_phase_lag_rad", "status"])
         for r in records:
@@ -588,7 +613,7 @@ def main():
                         r["kappa_m2_s"], r["kappa_fit_se_m2_s"], r["nu_per_s"], r["nu_fit_se_per_s"],
                         r["conditioning_factor"], r["k_W_mK"], b["k_absolute"], r["h_W_m2K"],
                         b["h_absolute"], r["mean_profile_fit"]["m_per_m"],
-                        r["mean_profile_fit"]["ambient_C_fitted"],
+                        r["mean_profile_fit"]["room_reference_C"],
                         r["mean_profile_fit"]["rms_residual_C"], r["h_from_mean_profile_W_m2K"],
                         r["bi_perp"], r["boundary_relative_rms"],
                         act.get("gain_C_per_pwm"), act.get("phase_lag_rad"), "diagnostic_only"])

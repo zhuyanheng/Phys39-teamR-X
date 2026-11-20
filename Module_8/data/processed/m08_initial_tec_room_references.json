@@ -1,0 +1,169 @@
+{
+  "method": "One reference per recorded acquisition with an active run. Use the first finite TEC reading, including IDLE samples.",
+  "limitation": "The reference describes the initial TEC temperature. Independent air temperature and room drift remain unknown.",
+  "channel_correction": "Use recorded readings directly. Six-channel common-bath calibration is outside the current analysis scope.",
+  "records": [
+    {
+      "source": "Module_8/data/raw/m08_open_p200s_20261111_101207_449492.csv",
+      "room_reference_C": 24.28915,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-11T10:12:08.736845-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_p_p200s_20261111_094156_728168.csv",
+      "room_reference_C": 25.96558,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-11T09:41:58.014271-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_pi_p100s_20261116_104519_503645.csv",
+      "room_reference_C": 24.12543,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-16T10:45:20.811397-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_pi_p200s_20261109_095722_597413.csv",
+      "room_reference_C": 24.01605,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-09T09:57:23.891471-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_pi_p300s_20261116_111157_767223.csv",
+      "room_reference_C": 23.89957,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-16T11:11:59.048954-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_pi_p400s_20261118_092100_447310.csv",
+      "room_reference_C": 22.98538,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-18T09:21:01.730695-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_pi_p500s_20261109_104354_009745.csv",
+      "room_reference_C": 25.25095,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-09T10:43:55.345830-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_raw_pos_p100s_ua32_ub5_20261116_102227_751202.csv",
+      "room_reference_C": 23.77319,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-16T10:22:29.007569-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_raw_zero_p100s_ua0_ub100_20261111_110422_487267.csv",
+      "room_reference_C": 26.95279,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-11T11:04:23.828056-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_raw_zero_p100s_ua0_ub50_20261116_100248_724317.csv",
+      "room_reference_C": 23.35819,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-16T10:02:50.003052-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub100_20261111_112302_678979.csv",
+      "room_reference_C": 24.81552,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-11T11:23:03.935709-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub100_20261111_112519_078335.csv",
+      "room_reference_C": 30.72601,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-11T11:25:20.337441-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_raw_zero_p200s_ua0_ub50_20261116_093755_907199.csv",
+      "room_reference_C": 22.73709,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-16T09:37:57.201003-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_raw_zero_p300s_ua0_ub50_20261111_113001_400415.csv",
+      "room_reference_C": 25.60571,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-11T11:30:02.742292-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_rehearsal_pi_multi_period_20261109_093936_011209.csv",
+      "room_reference_C": 22.99561,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-09T09:39:37.323104-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/m08_rehearsal_pi_multi_period_20261109_094442_064803.csv",
+      "room_reference_C": 23.97,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-09T09:44:43.324586-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/module_08_rod_20261118_113619_678440.csv",
+      "room_reference_C": 23.88345,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-18T11:36:20.966651-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    },
+    {
+      "source": "Module_8/data/raw/module_08_rod_20261118_114204_147029.csv",
+      "room_reference_C": 29.30566,
+      "room_reference_method": "first finite TEC (A0) reading in the acquisition",
+      "sample_host_time": "2026-11-18T11:42:05.368005-05:00",
+      "sample_device_time_s": 0.67,
+      "sample_state": "IDLE",
+      "sample_signed_pwm": "0"
+    }
+  ]
+}

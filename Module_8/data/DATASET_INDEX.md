@@ -48,6 +48,9 @@ Updated November 18, 2026. Names describe recorded settings, not production qual
 
 ## Derived results
 
+- [Initial TEC room references by acquisition](processed/m08_initial_tec_room_references.json)
+- [Transport fits with initial TEC references and ruler-error scenarios](../docs/transport_and_model_note_2026-11-18.md)
+
 - [Stage 2 setups, completed worksheet and plots](../docs/stage2_results.md)
 - [Stage 2 five-column simulation worksheet](processed/stage2/m08_stage2_s18_3_filled_table.csv)
 

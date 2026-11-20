@@ -2,10 +2,12 @@
 import importlib.util
 import math
 from pathlib import Path
+import sys
 import unittest
 
 import numpy as np
 
+sys.path.insert(0, str(Path(__file__).parent / "analysis"))
 spec = importlib.util.spec_from_file_location(
     "transport_note", Path(__file__).parent / "analysis/transport_note.py")
 tn = importlib.util.module_from_spec(spec)

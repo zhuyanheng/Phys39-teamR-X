@@ -105,9 +105,9 @@ branch choice, sequential ADC scan timing and systematic model error. The calipe
 specification 0.01 mm is not automatically a standard uncertainty. These missing
 experimental inputs cannot be completed by treating software tests as data.
 
-Independent room temperature is absent in the latest Module 7 record. Oscillation
-amplitude/phase fits include their own fitted means and do not need an assumed
-room temperature; mean excess-temperature comparisons must preserve that gap.
+Oscillation amplitude and phase fits estimate their own means. The Module 8
+mean-profile analysis uses the first finite TEC reading per acquisition as its
+room reference. Independent air temperature and drift remain unknown.
 The reconstruction compares oscillations about the measured per-sensor means;
 it does not independently validate the stationary mean-profile model.
 

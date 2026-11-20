@@ -16,6 +16,8 @@
     0.1915
   ],
   "position_uncertainty_m": null,
+  "ruler_segment_error_bound_m": 0.001,
+  "ruler_error_source": "Operator confirmed the original ruler error as ±1 mm on 2026-11-20. Applied as a bound per recorded gap in sensitivity calculations.",
   "analysis_length_m": 0.2715,
   "diameter_m": 0.01277,
   "diameter_source": "User-reported caliper measurement on 2026-11-04; instrument precision 0.01 mm, not a complete uncertainty budget.",
@@ -30,7 +32,7 @@
     ],
     "analysis_length_m": 0.2715
   },
-  "note": "Module 7 coordinates explicitly reused after operator confirmation; not newly remeasured. Position/length uncertainty remains unknown. Pilot data must establish measurable amplitudes/phases at at least three rod sensors before production acceptance.",
+  "note": "Module 7 coordinates explicitly reused after operator confirmation. The ruler error is a bound per ruler reading; cumulative coordinates share segment errors. Coordinate standard uncertainties remain unspecified.",
   "origin": "T1 / A1 at physical hole 2; x=0",
   "physical_holes": [
     2,

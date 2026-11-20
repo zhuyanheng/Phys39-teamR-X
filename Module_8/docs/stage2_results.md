@@ -25,18 +25,18 @@ For χh=χc=χ and Ua=0, let a=χUb/[1+(ωτ)²], b=−aωτ. Then T(t)=Troom+a 
 
 ## Measured Stage 2 records
 
-| Mode | Period (s) | Ua / Ub (PWM) | Fit cycles | TEC mean (°C) | Fundamental amplitude (°C) | Lag vs applied PWM (°) | Fit RMS (°C) |
-|---|---:|---|---|---:|---:|---:|---:|
-| RAW_ZERO | 300 | 0 / 50 | 1–2 | 29.832 | 7.870 | 47.65 | 0.789 |
-| RAW_ZERO | 200 | 0 / 50 | 4–6 | 28.191 | 5.983 | 57.68 | 0.594 |
-| RAW_ZERO | 100 | 0 / 50 | 7–9 | 28.558 | 3.581 | 67.79 | 0.338 |
-| RAW_POS | 100 | 32 / 5 | 7–9 | 37.918 | 0.544 | 71.59 | 0.072 |
+| Mode | Period (s) | Ua / Ub (PWM) | Fit cycles | Initial TEC reference (°C) | TEC mean (°C) | Mean − reference (°C) | Fundamental amplitude (°C) | Lag vs applied PWM (°) | Fit RMS (°C) |
+|---|---:|---|---|---:|---:|---:|---:|---:|---:|
+| RAW_ZERO | 300 | 0 / 50 | 1–2 | 25.606 | 29.832 | 4.226 | 7.870 | 47.65 | 0.789 |
+| RAW_ZERO | 200 | 0 / 50 | 4–6 | 22.737 | 28.191 | 5.454 | 5.983 | 57.68 | 0.594 |
+| RAW_ZERO | 100 | 0 / 50 | 7–9 | 23.358 | 28.558 | 5.199 | 3.581 | 67.79 | 0.338 |
+| RAW_POS | 100 | 32 / 5 | 7–9 | 23.773 | 37.918 | 14.145 | 0.544 | 71.59 | 0.072 |
 
 Measured plots retain the RUNNING history including startup; only time origins are shifted to each STEP event. Shading identifies descriptive fitting intervals. The 300 s record contains only two complete cycles plus a partial tail; its fit includes startup and is diagnostic. The other records use their final three complete cycles, with per-cycle spans saved for review. These figures do not certify settling.
 
 The 100 s positive-only trial uses Ua=32, Ub=5 PWM, whereas its zero-centered baseline uses Ua=0, Ub=50 PWM. The amplitude was reduced for safety and the mean operating temperature changed. Absolute residual reductions therefore cannot isolate polarity reversal. Inspect RMS/B as well as absolute residuals; do not equate a smaller absolute residual with a uniquely identified mechanism. The positive-only measured mean is reported as measured, not relabelled 40 °C.
 
-Room temperature was not recorded during these measurements. The prescribed 22 °C simulation input is not substituted for the missing lab ambient. A fully matched measured-ambient simulation/experiment comparison remains qualified by this missing input.
+The measured table uses each acquisition’s first finite TEC reading as the room reference. Independent air temperature and drift are unknown. The six teaching simulations use the course-prescribed 22 °C.
 
 ## Files
 

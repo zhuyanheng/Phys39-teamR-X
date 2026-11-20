@@ -78,9 +78,9 @@ The plotted lengths `1/q` and `1/q′` describe amplitude attenuation and one ra
 
 Geometry is reused from the Module 7 mounting positions that the operator confirmed unchanged on November 16, 2026: x = [0, 0.0385, 0.0895, 0.1405, 0.1915] m, L = 0.2715 m and d = 0.01277 m.
 
-- The Module 7 instrument record and A4 state that the reported caliper precision is 0.01 mm. This is not a known 1σ diameter uncertainty. Standard uncertainties in position and rod length were not supplied.
-- The Module 7 stationary-fin note used a ±1 mm geometry sensitivity scenario. This review reuses that scenario only. Eight corner combinations independently perturb relative x2, x3 and L; the κ envelope changes by roughly ±3.5–4.1%. This is not a complete uncertainty bar. The actual cumulative coordinates may be correlated.
-- The operator confirmed that room temperature was not recorded. Independently fitted means absorb constant offsets, so amplitude/phase analysis can proceed. These records cannot independently establish ambient changes over time, and no mean excess-temperature profile relative to ambient is fitted.
+- The reported caliper resolution is 0.01 mm. On November 20 the operator confirmed the original ruler error of ±1 mm. We applied this bound to each of the five recorded gaps and refit the 32 sign combinations. Shared gaps correlate (x_i) and (L). The corner ranges are reported separately from statistical fit errors.
+- Each run’s first finite TEC reading supplies its room reference. See the [reference record](../data/processed/m08_initial_tec_room_references.json) and [mean-profile fits](transport_and_model_note_2026-11-18.md). Independent air temperature and room drift remain unknown. The harmonic fits still estimate their means separately.
+- The operator elected to skip six-channel common-bath calibration. The analysis uses recorded channel readings directly, with channel-dependent offsets and gains left unquantified.
 - Relative channel scan times were not measured. An assumed 0.17 s relative offset gives a phase sensitivity of about 0.0107–0.0021 rad over periods of 100–500 s. It is not a measured offset, a guaranteed bound or a standard error.
 - Sourced density ρ and heat capacity c, with their uncertainties, have not been entered. Thermal conductivity k and air-side heat-transfer coefficient h are therefore not additionally reported. Contact effects, calibration, timing, correlated geometry errors and model discrepancy remain part of the final uncertainty budget.
 

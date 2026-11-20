@@ -457,3 +457,21 @@ theory/measurement/numerical-rod comparison, integrating the two new control
 records into the100 s control figure/table, and final A5 synthesis. No new
 hardware trial is initiated by this status check. Completion receipt:
 Module_8/data/processed/control_comparison/m08_100s_physical_completion_20261118.json.
+
+## Analysis inputs confirmed, 2026-11-20
+
+The operator specified the first finite TEC A0 reading from each acquisition as
+its room reference. The 18 acquisitions with RUNNING data are indexed in
+Module_8/data/processed/m08_initial_tec_room_references.json. The source
+timestamps, run state and applied PWM are recorded there. Air temperature and
+its drift remain unmeasured. The five PI mean profiles were refitted using
+their individual TEC references. Stage 2 measured metrics now include the
+mean rise above this reference. Common-bath cross-calibration was removed from
+the planned work at the operator's request. Fits use the recorded channels.
+
+The operator confirmed the original ruler error as ±1 mm. The sensitivity
+analysis applies the bound to each of the five ruler gaps originally recorded
+between T1 and the tip, then accumulates the errors in the positions and L.
+Both mean and oscillatory refits use all 32 sign combinations. The ruler
+ranges are reported separately from conditional fit errors. See
+Module_8/docs/transport_and_model_note_2026-11-18.md for the updated results.

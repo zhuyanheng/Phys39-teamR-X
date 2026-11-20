@@ -186,13 +186,13 @@
     "max_phase_change_rad": 0.1
   },
   "criterion_status": "Existing provisional planning tolerances; not a course-mandated noise-calibrated certification.",
-  "geometry_inputs": "Confirmed Module 7 map; +/-1 mm geometry is sensitivity only; 0.01 mm caliper specification is not assumed 1-sigma.",
-  "ambient": "Not recorded; no ambient substitution or mean-profile fit.",
+  "geometry_inputs": "Confirmed Module 7 map. Operator-confirmed +/-1 mm per ruler gap is propagated as a bounded scenario. The 0.01 mm caliper specification is not assumed 1-sigma.",
+  "ambient": "Initial TEC references are recorded per acquisition. See the transport note for the mean-profile refit. Independent air temperature and drift are unknown.",
   "uncertainty": "Conditional cycle-repeat SE, not a confidence interval or total uncertainty. Drift violates independent identical cycle assumptions. Calibration, contact, scan and geometry covariances unresolved.",
   "material_constants": "No sourced density/cp and their uncertainties supplied; k and h not computed.",
   "production_record_complete": false,
   "qualified_periods_s": [],
   "raw_prefixes_verified_unchanged": true,
-  "analysis_sha256": "b7977151095942a23c21d14a203ca1d9d225db7114b02a3fa7e9f6c220487efe",
+  "analysis_sha256": "13f08efb2af5e0f98b21ea62000a32f84eeed970c4dd177c40fd7e84c57f0f80",
   "core_analysis_sha256": "9293e0cdc0b53d954abfbda7f1bfbec8db942dc93ac448eba56d7945edd5fe10"
 }
