@@ -1,18 +1,29 @@
 # Thermal waves in a driven aluminum rod
 
-**Yanheng Zhu · Phys 39 · Assignment A5**
+**Yanheng Zhu · Phys 39 · Assignment A5 · 2026-11-26**
 
-A sinusoidal TEC command produced a thermal wave that weakened and arrived later farther along the rod. Across five periods, the inferred thermal diffusivity stayed between 6.66 and 6.99 × 10⁻⁵ m²/s. The lateral-loss estimate changed more because it depends on the difference between two similar fitted quantities.
+**Repository** [https://github.com/zhuyanheng/Phys39-teamR-X](https://github.com/zhuyanheng/Phys39-teamR-X)
+
+**Analysis code, figures and metrics** 41d3d68bd4c21eeee683f829df1841fea1c3ca22
+
+**Raw data and earlier stage notes** [7a81e4c9365705941dd56a3ad5b6ae08153729f5](https://github.com/zhuyanheng/Phys39-teamR-X/commit/7a81e4c9365705941dd56a3ad5b6ae08153729f5)
+
+The thermal wave weakened and lagged with distance. Across five periods, inferred diffusivity stayed within 6.66–6.99 × 10⁻⁵ m²/s, while the lateral-loss estimate varied more.
 
 ### Evidence and reproduction
 
 [Team S18 evidence table](https://github.com/zhuyanheng/Phys39-teamR-X/blob/41d3d68bd4c21eeee683f829df1841fea1c3ca22/docs/module_notes/module_08_s18_evidence.md) · [Raw-data directory](https://github.com/zhuyanheng/Phys39-teamR-X/tree/7a81e4c9365705941dd56a3ad5b6ae08153729f5/Module_8/data/raw) · [Exact analysis commit](https://github.com/zhuyanheng/Phys39-teamR-X/commit/41d3d68bd4c21eeee683f829df1841fea1c3ca22) · [Figure code](https://github.com/zhuyanheng/Phys39-teamR-X/blob/41d3d68bd4c21eeee683f829df1841fea1c3ca22/Module_8/python/analysis/a5_figures.py) · [Model exports and settings](https://github.com/zhuyanheng/Phys39-teamR-X/tree/41d3d68bd4c21eeee683f829df1841fea1c3ca22/Module_8/data/simulation/a5)
 
-The evidence table links the individual runs and plan files. Figure captions give each fit or display interval. The PDF also carries the evidence table, figure code and reproduction notes as attachments. Codex helped reconstruct phase-aligned comparisons, generate figures, and draft the account from the saved team records.
+- **S18.1–2** A0 was the TEC and A1–A5 were T1–T5 in unchanged holes. Rehearsal verified 0.5 s sampling and CSV–serial agreement. The common-bath check was skipped, leaving channel bias unquantified.
+- **S18.3–4** At 100 s, RAW_ZERO gave a mean of 28.56 °C and amplitude of 3.58 °C. RAW_POS gave 37.92 °C and 0.54 °C. Fit residual RMS fell from 0.338 to 0.072 °C as the PWM bias and amplitude also changed.
+- **S18.5–8** Feedforward used 23.33 ± 10.09 counts. At 100 s, feedforward, P and PI tracking RMS errors were 5.46, 1.19 and 0.60 °C.
+- **S18.9–10** Across five cycles, the largest T1–T3 spans in mean, relative amplitude and phase were 0.168 °C, 25.9% and 0.181 rad at 100 s (704.983–1204.983 device s), and 0.093 °C, 8.1% and 0.140 rad at 200 s (1407.186–2407.186 device s). Both windows missed at least one provisional limit and serve as diagnostics.
+
+Each item corresponds to rows in the attached team table. Codex assisted with the comparisons, figures and draft.
 
 ## Q1 · Making the TEC track a sinusoid
 
-I compare the measured waveform with 35 + 5 sin(2πt/τ) °C. The reduced request retained margin under the logged 45 °C TEC operating ceiling and the 56 °C rod-base limit. My tracking criteria for the reduced request are |mean error| ≤ 0.5 °C, amplitude ratio 0.90–1.10, |phase lag| ≤ 10°, and RMS error ≤ 1.0 °C. The 100 s PI trace meets all four in its selected window.
+The reduced 35 + 5 sin(2πt/τ) °C request kept margin below the TEC (45 °C) and rod-base (56 °C) limits. I assess tracking by |mean error| ≤ 0.5 °C, amplitude ratio 0.90–1.10, |phase lag| ≤ 10°, and RMS error ≤ 1.0 °C.
 
 ![Measured setpoint, TEC and T1 traces](../../Module_8/figures/a5/a5_control_measured.png)
 
@@ -30,9 +41,11 @@ I compare the measured waveform with 35 + 5 sin(2πt/τ) °C. The reduced reques
 
 ## Q1 · Why the controllers differed
 
-**Uncompensated PWM.** With a 50-count zero-centered command, the 100, 200 and 300 s TEC amplitudes were 3.58, 5.98 and 7.87 °C. Lag behind PWM fell from 67.8° to 57.7° to 47.7°. Heat capacity attenuates and delays faster modulation. The 300 s result includes startup and only two full cycles. The Module 4 heating and cooling slopes were 0.495 and 0.141 °C/count, so equal positive and negative duty need not yield equal temperature changes. At 100 s, positive-only PWM reduced residual RMS from 0.338 to 0.072 °C, while the fitted amplitude also fell from 3.58 to 0.54 °C. Changing both bias and amplitude prevents attributing the smaller absolute residual to polarity alone. [Stage 2 measurements and one-lump checks](https://github.com/zhuyanheng/Phys39-teamR-X/blob/7a81e4c9365705941dd56a3ad5b6ae08153729f5/Module_8/docs/stage2_results.md).
+**Uncompensated PWM (S18.3–S18.4).** With RAW_ZERO (0 ± 50 counts), the 100, 200 and 300 s TEC amplitudes were 3.58, 5.98 and 7.87 °C. Lag behind PWM fell from 67.8° to 57.7° to 47.7°. Heat capacity attenuates and delays faster modulation. The 300 s result includes startup and only two full cycles. The Module 4 heating and cooling slopes were 0.495 and 0.141 °C/count, so equal positive and negative duty need not yield equal temperature changes. At 100 s, RAW_POS (32 ± 5 counts) reduced residual RMS from 0.338 to 0.072 °C, while the fitted amplitude also fell from 3.58 to 0.54 °C. Changing both bias and amplitude prevents attributing the smaller absolute residual to polarity alone. [Stage 2 measurements and one-lump checks](https://github.com/zhuyanheng/Phys39-teamR-X/blob/7a81e4c9365705941dd56a3ad5b6ae08153729f5/Module_8/docs/stage2_results.md).
 
-**Feedback.** Static feedforward used 23.33 ± 10.09 PWM counts from the Module 4 heating slope and historical 23.44 °C baseline. It had no dynamic phase compensation or correction for the current thermal load. P supplied a correction from the instantaneous error. A positive average command still required a nonzero average error, and the P run clipped during startup. PI could maintain the average command through the integral term even when mean error was nearly zero.
+**Feedback (S18.5–S18.7).** Static feedforward used 23.33 ± 10.09 PWM counts from the Module 4 heating slope and historical 23.44 °C baseline. It had no dynamic phase compensation or correction for the current thermal load. P supplied a correction from the instantaneous error. A positive average command still required a nonzero average error, and the P run clipped during startup. PI could maintain the average command through the integral term even when mean error was nearly zero.
+
+**Tracking comparison (S18.8).** At 100 s, feedforward passed 0/4 criteria, P passed 1/4 (amplitude ratio), and PI passed 4/4 in the selected windows.
 
 | Period | Selected Kₚ / Kᵢ | Mean error (°C) | Amplitude ratio | Lag (°) | RMS (°C) | Fit window (device s) |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -40,7 +53,7 @@ I compare the measured waveform with 35 + 5 sin(2πt/τ) °C. The reduced reques
 | 200 s | 50 / 0.30 | +0.0011 | 0.959 | 5.45 | 0.36 | 1807.186–2407.186 |
 | 300 s | 50 / 0.30 | −0.0001 | 0.966 | 4.07 | 0.27 | 1505.805–2405.805 |
 
-**Table 2.** Measured PI, last three complete cycles. The same initial documented PI gains were carried into each period. No separate retuning trial was archived. None of the selected PI intervals had capped samples. All three met the criteria for the reduced request, with tracking improving as period increased. Their means were about 5 °C below the nominal 40 °C target and amplitudes were about 30% of the requested 16 °C. These runs characterize the reduced operating range.
+**Table 2.** Measured PI, last three complete cycles. The same initial documented PI gains were carried into each period. No separate retuning trial was archived. None of the selected PI intervals had capped samples. PI passed all four criteria at 100, 200 and 300 s for the reduced request. None of the measured conditions approached 40 ± 16 °C. Even PI ran about 5 °C below the nominal mean and produced about 30% of the nominal amplitude.
 
 ![Course model P and PI and signed duty](../../Module_8/figures/a5/a5_control_simulation.png)
 
@@ -62,7 +75,7 @@ The first fraction describes how the mean excess temperature falls toward ambien
 
 ![Measured-parameter characteristic lengths and fitted points](../../Module_8/figures/a5/a5_lengths.png)
 
-**Figure 2.** Lines use one common parameter pair, κ = 6.790 × 10⁻⁵ m²/s and ν = 1.698 × 10⁻³ s⁻¹, the medians of the positive-loss 200–500 s fits. The 100 s point is still shown. The five measured windows are listed in Figure 3. Oscillatory error bars propagate the conditional fit errors. Mean-length bars show sensitivity to the 20–28 °C ambient scenario, a range of model inputs. Mean points come from a separate five-sensor mean-profile fit using each initial TEC reading as an ambient proxy.
+**Figure 2.** Lines use one common parameter pair, κ = 6.790 × 10⁻⁵ m²/s and ν = 1.698 × 10⁻³ s⁻¹, the medians of the positive-loss 200–500 s fits. Periods of 100, 200, 300, 400 and 500 s use PI runs from Nov 16 10:45, Nov 9 09:57, Nov 16 11:11, Nov 18 09:21 and Nov 9 10:43, respectively. Their device windows are 704.983–1204.983, 1407.186–2407.186, 905.805–2405.805, 1374.687–3374.687 and 1006.788–3506.788 s. Oscillatory bars show conditional fit errors. Mean points use five-sensor profile fits with initial TEC as the ambient proxy. Their bars show sensitivity to 20–28 °C ambient. [Run IDs and interval hashes](https://github.com/zhuyanheng/Phys39-teamR-X/blob/7a81e4c9365705941dd56a3ad5b6ae08153729f5/Module_8/data/processed/five_period_review/m08_pi_five_period_sources.json).
 
 The shared model gives a period-independent mean length of 20.0 cm. The fitted 1/q grows from 4.7 cm at 100 s to 9.5 cm at 500 s, and 1/q′ from 4.6 to 11.3 cm. A typical hole spacing of about 5 cm is already about one attenuation length at 100 s, which leaves small amplitudes far down the rod. The longer drives retain more signal downstream, while the smaller phase gradient makes closely spaced phase measurements less informative. Figure 4 shows the spatial decay and lag at 300 s. From T1 to T3, the measured mean falls from 31.88 to 29.09 °C, the oscillation drops from 2.02 to 0.65 °C, and the lag increases by about 61°.
 
@@ -90,7 +103,7 @@ $$\kappa=\frac{\omega}{2qq'},\qquad \nu=\kappa(q^2-q'^2).$$
 
 **Table 3.** ± values are conditional standard errors from cycle-to-cycle fits. The recorded ±1 mm bound per ruler gap and unquantified ambient drift and channel bias are separate limitations. The five windows all exceeded at least one provisional cycle-range criterion (0.10 °C mean, 5% amplitude, 0.10 rad phase).
 
-The 100 s ν departs furthest from the shared value, by 3.53 × 10⁻³ s⁻¹, about 2.3 conditional standard errors for that fit alone. Its deviation from zero is only 1.2 such errors, and allowing linear baseline drift moves it to +0.24 × 10⁻³ s⁻¹. The sign is unresolved once drift is considered. The finite-tip versus semi-infinite response changes by up to 2.25% at T1–T3 and by more farther down the rod at long periods. The positive-loss estimates give transverse Biot numbers of 1.8–3.4 × 10⁻⁴, consistent with a nearly uniform cross-section. T4–T5 have smaller signals and larger sensitivity to the tip, while the independent five-sensor mean fits give RMS residuals near 0.11 °C but depend strongly on ambient. The main limitation for ν is drift and the subtraction of nearly equal squared slopes. [Spatial fits, residuals and sensitivity calculations](https://github.com/zhuyanheng/Phys39-teamR-X/blob/7a81e4c9365705941dd56a3ad5b6ae08153729f5/Module_8/docs/five_period_review_2026-11-18.md).
+The 100 s ν departs furthest from the shared value by 3.53 × 10⁻³ s⁻¹ (2.3 conditional standard errors) and lies 1.2 such errors from zero. A linear baseline drift term shifts it to +0.24 × 10⁻³ s⁻¹, leaving its sign unresolved. Drift is most consequential for ν because it comes from the difference of nearly equal squared slopes. The finite-tip correction changes the response by up to 2.25% at T1–T3. T4–T5 have smaller signals and stronger tip effects, especially at long periods. Positive-loss fits give transverse Biot numbers of 1.8–3.4 × 10⁻⁴, supporting a nearly uniform cross-section. The five-sensor mean-profile residual RMS is about 0.11 °C, but the fitted mean length depends on ambient. [Spatial fits, residuals and sensitivity calculations](https://github.com/zhuyanheng/Phys39-teamR-X/blob/7a81e4c9365705941dd56a3ad5b6ae08153729f5/Module_8/docs/five_period_review_2026-11-18.md).
 
 <!-- pagebreak -->
 
@@ -110,8 +123,8 @@ The analytical histories use the measured T1 waveform and geometry, with spatial
 
 **Table 4.** First-harmonic amplitude and lag relative to the requested setpoint. Means and residuals are in the [comparison metrics](https://github.com/zhuyanheng/Phys39-teamR-X/blob/41d3d68bd4c21eeee683f829df1841fea1c3ca22/Module_8/data/processed/a5/a5_metrics.json).
 
-Measured and simulated amplitudes at T3 are 0.32 and 0.33 of their respective base amplitudes. The analytical amplitude and lag agree with T3 within 0.01 °C and 0.2°, a consistency check using the same fitted data. The numerical T0 tracks the request much more closely than physical T1, with 4.71 versus 2.02 °C amplitude and 2.9° versus 41.2° lag. The absolute lag at T3 differs by 42.7°, while the delay added from T1 to T3 is 61.0° measured and 56.6° modeled. Most of the discrepancy is already present at the base.
+Measured and simulated amplitudes at T3 are 0.32 and 0.33 of their respective base amplitudes. The analytical amplitude and lag agree with T3 within 0.01 °C and 0.2°, a consistency check using the same fitted data. The numerical T0 tracks the request much more closely than physical T1, with 4.71 versus 2.02 °C amplitude and 2.9° versus 41.2° lag. The absolute lag at T3 differs by 42.7°, while the delay added from T1 to T3 is 61.0° measured and 56.6° modeled.
 
 ### Conclusion
 
-Amplitude decay and phase lag support κ ≈ 6.8 × 10⁻⁵ m²/s. The mean profiles and four oscillatory fits support lateral loss, with the 100 s estimate drift-sensitive and ambient unmeasured. The next model test would use the TEC plate as the feedback sensor, holding all other settings fixed, to see how the boundary amplitude and lag change.
+Amplitude decay and phase lag support κ ≈ 6.8 × 10⁻⁵ m²/s. The mean profiles and four oscillatory fits support lateral loss, with the 100 s estimate drift-sensitive and ambient unmeasured. Because 38.3° of the 42.7° lag difference at T3 is already present at the base, the next model test would use the TEC plate as the feedback sensor with other settings fixed.
