@@ -1,0 +1,460 @@
+{
+  "control_model": {
+    "p": {
+      "mean_error_C": -0.7947764818232272,
+      "amplitude": 4.6369272754756246,
+      "amplitude_ratio": 0.9273862324584924,
+      "lag_deg": 4.594984238184445,
+      "rms_C": 0.8786568912892185,
+      "saturated_samples": 0,
+      "cycle_mean_span_C": 0.004118749444685932,
+      "cycle_amplitude_span_fraction": 5.799415578190915e-05,
+      "cycle_phase_span_rad": 2.1662783076470404e-05,
+      "interval_s": [
+        700,
+        1000
+      ],
+      "settings": {
+        "note": "Settings at export; coupled geometry and PID controls may have changed during the record.",
+        "model": "coupled",
+        "drive": {
+          "mode": "sine",
+          "constant": 10,
+          "Ta": 35,
+          "Tb": 5,
+          "period": 100,
+          "sp": 39.204042785549035,
+          "kp": 19.5,
+          "ki": 0,
+          "kd": 15,
+          "pOn": true,
+          "iOn": true,
+          "dOn": false,
+          "integ": 0,
+          "dFilt": 0.1893639272309991,
+          "prevPV": 37.89231952519887,
+          "u": 25.578603576828186,
+          "terms": {
+            "p": 25.578603576828186,
+            "i": 0,
+            "d": 0,
+            "e": 1.3117232603501634,
+            "dpv": 0.1893639272309991
+          }
+        },
+        "rod": {
+          "material": "aluminum",
+          "length_m": 0.27,
+          "diameter_m": 0.0128,
+          "sensor_fractions": [
+            0,
+            0.12,
+            0.28,
+            0.48,
+            0.72,
+            0.95
+          ]
+        },
+        "ambient_C": 22
+      }
+    },
+    "pi": {
+      "mean_error_C": 0.0008583141689300078,
+      "amplitude": 4.677755348980242,
+      "amplitude_ratio": 0.9355467898202413,
+      "lag_deg": 4.946033913776819,
+      "rms_C": 0.37295720637155805,
+      "saturated_samples": 0,
+      "cycle_mean_span_C": 0.0034223475873389475,
+      "cycle_amplitude_span_fraction": 0.0001987744014773772,
+      "cycle_phase_span_rad": 8.12467704536246e-06,
+      "interval_s": [
+        700,
+        1000
+      ],
+      "settings": {
+        "note": "Settings at export; coupled geometry and PID controls may have changed during the record.",
+        "model": "coupled",
+        "drive": {
+          "mode": "sine",
+          "constant": 10,
+          "Ta": 35,
+          "Tb": 5,
+          "period": 100,
+          "sp": 34.75003346660167,
+          "kp": 19.5,
+          "ki": 0.12,
+          "kd": 15,
+          "pOn": true,
+          "iOn": true,
+          "dOn": false,
+          "integ": 15.734294325105056,
+          "dFilt": 0.28912777690885794,
+          "prevPV": 34.34739938693249,
+          "u": 23.585658878654144,
+          "terms": {
+            "p": 7.8513645535490895,
+            "i": 15.734294325105056,
+            "d": 0,
+            "e": 0.4026340796691841,
+            "dpv": 0.28912777690885794
+          }
+        },
+        "rod": {
+          "material": "aluminum",
+          "length_m": 0.27,
+          "diameter_m": 0.0128,
+          "sensor_fractions": [
+            0,
+            0.12,
+            0.28,
+            0.48,
+            0.72,
+            0.95
+          ]
+        },
+        "ambient_C": 22
+      }
+    }
+  },
+  "pi_tracking": [
+    {
+      "mean_error_C": -0.0021113418580114285,
+      "amplitude": 4.691565170537182,
+      "amplitude_ratio": 0.9383134454015932,
+      "lag_deg": 9.343762992920784,
+      "rms_C": 0.5992221577726132,
+      "saturated_samples": 0,
+      "period_s": 100,
+      "start_s": 904.983,
+      "stop_s": 1204.983,
+      "cycles": [
+        10,
+        11,
+        12
+      ],
+      "kp": 50.0,
+      "ki": 0.3
+    },
+    {
+      "mean_error_C": 0.0010905464789345842,
+      "amplitude": 4.796836896304885,
+      "amplitude_ratio": 0.9593677803883449,
+      "lag_deg": 5.445618832684603,
+      "rms_C": 0.35905582887414605,
+      "saturated_samples": 0,
+      "period_s": 200,
+      "start_s": 1807.186,
+      "stop_s": 2407.186,
+      "cycles": [
+        10,
+        11,
+        12
+      ],
+      "kp": 50.0,
+      "ki": 0.3
+    },
+    {
+      "mean_error_C": -9.397178090608804e-05,
+      "amplitude": 4.82914079810629,
+      "amplitude_ratio": 0.965825507052718,
+      "lag_deg": 4.070248260503805,
+      "rms_C": 0.2749254772401463,
+      "saturated_samples": 0,
+      "period_s": 300,
+      "start_s": 1505.805,
+      "stop_s": 2405.805,
+      "cycles": [
+        6,
+        7,
+        8
+      ],
+      "kp": 50.0,
+      "ki": 0.3
+    }
+  ],
+  "spatial": {
+    "shared_kappa": 6.790227636383438e-05,
+    "shared_nu": 0.0016975504509002298,
+    "periods": [
+      {
+        "period_s": 100,
+        "q": 21.25835202619137,
+        "q_prime": 21.88858487504515,
+        "q_se": 0.42128045233544315,
+        "q_prime_se": 0.20503763107091566,
+        "mean_length_cm": 18.66903209835795,
+        "mean_length_ambient_scenario_cm": [
+          7.506469664462188,
+          26.165143980571298
+        ],
+        "transport": {
+          "kappa_m2_s": 6.751536089470935e-05,
+          "nu_per_s": -0.0018359193479002235,
+          "m_squared_per_m2": -27.192616962580587,
+          "physical_positive_loss": false,
+          "kappa_se_m2_s": 1.286607847041169e-06,
+          "nu_se_per_s": 0.001536870142392859,
+          "k_W_mK": null,
+          "h_W_m2K": null,
+          "k_fit_se_W_mK": null,
+          "h_fit_se_W_m2K": null
+        }
+      },
+      {
+        "period_s": 200,
+        "q": 15.652954586965228,
+        "q_prime": 15.060693326160088,
+        "q_se": 0.1374828649335951,
+        "q_prime_se": 0.23794302817923538,
+        "mean_length_cm": 20.395745064455063,
+        "mean_length_ambient_scenario_cm": [
+          8.775502288418275,
+          27.817622950819676
+        ],
+        "transport": {
+          "kappa_m2_s": 6.66313460141441e-05,
+          "nu_per_s": 0.001212057755331615,
+          "m_squared_per_m2": 18.190503836952757,
+          "physical_positive_loss": true,
+          "kappa_se_m2_s": 1.351366087049326e-06,
+          "nu_se_per_s": 0.0004892559511617685,
+          "k_W_mK": null,
+          "h_W_m2K": null,
+          "k_fit_se_W_mK": null,
+          "h_fit_se_W_m2K": null
+        }
+      },
+      {
+        "period_s": 300,
+        "q": 12.74737475340649,
+        "q_prime": 12.035821494649594,
+        "q_se": 0.39679199619513117,
+        "q_prime_se": 0.42246075753990514,
+        "mean_length_cm": 17.642701185277602,
+        "mean_length_ambient_scenario_cm": [
+          5.854371695460545,
+          24.74660930436051
+        ],
+        "transport": {
+          "kappa_m2_s": 6.825463151187697e-05,
+          "nu_per_s": 0.0012036406712907205,
+          "m_squared_per_m2": 17.634564052715973,
+          "physical_positive_loss": true,
+          "kappa_se_m2_s": 3.360964823943154e-06,
+          "nu_se_per_s": 0.000932813148061014,
+          "k_W_mK": null,
+          "h_W_m2K": null,
+          "k_fit_se_W_mK": null,
+          "h_fit_se_W_m2K": null
+        }
+      },
+      {
+        "period_s": 400,
+        "q": 11.416682180558558,
+        "q_prime": 9.835301511969833,
+        "q_se": 0.11046589344232213,
+        "q_prime_se": 0.29657378997611206,
+        "mean_length_cm": 21.919909575326983,
+        "mean_length_ambient_scenario_cm": [
+          8.323114653586757,
+          27.139144342263098
+        ],
+        "transport": {
+          "kappa_m2_s": 6.994590470580498e-05,
+          "nu_per_s": 0.0023507053263257683,
+          "m_squared_per_m2": 33.60747618052723,
+          "physical_positive_loss": true,
+          "kappa_se_m2_s": 1.8846089850653863e-06,
+          "nu_se_per_s": 0.0005681996106690662,
+          "k_W_mK": null,
+          "h_W_m2K": null,
+          "k_fit_se_W_mK": null,
+          "h_fit_se_W_m2K": null
+        }
+      },
+      {
+        "period_s": 500,
+        "q": 10.515098591306916,
+        "q_prime": 8.845892809111804,
+        "q_se": 0.108412612093373,
+        "q_prime_se": 0.38745171505504594,
+        "mean_length_cm": 16.742723236309814,
+        "mean_length_ambient_scenario_cm": [
+          7.762465690759378,
+          27.178265396011856
+        ],
+        "transport": {
+          "kappa_m2_s": 6.75499212157918e-05,
+          "nu_per_s": 0.002183043146468845,
+          "m_squared_per_m2": 32.317478794608775,
+          "physical_positive_loss": true,
+          "kappa_se_m2_s": 3.025084640504757e-06,
+          "nu_se_per_s": 0.0005766424057753236,
+          "k_W_mK": null,
+          "h_W_m2K": null,
+          "k_fit_se_W_mK": null,
+          "h_fit_se_W_m2K": null
+        }
+      }
+    ]
+  },
+  "matched": {
+    "sensors": [
+      {
+        "sensor": "T1",
+        "measured": {
+          "mean_C": 31.875337606013588,
+          "amplitude_C": 2.0195354031299644,
+          "lag_deg": 41.22410748143257
+        },
+        "analytical": {
+          "mean_C": 31.875337606013588,
+          "amplitude_C": 2.019535403129965,
+          "lag_deg": 41.2241074814326
+        },
+        "course_model": {
+          "mean_C": 35.001223238908516,
+          "amplitude_C": 4.710896337163401,
+          "lag_deg": 2.9344317138741856
+        },
+        "analytic_rmse_C": 0.08132490876327625
+      },
+      {
+        "sensor": "T2",
+        "measured": {
+          "mean_C": 30.258131874162466,
+          "amplitude_C": 1.2283057307793965,
+          "lag_deg": 67.78387350247384
+        },
+        "analytical": {
+          "mean_C": 30.46617304606865,
+          "amplitude_C": 1.2376241187804944,
+          "lag_deg": 67.66572995779548
+        },
+        "course_model": {
+          "mean_C": 33.40563103955617,
+          "amplitude_C": 2.914315621696646,
+          "lag_deg": 27.32556936488825
+        },
+        "analytic_rmse_C": 0.22855138411542517
+      },
+      {
+        "sensor": "T3",
+        "measured": {
+          "mean_C": 29.08835835310066,
+          "amplitude_C": 0.650614688973697,
+          "lag_deg": 102.20270934592966
+        },
+        "analytical": {
+          "mean_C": 29.073778814250193,
+          "amplitude_C": 0.6426971645401269,
+          "lag_deg": 102.40452197278277
+        },
+        "course_model": {
+          "mean_C": 31.76253863723411,
+          "amplitude_C": 1.5339039889937718,
+          "lag_deg": 59.536745421667206
+        },
+        "analytic_rmse_C": 0.10385253883199512
+      },
+      {
+        "sensor": "T4",
+        "measured": {
+          "mean_C": 28.214275402888823,
+          "amplitude_C": 0.35318289603156156,
+          "lag_deg": 136.31747912486136
+        },
+        "analytical": {
+          "mean_C": 28.116772389545773,
+          "amplitude_C": 0.3245948791602339,
+          "lag_deg": 138.07424175037283
+        },
+        "course_model": {
+          "mean_C": 30.56270851892741,
+          "amplitude_C": 0.7960799786385275,
+          "lag_deg": 96.2745563282234
+        },
+        "analytic_rmse_C": 0.14329029242119434
+      },
+      {
+        "sensor": "T5",
+        "measured": {
+          "mean_C": 27.384980082977645,
+          "amplitude_C": 0.20402615740335794,
+          "lag_deg": 174.41805572168042
+        },
+        "analytical": {
+          "mean_C": 27.514625725329463,
+          "amplitude_C": 0.16908114804764582,
+          "lag_deg": -179.4511129507976
+        },
+        "course_model": {
+          "mean_C": 29.75348621380177,
+          "amplitude_C": 0.4372815119000098,
+          "lag_deg": 140.8851971990511
+        },
+        "analytic_rmse_C": 0.1641832094676371
+      }
+    ],
+    "measured_interval_s": [
+      905.805,
+      2405.805
+    ],
+    "displayed_measured_interval_s": [
+      905.805,
+      1505.8049999999998
+    ],
+    "sim_interval_s": [
+      900,
+      1800
+    ],
+    "sim_displayed_interval_s": [
+      900,
+      1500
+    ],
+    "sim_settings": {
+      "note": "Settings at export; coupled geometry and PID controls may have changed during the record.",
+      "model": "coupled",
+      "drive": {
+        "mode": "sine",
+        "constant": 10,
+        "Ta": 35,
+        "Tb": 5,
+        "period": 300,
+        "sp": 30.42497630700066,
+        "kp": 19.5,
+        "ki": 0.12,
+        "kd": 15,
+        "pOn": true,
+        "iOn": true,
+        "dOn": false,
+        "integ": 14.525727293837202,
+        "dFilt": 0.03332821760187088,
+        "prevPV": 30.59774761589104,
+        "u": 11.15668677047474,
+        "terms": {
+          "p": -3.369040523362461,
+          "i": 14.525727293837202,
+          "d": 0,
+          "e": -0.1727713088903826,
+          "dpv": 0.03332821760187088
+        }
+      },
+      "rod": {
+        "material": "aluminum",
+        "length_m": 0.27,
+        "diameter_m": 0.0128,
+        "sensor_fractions": [
+          0,
+          0.12,
+          0.28,
+          0.48,
+          0.72,
+          0.95
+        ]
+      },
+      "ambient_C": 22
+    }
+  }
+}
