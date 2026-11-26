@@ -19,6 +19,8 @@ ul, ol { margin: 3pt 0 3pt 16pt; padding: 0; }
 li { margin: 1.2pt 0; }
 code, .mono { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8.2pt;
        background: #f2f4f6; padding: 0 1.5pt; border-radius: 2pt; }
+.sym { color: #b03a2e; font-weight: 700; font-style: italic;
+       font-family: "Times New Roman","Songti SC",serif; }
 .f { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 9.1pt;
      background: #f7f9fb; border-left: 3pt solid #0f3d5c; padding: 4pt 7pt;
      margin: 4pt 0; white-space: pre-wrap; line-height: 1.42; page-break-inside: avoid; }
@@ -90,10 +92,27 @@ figcaption .cap { color: #0f3d5c; font-weight: 700; }
 
 <div class="w"><b>三条不能忘的限定词：</b>① <span class="mono">qualified_periods_s = []</span> —— 没有任何一条记录通过预注册稳态判据，全部是 <b>diagnostic</b>；② 没有独立室温计，环境温度用每次采集的首个 A0 读数代替，<b>不是</b>独立测量；③ 通道偏置/增益未做共浴标定，位置不确定度只有 ±1 mm 的<b>边界情景</b>，不是标准不确定度。</div>
 <h3>0.2 八个必须能默写的公式</h3>
+
+<div class="w"><b>先解决一个字形陷阱（这是最容易混的地方）：</b>
+本册用到<strong>两组</strong>看起来很像的字母，它们完全不是一回事——
+<table style="margin-top:4pt">
+<tr><th style="width:12%">符号</th><th style="width:14%">怎么读</th><th style="width:18%">单位</th><th>含义</th></tr>
+<tr><td><b>k</b>（拉丁）</td><td>kay</td><td>W/(m·K)</td>
+<td><strong>导热系数 thermal conductivity</strong>：材料本身"导走热量"的能力。铝约 166–172。</td></tr>
+<tr><td><span class="sym">κ</span>（希腊 <b>kappa</b>）</td><td>kappa</td><td>m²/s</td>
+<td><strong>热扩散率 thermal diffusivity</strong>：温度场"扩散"的快慢，<span class="mono">κ = k/(ρc)</span>。本项目实测 6.80×10⁻⁵。</td></tr>
+<tr><td><span class="sym">ν</span>（希腊 <b>nu</b>）</td><td>nu</td><td>1/s</td>
+<td><strong>侧向散热率</strong>：<span class="mono">ν = hP/(ρcA)</span>，表征"往空气漏热"的速率。</td></tr>
+<tr><td><b>v</b>（拉丁）</td><td>vee</td><td>—</td><td>本册<strong>不用</strong>这个符号；若在某处看到 v，请当作 ν。</td></tr>
+</table>
+所以 <span class="mono">k = κ·ρ·c</span> 读作"<em>导热系数 = 热扩散率 × 体积热容</em>"，
+<strong>不是</strong> k = k·ρ·c。下面公式块里我把 <span class="sym kp">κ</span> 与 <span class="sym kp">ν</span>
+标成<span style="color:#b03a2e;font-weight:700">红色衬线斜体</span>，就是为了不再看错。<br><b>更要注意：</b>在等宽字体里 <span class="sym">κ</span> 长得很像 <b>k</b>、<span class="sym">ν</span> 长得很像 <b>v</b>、<span class="sym">ρ</span> 长得很像 <b>p</b>。所以凡是看到“k = k ρ c”这种写法，第二个“k”一定是 <span class="sym">κ</span>。</div>
+
 <p class="small">记号约定：本册为纯文本排版，<span class="mono">^{ }</span> 表示上标（如 <span class="mono">e^{&minus;qx}</span>）、<span class="mono">_</span> 表示下标；<span class="mono">∂</span> 为偏导，<span class="mono">√</span> 为开方，<span class="mono">q′</span> 读作 “q prime”。</p>
 <div class="f">① 过剩温度与主方程
    θ = T − T∞
-   ∂θ/∂t = κ ∂²θ/∂x² − νθ        κ = k/(ρc) [m²/s]    ν = hP/(ρcA) [1/s]
+   ∂θ/∂t = <span class="sym">κ</span> ∂²θ/∂x² − <span class="sym">ν</span>θ        <span class="sym">κ</span> = k/(ρc) [m²/s]    <span class="sym">ν</span> = hP/(ρcA) [1/s]
 
 ② 周期试探解（复指数）
    θ ∝ e^{iωt} · e^{−(q+iq′)x}          q, q′ [1/m]
@@ -101,11 +120,11 @@ figcaption .cap { color: #0f3d5c; font-weight: 700; }
    φ(x) = φ₀ − q′x                      相位滞后（下游 φ 更小）
 
 ③ 代入后比较实部/虚部
-   虚部：ω = 2κqq′      实部：0 = κ(q² − q′²) − ν
-   ⇒ κ = ω/(2qq′)       ν = κ(q² − q′²)       m² = ν/κ = q² − q′²
+   虚部：ω = 2<span class="sym">κ</span>qq′      实部：0 = <span class="sym">κ</span>(q² − q′²) − <span class="sym">ν</span>
+   ⇒ <span class="sym">κ</span> = ω/(2qq′)       <span class="sym">ν</span> = <span class="sym">κ</span>(q² − q′²)       m² = <span class="sym">ν</span>/<span class="sym">κ</span> = q² − q′²
 
 ④ 两个物理量
-   k = κ ρ c            h = ν ρ c A/P = ν ρ c (d/4)
+   k = <span class="sym">κ</span> ρ c            h = <span class="sym">ν</span> ρ c A/P = <span class="sym">ν</span> ρ c (d/4)
 
 ⑤ 平均场（稳态、有限长、绝热端）
    d²θ/dx² − m²θ = 0
@@ -292,9 +311,9 @@ A = πd²/4 = 1.28077e-4 m²      P = πd = 0.0401181 m</div>
 能量守恒（无内热源）：  ∂/∂t(ρcA dx θ) = Q̇_x − Q̇_{x+dx} − hP dx θ
                       ⇒ ρcA ∂θ/∂t = kA ∂²θ/∂x² − hP θ
 除以 ρcA：
-                      ∂θ/∂t = κ ∂²θ/∂x² − νθ
-                      κ = k/(ρc)           [m²/s]
-                      ν = hP/(ρcA) = 4h/(ρc d)   [1/s]</div>
+                      ∂θ/∂t = <span class="sym">κ</span> ∂²θ/∂x² − <span class="sym">ν</span>θ
+                      <span class="sym">κ</span> = k/(ρc)           [m²/s]
+                      <span class="sym">ν</span> = hP/(ρcA) = 4h/(ρc d)   [1/s]</div>
 
 <div class="n"><b>把这一行方程逐项翻译成人话（这是最该背下来的四个字：储、导、漏）：</b>
 <table style="margin-top:4pt">
@@ -346,12 +365,12 @@ A = πd²/4 = 1.28077e-4 m²      P = πd = 0.0401181 m</div>
 对 t 求导：  ∂θ/∂t = iω θ
 对 x 求导：  ∂²θ/∂x² = s² θ = (q + iq′)² θ = (q² − q′² + 2iqq′) θ
 
-代入 ∂θ/∂t = κ ∂²θ/∂x² − νθ ，两边除以 θ：
-   iω = κ(q² − q′²) − ν + i·2κqq′
+代入 ∂θ/∂t = <span class="sym">κ</span> ∂²θ/∂x² − <span class="sym">ν</span>θ ，两边除以 θ：
+   iω = <span class="sym">κ</span>(q² − q′²) − <span class="sym">ν</span> + i·2<span class="sym">κ</span>qq′
 
-比较虚部：   ω = 2κ q q′          →  κ = ω / (2 q q′)
-比较实部：   0 = κ(q² − q′²) − ν   →  ν = κ (q² − q′²)
-两式相除：   ν/κ = q² − q′²  = m²</div>
+比较虚部：   ω = 2<span class="sym">κ</span> q q′          →  <span class="sym">κ</span> = ω / (2 q q′)
+比较实部：   0 = <span class="sym">κ</span>(q² − q′²) − <span class="sym">ν</span>   →  <span class="sym">ν</span> = <span class="sym">κ</span> (q² − q′²)
+两式相除：   <span class="sym">ν</span>/<span class="sym">κ</span> = q² − q′²  = m²</div>
 
 <div class="n"><b>为什么可以“猜”这个解（这一步很多人卡住）：</b>
 ① 方程是<strong>线性</strong>的，所以任何驱动都可以分解成正弦叠加，我们只研究其中一个频率；
@@ -389,15 +408,15 @@ A = πd²/4 = 1.28077e-4 m²      P = πd = 0.0401181 m</div>
 <h1>7. 物理 III：从 κ、ν 到 k 与 h</h1>
 
 <h3>7.1 两个转换式与材料常数</h3>
-<div class="f">k = κ · ρ · c
-h = ν · ρ · c · A/P = ν · ρ · c · (d/4)
+<div class="f">k = <span class="sym">κ</span> · ρ · c
+h = <span class="sym">ν</span> · ρ · c · A/P = <span class="sym">ν</span> · ρ · c · (d/4)
 
 ρ = 2700 kg/m³  (6061-T6 手册 2680–2720,  界 ±27)
 c = 896  J/(kg·K) (手册 890–900,  界 ±18)
 ρc = 2.4192e6 J/(m³·K)
 d/4 = 0.01277/4 = 0.0031925 m
-⇒ 每 1e-5 m²/s 的 κ 折合 k = 24.19 W/(m·K)
-⇒ 每 1e-3 s⁻¹ 的 ν 折合 h = 7.72 W/(m²·K)</div>
+⇒ 每 1e-5 m²/s 的 <span class="sym">κ</span> 折合 k = 24.19 W/(m·K)
+⇒ 每 1e-3 s⁻¹ 的 <span class="sym">ν</span> 折合 h = 7.72 W/(m²·K)</div>
 
 <div class="n"><b>为什么正好是 <span class="mono">k = κρc</span> 与 <span class="mono">h = νρcA/P</span>（把定义倒过来看）：</b><br>
 ① <span class="mono">κ = k/(ρc)</span>：κ 描述“温度扩散得多快”，ρc 描述“每升高 1 K 要存多少能量”。同样的 k，ρc 越大 ⇒ 越“难热起来” ⇒ 扩散率越小。<br>
@@ -427,8 +446,8 @@ d/4 = 0.01277/4 = 0.0031925 m
 
 
 <h3>7.3 为什么 k 稳、h 不稳（一句话讲透，最重要的一段）</h3>
-<div class="f">ν = κ (q² − q′²)
-δν/ν ≈ √[ (δκ/κ)² + ((2q δq)² + (2q′ δq′)²) / (q² − q′²)² ]
+<div class="f"><span class="sym">ν</span> = <span class="sym">κ</span> (q² − q′²)
+δ<span class="sym">ν</span>/<span class="sym">ν</span> ≈ √[ (δ<span class="sym">κ</span>/<span class="sym">κ</span>)² + ((2q δq)² + (2q′ δq′)²) / (q² − q′²)² ]
 
 放大因子 ≈ (q² + q′²) / (q² − q′²)
    200 s: (245.0+226.8)/18.2 = 25.9
@@ -617,11 +636,11 @@ m = 5.3565 1/m,  L = 0.2715 m  ⇒  mL = 1.454,  2mL = 2.909,  e^{−2mL} = 0.05
 
 <h3>13.1 如果被问"你更相信哪个数"</h3>
 <div class="f">可信度排序（从高到低）：
-  1. κ（6.80e-5 m²/s）        五频段 0.8% 离散，对室温/漂移不敏感
+  1. <span class="sym">κ</span>（6.80e-5 m²/s）        五频段 0.8% 离散，对室温/漂移不敏感
   2. k（164.5 W/(m·K)）       只多乘 ρc，多 1.5% 材料不确定度
   3. mL / 有限长结论（mL≈1.5）  5 个点、方向明确，但依赖 T∞
   4. h（9–18）                近等量之差 + 漂移 + 无独立 T∞ ⇒ 只报量级
-  5. 100 s 的 ν               物理上无效，只作为"方法下限"的证据</div>
+  5. 100 s 的 <span class="sym">ν</span>               物理上无效，只作为"方法下限"的证据</div>
 <h1>14. 官方口试题十道（C6/F1 共用题库）</h1>
 
 <p class="small">以下题目原文来自评估页 "C6 Oral Questions … These questions are also the announced question bank for the individual part of F1"。每题给：<b>答题骨架</b>（3–4 句，可直接说）+ <b>可能追问</b>。练到每题 40–60 秒。</p>
@@ -738,7 +757,7 @@ m = 5.3565 1/m,  L = 0.2715 m  ⇒  mL = 1.454,  2mL = 2.909,  e^{−2mL} = 0.05
 <div class="f"># 1) 逐周期 / 五周期窗口分析
 .venv/bin/python Module_8/python/analysis/five_period_review.py
 
-# 2) κ、ν → k、h，平均场 cosh 拟合，Biot 检查
+# 2) <span class="sym">κ</span>、<span class="sym">ν</span> → k、h，平均场 cosh 拟合，Biot 检查
 .venv/bin/python Module_8/python/analysis/transport_note.py
 
 # 3) 控制对照
@@ -793,6 +812,57 @@ shasum -a 256 Module_8/data/processed/transport_note/m08_transport_parameters.js
 <p class="small" style="margin-top:8pt;border-top:.8pt solid #cfd8de;padding-top:4pt;page-break-before:avoid">
 本册数值取自仓库 <span class="mono">Module_8/data/processed/</span>（2026-11-20 状态）。若重新运行分析脚本，请同时更新本册引用的数字与 <span class="mono">m08_transport_parameters.json</span>，并在 F1 的两份 PDF 中引用同一个 frozen commit。
 </p>
+
+
+<h1>20. 常数清单：每个数从哪来、意味着什么、影响多大</h1>
+
+<p class="small">这一节回答"这些借来的常数到底是什么意思、会不会污染结果"。<b>关键结论先说：真正进入最终 k、h 的"外来"常数只有 ρ 和 c（合计约 1.5% 不确定度）；h = 10 与 k = 166–172 只用于 A4 的事前预测和事后对比，不参与反演。</b></p>
+
+<h3>20.1 材料与几何常数</h3>
+<table>
+<tr><th style="width:12%">常数</th><th style="width:15%">值</th><th style="width:11%">类型</th><th style="width:26%">来源</th><th>意味着什么 / 怎么用</th></tr>
+<tr><td><span class="sym">ρ</span>（rho）</td><td>2700 kg/m³<br><span class="small">(2680–2720)</span></td><td>借用</td><td>6061-T6 手册值</td><td><strong>密度</strong>：单位体积有多少质量。它本身不直接测量，只通过 <span class="mono">ρc</span>（体积热容）影响 k 和 h。带 ±1%。</td></tr>
+<tr><td class="mono">c</td><td>896 J/(kg·K)<br><span class="small">(890–900)</span></td><td>借用</td><td>同上</td><td><strong>比热容</strong>：1 kg 升高 1 K 需要多少能量。带 ±2%。ρ 与 c 合起来 <span class="mono">ρc = 2.42e6 J/(m³·K)</span>。</td></tr>
+<tr><td><span class="sym">ρ</span>c（rho·c）</td><td>2.4192e6 J/(m³·K)</td><td>推导</td><td>ρ × c</td><td><strong>体积热容</strong>：1 m³ 升高 1 K 要 2.4 MJ。它是 κ 与 k 之间的换算系数，也是 ν 与 h 之间的换算系数。</td></tr>
+<tr><td class="mono">d</td><td>0.01277 m</td><td><strong>实测</strong></td><td>游标卡尺，报告精度 0.01 mm</td><td><strong>直径</strong>。它决定 <span class="mono">A = πd²/4</span>、<span class="mono">P = πd</span>、<span class="mono">A/P = d/4</span>。h 与 Bi⊥ 都正比于 d，故 d 的 0.1% 误差 → h 的 0.1%。</td></tr>
+<tr><td class="mono">L</td><td>0.2715 m</td><td><strong>实测</strong></td><td>孔 2 → 棒端</td><td><strong>分析长度</strong>。只进入无量纲量 <span class="mono">mL</span> 与 <span class="mono">ε_T</span>，不进入 κ、ν。</td></tr>
+<tr><td class="mono">x_i</td><td>0, 38.5, 89.5,<br>140.5, 191.5 mm</td><td><strong>实测</strong></td><td>孔位记录（±1 mm 情景）</td><td><strong>传感器坐标</strong>。q、q′ 是温度对 x 的斜率，所以 x 的误差直接进入斜率 → 这是 κ 的最大系统误差来源。</td></tr>
+</table>
+
+<h3>20.2 只用于"事前预测 / 事后对比"的常数（不进入结果）</h3>
+<table>
+<tr><th style="width:14%">常数</th><th style="width:14%">值</th><th style="width:26%">来源</th><th>意味着什么 / 用在哪里</th></tr>
+<tr><td>h（不参与反演）</td><td>10 W/(m²·K)</td><td>课程给的<strong>临时值</strong></td><td><strong>对流换热系数</strong>：每平方米、每 K 温差带走多少功率。它只用于 A4 的预测（算出 m = 4.27–4.34、ε_T 表）；<strong>本项目最终的 h 是测出来的 9–18</strong>，不是这个 10。</td></tr>
+<tr><td>k<sub>lit</sub>（不参与反演）</td><td>166–172 W/(m·K)</td><td>Lienhard 表 A.1（6061-T6）</td><td><strong>文献导热系数</strong>：只用来"事后对比"（图 7-2 的绿带），<strong>绝不</strong>参与反演。若拿它去调参，就失去了测量的意义。</td></tr>
+<tr><td class="mono">β</td><td>4540 K</td><td>NTC 标称 B 值</td><td><strong>热敏电阻材料常数</strong>：决定 R(T) 曲线的陡度。β 差 1% ≈ 0.6 °C 的绝对偏置；因为是所有通道共有的，对"差值"（振幅比、相位差）影响很小。</td></tr>
+<tr><td class="mono">R₀</td><td>100 kΩ</td><td>分压电阻</td><td>与 NTC 在 25 °C 附近匹配，使 ADC 分辨率最高。</td></tr>
+<tr><td class="mono">ADC</td><td>0–1023（10 位）</td><td>Uno 硬件</td><td>把电阻变成数字。ADC ≤ 0 或 ≥ 1023 视为开路/短路 → 该通道记 nan。</td></tr>
+</table>
+
+<h3>20.3 仪器与操作常数（影响数据质量，不影响公式）</h3>
+<table>
+<tr><th style="width:18%">常数</th><th style="width:14%">值</th><th>意味着什么 / 为什么是这个数</th></tr>
+<tr><td class="mono">ratio</td><td>3.5035</td><td><strong>加热/冷却不对称比</strong> <span class="mono">χ_h/χ_c</span>，实测（Module 4 静态曲线）。同一个 |PWM|，加热能拿到的 ΔT 是制冷的 ~3.5 倍。控制里负命令乘它。</td></tr>
+<tr><td class="mono">pwm_limit</td><td>96（一次 130）</td><td>占空比上限。96/255 ≈ 38%。那次 130 是不同配置，<strong>比较时必须声明</strong>。</td></tr>
+<tr><td class="mono">Ta, Tb</td><td>35 °C, 5 °C</td><td>正弦边界的均值与振幅。受 <strong>10–45 °C 运行区间</strong>限制，课件给的 40 ± 16 °C 被否决。</td></tr>
+<tr><td class="mono">T</td><td>100–500 s</td><td>五个激励周期。下限由信噪比决定（100 s 的 1/q ≈ 4.7 cm 已接近传感器间距），不是任意选的。</td></tr>
+<tr><td class="mono">5 cycles</td><td>—</td><td>每组保留的完整周期数：少于 5 个无法做逐周期稳态判据。</td></tr>
+<tr><td class="mono">判据</td><td>0.1 °C / 5% / 0.1 rad</td><td>逐周期均值跨度、振幅跨度、相位跨度的允许上限。必须<strong>事先</strong>定，否则等于事后挑数据。</td></tr>
+<tr><td class="mono">采样</td><td>1000 / 100 次<br>0.112 ms / 次</td><td>A0 平均 1000 次压噪声，棒上各 100 次；一次转换 ~112 µs，全扫描 0.169 s ⇒ 六个通道<strong>不是同时</strong>采的。</td></tr>
+<tr><td class="mono">500 ms</td><td>—</td><td>报告周期（2 Hz）。100 s 周期下有 200 点/周期，足够拟合。</td></tr>
+</table>
+
+<h3>20.4 敏感性：哪个常数真正动了 k 和 h</h3>
+<div class="f">k = <span class="sym">κ</span> · ρ · c        ⇒  δk/k = δ<span class="sym">κ</span>/<span class="sym">κ</span> ⊕ δρ/ρ ⊕ δc/c
+                          = (2–5%)  ⊕ 1% ⊕ 2%      ⇒ 约 ±5%（含系统项）
+
+h = <span class="sym">ν</span> · ρ · c · d/4  ⇒  δh/h = δ<span class="sym">ν</span>/<span class="sym">ν</span> ⊕ δρ/ρ ⊕ δc/c ⊕ δd/d
+                          = (24–78%) ⊕ 1% ⊕ 2% ⊕ 0.1%  ⇒ 约 ±(25–80%)
+                                                            ↑ <span class="sym">ν</span> 的误差压倒一切</div>
+
+<p><b>读法：</b>① k 的误差几乎全来自 <span class="mono">κ</span>（即 q、q′ 的拟合与位置误差），ρ、c 只贡献 ~2%；② h 的误差<strong>完全被 ν 主导</strong>，所以"把 ρ、c 测得更准"对 h 毫无帮助——这是很多人会误解的地方；③ 想让 h 变好，只能降低 <span class="mono">ν</span> 的条件数（更长周期、更稳的窗口、更准的相位）。</p>
+
+<div class="n"><b>一句话总结这一节：</b>真正"借来"并且会进结果的常数只有 <b>ρ 与 c</b>（合计约 1.5%）；<b>d、L、x</b> 是实测的几何；<b>h = 10、k = 166–172</b> 只是预测与对照，不参与反演；<b>β、R₀、ADC</b> 是传感链常数；<b>ratio、pwm_limit、Ta/Tb、周期、判据</b> 是实验设计与控制设定。</div>
 
 </body>
 </html>

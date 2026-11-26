@@ -467,9 +467,35 @@ def fig16():
     save(fig, "fig16_control_loop.png")
 
 
+def fig17():
+    ks = np.linspace(80, 300, 200)
+    fig, ax = plt.subplots(figsize=(6.6, 2.9))
+    for m_, col, lab in ((5.3565, C["blue"], "m = 5.36 (measured mean profile)"),
+                         (4.33, C["orange"], "m = 4.33 (A4: assumed h=10, k=166)")):
+        ax.plot(ks, m_ * m_ * ks * D / 4, color=col, lw=1.3,
+                label=lab + r"  ->  $h=m^2kd/4$")
+    ax.plot([164.5], [15.0], "o", ms=7, color=C["blue"], zorder=5)
+    ax.annotate("our best pair\nk=164.5, h=15.0", (164.5, 15.0), textcoords="offset points",
+                xytext=(-8, 18), fontsize=7.2, color=C["blue"], ha="center")
+    ax.plot([166], [10], "s", ms=6, color=C["orange"], zorder=5)
+    ax.annotate("A4 assumption\nk=166, h=10", (166, 10), textcoords="offset points",
+                xytext=(22, -16), fontsize=7.2, color=C["orange"])
+    for kk in (100, 250):
+        hh = 5.3565 ** 2 * kk * D / 4
+        ax.plot([kk], [hh], "|", ms=9, color=C["blue"])
+        ax.annotate(f"k={kk}, h={hh:.1f}", (kk, hh), textcoords="offset points",
+                    xytext=(0, -13), fontsize=6.8, color=C["blue"], ha="center")
+    ax.set_xlabel("$k$ (W/(m K))"); ax.set_ylabel("$h$ (W/(m$^2$ K))")
+    ax.set_title("Fixing m does NOT fix k and h: it fixes only the ratio $h/k$")
+    ax.text(225, 26, "same m = 5.36,\nthree different (k, h)", fontsize=7.4, color=C["blue"],
+            ha="center", linespacing=1.4)
+    ax.legend(loc="upper left", fontsize=6.8)
+    save(fig, "fig17_m_degeneracy.png")
+
+
 if __name__ == "__main__":
     for fn in (fig01, fig02, fig03, fig04, fig05, fig06, fig07, fig08, fig09, fig10,
-               fig11, fig12, fig13, fig14, fig15, fig16):
+               fig11, fig12, fig13, fig14, fig15, fig16, fig17):
         fn()
 
 
