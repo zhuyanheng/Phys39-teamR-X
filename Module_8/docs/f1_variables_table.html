@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>变量与常数总表</title>
+<style>
+@page { size: A4; margin: 12mm 11mm 14mm 11mm; }
+* { box-sizing: border-box; }
+body { font-family: "PingFang SC","Hiragino Sans GB","Arial Unicode MS",sans-serif;
+       font-size: 9.2pt; line-height: 1.48; color: #1a1a1a; margin: 0; }
+h1 { font-size: 15pt; margin: 12pt 0 4pt; color: #0f3d5c; page-break-after: avoid; }
+h2 { font-size: 11.4pt; margin: 10pt 0 3pt; padding-bottom: 2pt;
+     border-bottom: 1pt solid #0f3d5c; color: #0f3d5c; page-break-after: avoid; }
+p { margin: 3pt 0; }
+ul, ol { margin: 3pt 0 3pt 15pt; padding: 0; }
+li { margin: 1.2pt 0; }
+code, .mono { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8pt;
+       background: #f2f4f6; padding: 0 1.5pt; border-radius: 2pt; }
+.sym { color: #b03a2e; font-weight: 700; font-style: italic;
+       font-family: "Times New Roman","Songti SC",serif; }
+table { border-collapse: collapse; width: 100%; margin: 4pt 0 7pt; font-size: 8.2pt;
+        page-break-inside: auto; }
+th { background: #0f3d5c; color: #fff; text-align: left; padding: 2.6pt 3.5pt;
+     font-weight: 600; font-size: 8pt; }
+td { border-bottom: .55pt solid #d5dde2; padding: 2.2pt 3.5pt; vertical-align: top;
+     overflow-wrap: anywhere; }
+tr:nth-child(even) td { background: #f8fafb; }
+tr { page-break-inside: avoid; }
+table.keep { page-break-inside: avoid; }
+.num { font-family: Menlo,monospace; font-size: 7.9pt; }
+.b { display: inline-block; font-size: 6.8pt; padding: .4pt 3pt; border-radius: 2pt;
+     color: #fff; white-space: nowrap; }
+.m { background: #1f4e79; }   /* 实测 */
+.h { background: #2e7d32; }   /* 手册 */
+.c { background: #c55a11; }   /* 课程给定 */
+.f { background: #6a3d9a; }   /* 固件/软件设定 */
+.d { background: #0f6e6e; }   /* 拟合导出 */
+.a { background: #7a7a7a; }   /* 代数派生 */
+.n { background: #eef6f1; border-left: 3pt solid #2e7d4f; padding: 4pt 7pt;
+     margin: 5pt 0; font-size: 9pt; page-break-inside: avoid; }
+.w { background: #fdf1ef; border-left: 3pt solid #b03a2e; padding: 4pt 7pt;
+     margin: 5pt 0; font-size: 9pt; page-break-inside: avoid; }
+.fbox { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8.7pt;
+     background: #f7f9fb; border-left: 3pt solid #0f3d5c; padding: 4pt 7pt;
+     margin: 4pt 0; white-space: pre-wrap; line-height: 1.4; page-break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<div style="border-top:6pt solid #0f3d5c;border-bottom:6pt solid #0f3d5c;padding:38mm 6mm 40mm;margin-top:6mm;page-break-after:always">
+  <div style="display:inline-block;background:#0f3d5c;color:#fff;font-size:7.6pt;padding:1pt 5pt;border-radius:2pt">Phys 39 / 169 · Module 8 Part II · F1</div>
+  <h1 style="font-size:25pt;margin:9mm 0 4mm">变量与常数总表</h1>
+  <div style="font-size:12.5pt;color:#14506e">每个符号是什么 · 从哪来 · 在链条里干什么 · 变了对结果影响多大</div>
+  <div style="margin-top:14mm;font-size:9.4pt;color:#444;line-height:1.9">
+    使用者：Ricky Huang（团队 R-X）<br>
+    覆盖：核心物理量 / 材料与几何 / 传感与采集 / 控制与执行器 / 实验判据 / 统计符号 / 派生组合 / 记录字段<br>
+    数值来源：<span class="mono">Module_8/data/processed/</span>、<span class="mono">Module_8/arduino/</span>、<span class="mono">Module_8/config/</span>、<span class="mono">Module_4</span> 静态曲线<br>
+    生成日期：2026-11-26 · 10 节 · 115 条条目（含 2 张速查表）
+  </div>
+</div>
+
+<h1>0. 怎么读这张表</h1>
+
+<h2>0.1 六种"来源类型"（每行都有彩色徽标）</h2>
+<table>
+<tr><th style="width:16%">徽标</th><th style="width:20%">类型</th><th>含义 / 出现在哪</th></tr>
+<tr><td><span class="b m">实测</span></td><td>本实验测出来的</td><td>用卡尺/传感器/拟合得到的数，例如 d、x_i、q、q′、κ。改实验会变，改公式不变。</td></tr>
+<tr><td><span class="b h">手册</span></td><td>材料手册值</td><td>6061-T6 的 ρ、c、k 文献带。是"借来的"，不是本棒实测。</td></tr>
+<tr><td><span class="b c">课程给定</span></td><td>课程/作业规定</td><td>h = 10 W/(m²·K)、k = 166–172 这类"事前预测用的值"、10–45 °C 运行区间。</td></tr>
+<tr><td><span class="b f">固件设定</span></td><td>代码里的常数</td><td>采样次数、超时、PWM 上限、增益。改代码会变，改物理不变。</td></tr>
+<tr><td><span class="b d">拟合导出</span></td><td>由数据拟合出来的量</td><td>B_i、φ_i、a_i、q、q′、κ、ν、m、mL。不是直接读表，而是"从曲线里提出来"。</td></tr>
+<tr><td><span class="b a">代数派生</span></td><td>由别的量算出来的</td><td>ρc、d/4、Ω、m²、Bi⊥、ε_T、换算尺。没有独立来源，只是组合。</td></tr>
+</table>
+
+<div class="w"><b>三条读表规则：</b>
+① 只有 <span class="b h">手册</span> 与 <span class="b m">实测</span>（几何）会影响最终 k；
+② <span class="b c">课程给定</span> 的 h = 10 与 k = 166–172 <b>不进入反演</b>，只用于 A4 预测与事后对比；
+③ <span class="b f">固件设定</span> 改变的是"数据质量"，不是物理公式。</div>
+
+<div class="n"><b>字形提醒：</b>本表希腊字母一律用<span class="sym">红色衬线斜体</span>。在等宽字体里 <span class="sym">κ</span> 很像 k、<span class="sym">ν</span> 很像 v、<span class="sym">ρ</span> 很像 p；看到 "k = <span class="sym">κ</span>ρc" 时第二个不是 k。</div>
+<h1>1. 时间与温度的基本量（"读出来的东西"）</h1>
+
+<table>
+<tr><th style="width:11%">符号</th><th style="width:20%">值 / 单位</th><th style="width:15%">来源</th><th style="width:27%">作用（在链条里干什么）</th><th>影响</th></tr>
+<tr><td>T</td><td class="num">100 / 200 / 300 / 400 / 500 s</td><td><span class="b f">固件设定</span></td><td>激励周期，决定探测频率；五个周期 = 五次独立测量</td><td>决定 <span class="sym">Ω</span>，从而决定 h 可不可信</td></tr>
+<tr><td><span class="sym">ω</span></td><td class="num">0.01257–0.06283 rad/s</td><td><span class="b a">派生</span> 2π/T</td><td>复指数的时间因子 e^{i<span class="sym">ω</span>t}</td><td>直接进 <span class="sym">κ</span> = <span class="sym">ω</span>/(2qq′)</td></tr>
+<tr><td>t, <span class="mono">time_s</span></td><td class="num">0–7200 s</td><td><span class="b m">实测</span> millis()</td><td>所有相位与频率的时间基准（与波形同源）</td><td>若与波形不同源 → 伪造 q′</td></tr>
+<tr><td>θ</td><td class="num">K</td><td><span class="b a">派生</span> T − T∞</td><td>方程的自变量；平均场与周期场都用它</td><td>—</td></tr>
+<tr><td>T∞</td><td class="num">≈24.1 °C（每次采集首个 A0 读数）</td><td><span class="b m">实测</span>（弱：无独立温度计）</td><td>平均场剖面的零点</td><td><b>只影响</b>平均场 m 与 h；<b>不影响</b> <span class="sym">κ</span></td></tr>
+<tr><td>a_i</td><td class="num">32.1 / 30.7 / 29.7 / 29.0 / 28.2 °C</td><td><span class="b d">拟合导出</span></td><td>每通道平均温度（DC 分量），用于 cosh 拟合求 mL</td><td>决定 m、mL、<span class="sym">Θ</span>_tip</td></tr>
+<tr><td>B_i</td><td class="num">1.69 / 0.92 / 0.42 / 0.20 / 0.10 °C</td><td><span class="b d">拟合导出</span></td><td>每通道振幅（AC 幅度），用于 ln B 回归</td><td>决定 q</td></tr>
+<tr><td><span class="sym">φ</span>_i</td><td class="num">−2.41 … −5.4 rad</td><td><span class="b d">拟合导出</span></td><td>每通道相位（峰位），用于 <span class="sym">φ</span> 回归</td><td>决定 q′</td></tr>
+<tr><td>C, S</td><td class="num">—</td><td><span class="b d">拟合导出</span></td><td>线性化系数：C = B cos <span class="sym">φ</span>，S = −B sin <span class="sym">φ</span></td><td>中间量，用来算 B、<span class="sym">φ</span></td></tr>
+<tr><td>A0（TEC）</td><td class="num">35 ± 5 °C，振幅 4.80 °C</td><td><span class="b m">实测</span></td><td>唯一控制与安全输入</td><td><b>不是</b>边界条件（见 Q11）</td></tr>
+</table>
+
+<h1>2. 反演链上的物理量（"算出来的东西"）</h1>
+
+<table>
+<tr><th style="width:11%">符号</th><th style="width:21%">值 / 单位</th><th style="width:14%">来源</th><th style="width:27%">作用（在链条里干什么）</th><th>影响</th></tr>
+<tr><td>q</td><td class="num">21.26 → 10.52 m⁻¹</td><td><span class="b d">拟合导出</span></td><td>振幅衰减常数：ln B 对 x 斜率的负值</td><td><span class="sym">κ</span> 的"一半信息"</td></tr>
+<tr><td>q′</td><td class="num">21.89 → 8.85 m⁻¹</td><td><span class="b d">拟合导出</span></td><td>相位滞后常数：unwrap 后 <span class="sym">φ</span> 对 x 斜率的负值</td><td><span class="sym">κ</span> 的另一半；也是 <span class="sym">ν</span> 的唯一来源</td></tr>
+<tr><td><span class="sym">κ</span></td><td class="num">6.80×10⁻⁵ m²/s</td><td><span class="b d">拟合导出</span></td><td>热扩散率：<span class="sym">ω</span>/(2qq′)，五个频段离散 0.8%</td><td>乘 <span class="sym">ρ</span>c 得 k</td></tr>
+<tr><td><span class="sym">ν</span></td><td class="num">1.20–2.35×10⁻³ s⁻¹<br>（100 s = −1.84×10⁻³）</td><td><span class="b d">拟合导出</span></td><td>侧向散热率：<span class="sym">κ</span>(q²−q′²)</td><td>乘 <span class="sym">ρ</span>c(d/4) 得 h；病态</td></tr>
+<tr><td>k</td><td class="num">161–169（中心 164.5）W/(m·K)</td><td><span class="b a">代数派生</span></td><td>导热系数：<span class="sym">κ</span><span class="sym">ρ</span>c</td><td>与文献 166–172 对比</td></tr>
+<tr><td>h</td><td class="num">9.3–18.2 W/(m²·K)</td><td><span class="b a">代数派生</span></td><td>对流系数：<span class="sym">ν</span><span class="sym">ρ</span>c(d/4)</td><td>只能报量级</td></tr>
+<tr><td>m</td><td class="num">4.56–5.97（平均场）<br>4.20–5.80（√(q²−q′²)）</td><td><span class="b d">拟合导出</span></td><td>平均场衰减常数：m² = <span class="sym">ν</span>/<span class="sym">κ</span> = q² − q′²</td><td>判端部、判一维、反推 h</td></tr>
+<tr><td>1/m</td><td class="num">17–22 cm</td><td><span class="b a">代数派生</span></td><td>平均温度衰减长度（降到 1/e 的距离）</td><td>与 L 比 → 是否半无限</td></tr>
+<tr><td>mL</td><td class="num">1.24–1.62</td><td><span class="b d">拟合导出</span>（μ）</td><td>无量纲棒长："棒相当于几个衰减长度"</td><td>决定用 cosh 还是指数</td></tr>
+<tr><td><span class="sym">Θ</span>_tip</td><td class="num">0.38–0.54</td><td><span class="b a">代数派生</span> 1/cosh(mL)</td><td>端部残留的过剩温度比</td><td>说明端部不"热远"</td></tr>
+<tr><td><span class="sym">ε</span><sub>T</sub></td><td class="num">0 / 2.6 / 7.7 / 15.4 / 26.0 %</td><td><span class="b a">代数派生</span></td><td>半无限近似相对有限长的误差（按位置）</td><td>只有 T1、T2 能当半无限</td></tr>
+<tr><td>Bi⊥</td><td class="num">1.9–3.5×10⁻⁴</td><td><span class="b a">代数派生</span></td><td>横向 Biot 数 = hd/(4k) = (md/4)²</td><td>≪1 ⇒ 一维成立（不推半无限）</td></tr>
+<tr><td><span class="sym">Ω</span></td><td class="num">5.8–25.9</td><td><span class="b a">代数派生</span> <span class="sym">ω</span>/<span class="sym">ν</span></td><td>无量纲频率；同时等于 (q²+q′²)/(q²−q′²)</td><td>决定 <span class="sym">ν</span> 的条件数</td></tr>
+</table>
+
+<div class="n"><b>为什么把"观测量"和"反演量"分开：</b>前者是数据里<b>直接拟合</b>出来的（B、<span class="sym">φ</span>、a），后者是<b>公式组合</b>出来的（<span class="sym">κ</span>、<span class="sym">ν</span>、k、h）。口试里说错层最常见——例如把 <span class="sym">κ</span> 说成"测出来的"，严格说是"从 q、q′、<span class="sym">ω</span> 算出来的"。</div>
+<h1>3. 材料与几何常数（"借来的和量出来的"）</h1>
+
+<table>
+<tr><th style="width:11%">符号</th><th style="width:20%">值 / 单位</th><th style="width:16%">来源</th><th style="width:27%">作用</th><th>影响</th></tr>
+<tr><td><span class="sym">ρ</span></td><td class="num">2700（2680–2720）kg/m³</td><td><span class="b h">手册</span> 6061-T6</td><td>密度；与 c 合成体积热容</td><td>±1% → k 的 ±1%</td></tr>
+<tr><td>c</td><td class="num">896（890–900）J/(kg·K)</td><td><span class="b h">手册</span> 6061-T6</td><td>比热容；决定"升 1 K 要多少能量"</td><td>±2% → k 的 ±2%</td></tr>
+<tr><td><span class="sym">ρ</span>c</td><td class="num">2.4192×10⁶ J/(m³·K)</td><td><span class="b a">代数派生</span></td><td>体积热容；<span class="sym">κ</span>↔k 与 <span class="sym">ν</span>↔h 两处换算的系数</td><td>合计 ±1.5%</td></tr>
+<tr><td>d</td><td class="num">0.01277 m</td><td><span class="b m">实测</span> 游标卡尺 0.01 mm</td><td>直径 → A、P、A/P = d/4</td><td>h 与 Bi⊥ 正比于 d（0.1%）</td></tr>
+<tr><td>A</td><td class="num">1.28077×10⁻⁴ m²</td><td><span class="b a">代数派生</span> πd²/4</td><td>横截面积；出现在 hP/(<span class="sym">ρ</span>cA) 里</td><td>通过 d 间接影响 h</td></tr>
+<tr><td>P</td><td class="num">0.0401181 m</td><td><span class="b a">代数派生</span> πd</td><td>周长；决定侧面积</td><td>同上</td></tr>
+<tr><td>A/P</td><td class="num">3.1925×10⁻³ m</td><td><span class="b a">代数派生</span> = d/4</td><td>体积/表面积；<b>h 的换算因子</b>，也是 Bi⊥ 的特征长度</td><td>写反就错 15 倍</td></tr>
+<tr><td>L</td><td class="num">0.2715 m</td><td><span class="b m">实测</span> T1 孔 → 棒端</td><td>分析长度；只进入 mL 与 <span class="sym">ε</span><sub>T</sub></td><td>不进 <span class="sym">κ</span>、<span class="sym">ν</span></td></tr>
+<tr><td>x_i</td><td class="num">0 / 38.5 / 89.5 / 140.5 / 191.5 mm</td><td><span class="b m">实测</span>（±1 mm 情景）</td><td>传感器坐标；q、q′ 是温度对 x 的斜率</td><td><b><span class="sym">κ</span> 的最大系统误差源</b>（相关误差）</td></tr>
+<tr><td>Δx</td><td class="num">3.85 cm，之后每 5.10 cm</td><td><span class="b m">实测</span></td><td>相邻传感器间距；决定每步相位增量的"量程"</td><td>与 1/q′ 比 → 是否要换周期</td></tr>
+</table>
+
+<h1>4. 传感与采集链常数（"怎么把温度变成数字"）</h1>
+
+<table>
+<tr><th style="width:12%">符号 / 名称</th><th style="width:19%">值</th><th style="width:16%">来源</th><th style="width:27%">作用</th><th>影响</th></tr>
+<tr><td><span class="sym">β</span></td><td class="num">4540 K</td><td><span class="b h">手册</span> NTC 标称值</td><td>热敏电阻材料常数：决定 R(T) 曲线陡度</td><td><span class="sym">β</span> 差 1% ≈ <b>0.6 °C 绝对偏置</b>；六路共用 ⇒ 对差值影响小</td></tr>
+<tr><td>R₀</td><td class="num">100 kΩ</td><td><span class="b f">电路设定</span></td><td>分压电阻；R_th = R₀·ADC/(1023−ADC)</td><td>影响分辨率分布，不改物理</td></tr>
+<tr><td>ADC</td><td class="num">0–1023（10 位）</td><td><span class="b f">硬件</span></td><td>把模拟电压变成整数；0 或 1023 记为 nan</td><td>量化噪声 ≈ 0.03 °C</td></tr>
+<tr><td>N_A0</td><td class="num">1000 次/周期</td><td><span class="b f">固件</span> <span class="mono">TEC_SAMPLE_COUNT</span></td><td>A0 平均压噪声（唯一反馈输入）</td><td>白噪声降 √1000 ≈ 32 倍</td></tr>
+<tr><td>N_rod</td><td class="num">100 次/通道</td><td><span class="b f">固件</span> <span class="mono">ROD_SAMPLE_COUNT</span></td><td>棒上通道平均；噪声由时间拟合再平均</td><td>决定扫描总时长</td></tr>
+<tr><td>t_conv</td><td class="num">0.112 ms</td><td><span class="b m">实测</span> Module 1</td><td>一次 analogRead 的耗时</td><td>决定 t_scan</td></tr>
+<tr><td>t_scan</td><td class="num">≈0.169 s</td><td><span class="b a">派生</span> 1000×0.112 + 5×100×0.112</td><td>一次全扫描时长；六通道<b>顺序</b>采样</td><td>相位偏斜 ≤0.045 s（κ 只变 −0.08%）</td></tr>
+<tr><td><span class="mono">report</span></td><td class="num">500 ms（2 Hz）</td><td><span class="b f">固件</span> <span class="mono">REPORT_INTERVAL_MS</span></td><td>数据行周期，也是控制更新周期</td><td>100 s 周期下 200 点/周期</td></tr>
+<tr><td>baud</td><td class="num">115200</td><td><span class="b f">固件</span></td><td>串口速率；与 Module 7（9600）不兼容</td><td>旧固件会被版本握手拒绝</td></tr>
+<tr><td>心跳</td><td class="num">0.4 s 发送 / 2 s 超时</td><td><span class="b f">主机+固件</span></td><td>主机存活证明；超时 → 输出归零</td><td>安全项，不影响物理</td></tr>
+<tr><td>通道顺序</td><td class="num">A0 → A1 … A5</td><td><span class="b f">固件</span></td><td>决定偏斜方向：T5 最晚</td><td>可用时序修正（敏感性已做）</td></tr>
+</table>
+
+<div class="n"><b>这一节最常被问：</b>"你的扫描偏斜对相位有什么影响？"——答：δ<span class="sym">φ</span> = <span class="sym">ω</span>·Δt；100 s 时 T5 相对 T1 的 Δt ≈ 0.045 s，δ<span class="sym">φ</span> ≈ 2.9 mrad；把整个时序修正加进去后 <span class="sym">κ</span> 只变 −0.08%，所以它是"已量化、非主因"。</div>
+<h1>5. 控制与执行器参数（"怎么让边界变成正弦"）</h1>
+
+<table>
+<tr><th style="width:13%">符号 / 名称</th><th style="width:19%">值 / 单位</th><th style="width:16%">来源</th><th style="width:26%">作用</th><th>影响</th></tr>
+<tr><td><span class="sym">χ</span>_h</td><td class="num">0.4954 °C/PWM</td><td><span class="b m">实测</span> Module 4 静态曲线</td><td>加热支路的稳态灵敏度（每 1 PWM 抬多少 °C）</td><td>进入 <span class="sym">χ</span>_h/<span class="sym">χ</span>_c</td></tr>
+<tr><td><span class="sym">χ</span>_c</td><td class="num">0.1414 °C/PWM</td><td><span class="b m">实测</span> 同上（制冷支路）</td><td>制冷支路的灵敏度</td><td>同上</td></tr>
+<tr><td><b>ratio</b></td><td class="num">3.5035</td><td><span class="b a">代数派生</span> <span class="sym">χ</span>_h/<span class="sym">χ</span>_c</td><td>冷热不对称补偿：负命令乘它（<b>在限幅之前</b>）</td><td>不改物理，只让正负半周等效</td></tr>
+<tr><td>标定表</td><td class="num">9 个节点<br>(T, PWM)</td><td><span class="b m">实测</span> Module 4</td><td>OPEN 模式的反查表（T→PWM），线性内插、<b>不外推</b></td><td>越界会触发 LOOKUP_RANGE</td></tr>
+<tr><td>Ta</td><td class="num">35 °C</td><td><span class="b f">实验设计</span></td><td>正弦均值 = 工作点</td><td>决定落在加热还是制冷支路</td></tr>
+<tr><td>Tb</td><td class="num">5 °C</td><td><span class="b f">实验设计</span></td><td>正弦振幅</td><td>太小信噪比不够，太大 h 非线性</td></tr>
+<tr><td>mode</td><td class="num">OPEN / P / PI</td><td><span class="b f">固件</span></td><td>三种边界生成方式，用于对照</td><td>决定边界质量</td></tr>
+<tr><td>Kp</td><td class="num">50 PWM/°C</td><td><span class="b f">固件/计划</span></td><td>比例增益；比例带 = 96/50 = <b>±1.92 °C</b></td><td>Tb=5 °C 时易饱和（100 s P 段 28 个饱和样本）</td></tr>
+<tr><td>Ki</td><td class="num">0.3 PWM/(°C·s)</td><td><span class="b f">固件/计划</span></td><td>积分增益；消静差但加相位滞后</td><td>饱和时需抗积分饱和配合</td></tr>
+<tr><td>pwm_limit</td><td class="num">96（一次 130）</td><td><span class="b f">固件 CONFIG</span></td><td>占空比上限（96/255 ≈ 38%）</td><td>决定最大可用功率；比较时必须声明</td></tr>
+<tr><td>anti_windup</td><td class="num">1（开）</td><td><span class="b f">固件 CONFIG</span></td><td>条件积分：饱和时冻结积分，误差反号立刻解冻</td><td>防削顶造成波形畸变</td></tr>
+<tr><td>运行区间</td><td class="num">10–45 °C</td><td><span class="b c">课程</span> → <span class="b f">固件</span></td><td>保留的工作区间；任何波形必须整体落在里面</td><td>否决了课件的 40 ± 16 °C</td></tr>
+<tr><td>TEC 备份</td><td class="num">60 °C</td><td><span class="b f">固件</span> <span class="mono">TEC_LIMIT_C</span></td><td>硬备份上限</td><td>触发即锁存停机</td></tr>
+<tr><td>T1 上限</td><td class="num">56 °C</td><td><span class="b f">固件</span> <span class="mono">BASE_LIMIT_C</span></td><td>棒底保护；T1 无效也立即停</td><td>保护棒与探头</td></tr>
+<tr><td><span class="sym">φ</span>（相位）</td><td class="num">0–2π 累加</td><td><span class="b f">固件</span></td><td>用真实 elapsed 积分；换频时在步边界分段 ⇒ 相位连续</td><td>决定 T_set 不跳变</td></tr>
+</table>
+
+<h2>5.1 标定表的 9 个节点（OPEN 反查用，来自 Module 4 实测）</h2>
+<table class="keep">
+<tr><th>TEC 温度 (°C)</th><td class="num">9.99</td><td class="num">13.40</td><td class="num">16.99</td><td class="num">20.44</td><td class="num">23.44</td><td class="num">28.31</td><td class="num">34.62</td><td class="num">40.42</td><td class="num">45.37</td></tr>
+<tr><th>对应 PWM</th><td class="num">−96</td><td class="num">−72</td><td class="num">−48</td><td class="num">−24</td><td class="num">0</td><td class="num">+11</td><td class="num">+23</td><td class="num">+34</td><td class="num">+45</td></tr>
+</table>
+<p class="small" style="font-size:8.2pt">读法：加热支路 ≈ 1.9 PWM/°C，制冷支路 ≈ 7.0 PWM/°C，比值 ≈ 3.5。所以 35 ± 5 °C 的前馈是 <b>+21.5 ± 11 PWM</b>，全程在加热支路 —— 这就是为什么 OPEN 段 ratio 几乎不激活。</p>
+
+<h1>6. 实验设计与判据（"事先定好的规矩"）</h1>
+
+<table>
+<tr><th style="width:20%">名称</th><th style="width:17%">值</th><th style="width:15%">来源</th><th style="width:25%">作用</th><th>实际通过情况</th></tr>
+<tr><td>保留周期数</td><td class="num">≥ 5 个完整周期</td><td><span class="b c">课程</span></td><td>少于 5 个无法做逐周期稳态判据</td><td>五段都取尾部 5 周期</td></tr>
+<tr><td>均值跨度上限</td><td class="num">0.1 °C</td><td><span class="b f">团队预设</span></td><td>判"均值不再漂"</td><td>只有 200 s 通过（0.093 °C）</td></tr>
+<tr><td>振幅跨度上限</td><td class="num">5%</td><td><span class="b f">团队预设</span></td><td>判"振幅不再变"</td><td><b>全部未通过</b>（6.9–25.9%）</td></tr>
+<tr><td>相位跨度上限</td><td class="num">0.1 rad</td><td><span class="b f">团队预设</span></td><td>判"相位不再漂"</td><td><b>全部未通过</b>（0.14–0.27）</td></tr>
+<tr><td>振幅信噪比</td><td class="num">≥ 5</td><td><span class="b f">团队预设</span></td><td>决定哪些传感器可进拟合</td><td>T1–T3 通过；T4/T5 在 100 s 不合格</td></tr>
+<tr><td>边界相对残差</td><td class="num">≤ 10%（实测 2.0%）</td><td><span class="b f">预设</span></td><td>判"交付的正弦干净"</td><td><b>通过</b>（0.0203）</td></tr>
+<tr><td>有限长容差</td><td class="num">5%</td><td><span class="b c">A4 判据</span></td><td>判半无限是否够用</td><td>周期场 0.35%（过）；平均场 T5 26%（不过）</td></tr>
+<tr><td>Bi⊥ 上限</td><td class="num">0.1</td><td><span class="b c">课程</span></td><td>判一维是否成立</td><td><b>通过</b>（2–3×10⁻⁴）</td></tr>
+<tr><td>合格周期集合</td><td class="num"><span class="mono">qualified_periods_s = []</span></td><td><span class="b d">结果</span></td><td>记录"哪一段可当生产数据"</td><td><b>空</b> ⇒ 全部 diagnostic</td></tr>
+</table>
+
+<div class="w"><b>这一节是评分重点：</b>判据必须<b>先定后测</b>。你的记录里 <span class="mono">criterion_status</span> 写着 "Existing provisional planning tolerances; not a course-mandated noise-calibrated certification" —— 上台时要主动说出这句，否则会被问"你的容差凭什么定 5%"。</div>
+<h1>7. 统计与不确定度符号（"这个数能信多少"）</h1>
+
+<table>
+<tr><th style="width:16%">符号</th><th style="width:20%">值</th><th style="width:15%">来源</th><th style="width:24%">作用 / 含义</th><th>注意</th></tr>
+<tr><td><span class="sym">δκ</span>/<span class="sym">κ</span></td><td class="num">1.9–5.0%</td><td><span class="b d">拟合导出</span></td><td><span class="sym">κ</span> 的条件重复性标准误</td><td>不含系统误差</td></tr>
+<tr><td><span class="sym">δν</span>/<span class="sym">ν</span></td><td class="num">24–78%</td><td><span class="b d">拟合导出</span></td><td><span class="sym">ν</span> 的条件重复性标准误</td><td>被"近等量相减"放大</td></tr>
+<tr><td><span class="sym">δ</span>h/h</td><td class="num">24–78%</td><td><span class="b a">代数派生</span></td><td>= <span class="sym">δν</span>/<span class="sym">ν</span> ⊕ <span class="sym">δρ</span>/<span class="sym">ρ</span> ⊕ <span class="sym">δ</span>c/c ⊕ <span class="sym">δ</span>d/d</td><td>几乎全由 <span class="sym">ν</span> 主导</td></tr>
+<tr><td><span class="sym">σ</span></td><td class="num">0.03–0.04 °C</td><td><span class="b d">拟合导出</span></td><td>正弦拟合的残差标准差（逐传感器）</td><td>信号 1.7 °C ⇒ 相对 2%</td></tr>
+<tr><td>SEM（跨频段）</td><td class="num">0.8%</td><td><span class="b a">代数派生</span></td><td>五个 <span class="sym">κ</span> 的离散（0.055×10⁻⁵）</td><td>五点共享漂移 ⇒ 不是独立样本</td></tr>
+<tr><td>span</td><td class="num">4.9%</td><td><span class="b a">代数派生</span></td><td>(max−min)/mean，跨五个 <span class="sym">κ</span></td><td>最直观的一致性指标</td></tr>
+<tr><td>配对差/<span class="sym">σ</span></td><td class="num">1.43</td><td><span class="b a">代数派生</span></td><td>最大两个 <span class="sym">κ</span> 之差 ÷ 合并标准误</td><td>≈1.4<span class="sym">σ</span> ⇒ 相容</td></tr>
+<tr><td>放大因子</td><td class="num">5.8–25.9</td><td><span class="b a">代数派生</span></td><td>(q²+q′²)/(q²−q′²) = <span class="sym">Ω</span></td><td><b>就是 <span class="sym">Ω</span></b>，决定 h 的病态</td></tr>
+<tr><td>逐周期 <span class="sym">κ</span> 范围</td><td class="num">6.40–7.14×10⁻⁵（10.9%）</td><td><span class="b d">拟合导出</span></td><td>同一窗口内五个周期的散布</td><td>漂移所致，不是置信区间</td></tr>
+</table>
+
+<div class="n"><b>三层不确定度的说法（背下来）：</b><br>
+① <b>条件重复性</b>：<span class="sym">κ</span> 2–5%、<span class="sym">ν</span> 24–78%（同一段数据内）；<br>
+② <b>跨频段离散</b>：<span class="sym">κ</span> 0.8%、span 4.9%（不同频率之间）；<br>
+③ <b>系统误差</b>：位置、偏置、漂移、端部 —— 主导项，但没有标准不确定度，只能给区间。<br>
+<b>所以 k = 165 ± 5 W/(m·K) 是"统计 2–5% ⊕ 材料 1.5%"的结果，而 h 只能报"9–18"。</b></div>
+
+<h1>8. 派生组合与换算尺（"心算用的"）</h1>
+
+<table>
+<tr><th style="width:22%">组合</th><th style="width:22%">值</th><th style="width:19%">由什么来</th><th>用法</th></tr>
+<tr><td><span class="sym">ρ</span>c</td><td class="num">2.4192×10⁶ J/(m³·K)</td><td class="num">2700 × 896</td><td><b>k = <span class="sym">κ</span> × 2.4192×10⁶</b>；<b>h = <span class="sym">ν</span> × <span class="sym">ρ</span>c × d/4</b></td></tr>
+<tr><td>d/4</td><td class="num">3.1925×10⁻³ m</td><td class="num">0.01277 / 4</td><td>A/P 的值；Bi⊥ 的特征长度</td></tr>
+<tr><td>换算尺 <span class="sym">κ</span>→k</td><td class="num">×24.19</td><td class="num"><span class="sym">ρ</span>c × 10⁻⁵</td><td><span class="sym">κ</span> 用 10⁻⁵ 为单位时：6.80 × 24.19 = <b>164.5</b></td></tr>
+<tr><td>换算尺 <span class="sym">ν</span>→h</td><td class="num">×7.723</td><td class="num">10⁻³ × <span class="sym">ρ</span>c × d/4</td><td><span class="sym">ν</span> 用 10⁻³ 为单位时：1.212 × 7.723 = <b>9.36</b></td></tr>
+<tr><td><span class="sym">Ω</span></td><td class="num"><span class="sym">ω</span>/<span class="sym">ν</span></td><td class="num">2π/(T<span class="sym">ν</span>)</td><td>= 放大因子 = √(1+<span class="sym">Ω</span>²) 的主项</td></tr>
+<tr><td>m²</td><td class="num"><span class="sym">ν</span>/<span class="sym">κ</span> = q² − q′²</td><td class="num">两条路</td><td>稳态与周期之间的"桥"</td></tr>
+<tr><td>Bi⊥</td><td class="num">hd/(4k)</td><td class="num">= (md/4)²</td><td>两种算法必须相等（自检）</td></tr>
+<tr><td><span class="sym">ε</span><sub>T</sub>(x)</td><td class="num">1 − (1+e^{−2mL})/(1+e^{−2m(L−x)})</td><td class="num">有限 vs 半无限</td><td>判"哪些传感器能当半无限"</td></tr>
+<tr><td><span class="sym">Θ</span>_tip</td><td class="num">1/cosh(mL) = 0.38–0.54</td><td class="num">mL</td><td>端部还剩多少过剩温度</td></tr>
+</table>
+
+<div class="fbox">心算训练（被追问时用）：
+  κ = 6.80e-5  →  k = 6.80 × 24.19 ≈ 164.5 W/(m·K)
+  ν = 1.21e-3  →  h = 1.21 × 7.723  ≈ 9.4 W/(m²·K)
+  m = 5.0      →  mL = 5.0 × 0.2715 ≈ 1.36 ;  Θ_tip = 1/cosh(1.36) ≈ 0.47
+  Bi⊥ = (5.0 × 0.01277/4)² = (0.0160)² ≈ 2.6e-4</div>
+<h1>9. 记录字段（CSV 里那些名字是什么）</h1>
+
+<table>
+<tr><th style="width:24%">字段</th><th style="width:22%">取值示例</th><th>含义 / 为什么要在记录里留下它</th></tr>
+<tr><td class="mono">time_s</td><td class="num">1407.19</td><td>Arduino 毫秒时钟换算的秒；<b>相位与它同源</b>，这是相位的唯一时间基准</td></tr>
+<tr><td class="mono">host_time</td><td class="num">2026-11-09T10:27:32.38-05:00</td><td>主机时间戳；用于跨文件对齐与"事件发生在几点"</td></tr>
+<tr><td class="mono">tec_C</td><td class="num">35.02</td><td>A0 读数：控制与安全输入（<b>不是</b>边界）</td></tr>
+<tr><td class="mono">rod1_C … rod5_C</td><td class="num">32.15 … 28.22</td><td>T1–T5；T1 是边界，T1–T3 进拟合</td></tr>
+<tr><td class="mono">setpoint_C</td><td class="num">34.99</td><td>固件算出的正弦目标值（不是实测）</td></tr>
+<tr><td class="mono">phase_rad</td><td class="num">0–6.283</td><td>相位累加器的当前值；用于事后验证"换频是否连续"</td></tr>
+<tr><td class="mono">control_mode</td><td class="num">OPEN / P / PI</td><td>该行由哪种控制产生；比较时必须分组</td></tr>
+<tr><td class="mono">step</td><td class="num">0,1,2,3</td><td>计划中的第几步；换步处就是频率切换点</td></tr>
+<tr><td class="mono">Ta_C, Tb_C, period_s</td><td class="num">35, 5, 200</td><td>本步的激励参数；与 setpoint 一起证明"输入是什么"</td></tr>
+<tr><td class="mono">signed_pwm</td><td class="num">+23</td><td>实际施加的有符号 PWM（正=加热）</td></tr>
+<tr><td class="mono">error_C</td><td class="num">−0.02</td><td>setpoint − tec_C；判断是否饱和</td></tr>
+<tr><td class="mono">integral_error_C_s</td><td class="num">—</td><td>积分量；查 windup / 解冻是否正常</td></tr>
+<tr><td class="mono">compensated_pwm</td><td class="num">−80.7</td><td>乘过 ratio 的命令；与 signed_pwm 比可验证限幅</td></tr>
+<tr><td class="mono">saturated / integration_blocked</td><td class="num">0 / 1</td><td>该行是否贴边、积分是否冻结 —— 判"边界是否被削顶"的直接证据</td></tr>
+<tr><td class="mono">heartbeat_age_ms</td><td class="num">123</td><td>距离上次心跳多久；&gt;2000 会触发 LINK_TIMEOUT</td></tr>
+<tr><td class="mono">fault_code</td><td class="num">NONE</td><td>故障类型；分析脚本会拒收含故障的区间</td></tr>
+<tr><td class="mono">run_state</td><td class="num">RUNNING</td><td>只保留 RUNNING 行；DONE/FAULT 行不计入拟合</td></tr>
+<tr><td class="mono">seq</td><td class="num">0,1,2…</td><td>单调序号；缺号=串口丢行，用于完整性检查</td></tr>
+<tr><td class="mono">plan_sha256</td><td class="num">（plan_01.json 内）</td><td>上传计划的哈希；证明"这份数据对应这份参数"</td></tr>
+</table>
+
+<h1>10. 谁真正进了最终结果</h1>
+
+<h2>10.1 三色决策表（口试里最有用的一张）</h2>
+<table>
+<tr><th style="width:16%">类别</th><th style="width:40%">包含</th><th>说明</th></tr>
+<tr><td><b style="color:#b03a2e">进入 k</b></td><td><span class="sym">κ</span>（由 q、q′、<span class="sym">ω</span> 决定）、<span class="sym">ρ</span>、c</td><td>只有这四项。别的都可以变而 k 不变</td></tr>
+<tr><td><b style="color:#b03a2e">进入 h</b></td><td><span class="sym">ν</span>（同上）、<span class="sym">ρ</span>、c、d</td><td>d 只通过 d/4 进；<span class="sym">ν</span> 是主导</td></tr>
+<tr><td>只影响判据</td><td>L、x_i、mL、<span class="sym">ε</span><sub>T</sub>、Bi⊥、5 周期、三条容差</td><td>用来判"能不能这样用"，不直接改 k、h</td></tr>
+<tr><td><b style="color:#2e7d32">不进入结果</b></td><td>h = 10（课程临时值）、k = 166–172（文献带）、<span class="sym">β</span>、R₀、ADC、ratio、Kp、Ki、pwm_limit、心跳</td><td>只用于<b>事前预测</b>或<b>事后对比</b>，或只影响数据质量</td></tr>
+</table>
+
+<h2>10.2 一阶敏感性（"这个常数变 1%，结果变多少"）</h2>
+<div class="fbox">k  = κ · ρ · c
+   δk/k = δκ/κ ⊕ δρ/ρ ⊕ δc/c
+   → ρ 变 1% ⇒ k 变 1% ;  c 变 1% ⇒ k 变 1% ;  κ 变 1% ⇒ k 变 1%
+
+h  = ν · ρ · c · d/4
+   δh/h = δν/ν ⊕ δρ/ρ ⊕ δc/c ⊕ δd/d
+   → ν 变 1% ⇒ h 变 1%（但 ν 自身误差 24–78%）
+   → d 变 1% ⇒ h 变 1% ;  ρc 变 1% ⇒ h 变 1%</div>
+<p><b>读法：</b>公式看上去"四个都对 h 有贡献"，但量级差两个数量级 —— <span class="sym">ν</span> 的 24–78% 压倒 <span class="sym">ρ</span>、c、d 的 1–2%。<b>所以"改进 h"只有两条路：降低放大因子（更长周期）、压低 <span class="sym">δ</span>q′（更稳窗口/更准相位）。</b></p>
+
+<div class="n"><b>一句话总结整张表：</b>整条链上真正"借来"且会进结果的只有 <b><span class="sym">ρ</span> 与 c</b>（合计 ~1.5%）；<b>d、L、x</b> 是实测几何（x 最要命）；<b>h = 10、k = 166–172</b> 只是预测与对照；<b>ratio、Kp、Ki、pwm_limit</b> 决定"边界交得干不干净"；<b>mL、<span class="sym">ε</span><sub>T</sub>、Bi⊥</b> 只是"能不能这样用"的判据。</div>
+
+<p class="small" style="margin-top:10pt;border-top:.8pt solid #cfd8de;padding-top:5pt;font-size:8.2pt">
+数值取自：<span class="mono">Module_8/data/processed/transport_note/m08_transport_parameters.json</span>、
+<span class="mono">…/five_period_review/m08_pi_five_period_summary.json</span>、
+<span class="mono">Module_8/arduino/module_08_rod_controller/*</span>、
+<span class="mono">Module_8/config/sensor_map.json</span>、
+<span class="mono">Module_4/data/steady_state.csv</span>（标定曲线与 ratio）。
+若重跑分析脚本，请同步更新本表与 <span class="mono">F1_prep_handbook_Huang.pdf</span>、<span class="mono">F1_oral_answers_Huang.pdf</span>。
+</p>
+
+<!--END-->
+</body>
+</html>
