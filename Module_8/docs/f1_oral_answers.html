@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>F1 口试 13 题：完整答案与推导</title>
+<style>
+@page { size: A4; margin: 13mm 12mm 15mm 12mm; }
+* { box-sizing: border-box; }
+body { font-family: "PingFang SC","Hiragino Sans GB","Arial Unicode MS",sans-serif;
+       font-size: 9.4pt; line-height: 1.5; color: #1a1a1a; margin: 0; }
+h1 { font-size: 15.5pt; margin: 13pt 0 5pt; color: #0f3d5c; page-break-after: avoid; }
+h2 { font-size: 12pt; margin: 11pt 0 4pt; padding-bottom: 2pt;
+     border-bottom: 1pt solid #0f3d5c; color: #0f3d5c; page-break-after: avoid; }
+h3 { font-size: 9.8pt; margin: 7pt 0 2pt; color: #14506e; page-break-after: avoid; }
+p { margin: 3pt 0; }
+ul, ol { margin: 3pt 0 3pt 16pt; padding: 0; }
+li { margin: 1.2pt 0; }
+code, .mono { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8.2pt;
+       background: #f2f4f6; padding: 0 1.5pt; border-radius: 2pt; }
+.sym { color: #b03a2e; font-weight: 700; font-style: italic;
+       font-family: "Times New Roman","Songti SC",serif; }
+.f { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8.9pt;
+     background: #f7f9fb; border-left: 3pt solid #0f3d5c; padding: 4pt 7pt;
+     margin: 4pt 0; white-space: pre-wrap; line-height: 1.42; page-break-inside: avoid; }
+.n { background: #eef6f1; border-left: 3pt solid #2e7d4f; padding: 4pt 7pt;
+     margin: 5pt 0; font-size: 9pt; page-break-inside: avoid; }
+.w { background: #fdf1ef; border-left: 3pt solid #b03a2e; padding: 4pt 7pt;
+     margin: 5pt 0; font-size: 9pt; page-break-inside: avoid; }
+.qa { border: .8pt solid #cfd8de; border-radius: 3pt; padding: 6pt 8pt 4pt;
+      margin: 9pt 0 7pt; page-break-inside: avoid; background: #fbfcfd; }
+.qa .qn { display: inline-block; background: #0f3d5c; color: #fff; font-size: 8pt;
+          padding: 1pt 5pt; border-radius: 2pt; margin-right: 4pt; }
+.qa .qt { font-weight: 700; color: #0f3d5c; }
+.qa .badge { font-size: 7.4pt; color: #6b7a86; }
+.thirty { background: #f0f4fa; border-left: 3pt solid #2c5f9e; padding: 4pt 7pt;
+          margin: 4pt 0; font-size: 9.1pt; }
+.tw { color: #20456f; font-weight: 700; }
+table { border-collapse: collapse; width: 100%; margin: 4pt 0; font-size: 8.4pt;
+        page-break-inside: avoid; }
+th { background: #0f3d5c; color: #fff; text-align: left; padding: 2.6pt 4pt;
+     font-weight: 600; font-size: 8.3pt; }
+td { border-bottom: .6pt solid #cfd8de; padding: 2.4pt 4pt; vertical-align: top;
+     overflow-wrap: anywhere; }
+tr:nth-child(even) td { background: #f7f9fa; }
+.num { text-align: right; font-family: Menlo,monospace; font-size: 8.1pt; }
+</style>
+</head>
+<body>
+<div style="border-top:6pt solid #0f3d5c;border-bottom:6pt solid #0f3d5c;padding:40mm 6mm 44mm;margin-top:8mm;page-break-after:always">
+  <div style="display:inline-block;background:#0f3d5c;color:#fff;font-size:7.6pt;padding:1pt 5pt;border-radius:2pt">Phys 39 / 169 · Module 8 Part II · F1 个人口试</div>
+  <h1 style="font-size:26pt;margin:10mm 0 4mm">F1 口试 13 题<br>完整答案与推导</h1>
+  <div style="font-size:13pt;color:#14506e">9 道官方题库（C6/F1 共用）+ 4 道高频追加</div>
+  <div style="margin-top:16mm;font-size:9.6pt;color:#444;line-height:1.9">
+    使用者：Ricky Huang（团队 R-X）<br>
+    每题结构：30 秒版 → 完整推导 → 你的数字 → 追问 → 陷阱<br>
+    全部数字取自仓库 <span class="mono">Module_8/data/processed/</span>（2026-11-20 状态）<br>
+    配套图表：<span class="mono">F1_prep_handbook_Huang.pdf</span>（图 3-1 … 图 11-3）<br>
+    生成日期：2026-11-25
+  </div>
+</div>
+
+<h1>0. 怎么用这份东西</h1>
+
+<table>
+<tr><th style="width:22%">场景</th><th>怎么用</th></tr>
+<tr><td>考前 3 分钟</td><td>只读 §0.2 的「一句话索引」表 + §0.1 的 45 秒总述。</td></tr>
+<tr><td>考前 1 小时</td><td>每题读「30 秒版」，合上文档自己复述一遍；卡住的题再看推导。</td></tr>
+<tr><td>两人对练</td><td>一人念题目，一人只讲 30 秒版；然后按住「追问」栏继续问 2 轮。</td></tr>
+<tr><td>被问住时</td><td>用 §14 的三句「逃生舱」，比硬编答案安全得多。</td></tr>
+</table>
+
+<div class="n"><b>§0.1 开场总述（45 秒，所有问题的落脚点，务必背熟）</b><br>
+<span style="font-style:italic">The TEC imposes a sinusoidal temperature at the rod base. As the oscillation travels, diffusion makes it decay and lag, and side loss drains it. Fitting each sensor gives an amplitude and a phase; their slopes versus position are q and q-prime. Because the equation is linear, one complex exponential carries both: the imaginary part gives kappa = omega over 2 q q-prime, the real part gives nu = kappa times (q squared minus q-prime squared). Multiplying by rho c gives the aluminium conductivity k; multiplying by rho c A over P gives the side-loss coefficient h. Five forcing periods give kappa to 0.8 per cent, k one to four per cent below the 6061-T6 handbook range, and h only to a factor of two, because nu is a near-cancellation.</span></div>
+
+<h2>§0.2 十三题一句话索引</h2>
+
+<table>
+<tr><th style="width:6%">题</th><th style="width:34%">问题（简）</th><th style="width:44%">一句话答案</th><th>图</th></tr>
+<tr><td>Q1</td><td>q、q′ 怎么从振幅和相位得到</td><td>正弦拟合得 B、φ；ln B–x 斜率 −q，unwrap 后 φ–x 斜率 −q′</td><td>6-1</td></tr>
+<tr><td>Q2</td><td>为什么两个都要</td><td>两个未知数要两个数；q 混着、q′ 是扩散指纹</td><td>7-3</td></tr>
+<tr><td>Q3</td><td>推 κ = ω/(2qq′)、ν = κ(q²−q′²)</td><td>代入复指数：虚部给 ω=2κqq′，实部给 ν=κ(q²−q′²)</td><td>—</td></tr>
+<tr><td>Q4</td><td>κ、ν 怎么变成 k、h</td><td>k=κρc；h=νρcA/P=νρc(d/4)，各验一次量纲</td><td>7-2</td></tr>
+<tr><td>Q5</td><td>指一个残差图或频率一致性检查</td><td>残差 0.03 °C、边界 2%；κ 五频段 4.9%、1.43σ；ν 反号</td><td>7-1</td></tr>
+<tr><td>Q6</td><td>哪个系统误差最限制 k 或 h</td><td>k 看几何与漂移；h 看减法（条件数 6–26）</td><td>7-3</td></tr>
+<tr><td>Q7</td><td>半无限近似误差、为什么依赖位置</td><td>端部反射项 e^{−2m(L−x)}；平均场 T5 处 26%，周期场 0.35%</td><td>8-1</td></tr>
+<tr><td>Q8</td><td>横向 Biot 数与它保证什么</td><td>Bi⊥=hd/(4k)~2e-4 ⇒ 一维成立；不推出半无限</td><td>9-1</td></tr>
+<tr><td>Q9</td><td>相位约定、为什么要 unwrap</td><td>φ=atan2(−S,C)；下游 φ 更小；累计 4.2 rad 必须展开</td><td>6-2</td></tr>
+<tr><td>Q10</td><td>为什么不直接做稳态拿 k</td><td>稳态欠定且依赖 T∞；周期法免 T∞</td><td>8-1</td></tr>
+<tr><td>Q11</td><td>T1 与 A0 的区别</td><td>A0 控制、T1 边界；振幅 4.80 vs 1.69（35%）</td><td>3-1</td></tr>
+<tr><td>Q12</td><td>为什么要正弦、为什么不用自激振荡</td><td>正弦 = ω≠0 的传递函数；自激识别的是控制器</td><td>4-1</td></tr>
+<tr><td>Q13</td><td>m 到底是什么</td><td>m²=ν/κ=q²−q′²；1/m 是平均场衰减长度；mL≈1.5</td><td>5-1</td></tr>
+</table>
+<div class="qa">
+<div><span class="qn">Q1</span><span class="qt">How are q and q′ obtained from the measured amplitudes and phases?</span> <span class="badge">官方 1/9 · 图 6-1</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>对每个传感器在选定窗口内做<strong>固定频率</strong>的正弦拟合，得振幅 Bᵢ 与相位 φᵢ；再把 ln Bᵢ 对 x 做直线拟合、斜率 = −q；把展开后的 φᵢ 对 x 拟合、斜率 = −q′。</div>
+
+<h3>完整过程</h3>
+<p><b>① 模型。</b> 线段方程的稳态周期解在同一频率下是</p>
+<div class="f">T_i(t) = a_i + B_i cos(<span class="sym">ω</span>t + <span class="sym">φ</span>_i)</div>
+<p><span class="sym">ω</span> = 2π/T 由固件设定（100–500 s ⇒ 0.01257–0.06283 rad/s），<b>不作为拟合参数</b>；若拟合出的频率偏离设定值超过 1/T，说明有频率误差或漂移。</p>
+
+<p><b>② 线性化技巧（关键）。</b> 把相位展开：</p>
+<div class="f">B cos(<span class="sym">ω</span>t + <span class="sym">φ</span>) = C cos(<span class="sym">ω</span>t) + S sin(<span class="sym">ω</span>t),    C = B cos <span class="sym">φ</span>,   S = −B sin <span class="sym">φ</span></div>
+<p>于是模型对 (C, S) 是<b>线性</b>的，可用闭式最小二乘，不必做非线性迭代：</p>
+<div class="f">X = [1, cos <span class="sym">ω</span>t, sin <span class="sym">ω</span>t]        (N × 3)
+coef = (XᵀX)⁻¹ Xᵀ y   →   (a, C, S)
+B = √(C² + S²)
+<span class="sym">φ</span> = atan2(−S, C)</div>
+
+<p><b>③ 误差传递。</b> 由 cov = (XᵀX)⁻¹·<span class="sym">σ</span>²（<span class="sym">σ</span>² = SSR/(N−3)）与雅可比：</p>
+<div class="f"><span class="sym">δ</span>B = √[ (C/B)² var(C) + (S/B)² var(S) + 2(CS/B²) cov(C,S) ]
+<span class="sym">δφ</span> = √[ (S/B²)² var(C) + (C/B²)² var(S) − 2(CS/B⁴) cov(C,S) ]</div>
+<p>这就是 CSV 里 <span class="mono">amplitude_se_C</span>、<span class="mono">phase_se_rad</span> 的来源（200 s：<span class="sym">δ</span>B ≈ 2×10⁻⁴ °C、<span class="sym">δφ</span> ≈ 4×10⁻⁵ rad —— 单点拟合极准，真正的误差在下面两步）。</p>
+
+<p><b>④ 空间拟合（两阶段法）。</b> 模型给出两条直线：</p>
+<div class="f">B(x) = B₀ e^{−q x}      ⇒   ln B_i = ln B₀ − q x_i
+<span class="sym">φ</span>(x) = <span class="sym">φ</span>₀ − q′ x      ⇒   <span class="sym">φ</span>_i = <span class="sym">φ</span>₀ − q′ x_i
+
+q  = −d(ln B)/dx     [1/m]
+q′ = −d<span class="sym">φ</span>/dx        [1/m]        （相位已展开）</div>
+
+<p><b>⑤ 只用三个传感器。</b> 保留判据是振幅信噪比 &gt; 5。100 s 时 B(T5)/B(T1) = e^{−21.26×0.1915} = <b>1.7%</b>，绝对振幅只有 0.020 °C，已进噪声；T1–T3 的 SNR 合格，所以进入拟合。</p>
+
+<h3>你的数字（200 s）</h3>
+<table>
+<tr><th style="width:44%">量</th><th>值</th></tr>
+<tr><td>两阶段半无限拟合（图 6-1 上标的）</td><td class="num">q = 15.46 m⁻¹，q′ = 15.07 m⁻¹</td></tr>
+<tr><td>最终采用的复数有限长拟合（表里的）</td><td class="num">q = 15.65 m⁻¹，q′ = 15.06 m⁻¹</td></tr>
+<tr><td>两者差</td><td class="num">1.2%（原因见 Q7）</td></tr>
+<tr><td>逐点拟合残差（T1/T2/T3）</td><td class="num">0.034 / 0.043 / 0.043 °C</td></tr>
+</table>
+
+<div class="n"><b>追问：</b>① <b>为什么用 ln B 而不是 B？</b> 模型是 B = B₀e^{−qx}，取对数才线性化。
+② <b>ω 要不要拟合？</b> 不用；若拟合出的 ω 偏离设定值超过 1/T，说明有频率误差或漂移。
+③ <b>为什么只用三个传感器？</b> 振幅信噪比；T4/T5 已接近噪声（0.20 / 0.10 °C）。</div>
+
+<div class="w"><b>陷阱：</b>① 用 B 直接线性拟合 → 斜率没有物理意义；② 不做 unwrap 就拟合 φ → q′ 完全错（见 Q9）。</div>
+</div>
+
+<div class="qa">
+<div><span class="qn">Q2</span><span class="qt">Why are both amplitude decay and phase lag needed to separate diffusivity from side heat loss?</span> <span class="badge">官方 2/9 · 图 7-3</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>未知数有两个（<span class="sym">κ</span>、<span class="sym">ν</span>），而稳态只给一个组合量 m² = <span class="sym">ν</span>/<span class="sym">κ</span>。一次正弦采集给出<b>两个独立的数</b>（q 与 q′），对应两条独立方程；少任何一个都欠定。</div>
+
+<h3>完整论证（三层）</h3>
+<p><b>第一层：数方程。</b></p>
+<table>
+<tr><th style="width:16%">观测</th><th style="width:8%">个数</th><th style="width:40%">能写出的方程</th><th>可解性</th></tr>
+<tr><td>稳态剖面</td><td class="num">1</td><td class="mono">m² = hP/(kA) = ν/κ</td><td>2 未知数、1 方程 → ❌</td></tr>
+<tr><td>只有振幅</td><td class="num">1</td><td class="mono">q² = (m²/2)(√(1+Ω²)+1)</td><td>仍含 κ 与 ν → ❌</td></tr>
+<tr><td>只有相位</td><td class="num">1</td><td class="mono">q′² = (m²/2)(√(1+Ω²)−1)</td><td>仍含 κ 与 ν → ❌</td></tr>
+<tr><td><b>振幅 + 相位</b></td><td class="num"><b>2</b></td><td class="mono">ω = 2κqq′；ν = κ(q²−q′²)</td><td><b>✅ 两个方程两个未知数</b></td></tr>
+</table>
+
+<p><b>第二层：为什么单看一个不行（显式）。</b> 令 <span class="sym">Ω</span> = <span class="sym">ω</span>/<span class="sym">ν</span>、m² = <span class="sym">ν</span>/<span class="sym">κ</span>，则</p>
+<div class="f">q²  = (m²/2)·( √(1+<span class="sym">Ω</span>²) + 1 )     ← 同时依赖 m（=ν/κ）与 <span class="sym">Ω</span>（=ν）
+q′² = (m²/2)·( √(1+<span class="sym">Ω</span>²) − 1 )     ← 同样同时依赖两者</div>
+<p>也就是说：<b>衰减里混着漏热</b>——漏热越大，同一频率下衰减越快，看起来"像扩散慢"。只有把 <b>差</b> <span class="mono">q² − q′²</span> 拿出来，漏热项才被消掉，只剩 m² = <span class="sym">ν</span>/<span class="sym">κ</span>；而 <b>积</b> <span class="mono">2qq′</span> 单独给出 <span class="sym">ω</span>/<span class="sym">κ</span>。</p>
+
+<p><b>第三层：物理图像。</b></p>
+<ul>
+<li><b>相位滞后 = 扩散的指纹</b>：热量要"走"过去才有滞后，纯扩散时滞后 ∝ √<span class="sym">ω</span>；</li>
+<li><b>额外衰减 = 漏热的指纹</b>：热量边走边被空气拿走；</li>
+<li>稳态时两者合成一个指数 e^{−mx}，分不开。</li>
+</ul>
+<p><b>若 <span class="sym">ν</span> = 0（侧壁绝热）会怎样？</b> 此时 q = q′ = √(<span class="sym">ω</span>/2<span class="sym">κ</span>)，两者被锁死成一个数 —— 永远得不到第二个观测。</p>
+
+<h3>把"混在一起"量化（你的数据）</h3>
+<table>
+<tr><th style="width:14%">周期</th><th style="width:18%">Ω = ω/ν</th><th style="width:16%">q / m</th><th style="width:16%">q′ / m</th><th>说明</th></tr>
+<tr><td class="num">200 s</td><td class="num">25.9</td><td class="num">3.67</td><td class="num">3.53</td><td>q ≈ q′，两者差很小 → 条件数最大</td></tr>
+<tr><td class="num">300 s</td><td class="num">17.4</td><td class="num">3.04</td><td class="num">2.87</td><td>—</td></tr>
+<tr><td class="num">400 s</td><td class="num">6.68</td><td class="num">1.97</td><td class="num">1.70</td><td>差变明显</td></tr>
+<tr><td class="num">500 s</td><td class="num">5.76</td><td class="num">1.85</td><td class="num">1.56</td><td>分离最好</td></tr>
+</table>
+<p class="small">注：m 用 √(q²−q′²) 计算；表中 q/m、q′/m 由该式与 <span class="mono">Ω</span> 唯一确定，可作自检。</p>
+
+<div class="n"><b>追问：</b>① <b>为什么不做两个不同温度的稳态实验？</b> <span class="mono">m² = hP/(kA)</span> 与温度水平无关，换温度只缩放曲线，斜率不变 → 同一个数。
+② <b>用阶跃行不行？</b> 行，但阶跃含全频段，只能反卷积，无法重复平均，也没有稳态可判（见 Q12）。</div>
+</div>
+<div class="qa">
+<div><span class="qn">Q3</span><span class="qt">Derive or explain κ = ω/(2qq′) and ν = κ(q² − q′²), including units.</span> <span class="badge">官方 3/9 · 核心推导</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>把 θ ∝ e^{i<span class="sym">ω</span>t}·e^{−(q+iq′)x} 代入 <span class="mono">∂θ/∂t = κ∂²θ/∂x² − νθ</span>：左端得 i<span class="sym">ω</span>，右端得 κ(q²−q′²+2iqq′)−<span class="sym">ν</span>。<b>虚部</b>给 <span class="sym">ω</span> = 2κqq′，<b>实部</b>给 <span class="sym">ν</span> = κ(q²−q′²)。</div>
+
+<h3>完整推导（九步）</h3>
+<p><b>(1) 出发点。</b></p>
+<div class="f">θ(x,t) = T(x,t) − T∞
+∂θ/∂t = <span class="sym">κ</span> ∂²θ/∂x² − <span class="sym">ν</span>θ
+<span class="sym">κ</span> = k/(<span class="sym">ρ</span>c)  [m²/s]          <span class="sym">ν</span> = hP/(<span class="sym">ρ</span>cA)  [1/s]</div>
+
+<p><b>(2) 试探解</b>（线性、常系数 ⇒ 单频驱动产生同频响应，只改幅值与相位）。</p>
+<div class="f">θ = Re[ Θ₀ · e^{i<span class="sym">ω</span>t} · e^{−sx} ],      s = q + i q′   （复数波数）</div>
+
+<p><b>(3) 求导。</b></p>
+<div class="f">∂θ/∂t   = i<span class="sym">ω</span> · θ
+∂²θ/∂x² = s² θ = (q + iq′)² θ = (q² − q′²) θ + i(2qq′) θ</div>
+
+<p><b>(4) 代入并两边除以 θ。</b></p>
+<div class="f">i<span class="sym">ω</span> = <span class="sym">κ</span>[ (q² − q′²) + i(2qq′) ] − <span class="sym">ν</span></div>
+
+<p><b>(5) 分成实部 / 虚部（全题的关键一步）。</b></p>
+<div class="f">实部：  0 = <span class="sym">κ</span>(q² − q′²) − <span class="sym">ν</span>     ⇒   <span class="sym">ν</span> = <span class="sym">κ</span> (q² − q′²)
+虚部：  <span class="sym">ω</span> = 2<span class="sym">κ</span> q q′           ⇒   <span class="sym">κ</span> = <span class="sym">ω</span> / (2 q q′)</div>
+
+<p><b>(6) 两式相除，得到"桥"。</b></p>
+<div class="f"><span class="sym">ν</span>/<span class="sym">κ</span> = q² − q′² = m²</div>
+
+<p><b>(7) 逆解（实验用的形式）。</b></p>
+<div class="f"><span class="sym">κ</span> = <span class="sym">ω</span> / (2 q q′)
+<span class="sym">ν</span> = <span class="sym">κ</span> (q² − q′²) = <span class="sym">ω</span>(q² − q′²) / (2 q q′)</div>
+
+<p><b>(8) 量纲检查。</b></p>
+<table>
+<tr><th style="width:26%">量</th><th style="width:26%">量纲</th><th>结果</th></tr>
+<tr><td class="mono">ω</td><td>s⁻¹</td><td>—</td></tr>
+<tr><td class="mono">q, q′</td><td>m⁻¹</td><td>—</td></tr>
+<tr><td class="mono">q q′</td><td>m⁻²</td><td>—</td></tr>
+<tr><td><b>κ = ω/(2qq′)</b></td><td>s⁻¹ / m⁻²</td><td><b>m²/s</b> ✅</td></tr>
+<tr><td class="mono">q² − q′²</td><td>m⁻²</td><td>—</td></tr>
+<tr><td><b>ν = κ(q²−q′²)</b></td><td>(m²/s)(m⁻²)</td><td><b>s⁻¹</b> ✅</td></tr>
+</table>
+
+<p><b>(9) 显式形式（便于解释极限、也便于自检）。</b> 令 <span class="sym">Ω</span> = <span class="sym">ω</span>/<span class="sym">ν</span>，则 s² = (<span class="sym">ν</span> + i<span class="sym">ω</span>)/<span class="sym">κ</span> = m²(1 + i<span class="sym">Ω</span>)，于是</p>
+<div class="f">q²  = (m²/2)·( √(1+<span class="sym">Ω</span>²) + 1 )
+q′² = (m²/2)·( √(1+<span class="sym">Ω</span>²) − 1 )
+q² − q′² = m²              （恒等式，与 <span class="sym">Ω</span> 无关）
+2qq′     = m²<span class="sym">Ω</span> = <span class="sym">ω</span>/<span class="sym">κ</span></div>
+<p><b>两个极限</b>：<span class="sym">Ω</span>→0 时 q→m、q′→0（退化成稳态）；<span class="sym">Ω</span>≫1 时 q ≈ q′ ≈ m√(<span class="sym">Ω</span>/2)（近似"无衰减的扩散波"，也正是 h 病态的根源）。</p>
+
+<h3>你的数字</h3>
+<table>
+<tr><th style="width:12%">周期</th><th style="width:18%">ω (rad/s)</th><th style="width:18%">2qq′ (m⁻²)</th><th style="width:20%">κ = ω/(2qq′) (m²/s)</th><th>ν (s⁻¹)</th></tr>
+<tr><td class="num">100</td><td class="num">0.06283</td><td class="num">930.6</td><td class="num">6.75e-5</td><td class="num">−1.84e-3</td></tr>
+<tr><td class="num">200</td><td class="num">0.03142</td><td class="num">471.5</td><td class="num">6.66e-5</td><td class="num">1.21e-3</td></tr>
+<tr><td class="num">300</td><td class="num">0.02094</td><td class="num">306.8</td><td class="num">6.83e-5</td><td class="num">1.20e-3</td></tr>
+<tr><td class="num">400</td><td class="num">0.01571</td><td class="num">224.7</td><td class="num">6.99e-5</td><td class="num">2.35e-3</td></tr>
+<tr><td class="num">500</td><td class="num">0.01257</td><td class="num">186.2</td><td class="num">6.75e-5</td><td class="num">2.18e-3</td></tr>
+</table>
+
+<div class="n"><b>追问：</b>① <b>为什么可以直接假设复指数？</b> 方程线性 + 系数常数 ⇒ 时间上可分离，单频输入产生单频输出（Q12 展开）。
+② <b>s 取哪个根？</b> 取 Re(s) &gt; 0（波不能从远端自己长出来）；另一根对应反向传播。
+③ <b>m 与 s 的关系？</b> m² = Re(s²)：m 是零频极限，s 是有限频（Q13）。</div>
+
+<div class="w"><b>陷阱：</b>① 说 <span class="mono">m = q</span> 或 <span class="mono">m = q − q′</span>（错，必须 m² = q² − q′²）；② 单位写成 "m" 而不是 m⁻¹；③ 忘记 s² 里的交叉项 2iqq′。</div>
+</div>
+<div class="qa">
+<div><span class="qn">Q4</span><span class="qt">How are κ and ν converted into aluminium conductivity k and side heat-transfer coefficient h?</span> <span class="badge">官方 4/9 · 图 7-2</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>把定义倒过来：<b>k = <span class="sym">κ</span><span class="sym">ρ</span>c</b>；<b>h = <span class="sym">ν</span><span class="sym">ρ</span>cA/P = <span class="sym">ν</span><span class="sym">ρ</span>c(d/4)</b>。前者把"温度扩散快慢"换成"导热能力"，后者把"体积散热率"换成"单位面积对流系数"。</div>
+
+<h3>完整过程</h3>
+<p><b>(1) 两个定义（都来自主方程除以 <span class="sym">ρ</span>cA）。</b></p>
+<div class="f"><span class="sym">κ</span> = k/(<span class="sym">ρ</span>c)          ← 扩散项系数
+<span class="sym">ν</span> = hP/(<span class="sym">ρ</span>cA)        ← 侧向项系数（P/A 来自"表面积 / 体积"）</div>
+
+<p><b>(2) 逆解。</b></p>
+<div class="f">k = <span class="sym">κ</span> · <span class="sym">ρ</span> · c
+h = <span class="sym">ν</span> · <span class="sym">ρ</span>c · A/P = <span class="sym">ν</span> <span class="sym">ρ</span> c (d/4)       ∵ A/P = (πd²/4)/(πd) = d/4</div>
+
+<p><b>(3) 数字代入。</b></p>
+<div class="f"><span class="sym">ρ</span>c = 2700 × 896 = 2.4192×10⁶ J/(m³·K)
+k  = 6.798×10⁻⁵ × 2.4192×10⁶ = 164.5 W/(m·K)
+d/4 = 0.01277/4 = 3.1925×10⁻³ m
+h  = <span class="sym">ν</span> × 2.4192×10⁶ × 3.1925×10⁻³ = <span class="sym">ν</span> × 7.723×10³
+
+200 s: <span class="sym">ν</span> = 1.212×10⁻³  →  h = 9.36 W/(m²·K)</div>
+
+<p><b>(4) 单位验证。</b></p>
+<div class="f">[<span class="sym">κ</span><span class="sym">ρ</span>c]      = (m²/s)(kg/m³)(J/(kg·K)) = J/(s·m·K) = W/(m·K)     ✅
+[<span class="sym">ν</span><span class="sym">ρ</span>c(d/4)] = (1/s)(J/(m³·K))(m)     = J/(s·m²·K) = W/(m²·K)   ✅</div>
+
+<p><b>(5) 物理含义。</b> k 是材料"导走热量"的能力（1 K/m 的梯度能推多少 W/m²）；h 是表面"向空气交货"的能力（每 m²、每 K 温差带走多少 W）。两者靠 <span class="sym">ρ</span>c 与 A/P 联系，但<b>测法完全不同</b>：<span class="sym">κ</span> 来自时间与空间，k 靠材料常数换算。</p>
+
+<h3>你的数字（带条件标准误）</h3>
+<table>
+<tr><th style="width:11%">周期</th><th style="width:21%">κ (10⁻⁵ m²/s)</th><th style="width:17%">k (W/m·K)</th><th style="width:24%">ν (10⁻³ s⁻¹)</th><th>h (W/m²·K)</th></tr>
+<tr><td class="num">100</td><td class="num">6.75 ± 0.13</td><td class="num">163.3</td><td class="num">−1.84</td><td class="num">不报（ν&lt;0）</td></tr>
+<tr><td class="num">200</td><td class="num">6.66 ± 0.14</td><td class="num">161.2</td><td class="num">1.212 ± 0.489</td><td class="num">9.4 ± 3.8</td></tr>
+<tr><td class="num">300</td><td class="num">6.83 ± 0.34</td><td class="num">165.1</td><td class="num">1.204 ± 0.933</td><td class="num">9.3 ± 7.2</td></tr>
+<tr><td class="num">400</td><td class="num">6.99 ± 0.19</td><td class="num">169.2</td><td class="num">2.351 ± 0.568</td><td class="num">18.2 ± 4.4</td></tr>
+<tr><td class="num">500</td><td class="num">6.75 ± 0.30</td><td class="num">163.4</td><td class="num">2.183 ± 0.577</td><td class="num">16.9 ± 4.5</td></tr>
+</table>
+<p class="small">换算尺：<b><span class="sym">κ</span>（以 10⁻⁵ 为单位）× 24.2 = k</b>；<span class="sym">ν</span>（以 10⁻³ 为单位）× 7.72 = h。被追问时可当场心算。</p>
+
+<div class="n"><b>追问：</b>① <b><span class="sym">ρ</span>、c 是哪来的？</b> 6061-T6 手册值（2680–2720、890–900），带 ±1%、±2%，是<b>唯一进入结果的借用常数</b>。
+② <b>为什么 h 用 A/P 而不是 P/A？</b> <span class="sym">ν</span> 是"每单位体积"的散热率 hP/(<span class="sym">ρ</span>cA)；换回"每单位表面积"必须乘 A/P。写反就错 15 倍。
+③ <b>k 和文献差 1–4% 说明什么？</b> 在系统误差内相容；不调参（Q6）。</div>
+</div>
+<div class="qa">
+<div><span class="qn">Q5</span><span class="qt">Point to one residual plot or frequency-consistency check. What model failure would it reveal?</span> <span class="badge">官方 5/9 · 图 7-1 / 11-3</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>指两处：① 每个传感器的正弦拟合残差（0.03–0.04 °C，约 2% 的边界振幅）；② 五个频段给的 <span class="sym">κ</span>（6.66–6.99×10⁻⁵，离散 4.9%，最大配对差 1.43<span class="sym">σ</span>）。它检查的是"同一套参数能否解释所有频率"。</div>
+
+<h3>① 逐传感器残差能抓什么</h3>
+<table>
+<tr><th style="width:30%">残差特征</th><th>诊断</th></tr>
+<tr><td>出现 2<span class="sym">ω</span>、3<span class="sym">ω</span> 成分</td><td>边界不是纯正弦：饱和削顶、执行器非线性、积分未稳</td></tr>
+<tr><td>rms 随时间单调增</td><td>均值漂移（室温、TEC 漂移）</td></tr>
+<tr><td>相位残差 vs x 呈弯曲</td><td>一维假设失效，或端部条件错（绝热 vs 对流）</td></tr>
+<tr><td>振幅残差 vs x 呈弯曲</td><td>同理；也可能是位置误差（x 用错）</td></tr>
+<tr><td>某个通道残差特别大</td><td>该探头接触不良 / 通道偏置</td></tr>
+</table>
+
+<h3>② 你的实际残差（200 s）</h3>
+<table>
+<tr><th style="width:30%">通道</th><th style="width:24%">拟合 rms 残差</th><th>相对振幅</th></tr>
+<tr><td>TEC（A0）</td><td class="num">0.0057 °C</td><td class="num">0.12%</td></tr>
+<tr><td>T1（边界）</td><td class="num">0.0343 °C</td><td class="num"><b>2.03%</b>（<span class="mono">boundary_relative_rms</span>）</td></tr>
+<tr><td>T2</td><td class="num">0.0428 °C</td><td class="num">4.7%</td></tr>
+<tr><td>T3</td><td class="num">0.0429 °C</td><td class="num">10.2%</td></tr>
+</table>
+<p><b>怎么讲：</b>"T1 的相对残差只有 2%，所以交付到棒底的确实是一条干净的正弦；T3 的 10% 主要是振幅变小、绝对残差不变。"</p>
+
+<h3>③ 频率一致性检查（信息量更大）</h3>
+<div class="f"><span class="sym">κ</span>: 6.75, 6.66, 6.83, 6.99, 6.75   (×10⁻⁵ m²/s)
+   mean = 6.798×10⁻⁵ ,  跨频段 SEM = 0.055×10⁻⁵ (0.8%)
+   span = 4.9% ,   最大配对差 / 合并标准误 = 1.43<span class="sym">σ</span>
+
+<span class="sym">ν</span>: −1.84, +1.21, +1.20, +2.35, +2.18  (×10⁻³ s⁻¹)
+   → 符号在 100 s 翻转、幅度差近 2 倍</div>
+<ul>
+<li><b><span class="sym">κ</span> 通过</b>：五个独立频率给同一个扩散率，差异 &lt; 1.5<span class="sym">σ</span>。</li>
+<li><b><span class="sym">ν</span> 不通过</b>：100 s 反号（q′ &gt; q，被动系统不可能），400/500 s 又比 200/300 s 高近一倍。</li>
+</ul>
+
+<h3>④ 它揭示的"模型失败"具体是什么</h3>
+<table>
+<tr><th style="width:34%">若观察到</th><th>结论</th></tr>
+<tr><td><span class="sym">κ</span> 随频率系统漂移（单调）</td><td>通道间有固定相位偏置 / 扫描时序未校正 / 一维假设有问题</td></tr>
+<tr><td><span class="sym">κ</span> 随机散布大</td><td>窗口未稳态，漂移主导</td></tr>
+<tr><td><span class="sym">ν</span> 反号</td><td>q′ &gt; q：说明短周期下相位斜率被噪声/偏置主导，<b>方法失效</b>（不是新物理）</td></tr>
+<tr><td>残差有谐波</td><td>边界不纯，Angstrom 的线性单频假设被破坏</td></tr>
+</table>
+
+<div class="n"><b>追问：</b>① <b>1.43 是什么？</b> 最大两个 <span class="sym">κ</span> 之差 ÷ 它们的合并标准误，≈1.4<span class="sym">σ</span> → 统计上相容。
+② <b>为什么不用 R²？</b> 残差只有 0.03 °C 而信号 1.7 °C，R² 恒接近 1，没有分辨力；要看残差的<b>结构</b>（谐波、弯曲）而不是幅度。
+③ <b>还有别的检查吗？</b> 有：平均场 cosh 拟合的 m 与 √(q²−q′²) 对比（Q13）、有限长误差（Q7）、横向 Biot（Q8）。</div>
+</div>
+<div class="qa">
+<div><span class="qn">Q6</span><span class="qt">Which systematic uncertainty most limits your reported k or h, and why?</span> <span class="badge">官方 6/9 · 图 7-3</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span><b>k 受限于 q、q′ 的斜率</b>（传感器位置、通道偏置、窗口漂移），量级几个百分点；<b>h 受限于"近等量相减"</b>：q² − q′² 是两个几乎相等的数之差，条件数 6–26，加上漂移与没有独立室温。所以 k 能报 ±5%，h 只能报一个倍数。</div>
+
+<h3>① 误差传播（解析）</h3>
+<div class="f"><span class="sym">κ</span> = <span class="sym">ω</span>/(2qq′)      ⇒  <span class="sym">δκ</span>/<span class="sym">κ</span> = √[ (<span class="sym">δω</span>/<span class="sym">ω</span>)² + (<span class="sym">δ</span>q/q)² + (<span class="sym">δ</span>q′/q′)² ]
+k = <span class="sym">κ</span><span class="sym">ρ</span>c          ⇒  <span class="sym">δ</span>k/k = <span class="sym">δκ</span>/<span class="sym">κ</span> ⊕ <span class="sym">δρ</span>/<span class="sym">ρ</span> ⊕ <span class="sym">δ</span>c/c
+<span class="sym">ν</span> = <span class="sym">κ</span>(q² − q′²)   ⇒  <span class="sym">δν</span>/<span class="sym">ν</span> = √[ (<span class="sym">δκ</span>/<span class="sym">κ</span>)² + (2q<span class="sym">δ</span>q ⊕ 2q′<span class="sym">δ</span>q′)² / (q²−q′²)² ]
+h = <span class="sym">ν</span><span class="sym">ρ</span>c(d/4)     ⇒  <span class="sym">δ</span>h/h = <span class="sym">δν</span>/<span class="sym">ν</span> ⊕ <span class="sym">δρ</span>/<span class="sym">ρ</span> ⊕ <span class="sym">δ</span>c/c ⊕ <span class="sym">δ</span>d/d</div>
+<p>关键在第三式：分母 <span class="mono">q²−q′²</span> 很小，分子含 q²、q′² 的误差，于是有<b>放大因子</b></p>
+<div class="f">放大因子 ≈ (q² + q′²)/(q² − q′²) = √(1 + <span class="sym">Ω</span>²)
+
+你的值：500 s → 5.8 ;  400 s → 6.7 ;  300 s → 17.4 ;  200 s → 25.9</div>
+
+<h3>② 逐项给数字</h3>
+<table>
+<tr><th style="width:28%">误差源</th><th style="width:21%">对 κ（→k）</th><th style="width:21%">对 ν（→h）</th><th>方向</th></tr>
+<tr><td>传感器位置（±1 mm 情景）</td><td class="num">数 %</td><td class="num">数 % × 放大因子</td><td>相关误差，可正可负</td></tr>
+<tr><td>通道偏置（0.5 °C 使 m 变 5.1%）</td><td class="num">偏 q</td><td class="num">被放大</td><td>取决于偏置符号</td></tr>
+<tr><td>窗口未稳态（漂移）</td><td class="num">1.9–5.0%（条件 SE）</td><td class="num"><b>24–78%</b></td><td>随机，可使 <span class="sym">ν</span> 反号</td></tr>
+<tr><td>无独立 T∞</td><td class="num"><b>无影响</b></td><td class="num">只影响平均场路线</td><td>—</td></tr>
+<tr><td>扫描偏斜 0.17 s</td><td class="num">−0.08%（已量化）</td><td class="num">同量级</td><td>可忽略</td></tr>
+<tr><td><span class="sym">ρ</span>、c 借用</td><td class="num">±1%、±2% → 合计 ±1.5%</td><td class="num">同</td><td>系统偏移</td></tr>
+</table>
+
+<h3>③ 一句话记忆</h3>
+<div class="f">k 的误差  ←  几何与漂移（几个 %）
+h 的误差  ←  减法本身（几十 %）</div>
+<p><b>所以"把 <span class="sym">ρ</span>、c 测得更准"对 h 毫无帮助</b>——这是最容易被问倒的地方。想让 h 变好，只能降低放大因子（更长周期）或降低 <span class="sym">δ</span>q、<span class="sym">δ</span>q′（更稳的窗口、更准的相位）。</p>
+
+<h3>④ 由条件标准误算出的实际情况</h3>
+<table>
+<tr><th style="width:14%">周期</th><th style="width:24%">δκ/κ</th><th style="width:24%">δν/ν</th><th>δh/h</th></tr>
+<tr><td class="num">200 s</td><td class="num">2.0%</td><td class="num">40%</td><td class="num">40%</td></tr>
+<tr><td class="num">300 s</td><td class="num">5.0%</td><td class="num">78%</td><td class="num">78%</td></tr>
+<tr><td class="num">400 s</td><td class="num">2.7%</td><td class="num">24%</td><td class="num">24%</td></tr>
+<tr><td class="num">500 s</td><td class="num">4.4%</td><td class="num">26%</td><td class="num">26%</td></tr>
+</table>
+
+<div class="n"><b>追问：</b>① <b>为什么位置误差是"相关"的？</b> T1 定义原点；它偏 1 mm，所有下游 x 同时平移 → 斜率整体变，不是独立随机。
+② <b>h 到底能说多少？</b> 9–18 W/(m²·K)，与自然对流同量级，只能分辨到"倍"。
+③ <b>那 k 呢？</b> 164.5 ± 5 W/(m·K)，其中 ±5 已含 <span class="sym">κ</span> 的条件误差（2–5%）与材料带宽（1.5%）。</div>
+</div>
+<div class="qa">
+<div><span class="qn">Q7</span><span class="qt">How did you quantify the error caused by treating the finite rod as semi-infinite? Why can the answer depend on sensor position?</span> <span class="badge">官方 7/9 · 图 8-1</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>用有限绝热端解与半无限解之比 <span class="sym">ε</span><sub>T</sub>(x)；因为端部反射项 e^{−2m(L−x)} 随 x→L 增大，所以误差随位置增长。<b>平均场</b>：T5 处 26%、T1 处 0；<b>周期场</b>：只有 0.06–0.35%，因为 qL≈4，振荡到不了端部。</div>
+
+<h3>完整推导</h3>
+<p><b>(1) 有限解（绝热端）。</b></p>
+<div class="f">d²θ/dx² − m²θ = 0 ,     θ(0) = θ₀ ,   θ′(L) = 0
+θ/θ₀ = cosh[m(L−x)] / cosh(mL)          <span class="sym">Θ</span>_tip = 1/cosh(mL)</div>
+
+<p><b>(2) 半无限解。</b></p>
+<div class="f">θ/θ₀ = e^{−mx}</div>
+
+<p><b>(3) 把 cosh 写成指数，取相对误差。</b></p>
+<div class="f">cosh[m(L−x)]/cosh(mL) = e^{−mx} · (1 + e^{−2m(L−x)}) / (1 + e^{−2mL})
+<span class="sym">Θ</span>∞/<span class="sym">Θ</span>_fin = (1 + e^{−2mL}) / (1 + e^{−2m(L−x)})
+<span class="sym">ε</span><sub>T</sub>(x) = 1 − <span class="sym">Θ</span>∞/<span class="sym">Θ</span>_fin
+          = (e^{−2m(L−x)} − e^{−2mL}) / (1 + e^{−2m(L−x)})</div>
+<p><b>两个性质</b>：x=0 时分子 = e^{−2mL} − e^{−2mL} = 0（两种模型共用基座条件）；x→L 时趋于最大。<b>单调递增 ⇒ 这就是"位置依赖"的来源。</b></p>
+
+<h3>(4) 你的数字（m = 5.3565，L = 0.2715 ⇒ mL = 1.454）</h3>
+<table>
+<tr><th style="width:18%">传感器</th><th style="width:14%">x (cm)</th><th style="width:20%">ε_T</th><th>说明</th></tr>
+<tr><td>T1</td><td class="num">0</td><td class="num">0.00%</td><td>定义上恒为 0</td></tr>
+<tr><td>T2</td><td class="num">3.85</td><td class="num">2.57%</td><td>仍在 5% 内</td></tr>
+<tr><td>T3</td><td class="num">8.95</td><td class="num">7.68%</td><td>已超 5%</td></tr>
+<tr><td>T4</td><td class="num">14.05</td><td class="num">15.35%</td><td>—</td></tr>
+<tr><td>T5</td><td class="num">19.15</td><td class="num"><b>25.97%</b></td><td>必须用有限长</td></tr>
+<tr><td>棒端（无探头）</td><td class="num">27.15</td><td class="num">约 45%</td><td>只说明"外推到端部"很危险</td></tr>
+</table>
+<p><b>结论：</b>5% 判据只在 T1、T2 通过 ⇒ 平均剖面必须用 cosh，不能只用指数。</p>
+
+<h3>(5) 为什么周期场几乎不受影响</h3>
+<p>周期场的"波数"是复数 s = q + iq′，其实部 q = 10.5–21.3 m⁻¹（比 m 大得多），于是</p>
+<div class="f">qL ≈ 2.9 – 5.8      端部信号 e^{−qL} ≈ 0.3 – 5%</div>
+<p>用复数版本：</p>
+<div class="f"><span class="sym">Θ</span>_fin(x) = e^{−sx} (1 + e^{−2s(L−x)}) / (1 + e^{−2sL})</div>
+<p>得到 200 s 的 |<span class="sym">ε</span>| = <b>0.06%（T2）、0.35%（T3）</b>；把整个反演从半无限换成有限长，<span class="sym">κ</span> 只移动 <b>0.2%</b>（<span class="mono">finite_tip_kappa_shift_fraction = −0.0022</span>）。</p>
+
+<div class="n"><b>所以一句话：有限长对"平均场"重要、对"周期场"不重要</b>——两个数字都对，因为它们算的是两个不同的场。这正是 A4 的 26% 与周期拟合的 0.35% 不矛盾的原因。</div>
+
+<div class="n"><b>追问：</b>① <b>为什么 x=0 处恰好为零？</b> 两种模型在基座用同一个 Dirichlet 条件，没有差别。
+② <b>若真实端部是对流而非绝热？</b> 平均场偏离 cosh，m 被高估 → h 偏高；周期场仍可忽略（qL 大）。所以我们标注"端部未验证"。
+③ <b>结论会随 L 变吗？</b> 会。mL 是关键：mL≲2 必须用有限长（你是 1.24–1.62）；mL≳3–5 才可用半无限。</div>
+
+<div class="w"><b>陷阱：</b>① 把 A4 的 26% 直接搬进周期反演的误差预算（那是平均场）；② 说"因为 L 很长所以半无限"（错，要看 mL 不是 L）；③ 忘记 <span class="sym">ε</span><sub>T</sub> 在 x=0 处必须为 0（写错公式会被一眼看出）。</div>
+</div>
+<div class="qa">
+<div><span class="qn">Q8</span><span class="qt">Define the transverse Biot number for the circular rod. What physical approximation does a small value justify?</span> <span class="badge">官方 8/9 · 图 9-1</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span><b>Bi⊥ = h(A/P)/k = hd/(4k)</b>，特征长度是 R/2 = d/4。你的值 <b>1.9–3.5×10⁻⁴ ≪ 0.1</b>，所以同一截面内的径向温差可忽略 ⇒ 可用一个温度代表整个截面，一维轴向方程才合法。它<b>不</b>证明半无限。</div>
+
+<h3>完整推导</h3>
+<p><b>(1) 为什么特征长度是 A/P = R/2。</b> Biot 数是"内部导热阻力 ÷ 表面换热阻力"：</p>
+<div class="f">R_cond = L_c / k          L_c = 体积/表面积 = A/P
+R_conv = 1 / h
+Bi     = R_cond / R_conv = h L_c / k
+
+圆柱：A/P = (πR²)/(2πR) = R/2 = d/4</div>
+
+<p><b>(2) 与 m 的恒等式（可作自检）。</b></p>
+<div class="f">m² = hP/(kA)  ⇒  m²(d/4)² = hP d²/(kA·16)
+              = h·(4/d)·d²/(k·16) = h d/(4k) = Bi⊥</div>
+
+<p><b>(3) 数值。</b></p>
+<div class="f">Bi⊥ = h d/(4k)
+h = 9.3–18.2 ,  d = 0.01277 ,  k = 161–169
+⇒ Bi⊥ = 1.9×10⁻⁴ … 3.5×10⁻⁴          （判据 &lt; 0.1）
+
+等价算法：m = 4.27  →  (m d/4)² = 1.86×10⁻⁴   ✔ 两条路径一致</div>
+
+<p><b>(4) 小值到底保证了什么。</b> 截面内的无量纲温差约为 O(Bi⊥/4)（对圆柱），所以径向温差相对轴向温差是 10⁻⁴–10⁻⁵ 量级 ⇒ 截面等温 ⇒ 可以把 T 只写成 T(x,t)，A、P、k 当常数写进一维方程。</p>
+
+<p><b>(5) 它不保证什么。</b></p>
+<ul>
+<li><b>不保证</b>半无限（那是轴向问题，看 mL 与 <span class="sym">ε</span><sub>T</sub>）；</li>
+<li><b>不保证</b>h 是常数（自然对流对 ΔT、位置、气流敏感）；</li>
+<li>但反过来很好用：<b>Bi⊥ 对 h 极不敏感</b>——即使 h 增大 100 倍，Bi⊥ 仍 ≈2–4×10⁻² &lt; 0.1，所以"一维"这个结论比 h 本身可靠得多。</li>
+</ul>
+
+<div class="n"><b>追问：</b>① <b>为什么不用 d 或 L？</b> Bi 的 L_c 是"体积/表面积"，对长圆柱就是 R/2；用 L 会得到纵向 Biot（另一个判据）。
+② <b>Bi⊥ 与 Bi∥ 的区别？</b> Bi∥ = hPL²/(kA) = (mL)²，衡量轴向衰减 vs 侧向损失；你的 (mL)² ≈ 1.5–2.6，量级 1 ⇒ 端部不可忽略。
+③ <b>用哪个 k？</b> 用最终拟合的 k（161–169），不是文献值。</div>
+
+<div class="w"><b>陷阱：</b>① 把 L_c 写成 d（Bi 会大 4 倍）；② 用文献 k 算 Bi 而不说清；③ 用 Bi⊥ 小去论证"半无限"——这是 A4 Part 4 明确要求分开的两个结论。</div>
+</div>
+
+<div class="qa">
+<div><span class="qn">Q9</span><span class="qt">What phase convention did you use? Why must the phases be unwrapped before fitting the spatial phase coefficient q′?</span> <span class="badge">官方 9/9 · 图 6-2</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>约定 T = a + B cos(<span class="sym">ω</span>t + <span class="sym">φ</span>)，等价 <span class="sym">φ</span> = atan2(−S, C)；在此约定下<b>下游滞后表现为 <span class="sym">φ</span> 更小</b>，所以 <span class="sym">φ</span>–x 斜率是 −q′。atan2 只返回 (−π, π]，而相位在 19 cm 上累计可达 4.2 rad，超过 π 就会跳变，不展开则斜率整体错 2π/Δx。</div>
+
+<h3>完整说明</h3>
+<p><b>(1) 约定的两种写法与等价性。</b></p>
+<div class="f">形式 A：T = a + B cos(<span class="sym">ω</span>t + <span class="sym">φ</span>)
+        ⇒  C = B cos <span class="sym">φ</span>,  S = −B sin <span class="sym">φ</span>   ⇒  <span class="sym">φ</span> = atan2(−S, C)
+形式 B：T = a + C cos <span class="sym">ω</span>t + S sin <span class="sym">ω</span>t      （同一件事）</div>
+<p>若改成 cos(<span class="sym">ω</span>t − <span class="sym">φ</span>)，则 <span class="sym">φ</span> 与 q′ 同时反号；<b>物理不变，但报告必须声明</b>。</p>
+
+<p><b>(2) 为什么这个约定下斜率是 −q′。</b></p>
+<div class="f"><span class="sym">φ</span>(x) = <span class="sym">φ</span>₀ − q′ x          （下游更晚 ⇒ <span class="sym">φ</span> 更小 ⇒ q′ &gt; 0）
+slope = −q′</div>
+
+<p><b>(3) 为什么必须 unwrap（定量）。</b></p>
+<div class="f">atan2 的输出 ∈ (−π, π]
+19.15 cm 上的累计相位差：
+   100 s: q′ × 0.1915 = 21.89 × 0.1915 = 4.19 rad   (&gt; π)
+   200 s: 15.06 × 0.1915 = 2.88 rad
+   500 s:  8.85 × 0.1915 = 1.69 rad
+每 5.1 cm 间隔：100 s 时 1.12 rad</div>
+<p><b>200 s 的实例</b>：T1 = −2.41、T2 = −2.98、T3 = <b>−3.75</b>（越过 −π = −3.14），atan2 会把 T3 报成 <b>+2.53</b>。若直接用原始值拟合，斜率被破坏；错误量级 ≈ 2π/Δx = 2π/0.051 ≈ <b>123 m⁻¹</b>（比 q′ 本身大 8 倍）。</p>
+
+<p><b>(4) 正确做法。</b></p>
+<div class="f"><span class="sym">φ</span>_unwrapped = unwrap(<span class="sym">φ</span>_raw)        # 每步 ±2π 修正
+q′ = −slope(<span class="sym">φ</span>_unwrapped vs x)</div>
+<p>并且<b>要用几何与其它频段交叉验证分支选择</b>：q′ 应随周期单调减（21.9 → 8.9），若某个频段突然反号或跳 2π/Δx，就是解缠错误。</p>
+
+<div class="n"><b>追问：</b>① <b>约定反过来会怎样？</b> q′ 变号，<span class="sym">κ</span> 里 qq′ 也变号 → <span class="sym">κ</span> 会变负；所以符号约定必须与公式一致。
+② <b>为什么相位比振幅"贵"？</b> 相位对通道增益不敏感（增益只改 B，不改峰位），是独立信息；但也因此对时间基准与扫描偏斜敏感（0.17 s → 2.9 mrad，已量化）。
+③ <b>如果相位噪声大怎么办？</b> 加长窗口（多周期）、降低漂移、修正扫描时序。</div>
+
+<div class="w"><b>陷阱：</b>① 用 <span class="mono">atan2(S, C)</span>（漏负号）→ q′ 反号；② 只展开到 ±π 就停（要展开到连续）；③ 忘记在报告里写约定，导致别人无法比较。</div>
+</div>
+<div class="qa">
+<div><span class="qn">Q10</span><span class="qt">Why not just do a steady-state experiment and get k directly?</span> <span class="badge">追加 · 图 8-1</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>稳态只给 <span class="mono">m² = hP/(kA)</span>，一个方程两个未知数；而且它<b>必须知道环境温度 T∞</b>，m 对 T∞ 极敏感。周期法的 <span class="sym">κ</span> 来自 <span class="mono">ω/(2qq′)</span>，完全不含 T∞，并且可重复、可做多频一致性检验。</div>
+
+<h3>完整论证</h3>
+<p><b>(1) 欠定。</b> 稳态只给一个组合：</p>
+<div class="f">m² = <span class="sym">ν</span>/<span class="sym">κ</span> = hP/(kA)   ⇒   h/k = m²·d/4</div>
+<p>你只知道 h/k 这个比值。下面这些组合都给同一个 m：</p>
+<table>
+<tr><th style="width:26%">假设 k</th><th style="width:22%">得到 h</th><th>是同一根棒吗</th></tr>
+<tr><td class="num">100 W/(m·K)</td><td class="num">8.0</td><td>数学成立，物理不对（铝没这么低）</td></tr>
+<tr><td class="num">166 W/(m·K)</td><td class="num">13.2</td><td>接近真值</td></tr>
+<tr><td class="num">250 W/(m·K)</td><td class="num">20.0</td><td>数学也成立</td></tr>
+</table>
+
+<p><b>(2) T∞ 敏感性（你的实测）。</b></p>
+<div class="f">T∞ 固定值 → 拟合出的 m → 反推 h
+20 °C → 3.82 1/m → 7.6
+22 °C → 4.38      → 10.0
+24 °C → 5.28      → 14.5
+26 °C → 7.10      → 26.3
+28 °C → …         → （继续上升）</div>
+<p>T∞ 改 8 K，m 变化近 2 倍、h 变化 3 倍以上。<b>这就是"没有独立室温计"在稳态路线里代价巨大的原因。</b></p>
+
+<p><b>(3) 可重复性。</b> 稳态没有"周期"可平均；判据只能"斜率 &lt; x °C/min"，而 Module 7 最长 31 min 的 40 °C 记录仍未达 0.02 °C/min 判据（实际 0.05 °C/min）。</p>
+
+<p><b>(4) 周期法为什么免疫 T∞。</b> B 与 <span class="sym">φ</span> 都是"相对于均值"的量，与零点无关：</p>
+<div class="f">T(t) = a + B cos(<span class="sym">ω</span>t + <span class="sym">φ</span>)
+把 a 换成 a + Δ（T∞ 猜错 Δ） →  B 与 <span class="sym">φ</span> 完全不变</div>
+
+<h3>那为什么还要做稳态实验？（不能只做周期）</h3>
+<table>
+<tr><th style="width:26%">稳态给什么</th><th>周期给什么</th></tr>
+<tr><td>m（含端部信息）</td><td>q、q′（免 T∞）</td></tr>
+<tr><td>验证 cosh 端部条件</td><td>验证线性与单频</td></tr>
+<tr><td>交叉检查（与 √(q²−q′²) 比）</td><td>多频一致性</td></tr>
+</table>
+<p>两者<b>互补</b>：一个给"形状"，一个给"动力学"。</p>
+
+<div class="n"><b>追问：</b>① <b>不能给 T∞ 装个温度计吗？</b> 能，而且这是最该补的实验（会把 h 从"量级"变成"可分辨"）。
+② <b>稳态的 m 有多少可信度？</b> 5 个点、只依赖 T∞ 与几何；你的两条路线差 5–35%。
+③ <b>如果只想验证 κ 呢？</b> 只做周期就够；稳态是附加证据。</div>
+</div>
+
+<div class="qa">
+<div><span class="qn">Q11</span><span class="qt">T1 与 A0 有什么区别？为什么边界条件用 T1？</span> <span class="badge">追加 · 图 3-1</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>A0 贴在 TEC 冷面，是<b>唯一的反馈与安全输入</b>；T1 压在铝棒第一个孔上，是<b>物理边界</b>。两者之间隔着陶瓷、焊料与接触热阻，所以 A0→T1 是一个额外的一阶滞后：200 s 时 A0 振幅 4.80 °C、T1 只有 1.69 °C（35%），相位再滞后 0.74 rad。</div>
+
+<h3>为什么不能拿 A0 当边界</h3>
+<table>
+<tr><th style="width:22%"></th><th style="width:32%">A0（TEC 冷面）</th><th>T1（棒底）</th></tr>
+<tr><td>物理位置</td><td>TEC 陶瓷上</td><td>铝棒第一个孔</td></tr>
+<tr><td>在系统里的角色</td><td>控制与安全的输入</td><td>方程的下边界条件</td></tr>
+<tr><td>200 s 振幅</td><td class="num">4.80 °C</td><td class="num">1.69 °C（35%）</td></tr>
+<tr><td>相位</td><td class="num">基准</td><td class="num">再滞后 0.74 rad</td></tr>
+<tr><td>正弦质量</td><td class="num">残差 0.12%</td><td class="num">残差 <b>2.0%</b></td></tr>
+</table>
+
+<p><b>关键区别：</b>A0→T1 之间还有 TEC 热容 + 接触热阻，是一个附加的一阶低通。若用 A0 当边界，就等于把这部分"非棒"的热学也算进棒里，<b>κ 会被系统性拉偏</b>。</p>
+
+<div class="f">正确的做法：
+  边界  = 实测 T1(t)（不是 setpoint、不是 A0）
+  质量检查 = T1 正弦拟合残差 / T1 振幅 = 2.0%   ← boundary_relative_rms
+  安全    = A0（10–45 °C、60 °C 备份）与 T1（&lt; 56 °C）双限</div>
+
+<div class="n"><b>追问：</b>① <b>为什么 T1 振幅只有 35%？</b> 因为 TEC 与棒之间有热容与接触热阻，把高频成分滤掉了；这也是为什么"请求的正弦"≠"交付到棒底的正弦"。
+② <b>这算系统误差吗？</b> 不算，只要你用实测 T1 作边界——传递已被测到并记录，不进入模型。
+③ <b>如果 T1 的正弦不干净怎么办？</b> 那才是真问题：残差里的谐波会直接污染 q′（见 Q5）。</div>
+</div>
+<div class="qa">
+<div><span class="qn">Q12</span><span class="qt">Why a sinusoid? Why not a step, or let the loop oscillate by itself?</span> <span class="badge">追加 · 图 4-1</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span>我们需要的是<b>传递函数在 <span class="sym">ω</span>≠0 的一个复数值</b>（模给 q、相位给 q′）。正弦是唯一"输入正弦、稳态输出仍是同频正弦"的波形，拟合只有三个参数，且可重复、可多频、可与 T∞ 解耦。自激极限环的频率由闭环决定、波形被限幅削成多频、幅度随环境漂移——它识别的是控制器，不是棒。</div>
+
+<h3>(1) 本质上是在测传递函数</h3>
+<div class="f">H(<span class="sym">ω</span>, x) = e^{−(q + i q′)x}
+             模   → 振幅比 e^{−qx}      → q
+             辐角 → 相位滞后 q′x        → q′
+
+常数边界（<span class="sym">ω</span>=0）：H = e^{−mx} 为实数 → 只有 1 个数（m）
+正弦边界（<span class="sym">ω</span>&gt;0）：H 为复数        → 2 个数（q, q′）</div>
+
+<h3>(2) 五种波形/做法的比较</h3>
+<table>
+<tr><th style="width:20%">方案</th><th style="width:26%">信息量</th><th>代价</th></tr>
+<tr><td>稳态</td><td>1 个数（m）</td><td>需要 T∞，欠定（Q10）</td></tr>
+<tr><td>阶跃</td><td>理论上含全频段</td><td>只有瞬态、无法重复平均、需反卷积、对切换瞬间与初始状态敏感；M7 连稳态都没等出来</td></tr>
+<tr><td>方波 / 三角波</td><td>基频 + 谐波</td><td>谐波被不同程度衰减；执行器限幅会削顶；单频模型留残差</td></tr>
+<tr><td><b>正弦（本方案）</b></td><td><b>干净的 (q, q′) + 多频重复</b></td><td>需要闭环跟踪移动的设定点（所以做 OPEN/P/PI 对照）、每段等稳态</td></tr>
+<tr><td>自激极限环</td><td>一个频率，且被污染</td><td>见下</td></tr>
+</table>
+
+<h3>(3) 为什么自激振荡不能当探针（五条全不满足）</h3>
+<table>
+<tr><th style="width:26%">可用激励的要求</th><th style="width:22%">定值正弦</th><th>自激极限环</th></tr>
+<tr><td>输入已知</td><td>✅ 设定 + 实测 T1</td><td>❌ 波形由限幅/死区决定，常被削成带平台的方波</td></tr>
+<tr><td>频率可选</td><td>✅ 100–500 s</td><td>❌ 由环决定，想改也改不了</td></tr>
+<tr><td>单频</td><td>✅</td><td>❌ 削顶 ⇒ 2<span class="sym">ω</span>、3<span class="sym">ω</span>；高阶谐波衰减更快 ⇒ 波形沿 x 变形</td></tr>
+<tr><td>可重复</td><td>✅ 5 周期 + 多频段</td><td>❌ 周期/幅度随 Kp、室温漂移</td></tr>
+<tr><td>与待测参数解耦</td><td>✅ 频率由你设</td><td>❌ 频率含控制器、执行器、采样；改 Kp 就改"结果"</td></tr>
+</table>
+<p><b>最致命的是最后一条</b>：一个物理参数不能依赖你的增益。把 Kp 从 50 改到 80，如果"测出的 κ" 也跟着变，那显然是错的。</p>
+
+<h3>(4) 真要用自激振荡：那是 relay 辨识</h3>
+<p>工程上确实有这种技术：人为设计一个<b>已知继电器</b>（输出 ±A、带滞环），系统进入稳定极限环，测出周期 T_u 与幅度，用 describing function 得到 <span class="mono">H(j<span class="sym">ω</span>_u)</span> —— 正好是一个 (q, q′)。</p>
+<div class="f">relay 辨识：非线性已知（±A 方波）→ 可反解 → 给 1 个频率
+本实验中的自激：非线性 = 限幅 + 死区 + 冷热 3.5 倍不对称 + 量化
+                → 不可完整描述 → 谐波不可估 → 结果不可辩护</div>
+
+<h3>(5) 你的数据里见过这两种振荡</h3>
+<ul>
+<li>Module 7 的 40 °C 保压：PI 出现极限环（所以 <span class="mono">step_response_figure.py</span> 专门去量它的周期与振幅）；</li>
+<li>Module 8 的 100 s P 段：<b>28 个饱和样本</b>（Kp=50、限幅 96 ⇒ 比例带只有 ±1.92 °C，而 Tb=5 °C）。</li>
+</ul>
+<p>而前馈查表的 OPEN 段 <b>0 个饱和样本</b>、边界残差 2% —— 这就是"把控制器驯服成跟随器"的证据。</p>
+
+<div class="n"><b>追问：</b>① <b>开环恒压会不会自激？</b> 不会：系统被动、单调收敛；PWM 的 490 Hz 开关被分钟级热时间常数平均掉。
+② <b>那为什么还要做 P/PI 对照？</b> 为了证明"哪种模式能交付干净的正弦"，而不是为了找振荡。
+③ <b>一步到位用闭环正弦不就行了？</b> 闭环会加相位滞后与饱和风险；前馈为主、闭环为辅更稳。</div>
+</div>
+
+<div class="qa">
+<div><span class="qn">Q13</span><span class="qt">What exactly is m?</span> <span class="badge">追加 · 图 5-1</span></div>
+
+<div class="thirty"><span class="tw">30 秒版：</span><b>m² = hP/(kA) = <span class="sym">ν</span>/<span class="sym">κ</span></b>，单位 1/m。<b>1/m 是平均温度衰减长度</b>（你的 17–22 cm）；mL 是"棒长相当于几个衰减长度"（1.24–1.62 ⇒ 端部不"热远"，<span class="sym">Θ</span>_tip ≈ 0.44）。它<b>不是独立测量量</b>，而是 <span class="sym">ν</span>/<span class="sym">κ</span> 的平方根。</div>
+
+<h3>(1) 定义与单位</h3>
+<div class="f">m² = hP/(kA) = <span class="sym">ν</span>/<span class="sym">κ</span> = q² − q′²        [1/m²]
+m  = √(hP/(kA))                          [1/m]
+1/m = 平均场衰减长度                      [m]</div>
+
+<h3>(2) 它出现在哪两个地方</h3>
+<div class="f">稳态：  d²θ/dx² − m²θ = 0
+        θ/θ₀ = cosh[m(L−x)]/cosh(mL)     <span class="sym">Θ</span>_tip = 1/cosh(mL)
+
+周期：  s² = (<span class="sym">ν</span> + i<span class="sym">ω</span>)/<span class="sym">κ</span> = m²(1 + i<span class="sym">Ω</span>)
+        ⇒ Re(s²) = q² − q′² = m²        （零频极限）
+        ⇒ <span class="sym">Ω</span>→0 时 q→m、q′→0</div>
+<p><b>所以 m 是"两种语言"的交点，不是第三个测量。</b></p>
+
+<h3>(3) 你的数字</h3>
+<table>
+<tr><th style="width:14%">周期</th><th style="width:20%">mL（平均场拟合）</th><th style="width:20%">m = μ/L (1/m)</th><th style="width:20%">√(q²−q′²) (1/m)</th><th>差</th></tr>
+<tr><td class="num">100</td><td class="num">1.454</td><td class="num">5.36</td><td class="num">—（q′&gt;q）</td><td>周期场失效</td></tr>
+<tr><td class="num">200</td><td class="num">1.331</td><td class="num">4.90</td><td class="num">4.27</td><td class="num">+15%</td></tr>
+<tr><td class="num">300</td><td class="num">1.539</td><td class="num">5.67</td><td class="num">4.20</td><td class="num">+35%</td></tr>
+<tr><td class="num">400</td><td class="num">1.239</td><td class="num">4.56</td><td class="num">5.80</td><td class="num">−21%</td></tr>
+<tr><td class="num">500</td><td class="num">1.622</td><td class="num">5.97</td><td class="num">5.68</td><td class="num">+5%</td></tr>
+</table>
+<p><b>怎么讲：</b>"两条独立路径给的 m 都在 4.2–6.0，同量级但逐频段差 5–35%——量级一致、定量未闭合，这也是把结果标成 diagnostic 的原因。"</p>
+
+<h3>(4) 三个派上用场的地方</h3>
+<div class="f">① 判端部：mL ≈ 1.5 ⇒ <span class="sym">Θ</span>_tip = 1/cosh(1.45) ≈ 0.44 ⇒ 必须用 cosh（Q7）
+② 判一维：Bi⊥ = (m d/4)² ≈ 2–3×10⁻⁴ ⇒ 成立（Q8）
+③ 反推 h：h = m²·k·d/4
+   100 s 5.36²×163×0.00319 ≈ 15.0
+   200 s 4.90²×161×0.00319 ≈ 12.4
+   300 s 5.67²×165×0.00319 ≈ 16.9
+   400 s 4.56²×169×0.00319 ≈ 11.2
+   500 s 5.97²×163×0.00319 ≈ 18.6
+   ⇒ 11–19 W/(m²·K)，与由 ν 得到的 9.3–18.2 重叠（第三个交叉检查）</div>
+
+<div class="n"><b>追问：</b>① <b>m 是波数吗？</b> 不是。m 是<b>平均场（零频）</b>的衰减常数；振荡的波数是复数 q+iq′。
+② <b>为什么不能只用 m 求 k？</b> m 只给 <span class="sym">ν</span>/<span class="sym">κ</span> 的比值（Q2、Q10）。
+③ <b>m 随频率变吗？</b> 严格说 h 随温度/位置变，所以不同振幅下 m 会略变；你的 35±5 °C 小振幅把它压到次要。</div>
+
+<div class="w"><b>陷阱：</b>① <span class="mono">m = q</span>（错）；② <span class="mono">m = q − q′</span>（错）；③ 单位写成 m（应为 1/m）；④ 说"mL 大所以是半无限"（mL≈1.5 恰好说明不是）。</div>
+</div>
+<h1>附 A. 符号速查（先解决字形陷阱）</h1>
+
+<table>
+<tr><th style="width:9%">符号</th><th style="width:14%">怎么读</th><th style="width:15%">单位</th><th>含义 / 你的值</th></tr>
+<tr><td><b>k</b></td><td>kay（拉丁）</td><td class="num">W/(m·K)</td><td><b>导热系数</b>：材料导走热量的能力。161–169，中心 164.5；文献 166–172。</td></tr>
+<tr><td><span class="sym">κ</span></td><td><b>kappa</b>（希腊）</td><td class="num">m²/s</td><td><b>热扩散率</b>：<span class="mono">κ = k/(ρc)</span>。实测 6.80×10⁻⁵。</td></tr>
+<tr><td><span class="sym">ν</span></td><td><b>nu</b>（希腊）</td><td class="num">1/s</td><td><b>侧向散热率</b>：<span class="mono">ν = hP/(ρcA)</span>。1.2–2.35×10⁻³（100 s 为负）。</td></tr>
+<tr><td><span class="sym">ρ</span></td><td><b>rho</b>（希腊）</td><td class="num">kg/m³</td><td>密度 2700（手册 2680–2720）。</td></tr>
+<tr><td>c</td><td>see</td><td class="num">J/(kg·K)</td><td>比热容 896（手册 890–900）。</td></tr>
+<tr><td>q</td><td>cue</td><td class="num">1/m</td><td>振幅衰减常数：B ∝ e^{−qx}。21.26 → 10.52。</td></tr>
+<tr><td>q′</td><td>cue prime</td><td class="num">1/m</td><td>相位滞后常数：φ = φ₀ − q′x。21.89 → 8.85。</td></tr>
+<tr><td>m</td><td>em</td><td class="num">1/m</td><td>平均场衰减常数：m² = ν/κ = q² − q′²。4.2–6.0。</td></tr>
+<tr><td>h</td><td>aitch</td><td class="num">W/(m²·K)</td><td>对流系数。实测 9–18；课程临时值 10 <b>只用于预测</b>。</td></tr>
+<tr><td><span class="sym">Ω</span></td><td>Omega</td><td class="num">—</td><td>无量纲频率 <span class="mono">ω/ν</span>。5.8–26，等于 h 的放大因子。</td></tr>
+<tr><td>Bi⊥</td><td>Biot（横向）</td><td class="num">—</td><td><span class="mono">hd/(4k) = (md/4)²</span>。1.9–3.5×10⁻⁴。</td></tr>
+<tr><td>mL</td><td>em ell</td><td class="num">—</td><td>无量纲棒长。1.24–1.62 ⇒ 端部不可忽略。</td></tr>
+</table>
+
+<div class="w"><b>在等宽字体里：</b><span class="sym">κ</span> 像 k、<span class="sym">ν</span> 像 v、<span class="sym">ρ</span> 像 p。
+若看到 "k = k ρ c"，第二个 "k" 一定是 <span class="sym">κ</span>；本册的希腊字母一律用<b>红色衬线斜体</b>。</div>
+
+<h1>附 B. 被问住时的三句"逃生舱"</h1>
+
+<table>
+<tr><th style="width:26%">情况</th><th>就说这一句</th></tr>
+<tr><td>数字记不清</td><td>"大约 1.6×10² W/(m·K)，确切值在工作手册的图 7-2 与 <span class="mono">transport_parameters.json</span>。"</td></tr>
+<tr><td>没做过 / 没测过</td><td>"我们没测这一项，这是我们的局限之一；它主要影响 h，不影响 <span class="sym">κ</span>。"</td></tr>
+<tr><td>被追到队友的层</td><td>"这一层是队友做的，我理解的是（讲机制），具体参数在手册 §20。"</td></tr>
+</table>
+
+<div class="n"><b>为什么这三句安全：</b>评分表里 2 分给"带不确定度与局限"、3 分给"个人答题"。<b>承认局限不会扣分，编一个数一定会。</b></div>
+
+<h1>附 C. 考前 10 分钟 checklist</h1>
+
+<table>
+<tr><th style="width:7%">✓</th><th>检查</th></tr>
+<tr><td>□</td><td>能不看稿说出 §0.1 的 45 秒总述</td></tr>
+<tr><td>□</td><td>能默写 8 个公式（含单位），特别是 κ = ω/(2qq′)、ν = κ(q²−q′²)、k = κρc、h = νρc(d/4)</td></tr>
+<tr><td>□</td><td>能说出 10 个数字：5 个周期、q、q′、κ、k、ν、h、mL、Bi⊥</td></tr>
+<tr><td>□</td><td>能解释"为什么两个观测量"（Q2）与"为什么正弦"（Q12）</td></tr>
+<tr><td>□</td><td>能讲清"有限长对平均场重要、对周期场不重要"（Q7）</td></tr>
+<tr><td>□</td><td>能主动说出三个软肋：未通过稳态判据、100 s 的 ν 反号、无独立室温</td></tr>
+<tr><td>□</td><td>知道 12 道题各自对应哪张图（§0.2 表最后一列）</td></tr>
+</table>
+
+<h1>附 D. 一页英文口语卡（可直接照念）</h1>
+
+<div class="f">Q1  Fitting each trace gives B and phi; ln B versus x has slope −q,
+    and the unwrapped phi versus x has slope −q′.
+Q2  Two unknowns need two numbers. Steady state gives only m² = ν/κ;
+    one record gives two numbers, decay and lag.
+Q3  Substitute the complex exponential: imaginary part gives ω = 2κqq′,
+    real part gives ν = κ(q² − q′²). Units: m²/s and 1/s.
+Q4  k = κρc; h = νρcA/P = νρc(d/4). ρc = 2.42e6; d/4 = 3.19e-3.
+Q5  Residuals 0.03 °C, boundary 2%; kappa spans 4.9% over five
+    periods, largest pair 1.4 sigma; nu flips sign at 100 s.
+Q6  k is limited by geometry and drift; h is limited by the
+    cancellation q² − q′², a factor of 6 to 26.
+Q7  eps_T(x) = 1 − (1+e^{−2mL})/(1+e^{−2m(L−x)}). Mean field: 26% at T5.
+    Periodic field: 0.06 to 0.35%, because qL is about 4.
+Q8  Bi_perp = h d/(4k) ≈ 2e-4, so one temperature per cross-section.
+    It does not justify semi-infinite.
+Q9  T = a + B cos(ωt + φ), φ = atan2(−S, C); downstream φ is smaller.
+    Over 19 cm the phase accumulates 4.2 rad, so unwrap first.
+Q10 Steady state gives one combination and needs T∞; the periodic
+    measurement needs neither.
+Q11 A0 is the control and safety input on the TEC; T1 is the boundary.
+    4.80 °C versus 1.69 °C, and T1 is a clean sine to 2%.
+Q12 We need the transfer function at ω ≠ 0. A limit cycle is set by the
+    closed loop, is clipped into harmonics, and changes with Kp.
+Q13 m² = ν/κ = q² − q′²; 1/m is the mean-field decay length; mL ≈ 1.5,
+    so the tip is not remote.</div>
+
+<p class="small" style="margin-top:10pt;border-top:.8pt solid #cfd8de;padding-top:5pt">
+本册数值取自仓库 <span class="mono">Module_8/data/processed/</span>（2026-11-20 状态），与 <span class="mono">F1_prep_handbook_Huang.pdf</span> 的图 3-1 … 11-3 一一对应。若重跑分析脚本，请同步更新本册数字与手册。
+</p>
+<!--END-->
+</body>
+</html>
