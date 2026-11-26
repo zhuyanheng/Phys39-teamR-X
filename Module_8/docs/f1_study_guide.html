@@ -8,7 +8,7 @@
 * { box-sizing: border-box; }
 body { font-family: "PingFang SC","Hiragino Sans GB","Arial Unicode MS",sans-serif;
        font-size: 9.4pt; line-height: 1.5; color: #1a1a1a; margin: 0; }
-h1 { font-size: 16pt; margin: 18pt 0 6pt; color: #0f3d5c; letter-spacing: .2pt;
+h1 { font-size: 15.5pt; margin: 13pt 0 5pt; color: #0f3d5c; letter-spacing: .2pt;
      page-break-after: avoid; }
 h2 { font-size: 12.2pt; margin: 14pt 0 5pt; padding-bottom: 2pt;
      border-bottom: 1.2pt solid #0f3d5c; color: #0f3d5c; page-break-after: avoid; }
@@ -21,7 +21,7 @@ code, .mono { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8.2pt;
        background: #f2f4f6; padding: 0 1.5pt; border-radius: 2pt; }
 .f { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 9.1pt;
      background: #f7f9fb; border-left: 3pt solid #0f3d5c; padding: 4pt 7pt;
-     margin: 4pt 0; white-space: pre-wrap; line-height: 1.42; }
+     margin: 4pt 0; white-space: pre-wrap; line-height: 1.42; page-break-inside: avoid; }
 .n { background: #eef6f1; border-left: 3pt solid #2e7d4f; padding: 4pt 7pt;
      margin: 5pt 0; font-size: 9.2pt; }
 .w { background: #fdf1ef; border-left: 3pt solid #b03a2e; padding: 4pt 7pt;
@@ -48,6 +48,12 @@ tr:nth-child(even) td { background: #f7f9fa; }
        padding: .5pt 4pt; border-radius: 2pt; }
 ol.two { column-count: 2; column-gap: 9mm; }
 ol.two li { break-inside: avoid; }
+
+figure { margin: 7pt 0 9pt; page-break-inside: avoid; }
+figure img { width: 100%; border: .6pt solid #dbe3e8; border-radius: 2pt; }
+figcaption { font-size: 8.5pt; color: #333; margin-top: 3pt; line-height: 1.45; }
+figcaption .rd { color: #b03a2e; font-weight: 700; }
+figcaption .cap { color: #0f3d5c; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -60,7 +66,7 @@ ol.two li { break-inside: avoid; }
     使用者：Ricky Huang（团队 R-X）<br>
     用途：F1 团队讲演（10 min）+ 个人口试（C6/F1 共用题库）<br>
     数据基准：<span class="mono">Module_8/data/processed/</span>，2026-11-09 至 11-18 的五个 PI 频段记录<br>
-    生成日期：2026-11-21 · 数值与仓库中 <span class="mono">transport_note</span> / <span class="mono">five_period_review</span> 的 JSON 一致
+    生成日期：2026-11-25 · 数值与仓库中 <span class="mono">transport_note</span> / <span class="mono">five_period_review</span> 的 JSON 一致
   </div>
 </div>
 <h1 class="pb">0. 先背这一页</h1>
@@ -109,11 +115,32 @@ ol.two li { break-inside: avoid; }
    ε_T(x) = 1 − (1 + e^{−2mL}) / (1 + e^{−2m(L−x)})
 
 ⑦ 横向 Biot 数
-   Bi⊥ = h(A/P)/k = hd/(4k) = (m d/4)²
+   Bi_perp = h(A/P)/k = hd/(4k) = (m d/4)²
 
 ⑧ 周期场的有限长修正（复数）
    Θ_fin(x) = e^{−sx} · (1 + e^{−2s(L−x)}) / (1 + e^{−2sL}),   s = q + i q′</div>
 
+
+<h3>0.3 十六张图分别讲什么（正文里按编号引用）</h3>
+<table>
+<tr><th style="width:10%">图号</th><th style="width:34%">标题</th><th>它解释的东西</th></tr>
+<tr><td>图 2-1</td><td>四层结构：谁负责什么</td><td>硬件 / 固件 / 主机 / 离线分析的分工，以及"只有一个时基"</td></tr>
+<tr><td>图 3-1</td><td>一条真实记录（200 s）</td><td>请求正弦 vs 实测 A0；T1–T5 的振幅递减与峰位右移</td></tr>
+<tr><td>图 3-2</td><td>一个循环给出 a、B、φ</td><td>均值、振幅、相位在图上分别是哪一段</td></tr>
+<tr><td>图 4-1</td><td>固件里的控制回路</td><td>相位 → 误差 → 控制律 → ratio → 限幅 → H 桥 → 热学对象 → 传感</td></tr>
+<tr><td>图 5-1</td><td>重建的温度场 T(x,t)</td><td>波纹为什么斜、为什么变淡；两种衰减尺度</td></tr>
+<tr><td>图 5-2</td><td>q、q′ 与三个长度尺度</td><td>1/q、1/q′、1/m 各自多长，和传感器间距比多少</td></tr>
+<tr><td>图 6-1</td><td>q 与 q′ 是两条直线的斜率</td><td>ln B vs x、φ vs x；为什么只用 T1–T3</td></tr>
+<tr><td>图 6-2</td><td>为什么相位必须先展开</td><td>atan2 的 ±π 跳变会把斜率毁掉</td></tr>
+<tr><td>图 7-1</td><td>五个频段的 κ</td><td>为什么说"κ 是最稳的数"；与文献带的偏差</td></tr>
+<tr><td>图 7-2</td><td>κ 乘 ρc 就是 k</td><td>换算尺、误差来源</td></tr>
+<tr><td>图 7-3</td><td>为什么 h 不可信</td><td>放大因子 6–26；100 s 的符号翻转</td></tr>
+<tr><td>图 8-1</td><td>平均剖面：cosh 与指数分岔</td><td>ε_T 曲线、5% 线与"只有 T1/T2 能当半无限"</td></tr>
+<tr><td>图 9-1</td><td>横向 Biot 数 vs h</td><td>为什么一维近似对 h 不敏感</td></tr>
+<tr><td>图 11-1</td><td>ν 的五个点</td><td>哪个点在"不可能"区，为什么</td></tr>
+<tr><td>图 11-2</td><td>由 ν 换算的 h</td><td>9–18 的散布、为什么只能报量级</td></tr>
+<tr><td>图 11-3</td><td>稳态判据的通过情况</td><td>为什么 qualified_periods_s 是空的</td></tr>
+</table>
 <div class="n"><b>台上用 45 秒把整条链说完（可直接背）：</b><br>
 <span class="en">"The TEC imposes a sinusoidal temperature at the rod base. As the oscillation travels, diffusion makes it decay and lag, and side loss drains it. Fitting each sensor gives an amplitude and a phase; their slopes versus position are q and q-prime. Because the equation is linear, one complex exponential carries both: the imaginary part gives κ = ω over 2 q q-prime, the real part gives ν = κ(q² − q′²). Multiply by ρc to get aluminium conductivity k, and by ρcA over P to get the side-loss coefficient h. Five forcing periods give κ to 0.8 per cent, k one to four per cent below the 6061-T6 handbook range, and h only to a factor of two, because ν is a near-cancellation."</span></div>
 <h1>1. F1 要交什么、怎么被评分</h1>
@@ -141,6 +168,11 @@ ol.two li { break-inside: avoid; }
 <h1>2. 系统全景：四层结构</h1>
 
 <p>从下往上读：物理量 → 固件 → 主机 → 离线分析。<b>每一层只做一件事</b>，这是口试里最容易讲清楚的结构。</p>
+<figure>
+  <img src="../figures/f1_handbook/fig01_pipeline.png" alt="图 2-1｜四层结构：谁负责什么">
+  <figcaption><span class="cap">图 2-1｜四层结构：谁负责什么</span><br>左边四块是<strong>硬件 → 固件 → 主机 → 离线分析</strong>。两个红字要点：① 全系统只有<strong>一个时基</strong>（<span class="mono">time_s = millis()/1000</span>），正弦波的相位和采到的样本共用同一个时钟；② <strong>GUI 不参与实时控制</strong>，只上传计划和记录；心跳一停，固件自己把输出归零。<br><span class="rd">看图要点：</span>这张图回答“为什么不能把控制放在 Python 里”——控制若在主机，主机一卡顿就把抖动写进边界温度，而且主机死掉时没人关输出。</figcaption>
+</figure>
+
 
 <table>
 <tr><th style="width:12%">层</th><th style="width:46%">它做什么</th><th>关键数字 / 为什么这样分层</th></tr>
@@ -172,6 +204,11 @@ ol.two li { break-inside: avoid; }
 <div class="n"><b>扫描偏斜对相位的定量影响（会被问）：</b>相位误差 δφ = ω·Δt。<br>
 100 s 周期：ω = 0.0628 rad/s，T5 相对 T1 的 Δt ≈ +0.045 s ⇒ δφ ≈ 2.9 mrad。<br>
 你的仓库里做过这项敏感性分析（<span class="mono">m08_scan_timing_sensitivity.json</span>）：加入扫描时序修正后 <b>κ 只变 −0.08%</b>。所以它是"已量化、非主因"——这句话在口试里很值钱。</div>
+<figure>
+  <img src="../figures/f1_handbook/fig02_waveforms_200s.png" alt="图 3-1｜一条真实记录（200 s 周期、最后五个完整循环）">
+  <figcaption><span class="cap">图 3-1｜一条真实记录（200 s 周期、最后五个完整循环）</span><br><strong>上图：</strong>红虚线是<strong>请求</strong>的 T_set，蓝实线是 <strong>A0 实测</strong>；两条几乎重合 ⇒ 回路跟得上。振幅 4.80 °C、均值 35.00 °C，即 35 ± 5 °C。<br><strong>下图：</strong>同五个循环在 T1…T5 上的样子。T1 振幅 1.69 °C，到 T5 只剩 0.10 °C（约 6%）；每个波峰都比上一个<strong>更晚</strong>出现。<br><span class="rd">看图要点：</span>① 振幅逐级变小 = q 的直观来源；② 峰位逐级右移 = q′ 的直观来源；③ T4/T5 已接近噪声（0.20 / 0.10 °C），所以拟合只用 T1–T3；④ 上下两图 x 轴对齐，可直接数出“T1 的峰比 A0 晚多少秒”（200 s 时约 24 s，即 0.74 rad）。</figcaption>
+</figure>
+
 
 <h3>3.2 传感器位置与几何（所有斜率都依赖它）</h3>
 <div class="f">x = [0, 0.0385, 0.0895, 0.1405, 0.1915] m      (T1 … T5)
@@ -180,6 +217,11 @@ A = πd²/4 = 1.28077e-4 m²      P = πd = 0.0401181 m</div>
 <p><b>读法：</b>q 与 q′ 是把 (q, q′) 对 x 做线性回归得到的斜率，所以 <b>x 的误差直接进入斜率</b>。T1→T5 跨 0.19 m，用 5 个点拟合。仓库里 <span class="mono">sensor_map.json</span> 的 <span class="mono">position_uncertainty_m</span> 是 <span class="mono">null</span>（没给标准不确定度），但在 <span class="mono">five_period_review</span> 里按 <b>±1 mm/间隙</b> 做了 32 种符号组合的边界情景。<b>上台必须说"这是边界情景，不是标准不确定度"</b>。</p>
 
 <div class="w"><b>常见误解：</b>不要以为把 T1 放在 x=0 就"没有位置误差"。T1 的孔位就是原点定义；它若偏移 1 mm，所有下游 x 同时平移，q、q′ 会整体变——这是<b>相关</b>误差，不能当独立误差处理。</div>
+<figure>
+  <img src="../figures/f1_handbook/fig03_definition_one_cycle.png" alt="图 3-2｜一个循环给出三个数：a、B、φ">
+  <figcaption><span class="cap">图 3-2｜一个循环给出三个数：a、B、φ</span><br>灰点是实测 T1，橙线是拟合 <span class="mono">a + B·cos(ωt + φ)</span>。三个数字：<br><strong>均值 a = 32.15 °C</strong>（中间点线）——平均温度，用来做 cosh 拟合求 mL；<br><strong>振幅 B = 1.69 °C</strong>（右侧红色双向箭头标的是 2B，一半即 B）——用来求 q；<br><strong>相位 φ = −2.41 rad</strong>（绿色虚线指向波峰）——用来求 q′。<br><span class="rd">看图要点：</span>① 正弦拟合只有三个自由参数加一个已知频率，所以很稳；② “峰值位置”就是相位的物理含义：φ 越负，峰越晚；③ T1 的 φ 比 A0 的 −1.67 rad 更负，差值 0.74 rad 是 <strong>TEC→棒底</strong>的额外滞后，它不进入 Angstrom 反演（反演只用 T1–T5 之间的相对相位）。</figcaption>
+</figure>
+
 
 <h3>3.3 安全与限值的每一条</h3>
 <table>
@@ -193,6 +235,11 @@ A = πd²/4 = 1.28077e-4 m²      P = πd = 0.0401181 m</div>
 <tr><td>双向互锁</td><td>—</td><td>每次输出前先把 D9、D10 都写 0，再写目标方向，绝不两个半桥同时导通。</td></tr>
 </table>
 <h1>4. 控制层：三种模式、一个补偿、一条相位</h1>
+<figure>
+  <img src="../figures/f1_handbook/fig16_control_loop.png" alt="图 4-1｜固件里的控制回路（上排是算，下排是物理）">
+  <figcaption><span class="cap">图 4-1｜固件里的控制回路（上排是算，下排是物理）</span><br>上排从左到右：<strong>计划（周期、Ta、Tb、模式、Kp、Ki）→ 相位累加器生成 T_set → 误差 e → 控制器（OPEN 查表 / P / PI）→ 负命令乘 ratio</strong>；然后向下：<strong>限幅 ±96 → H 桥 D9/D10 → TEC 与棒（热学对象）→ 热敏电阻 → 500 ms 记录</strong>，最后把 A0 读数送回误差节点。<br><span class="rd">看图要点：</span>① 回路里<strong>只有 A0</strong>（TEC 冷面），T1–T5 不在环里；② 限幅（红色方框）必须出现在 ratio 之后，否则“限幅”就不是真正的占空比上限；③ 从 H 桥往右全是<strong>热学</strong>环节（TEC 热容、接触热阻、铝棒扩散），它们贡献了数据里的相位滞后——这就是“请求的正弦”≠“交付到棒底的正弦”。</figcaption>
+</figure>
+
 
 <h3>4.1 正弦边界是怎么生成的</h3>
 <div class="f">每 0.5 s 一次：
@@ -249,6 +296,16 @@ A = πd²/4 = 1.28077e-4 m²      P = πd = 0.0401181 m</div>
                       κ = k/(ρc)           [m²/s]
                       ν = hP/(ρcA) = 4h/(ρc d)   [1/s]</div>
 
+<div class="n"><b>把这一行方程逐项翻译成人话（这是最该背下来的四个字：储、导、漏）：</b>
+<table style="margin-top:4pt">
+<tr><th style="width:22%">符号</th><th style="width:20%">中文</th><th>它在说什么</th></tr>
+<tr><td class="mono">∂θ/∂t</td><td>储热速率</td><td>这一点温度升高多快。乘上 <span class="mono">ρcA</span> 就是“每秒存进多少能量”。</td></tr>
+<tr><td class="mono">κ ∂²θ/∂x²</td><td>净流入的导热</td><td>左边的热量进来、右边的热量出去，<strong>差值</strong>才留下。二阶导正是“差值的变化率”。</td></tr>
+<tr><td class="mono">−νθ</td><td>侧向漏出</td><td>表面一直在往空气散热，漏多少正比于<strong>当前比空气高多少</strong>（θ 本身），所以是 −νθ 而不是一个常数。</td></tr>
+</table>
+一句话：<b>存起来的 = 导进来的 − 漏出去的</b>。如果只有前两项，波会一直往下传；加上第三项，波才会“边传边变小”，于是振幅和相位分裂成两个可观测量。</div>
+
+
 <h3>5.2 每一项的量纲（A4 与 F1 都要求"处处带量纲"）</h3>
 <table>
 <tr><th style="width:30%">项</th><th style="width:26%">量纲推导</th><th>结果</th></tr>
@@ -269,6 +326,15 @@ A = πd²/4 = 1.28077e-4 m²      P = πd = 0.0401181 m</div>
 <tr><td>一弧度相位长度</td><td>ℓ_phase = 1/q′</td><td>相位滞后 1 rad 的距离。100 s：4.6 cm；500 s：11.3 cm。</td></tr>
 </table>
 <p>三者由 <span class="mono">m² = q² − q′²</span> 连起来，并用无量纲频率 <span class="mono">Ω = ω/ν</span> 表达它们的比值。<b>口试若被问"三个长度的物理区别"，就答：两者是同一个扩散过程在实部（衰减）与虚部（滞后）上的投影；第三个是平均场（零频极限）。</b></p>
+<figure>
+  <img src="../figures/f1_handbook/fig06_wavefield.png" alt="图 5-1｜重建出的温度场：一个周期、整根棒">
+  <figcaption><span class="cap">图 5-1｜重建出的温度场：一个周期、整根棒</span><br>上图是 <span class="mono">T(x,t)</span> 伪彩色图（横轴距离、纵轴时间、颜色温度），由 500 s 的拟合参数重建：均值用有限长 cosh，振荡用 <span class="mono">B_0e^{-qx}</span> 加相位 <span class="mono">−q′x</span>。灰竖线是五个传感器位置。红蓝斜条纹就是“波”：<strong>斜向左上</strong>说明越往下游同一个波峰越晚到；条纹越往右越淡说明振幅在衰减。<br>下图把两个包络单独画出来：灰线是<strong>平均温度</strong>衰减（尺度 1/m ≈ 17 cm），橙线是<strong>振荡振幅</strong>衰减（尺度 1/q ≈ 9.5 cm）。<br><span class="rd">看图要点：</span>这是“为什么需要两个衰减尺度”的最直观证据——平均场在中段只掉 20%，而振荡到 T5 已经掉到 6%。</figcaption>
+</figure>
+<figure>
+  <img src="../figures/f1_handbook/fig07_q_qprime.png" alt="图 5-2｜q、q′ 与三个长度尺度随周期的变化">
+  <figcaption><span class="cap">图 5-2｜q、q′ 与三个长度尺度随周期的变化</span><br><strong>左图：</strong>五个周期各自的 q（蓝）与 q′（青），两者都随周期单调下降；周期越长，波渗透越深、相位滞后越小。<br><strong>右图：</strong>把它们换成<strong>长度</strong>：<span class="mono">1/q</span>（振幅衰减长度）、<span class="mono">1/q′</span>（一弧度相位长度）、<span class="mono">1/m</span>（平均场衰减长度）。灰横线是传感器间距（0、3.85、8.95、14.05、19.15 cm），可直观判断“一个间距内波衰减/滞后多少”。<br><span class="rd">看图要点：</span>100 s 时 <span class="mono">1/q ≈ 4.7 cm</span> 已接近最小间距 3.85 cm，所以 T2 之后信号迅速掉进噪声；这解释了短周期为什么不能用更多传感器，也解释了 100 s 的 ν 为什么会反号。</figcaption>
+</figure>
+
 
 <div class="w"><b>最容易说错的一句：</b>不要写 <span class="mono">m = q − q′</span> 或 <span class="mono">m = q</span>。正确关系是 <span class="mono">m² = q² − q′²</span>，也就是 <span class="mono">m = √(q² − q′²)</span>。<b>当 q′ ≥ q 时 m 变成虚数 ⇒ 物理上不成立</b>——这正是 100 s 数据给出的失败信号。</div>
 <h1>6. 物理 II：复指数怎么把 κ 和 ν 拆开</h1>
@@ -287,8 +353,27 @@ A = πd²/4 = 1.28077e-4 m²      P = πd = 0.0401181 m</div>
 比较实部：   0 = κ(q² − q′²) − ν   →  ν = κ (q² − q′²)
 两式相除：   ν/κ = q² − q′²  = m²</div>
 
+<div class="n"><b>为什么可以“猜”这个解（这一步很多人卡住）：</b>
+① 方程是<strong>线性</strong>的，所以任何驱动都可以分解成正弦叠加，我们只研究其中一个频率；
+② 对一个线性方程，输入 <span class="mono">e^{iωt}</span> 一定产生同频率的输出，只会改变<strong>幅度</strong>和<strong>相位</strong>——
+所以把解写成“同一个 <span class="mono">e^{iωt}</span> 乘一个只与 x 有关的复函数”是<strong>完备</strong>的，不是碰运气；
+③ x 方向只剩一个常系数二阶常微分方程，它的两个根就是 <span class="mono">±(q+iq′)</span>；
+取衰减的那个（波不会从端部自己长出来），就得到 <span class="mono">e^{−(q+iq′)x}</span>。
+④ 于是“q 与 q′”不是两个额外的假设，而是<strong>同一个根</strong>的实部和虚部——这就是为什么它们必须由同一个方程组联系起来（<span class="mono">ω=2κqq′</span>、<span class="mono">ν=κ(q²−q′²)</span>）。</div>
+
+
 <h3>6.2 为什么"一个复指数同时携带两个观测量"</h3>
 <p>把解写成 <span class="mono">θ = A e^{−qx} cos(ωt − q′x + φ₀)</span>：<b>实部 q 管振幅</b>，<b>虚部 q′ 管相位</b>。它们是同一个复波数的两个分量，所以你的实验只需要"在不同位置测到振幅和相位"，就同时拿到了方程的实部与虚部信息。<b>这不是两个独立实验，而是同一组数据的两个投影。</b></p>
+<figure>
+  <img src="../figures/f1_handbook/fig04_spatial_fit.png" alt="图 6-1｜q 与 q′ 就是两条直线的斜率（200 s 与 500 s 各一组）">
+  <figcaption><span class="cap">图 6-1｜q 与 q′ 就是两条直线的斜率（200 s 与 500 s 各一组）</span><br><strong>上排：</strong>纵轴是振幅 <span class="mono">B_i</span>（对数刻度），横轴是距离。蓝点是 T1–T5；方块是真正进入拟合的 T1–T3；橙虚线是 <span class="mono">B_0e^{-qx}</span>。纵轴取对数后指数衰减变成直线，<strong>斜率就是 −q</strong>。<br><strong>下排：</strong>纵轴是展开后的相位，相位随距离线性下降，<strong>斜率就是 −q′</strong>。<br><span class="rd">看图要点：</span>① 周期越长，两条线的斜率都越小；② 500 s 的 T4、T5 明显<strong>偏离直线</strong>（衰减变慢），这正是“端部不是无限远”的痕迹，也是最终拟合只保留 T1–T3 的原因；③ 图上标的 q 是<strong>两阶段半无限拟合</strong>值（200 s：15.46），最终表里的 15.65 来自<strong>复数有限长模型</strong>，差 1.2%——被问到就用这句话回答。</figcaption>
+</figure>
+<h3>6.3 为什么必须先把相位展开（unwrap）</h3>
+<figure>
+  <img src="../figures/f1_handbook/fig05_unwrap.png" alt="图 6-2｜为什么相位必须先展开">
+  <figcaption><span class="cap">图 6-2｜为什么相位必须先展开</span><br>红点是 <span class="mono">atan2</span> 直接返回的值，被限制在 (−π, π]；青线是展开后的真实相位。T1 的相位 −2.41，T2 −2.98，到 T3 已是 −3.75，超过 −π = −3.14，所以原始值会<strong>跳回 +2.53</strong>。<br><span class="rd">看图要点：</span>若拿红点做线性拟合，斜率会被这次跳变彻底毁掉（错一个 2π）。19 cm 上累计的相位差在 100 s 时可达 4.2 rad，所以<strong>永远先 unwrap 再拟合</strong>——这也是官方口试第 9 题。</figcaption>
+</figure>
+
 
 <table>
 <tr><th style="width:16%">周期</th><th style="width:18%">ω (rad/s)</th><th style="width:16%">2qq′ (m⁻²)</th><th style="width:20%">κ = ω/(2qq′) (m²/s)</th><th>读法</th></tr>
@@ -313,6 +398,12 @@ c = 896  J/(kg·K) (手册 890–900,  界 ±18)
 d/4 = 0.01277/4 = 0.0031925 m
 ⇒ 每 1e-5 m²/s 的 κ 折合 k = 24.19 W/(m·K)
 ⇒ 每 1e-3 s⁻¹ 的 ν 折合 h = 7.72 W/(m²·K)</div>
+
+<div class="n"><b>为什么正好是 <span class="mono">k = κρc</span> 与 <span class="mono">h = νρcA/P</span>（把定义倒过来看）：</b><br>
+① <span class="mono">κ = k/(ρc)</span>：κ 描述“温度扩散得多快”，ρc 描述“每升高 1 K 要存多少能量”。同样的 k，ρc 越大 ⇒ 越“难热起来” ⇒ 扩散率越小。<br>
+② <span class="mono">ν = hP/(ρcA)</span>：P/A 越大（棒越细），同样长度的侧面积越大 ⇒ 漏得越快；ρcA 越大（热容越大）⇒ 温度越难被漏掉。<br>
+③ 所以反解时<strong>必须乘回去</strong>：k 用 ρc 乘，h 用 ρcA/P 乘（<span class="mono">=ρc·d/4</span>）。注意 h 用的是 <strong>A/P</strong> 而不是 P/A——这是最容易写反的一步。</div>
+
 <p><b>换算尺的用法（非常实用）：</b>你只要记住 <b>κ × 241.9 = k</b>（κ 用 1e-5 为单位时乘 24.19×10），就能在台上心算：6.80e-5 → 164.5；ν = 1.2e-3 → h = 9.3。被追问"你怎么这么快算出来"时，答"ρc 和 d/4 是常数，我把它做成换算尺了"。</p>
 
 <h3>7.2 逐频段的 k 与 h（带条件标准误）</h3>
@@ -325,6 +416,15 @@ d/4 = 0.01277/4 = 0.0031925 m
 <tr><td class="num">500</td><td class="num">6.75 ± 0.30</td><td class="num">163.4 ± 7</td><td class="num">2.183 ± 0.577</td><td class="num">16.9 ± 4.5</td><td>与 400 s 同量级</td></tr>
 </table>
 <p class="small">κ 与 ν 的条件标准误取自 <span class="mono">m08_pi_five_period_summary.json</span> 的 <span class="mono">kappa_conditional_se_m2_s</span> / <span class="mono">nu_conditional_se_per_s</span>；k、h 的误差按 ρ、c 精确传播（δk = ρc·δκ）。这是<b>条件重复性标准误</b>，不是置信区间，也不含系统误差——必须在台上明确说出这一点。</p>
+<figure>
+  <img src="../figures/f1_handbook/fig08_kappa.png" alt="图 7-1｜五个频段给出的 κ（全场最稳的数）">
+  <figcaption><span class="cap">图 7-1｜五个频段给出的 κ（全场最稳的数）</span><br>蓝点：每个周期的 κ = ω/(2qq′)，误差棒是<strong>条件重复性标准误</strong>；绿带：由 6061-T6 手册 166–172 W/(m·K) 反推的 κ 区间（6.86–7.11×10⁻⁵）；蓝点线：五点平均 6.80×10⁻⁵。<br><span class="rd">看图要点：</span>① 五个点几乎水平 ⇒ 不同频率给同一个扩散率，这是模型成立的最强证据；② 整体略低于绿带下沿约 1%，换算成 k 就是 164.5 vs 166；③ 误差棒大量重叠、五点离散只有 0.8%，所以“统计上相容”这句话有根据。</figcaption>
+</figure>
+<figure>
+  <img src="../figures/f1_handbook/fig09_k.png" alt="图 7-2｜把 κ 乘上 ρc 就是 k">
+  <figcaption><span class="cap">图 7-2｜把 κ 乘上 ρc 就是 k</span><br>同一组数据，纵轴乘 <span class="mono">ρc = 2.4192×10⁶</span>：6.75×10⁻⁵ → 163，6.99×10⁻⁵ → 169。绿带是 6061-T6 的 166–172 W/(m·K)。<br><span class="rd">看图要点：</span>① 167、169 在带内，161、163 略低；② 换算尺背住：<strong>κ（以 10⁻⁵ 为单位）× 24.2 = k</strong>，可当场心算；③ k 的误差不只有 κ——ρ、c 各带 ±1%、±2%，合计约 1.5% 系统不确定度。</figcaption>
+</figure>
+
 
 <h3>7.3 为什么 k 稳、h 不稳（一句话讲透，最重要的一段）</h3>
 <div class="f">ν = κ (q² − q′²)
@@ -338,6 +438,11 @@ d/4 = 0.01277/4 = 0.0031925 m
 <p><b>结论：</b>ν 是两个几乎相等的量之差，条件数 6–26 ⇒ q、q′ 各 1% 的误差会被放大成 ν 的 6–26%；再乘上 ρcA/P，h 就只剩量级意义。而 κ 只依赖<b>乘积</b> qq′，两边误差部分抵消，所以稳。<b>这就是"Angstrom 能可靠给出 k，却只能勉强给出 h"的数学原因</b>——也是你这个项目最诚实、最专业的结论。</p>
 
 <div class="w"><b>不要说：</b>"h = 14 ± 2 W/(m²·K)"。你没有任何依据支持 ±2。<b>要说：</b>"h is between 9 and 18 W/(m²·K) across five periods, consistent in order of magnitude with natural convection at about 10 W/(m²·K), but not resolved better than a factor of two because ν is a near-cancellation."</div>
+<figure>
+  <img src="../figures/f1_handbook/fig12_conditioning.png" alt="图 7-3｜为什么 h 不可信：ν 是两个近等量之差">
+  <figcaption><span class="cap">图 7-3｜为什么 h 不可信：ν 是两个近等量之差</span><br>纵轴是放大因子 <span class="mono">(q²+q′²)/|q²−q′²|</span>，即“q、q′ 的相对误差被放大几倍才变成 ν 的相对误差”。200 s 高达 26，400–500 s 才降到 6。<br><span class="rd">看图要点：</span>① 放大因子越大 h 越不可信，这正是 h 在 9–18 之间跳的原因；② 100 s 上 q′ &gt; q，分母变负 ⇒ ν 反号（图上标 sign flip），h 没有意义；③ 想改善 h 只能<strong>降低放大因子</strong>（更长周期、更小的 q′ 误差），而不是多测几个周期取平均。</figcaption>
+</figure>
+
 <h1>8. 物理 IV：有限长为什么对"平均场"重要、对"周期场"几乎不重要</h1>
 
 <p class="small">这是整套分析里最容易讲错、也最容易让评分人眼前一亮的一点。A4 算出 T5 处 27% 的误差，但周期拟合里的有限长修正只有 0.06–0.35%。两者都对，因为它们算的是<b>两个不同的场</b>。</p>
@@ -362,6 +467,11 @@ m = 5.3565 1/m,  L = 0.2715 m  ⇒  mL = 1.454,  2mL = 2.909,  e^{−2mL} = 0.05
   x = 0.1915 m (T5):  ε = 25.97 %</div>
 
 <p><b>推导来源（要能说）：</b>有限绝热端解 <span class="mono">Θ_fin = cosh[m(L−x)]/cosh(mL)</span>，半无限解 <span class="mono">Θ∞ = e^{−mx}</span>。把 cosh 写成指数：<span class="mono">Θ_fin = e^{−mx}(1+e^{−2m(L−x)})/(1+e^{−2mL})</span>，两端相除就得到上式。<b>它恒 ≥ 0，且在 x=0 处严格为 0</b>——因为两种模型在基座共用同一个边界条件。<b>越靠近端部，反射项 e^{−2m(L−x)} 越大，误差越大</b>，这就是"答案依赖传感器位置"的来源。</p>
+<figure>
+  <img src="../figures/f1_handbook/fig13_mean_profile.png" alt="图 8-1｜平均温度剖面：有限长 cosh 与半无限指数的分岔">
+  <figcaption><span class="cap">图 8-1｜平均温度剖面：有限长 cosh 与半无限指数的分岔</span><br><strong>左图：</strong>蓝点是五个传感器的平均温度 <span class="mono">a_i</span>；绿实线是有限长绝热端解 <span class="mono">cosh[m(L−x)]/cosh(mL)</span>（m = 4.90）；橙虚线是半无限解 <span class="mono">e^{−mx}</span>。两者在 T1 处重合（同一个边界条件），越靠近端部差得越多。<br><strong>右图：</strong>把这个差写成相对误差 <span class="mono">ε_T(x)</span>，红虚线是 5% 判据。绿线用 100 s 实测 m = 5.36（§8.2 表里的数），橙线用 A4 的临时值 m = 4.33。<br><span class="rd">看图要点：</span>① 两条曲线在 19 cm 处都约 26%，所以“T5 处 26%”对 m 不敏感；② 5% 线在 4–6 cm 处穿过——<strong>只有 T1、T2 能当半无限用</strong>；③ 端部（27 cm）误差可达 45%，但没有传感器在那里，只说明“外推到端部”很危险。</figcaption>
+</figure>
+
 
 <div class="n"><b>A4 与 Module 8 不矛盾：</b>A4 用<b>课件给的临时参数</b>（h=10、k=166–172 ⇒ m=4.27–4.34、mL=1.16–1.18）算出 T5 处 27%；现在用<b>实测 m=5.36</b> 重算得 26%。两者一致。而周期拟合里的 0.06%/0.35% 是<b>把同一个公式里的 m 换成复波数、并把幅度换成复数</b>算出来的——因为 qL≈4，振荡根本到不了端部。<b>正确说法：</b><span class="en">"Finite length matters for the mean field, not for the oscillatory field. That is why we fit the mean profile with cosh but can still use the semi-infinite complex solution for the periodic inference — and we verified the shift is only 0.2% in κ."</span></div>
 
@@ -378,16 +488,21 @@ m = 5.3565 1/m,  L = 0.2715 m  ⇒  mL = 1.454,  2mL = 2.909,  e^{−2mL} = 0.05
 
 <h1>9. 物理 V：横向 Biot 数（唯一能证明"一维"的检查）</h1>
 
-<div class="f">Bi⊥ = h (A/P) / k = h (d/4) / k = h d / (4k)
+<div class="f">Bi_perp = h (A/P) / k = h (d/4) / k = h d / (4k)
 恒等式（由 m² = hP/kA 推出）：  (m d/4)² = h d/(4k)   ✔ 两种算法必须给同一个数
 
 用最终的 h、k：
   h = 9.3–18.2 W/(m²·K),  d = 0.01277 m,  k = 161–169 W/(m·K)
-  ⇒ Bi⊥ = 1.9e-4 … 3.5e-4      ≪ 1  (判据通常取 &lt; 0.1)
+  ⇒ Bi_perp = 1.9e-4 … 3.5e-4      ≪ 1  (判据通常取 &lt; 0.1)
 
 用 m 的算法核对： m = 4.27 → (4.27×0.01277/4)² = 1.86e-4 ✔ 与上面一致</div>
 
 <p><b>它在证明什么：</b>截面上"内部导热"远快于"表面散热"，所以同一截面内的径向温差只有轴向温差的 Bi⊥/4 量级（≪1），可以用<b>一个温度代表整个截面</b>——这才使 A、P、k 作为常数写进一维方程合法。<b>它不证明半无限</b>：半径方向的一维性与轴向的有限长是两件事，必须分开表述（A4 Part 4 的评分点）。</p>
+<figure>
+  <img src="../figures/f1_handbook/fig15_biot.png" alt="图 9-1｜横向 Biot 数：任何合理的 h 都远小于 0.1">
+  <figcaption><span class="cap">图 9-1｜横向 Biot 数：任何合理的 h 都远小于 0.1</span><br>两条曲线是 <span class="mono">Bi⊥ = hd/(4k)</span>（k = 161 与 169）；橙色竖带是推断的 h 范围 9.3–18.2；绿色横带是 Bi &lt; 0.1 的“一维成立”区。纵轴是对数。<br><span class="rd">看图要点：</span>① 橙带内 Bi⊥ ≈ 2–3×10⁻⁴，离 0.1 差三个数量级；② 即使 h 增至 60（强制风冷），Bi⊥ 也只有 1×10⁻³——所以“一维”这个结论<strong>对 h 极不敏感</strong>；③ Bi⊥ 小只证明“每个截面一个温度”，<strong>不证明半无限</strong>（那是图 8-1 的事）。</figcaption>
+</figure>
+
 
 <div class="w"><b>易错点（口试常考）：</b>① Bi⊥ 里的特征长度是 <b>d/4 = R/2</b>，不是 d、不是 L；② 用的是 <b>最终拟合的 h、k</b>，不是课件临时值；③ 当 h 增大（如强制风冷）时 Bi⊥ 线性增大，一维近似要重新检查——但本案 Bi⊥ ~1e-4，即使 h 增大 100 倍仍 &lt; 0.02，所以结论稳固。这是"你的结论对 h 不敏感"的好论据。</div>
 <h1>10. 分析流水线：从 CSV 到 (k, h) 的八步</h1>
@@ -427,8 +542,22 @@ m = 5.3565 1/m,  L = 0.2715 m  ⇒  mL = 1.454,  2mL = 2.909,  e^{−2mL} = 0.05
 <tr><td class="num">500</td><td class="num">10.52</td><td class="num">8.85</td><td class="num">6.75e-5</td><td class="num">2.18e-3</td><td class="num">163.4</td><td class="num">16.9</td><td>与 400 s 同量级</td></tr>
 </table>
 <p class="small">来源：<span class="mono">transport_note/m08_transport_parameters.json</span>（q、q′ 为<b>复数有限长模型</b> <span class="mono">finite_insulated_tip</span> 的拟合值）；κ、ν 为半无限复模型值，与有限长模型的 κ 差 0.2%。</p>
+<figure>
+  <img src="../figures/f1_handbook/fig10_nu.png" alt="图 11-1｜ν 的五个点：一个掉进了“不可能”区">
+  <figcaption><span class="cap">图 11-1｜ν 的五个点：一个掉进了“不可能”区</span><br>青点是 <span class="mono">ν = κ(q²−q′²)</span>，误差棒是条件标准误；粉色区是 ν &lt; 0。<br><span class="rd">看图要点：</span>① 100 s 的点是 <strong>−1.84×10⁻³</strong>，落在粉色区——侧向加热在物理上不可能，所以这一点只能判为“方法失效”；② 200/300 s 几乎重合（1.21、1.20），400/500 s 跳到 2.2–2.35，差近一倍；③ 误差棒本身就有 0.5–0.9×10⁻³（40–78%），所以 ν 只能报量级。</figcaption>
+</figure>
+<figure>
+  <img src="../figures/f1_handbook/fig11_h.png" alt="图 11-2｜由 ν 换算的 h：量级对、数值散">
+  <figcaption><span class="cap">图 11-2｜由 ν 换算的 h：量级对、数值散</span><br>紫点是 <span class="mono">h = νρc(d/4)</span>，误差棒由 ν 传播而来；灰虚线是课程临时值 10 W/(m²·K)。100 s 处画红线，因为 ν &lt; 0，不报 h。<br><span class="rd">看图要点：</span>① 200/300 s 给 9.4、9.3，与 10 吻合；400/500 s 给 18.2、16.9，翻倍；② 误差棒 ±3.8 到 ±7.2（24–78%），所以<strong>不能写 h = 14 ± 2</strong>；③ 正确说法：h 在 9–18 W/(m²·K)，与自然对流同量级，但受 ν 的近等量相减限制，只能分辨到“倍”。</figcaption>
+</figure>
+
 
 <h3>11.2 稳态判据的实际通过情况（必须能指出来）</h3>
+<figure>
+  <img src="../figures/f1_handbook/fig14_settling.png" alt="图 11-3｜稳态判据：每一组都至少有一根柱子超过 1">
+  <figcaption><span class="cap">图 11-3｜稳态判据：每一组都至少有一根柱子超过 1</span><br>纵轴是“实测跨度 ÷ 允许跨度”：均值 ÷ 0.1 °C、振幅 ÷ 5%、相位 ÷ 0.1 rad。红虚线是 1.0，超过即不合格。<br><span class="rd">看图要点：</span>① 200 s 的蓝色柱（均值）是唯一低于 1 的，但振幅 1.6、相位 1.4 仍超标；② 300 s 的振幅柱高达 5 倍，说明那一段波形还在明显变化；③ 这就是 <span class="mono">qualified_periods_s = []</span> 的图形解释——不是“没测”，而是“测了但没有一组通过预先定的门槛”，所以全部标为 diagnostic。</figcaption>
+</figure>
+
 <table>
 <tr><th style="width:8%">T (s)</th><th style="width:17%">均值跨度 (°C) 限 0.1</th><th style="width:17%">振幅跨度 限 5%</th><th style="width:17%">相位跨度 (rad) 限 0.1</th><th>结论</th></tr>
 <tr><td class="num">100</td><td class="num">0.168 ✗</td><td class="num">25.9% ✗</td><td class="num">0.181 ✗</td><td>三项全败</td></tr>
@@ -602,6 +731,7 @@ m = 5.3565 1/m,  L = 0.2715 m  ⇒  mL = 1.454,  2mL = 2.909,  e^{−2mL} = 0.05
 <tr><td class="mono">Module_8/docs/theory_and_analysis.md<br>transport_and_model_note_2026-11-18.md<br>five_period_review_2026-11-18.md</td><td>你自己的方法说明（写作时可直接引用）</td></tr>
 <tr><td class="mono">Module_8/figures/{five_period_review,transport_note,control_comparison,stage2}/</td><td>11 张成品图（slides 直接挑）</td></tr>
 <tr><td class="mono">Module_8/config/sensor_map.json</td><td>通道—孔位—坐标—直径（<span class="mono">position_uncertainty_m: null</span>）</td></tr>
+<tr><td class="mono">Module_8/figures/f1_handbook/</td><td>本册全部 16 张示意图（由 <span class="mono">f1_handbook_figures.py</span> 从上面的 JSON 生成）</td></tr>
 </table>
 
 <h3>17.1 复现命令（写进 writeup，并且现场能跑）</h3>
@@ -618,7 +748,11 @@ m = 5.3565 1/m,  L = 0.2715 m  ⇒  mL = 1.454,  2mL = 2.909,  e^{−2mL} = 0.05
 .venv/bin/python Module_8/python/analysis/scan_timing_sensitivity.py
 
 # 5) 记录哈希（写进 writeup，证明复现）
-shasum -a 256 Module_8/data/processed/transport_note/m08_transport_parameters.json</div>
+shasum -a 256 Module_8/data/processed/transport_note/m08_transport_parameters.json
+
+# 6) 重新生成本册的全部示意图（只读 processed/ 与一份 raw CSV）
+.venv/bin/python Module_8/python/analysis/f1_handbook_figures.py
+</div>
 
 <div class="w"><b>复现的边界条件：</b>这些脚本只读 <span class="mono">data/raw/</span> 与 <span class="mono">config/</span>，不接硬件；跑完会覆盖 <span class="mono">data/processed/</span> 下的文件——<b>先备份或先记录哈希</b>，否则你无法证明"复现前后一致"。</div>
 
@@ -656,7 +790,7 @@ shasum -a 256 Module_8/data/processed/transport_note/m08_transport_parameters.js
 <li>下一步：独立室温、共浴标定、同日同幅多周期重复。</li>
 </ol>
 
-<p class="small" style="margin-top:10pt;border-top:.8pt solid #cfd8de;padding-top:5pt">
+<p class="small" style="margin-top:8pt;border-top:.8pt solid #cfd8de;padding-top:4pt;page-break-before:avoid">
 本册数值取自仓库 <span class="mono">Module_8/data/processed/</span>（2026-11-20 状态）。若重新运行分析脚本，请同时更新本册引用的数字与 <span class="mono">m08_transport_parameters.json</span>，并在 F1 的两份 PDF 中引用同一个 frozen commit。
 </p>
 
