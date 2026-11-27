@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>为什么除以 ρc：从能量守恒到 κ 与 ν</title>
+<style>
+@page { size: A4; margin: 13mm 12mm 15mm 12mm; }
+* { box-sizing: border-box; }
+body { font-family: "PingFang SC","Hiragino Sans GB","Arial Unicode MS",sans-serif;
+       font-size: 9.4pt; line-height: 1.52; color: #1a1a1a; margin: 0; }
+h1 { font-size: 15.5pt; margin: 13pt 0 5pt; color: #0f3d5c; letter-spacing: .2pt;
+     page-break-after: avoid; }
+h2 { font-size: 12pt; margin: 13pt 0 4pt; padding-bottom: 2pt;
+     border-bottom: 1.1pt solid #0f3d5c; color: #0f3d5c; page-break-after: avoid; }
+h3 { font-size: 10.2pt; margin: 9pt 0 3pt; color: #14506e; page-break-after: avoid; }
+p { margin: 3pt 0; }
+ul, ol { margin: 3pt 0 3pt 16pt; padding: 0; }
+li { margin: 1.4pt 0; }
+.cover { height: 266mm; display: flex; flex-direction: column; justify-content: center;
+         border-top: 6pt solid #0f3d5c; border-bottom: 6pt solid #0f3d5c;
+         padding: 14mm 5mm; page-break-after: always; }
+.cover h1 { font-size: 25pt; line-height: 1.22; letter-spacing: .5pt; }
+.cover .sub { font-size: 12.4pt; color: #14506e; margin-top: 5mm; line-height: 1.5; }
+.cover .meta { margin-top: 13mm; font-size: 9.4pt; color: #444; line-height: 1.85; }
+.tag { display: inline-block; background: #0f3d5c; color: #fff; font-size: 7.6pt;
+       padding: .6pt 4pt; border-radius: 2pt; letter-spacing: .3pt; }
+.pb { page-break-before: always; }
+.sym { color: #b03a2e; font-weight: 700; font-style: italic;
+       font-family: "Times New Roman","Songti SC",serif; }
+code, .mono { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8.2pt;
+       background: #f2f4f6; padding: 0 1.5pt; border-radius: 2pt; }
+.f { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8.8pt;
+     background: #f7f9fb; border-left: 3pt solid #0f3d5c; padding: 5pt 8pt;
+     margin: 5pt 0; white-space: pre-wrap; line-height: 1.55;
+     page-break-inside: avoid; }
+.eq { font-family: "Times New Roman","Songti SC",serif; font-size: 11.2pt;
+      text-align: center; margin: 6pt 0; line-height: 1.45;
+      page-break-inside: avoid; }
+.eq.small { font-size: 10pt; }
+.n { background: #eef6f1; border-left: 3pt solid #2e7d4f; padding: 5pt 8pt;
+     margin: 6pt 0; font-size: 9.3pt; page-break-inside: avoid; }
+.w { background: #fdf1ef; border-left: 3pt solid #b03a2e; padding: 5pt 8pt;
+     margin: 6pt 0; font-size: 9.3pt; page-break-inside: avoid; }
+.k { background: #f0f4fa; border: 1.1pt solid #2c5f9e; padding: 6pt 9pt;
+     margin: 7pt 0; font-size: 9.5pt; page-break-inside: avoid; }
+.k .kh { font-weight: 700; color: #20456f; letter-spacing: .2pt; }
+.step { display: flex; gap: 7pt; margin: 6pt 0; page-break-inside: avoid; }
+.step .no { flex: 0 0 16pt; height: 16pt; border-radius: 8pt; background: #0f3d5c;
+            color: #fff; font-size: 8.6pt; font-weight: 700; text-align: center;
+            line-height: 16pt; }
+.step .bd { flex: 1; }
+.en { font-size: 8.5pt; color: #4a4a4a; font-style: italic; margin-top: 2pt; }
+table { border-collapse: collapse; width: 100%; margin: 5pt 0 8pt; font-size: 8.4pt; }
+th { background: #0f3d5c; color: #fff; text-align: left; padding: 3pt 4pt;
+     font-weight: 600; font-size: 8.3pt; }
+td { border-bottom: .6pt solid #cfd8de; padding: 2.7pt 4pt; vertical-align: top;
+     overflow-wrap: anywhere; }
+tr:nth-child(even) td { background: #f7f9fa; }
+tr { page-break-inside: avoid; }
+table.keep { page-break-inside: avoid; }
+.num { text-align: right; font-family: Menlo,monospace; font-size: 8.1pt;
+       white-space: nowrap; }
+figure { margin: 8pt 0 10pt; page-break-inside: avoid; }
+figure img { width: 100%; border: .6pt solid #dbe3e8; border-radius: 2pt; }
+figcaption { font-size: 8.5pt; color: #333; margin-top: 3pt; line-height: 1.45; }
+figcaption b { color: #0f3d5c; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div><span class="tag">Phys 39 / 169 · Module 8 · F1 理论段 · A5 配套</span></div>
+  <h1>为什么除以 ρc<br>从切片能量守恒，到 κ 与 ν</h1>
+  <div class="sub">
+    一条完整的推导线：<br>
+    能量账（W/m） → ÷ρcA → <b>κ = k/(ρc)</b>、<b>ν = hP/(ρcA)</b> → s² = (ν + iω)/κ → κ = ω/(2qq′)
+  </div>
+  <div class="meta">
+    使用者：Ricky Huang（团队 R-X）<br>
+    用途：F1 口试第 2 段（κ 与 ν 的来源）、A5 理论推导、Module 8 与 Module 7 的接口<br>
+    写法：从最原始的能量守恒出发，不预设 κ、ν 存在；每一步都给出单位<br>
+    数值：A4 标称 h = 10 W m⁻² K⁻¹、k = 167 W m⁻¹ K⁻¹；实测 κ、ν 取五周期复核值<br>
+    生成日期：2026-11-27 · 14 节
+  </div>
+</div>
+
+<h1>0. 一页速览：整条推导只有五步</h1>
+
+<p>这份文档只回答一个问题：<b>为什么必须除以 ρc，κ 和 ν 到底是怎么冒出来的？</b>答案不是"定义"，而是"<b>除出来</b>"。下面五步就是全文的骨架。</p>
+
+<table class="keep">
+<tr><th style="width:6%">#</th><th style="width:34%">做什么</th><th style="width:38%">得到什么</th><th>单位</th></tr>
+<tr><td class="num">1</td><td>对一个厚 dx 的切片记能量账</td><td>ρcA ∂θ/∂t = kA θ″ − hPθ &nbsp;(★)</td><td>三项都是 W/m</td></tr>
+<tr><td class="num">2</td><td>两边同时除以 ρcA</td><td>∂θ/∂t = (kA/ρcA) θ″ − (hP/ρcA) θ</td><td>三项都是 K/s</td></tr>
+<tr><td class="num">3</td><td>给右边两个"商"起名字</td><td><b>κ ≡ kA/ρcA = k/(ρc)</b>；<b>ν ≡ hP/ρcA</b></td><td>m²/s；1/s</td></tr>
+<tr><td class="num">4</td><td>设 θ ∝ e<sup>iωt</sup> 解空间部分</td><td>s² = (ν + iω)/κ，s = q + iq′</td><td>s：1/m</td></tr>
+<tr><td class="num">5</td><td>分离实部与虚部</td><td>m² = q² − q′² = ν/κ；κ = ω/(2qq′)</td><td>1/m²；m²/s</td></tr>
+</table>
+
+<div class="k">
+<span class="kh">一句话答案。</span>
+ρcA 是 ∂θ/∂t 前面<b>原本就有</b>的系数（热惯性）。要写成"θ 变化多快"，就必须把它除到右边去；除完之后，两个输运项各自变成一个"<b>输运 ÷ 惯性</b>"的商——轴向的叫 κ，侧向的叫 ν。<b>所以 κ 和 ν 不是被定义的量，是被推导出来的商。</b>
+</div>
+
+<div class="w">
+<b>先立一个规矩。</b>本文中 θ 一律表示 <b>θ = T − T<sub>环境</sub></b>（超出环境的温度）。符号选定后，棒比环境热（θ &gt; 0）时侧面向外漏热，所以侧面项是 <b>−hPθ</b>，而不是 +hPθ。这个负号在第 6 节会决定 s² 的实部符号，非常关键。
+</div>
+
+<h1>1. 起点：把原始量全部摆出来</h1>
+
+<h2>1.1 只有三块物理"积木"</h2>
+
+<p>整道题里，材料只提供三样东西，几何只提供两个数。所有后来的 κ、ν、m、q、q′ 都是它们的组合，<b>没有一个新物理</b>。</p>
+
+<table class="keep">
+<tr><th style="width:16%">积木</th><th style="width:11%">符号</th><th style="width:23%">单位</th><th>它管什么</th></tr>
+<tr><td><b>储热</b></td><td class="sym">ρc</td><td>J m⁻³ K⁻¹</td><td>每升高 1 K，每 m³ 要存多少能量（密度 × 比热）</td></tr>
+<tr><td><b>轴向输运</b></td><td class="sym">k</td><td>W m⁻¹ K⁻¹</td><td>每米温差推动多少热流（傅里叶导热）</td></tr>
+<tr><td><b>侧向输运</b></td><td class="sym">h</td><td>W m⁻² K⁻¹</td><td>每 K 温差、每 m² 表面带走多少功率（牛顿冷却）</td></tr>
+<tr><td>几何</td><td class="sym">A, P, dx</td><td>m², m, m</td><td>截面积、周长、切片厚度</td></tr>
+</table>
+
+<p class="en">Three physical ingredients (storage, axial transport, lateral transport) plus geometry. Everything downstream is a combination of these.</p>
+
+<h2>1.2 一个必须承认的事实：ρ c 永远成对出现</h2>
+
+<p>把一片厚 dx、截面 A 的棒升高 dθ，需要吸收的能量是</p>
+
+<div class="eq">dE = ρ c · A dx · dθ &nbsp;&nbsp;[J]</div>
+
+<p>这里 ρ 和 c 只以<b>乘积</b>出现，物理上无法分开：你需要"多少质量"和"每 kg 每 K 多少焦耳"，两者相乘才是"每 K 每 m³ 多少焦耳"。<b>所以储热系数天然就是 ρc，不是一个可选的分母。</b></p>
+
+<h1>2. 从最原始的东西推起：一个切片的能量账</h1>
+
+<p>取棒上 x 到 x+dx 之间的一小片。这一小片只有三条能量出路：<b>自己存起来、从左边进右边出、从上表面漏掉</b>。下面按这五步记一遍，全程用瓦特（W）记账。</p>
+
+<div class="step"><div class="no">①</div><div class="bd">
+<b>储热项。</b>切片体积 = A·dx，所以它的"热容"是 ρcA·dx，储热的变化率是
+<div class="eq small">ρc A dx · ∂θ/∂t &nbsp;&nbsp;[J m⁻³K⁻¹ · m² · m · K s⁻¹ = J/s = W]</div>
+</div></div>
+
+<div class="step"><div class="no">②</div><div class="bd">
+<b>从 x 面流入（傅里叶定律）。</b>进入切片的热流
+<div class="eq small">Q̇(x) = −kA ∂θ/∂x &nbsp;&nbsp;[W m⁻¹K⁻¹ · m² · K m⁻¹ = W]</div>
+</div></div>
+
+<div class="step"><div class="no">③</div><div class="bd">
+<b>从 x+dx 面流出。</b>把 Q̇ 在 dx 上一阶展开：
+<div class="eq small">Q̇(x+dx) ≈ −kA [ ∂θ/∂x + (∂²θ/∂x²) dx ]</div>
+</div></div>
+
+<div class="step"><div class="no">④</div><div class="bd">
+<b>净流入 = ② − ③。</b>两个 −kA∂θ/∂x 精确抵消，只剩二阶项：
+<div class="eq small">Q̇(x) − Q̇(x+dx) = kA (∂²θ/∂x²) dx &nbsp;&nbsp;[W]</div>
+</div></div>
+
+<div class="step"><div class="no">⑤</div><div class="bd">
+<b>侧面向空气漏掉。</b>切片侧面积 = P·dx（周长 × 厚度），所以
+<div class="eq small">Q̇<sub>side</sub> = h · (P dx) · θ &nbsp;&nbsp;[W]</div>
+</div></div>
+
+<p style="margin-top:8pt">把五步合成一句话——<b>储热的增加 = 净流入 − 侧面漏出</b>：</p>
+
+<div class="f">ρc A dx ∂θ/∂t  =  kA dx ∂²θ/∂x²  −  hP dx θ      (每一项都是 W)</div>
+
+<p>每一项都带 dx，所以除以 dx 只是换成"<b>每米棒</b>"的口径：</p>
+
+<div class="k" style="text-align:center;font-size:11pt">
+ρcA ∂θ/∂t &nbsp;=&nbsp; kA ∂²θ/∂x² &nbsp;−&nbsp; hP θ &nbsp;&nbsp;&nbsp;&nbsp;<b>(★ 能量形式)</b><br>
+<span style="font-size:8.8pt;color:#444">单位：&nbsp; W/m &nbsp;=&nbsp; W/m &nbsp;=&nbsp; W/m &nbsp;&nbsp;✓</span>
+</div>
+
+<figure>
+  <img src="../figures/derivation/fig01_slice_balance.png" alt="slice energy balance">
+  <figcaption><b>图 1</b>　切片的能量账。橙色斜纹片是 x 到 x+dx 的那一片；绿色箭头是从左面流入的 Q̇(x)，红色箭头是从右面流出的 Q̇(x+dx)，两者之差就是 kA(∂²θ/∂x²)dx（②−③）。三个向上的橙色箭头是侧面向空气漏掉的 hP dx θ（⑤）。<b>注意：到这一步为止，κ 和 ν 都还不存在，式子里只有 k、h、ρc、A、P。</b></figcaption>
+</figure>
+
+<div class="n">
+<b>到 (★) 为止，我们已经完成了物理部分的全部工作。</b> 后面所有的 κ、ν、m、q、q′，都只是在这条式子上做<b>代数</b>。如果你只记一件事，就记 (★)：它是唯一一条"真正含有物理"的方程。
+</div>
+
+<h1>3. 为什么必须除以 ρcA</h1>
+
+<h2>3.1 先把除法一步一步写出来</h2>
+
+<p>从 (★) 出发：</p>
+
+<div class="eq">ρcA ∂θ/∂t = kA ∂²θ/∂x² − hP θ</div>
+
+<p>两边同时除以 ρcA（它是一个常数，只跟材料和几何有关，与 x、t 无关）：</p>
+
+<div class="eq">∂θ/∂t = (kA / ρcA) · ∂²θ/∂x² − (hP / ρcA) · θ</div>
+
+<p>分子分母的 A 在第一项里直接约掉，第二项里没有可以约的东西：</p>
+
+<div class="eq">∂θ/∂t = (k / ρc) · ∂²θ/∂x² − (hP / ρcA) · θ</div>
+
+<p>现在右边只剩下两个"系数"。给它们起名字，就得到课本上的写法：</p>
+
+<div class="k" style="text-align:center;font-size:11.5pt">
+∂θ/∂t &nbsp;=&nbsp; <b>κ</b> ∂²θ/∂x² &nbsp;−&nbsp; <b>ν</b> θ<br>
+<span style="font-size:9.5pt;color:#444">
+κ ≡ kA/ρcA = k/(ρc) &nbsp;&nbsp;[m² s⁻¹]　　ν ≡ hP/(ρcA) &nbsp;&nbsp;[s⁻¹]</span>
+</div>
+
+<div class="n">
+<b>请看清这一步发生了什么。</b>κ 和 ν 不是先"约定"再使用的；它们是<b>把方程整理成"∂θ/∂t = ⋯"这个固定格式之后，右边两个系数各自的化简结果</b>。所谓"定义式"，只是给这两个商贴上名字。<b>推完之后才有名字，不是有名字才能推。</b>
+</div>
+
+<h2>3.2 理由一（代数）：要让 ∂θ/∂t 单独站着</h2>
+
+<p>(★) 式读出来是"<b>热容 × 升温速度 = 净流入 − 漏出</b>"。你想问的问题却是"<b>升温速度等于多少</b>"。要回答这个问题，唯一合法的做法就是把 ρcA 移到右边去——这不是"简化"，这是<b>换个问句</b>。</p>
+
+<div class="eq small">热容 × (升温速度) = (功率) &nbsp;&nbsp;⟹&nbsp;&nbsp; 升温速度 = 功率 / 热容</div>
+
+<h2>3.3 理由二（物理）：ρcA 就是"热惯性"</h2>
+
+<p>和牛顿第二定律完全同构：</p>
+
+<table class="keep">
+<tr><th style="width:26%">力学</th><th style="width:26%">热学（本实验）</th><th>共同含义</th></tr>
+<tr><td>m · dv/dt = F</td><td>ρcA · ∂θ/∂t = 净功率</td><td>惯性 × 变化率 = 驱动</td></tr>
+<tr><td>dv/dt = F / m</td><td>∂θ/∂t = 净功率 / ρcA</td><td>变化率 = 驱动 ÷ 惯性</td></tr>
+<tr><td>m 越大，同样的力越难加速</td><td>ρcA 越大，同样的功率越难升温</td><td><b>ρcA 是"热质量"</b></td></tr>
+</table>
+
+<p>代入本实验的数：ρcA = 309.85 J m⁻¹K⁻¹，也就是说<b>每 1 cm 长的棒，升高 1 K 要存 3.10 J</b>。一个 0.4 W 的净功率灌进去（h = 10 时的侧漏量级），升温速度就是 0.4 / 309.85 ≈ 1.3×10⁻³ K/s——秒级几乎看不出来，这正解释了棒的时间尺度为什么是几百秒。</p>
+
+<h2>3.4 理由三（单位）：只有除掉它，右边才变成 K/s</h2>
+
+<table class="keep">
+<tr><th style="width:20%">项</th><th style="width:34%">除以 ρcA 之前</th><th style="width:22%">除以 ρcA 之后</th><th>单位</th></tr>
+<tr><td>储热</td><td>ρcA ∂θ/∂t → J m⁻¹K⁻¹·K s⁻¹</td><td>∂θ/∂t</td><td><b>K/s</b></td></tr>
+<tr><td>轴向</td><td>kA ∂²θ/∂x² → W m K⁻¹·K m⁻²</td><td>κ ∂²θ/∂x²</td><td><b>K/s</b></td></tr>
+<tr><td>侧向</td><td>hP θ → W m⁻¹K⁻¹·K</td><td>ν θ</td><td><b>K/s</b></td></tr>
+<tr><td colspan="4">除以之前三项都是 <b>W/m</b>（能量口径）；除以之后三项都是 <b>K/s</b>（温度口径）。<b>同一个方程，两种口径，除 ρcA 就是从"能量账本"翻译成"升温速度"的那一次翻译。</b></td></tr>
+</table>
+
+<h2>3.5 理由四（最容易被忽略）：不除，系数就不是材料属性</h2>
+
+<p>看 (★) 里的两个系数在<b>实际这根棒</b>上的数值：</p>
+
+<div class="f">kA  = 167 × 1.2808e-4 = 0.02139 W·m/K       ← 换一根更细的棒，它变
+hP  = 10  × 0.040127  = 0.4013  W/(m·K)      ← 换一根更细的棒，它也变</div>
+
+<p>这两个数描述的是"<b>这根棒</b>"，不是"<b>这种材料</b>"。你没法拿 0.02139 去和任何文献值比较，也没法在两支不同直径的棒之间做一致性检查。</p>
+
+<p>除完之后情况变了：</p>
+
+<ul>
+<li><b>κ = k/(ρc)</b>：A 被约掉了 ⇒ 只含材料参数 ⇒ <b>是真正的材料属性</b>（铝 6061 的 κ ≈ 6.9×10⁻⁵ m²/s，可查表核对）。</li>
+<li><b>ν = hP/(ρcA)</b>：仍含 P/A = 4/d ⇒ 仍属于"这根棒"，但它成了一个 <b>1/s 的率</b>，于是可以和驱动频率 ω 直接比大小、可以和 1/τ 直接相加。<b>率与率才能相加，功率与功率不能。</b></li>
+</ul>
+
+<h2>3.6 为什么分母是 ρcA 而不是 ρc？（1D 与 3D 的差别）</h2>
+
+<p>三维热方程是每单位体积写的，那里出现的确实是 ρc：</p>
+
+<div class="eq small">ρc ∂T/∂t = ∇·(k∇T)</div>
+
+<p>但我们的棒是一维问题。把三维方程<b>对整个截面积分一次</b>（假设截面温度均匀，记 ⟨T⟩ = θ + T<sub>环境</sub>）：</p>
+
+<div class="f">∫∫ ρc ∂θ/∂t dA = kA ∂²θ/∂x² − ∮ h θ dl
+     ↓                          ↓
+ρcA ∂θ/∂t            −  hP θ</div>
+
+<p>左边积分给出 <b>ρcA</b>（体元素 dA 积成 A），右边的边界积分给出 <b>hP</b>（周长积分成 P）。<b>所以 ρcA 不是"ρc 的变形"，它是"ρc 在截面上积了一次"的结果；P 也是同一个积分把表面"积"出来的周长。</b></p>
+
+<div class="w">
+<b>这条推导的用处：</b>它解释了一个常被混淆的点——为什么 κ 里没有 A（A 上下约掉），而 ν 里有 P/A。因为导热是"穿过截面"的（分子 kA、分母 ρcA，A 约掉），换热是"贴着表面"的（分子 hP、分母 ρcA，剩下 P/A = 4/d）。<b>一个是体效应，一个是面效应。</b>
+</div>
+
+<h1>4. κ 和 ν 是"商"，不是"定义"</h1>
+
+<figure>
+  <img src="../figures/derivation/fig02_one_denominator.png" alt="one denominator, two numerators">
+  <figcaption><b>图 2</b>　整根棒的物理结构：<b>一个分母，两个分子</b>。轴向输运 kA 与侧向输运 hP 各自除以同一个储热 ρcA，分别得到 κ（m²/s）和 ν（1/s）；再取比值，分母直接消掉，只剩两个通道在竞争。</figcaption>
+</figure>
+
+<h2>4.1 分母相同，意味着三件事</h2>
+
+<table class="keep">
+<tr><th style="width:24%">后果</th><th>为什么</th></tr>
+<tr><td><b>① 整根棒只有两个未知数</b></td><td>方程里只有两条输运通道、一个分母，所以模型恰好两个自由参数（κ、ν）。这也是为什么实验里必须用两个可测量（振幅衰减 q、相位滞后 q′）去定它们——<b>两个未知数需要两个条件，这不是巧合，是结构决定的。</b></td></tr>
+<tr><td><b>② 比值把 ρc 消掉</b></td><td>ν/κ = (hP/ρcA)/(kA/ρcA) = hP/(kA)。<b>ρc 完全消失</b>，所以 m² 不需要知道密度和比热就能算——这是 §5 数值闭环的基础。</td></tr>
+<tr><td><b>③ 一个变成材料属性，一个变成率</b></td><td>κ 去掉了几何（可查表），ν 保留了 P/A（可算 h）。两者分工明确：<b>κ 回答"铝有多快"，ν 回答"这根棒漏得多快"。</b></td></tr>
+</table>
+
+<h2>4.2 "定义"这个词的正确用法</h2>
+
+<p>讲的时候要区分三个层次，问答时才不会被问倒：</p>
+
+<table class="keep">
+<tr><th style="width:18%">层次</th><th style="width:34%">内容</th><th>能不能质疑</th></tr>
+<tr><td><b>物理</b></td><td>能量守恒 + 傅里叶 + 牛顿冷却</td><td>不能。这是实验的前提假设（一维、截面均匀、k 与 h 为常数）。</td></tr>
+<tr><td><b>代数</b></td><td>÷dx、÷ρcA、约 A、设 e<sup>iωt</sup></td><td>不能。纯计算，写错可以检查。</td></tr>
+<tr><td><b>命名</b></td><td>把 k/(ρc) 叫 κ，把 hP/(ρcA) 叫 ν</td><td><b>只是名字</b>。你可以换个字母，方程不变。</td></tr>
+</table>
+
+<div class="n">
+<b>所以如果有人问"κ 和 ν 是怎么定义的"</b>，最准确的回答是：<b>"它们不是一个定义，而是同一次除法产生的两个商；名字是后加的，商是先有的。"</b> 这也是为什么 (★) 才是唯一"含物理"的方程，而 κ、ν 只是它的一种写法。
+</div>
+
+<h1>5. 反推：把 ρcA 乘回去</h1>
+
+<p>这是回答"为什么需要 ρc"最直接的方式——<b>把除法倒过来做一遍，看 ρcA 到底起什么作用</b>。从你们熟悉的速率形式出发：</p>
+
+<div class="eq">∂θ/∂t = κ ∂²θ/∂x² − ν θ</div>
+
+<p>两边同乘 ρcA：</p>
+
+<div class="eq">ρcA ∂θ/∂t = (ρcA·κ) ∂²θ/∂x² − (ρcA·ν) θ</div>
+
+<p>把 κ、ν 的定义代进去，看 ρcA 把它们分别变成什么：</p>
+
+<table class="keep">
+<tr><th style="width:14%">项</th><th style="width:26%">代入定义</th><th style="width:16%">结果</th><th style="width:20%">物理身份</th><th>单位</th></tr>
+<tr><td>ρcA·κ</td><td>ρcA · k/(ρc)</td><td><b>kA</b></td><td>轴向热导 × 长度</td><td>W m K⁻¹</td></tr>
+<tr><td>ρcA·ν</td><td>ρcA · hP/(ρcA)</td><td><b>hP</b></td><td>侧向热导（每米）</td><td>W m⁻¹K⁻¹</td></tr>
+</table>
+
+<p>于是方程变回 (★)：</p>
+
+<div class="eq">ρcA ∂θ/∂t = kA ∂²θ/∂x² − hP θ</div>
+
+<div class="k">
+<span class="kh">这就是完整答案。</span>
+ρcA 恰好是"<b>把 κ 变回 kA、把 ν 变回 hP</b>"的那个因子。<br>
+换句话说：<b>κ 和 ν 是"剥离了储热"之后的输运率；ρc 就是把储热装回去的那把钥匙。</b><br>
+没有 ρc，κ 只是一个孤立的数，你无法从它回到 k；有了 ρc，一个测到的 κ 才能告诉你"这根棒的材料导热系数是多少"。<b>一座桥的两端，一端是实验拟合，另一端是材料手册，中间的桥墩就是 ρc。</b>
+</div>
+
+<h2>5.1 数值闭环（同一根棒，两个方向都走一遍）</h2>
+
+<table class="keep">
+<tr><th style="width:16%">量</th><th style="width:29%">正向（÷ρcA）</th><th style="width:29%">反向（×ρcA）</th><th>结论</th></tr>
+<tr><td>ρcA</td><td colspan="3">2700 × 896 × 1.2808×10⁻⁴ = <b>309.85 J m⁻¹K⁻¹</b></td></tr>
+<tr><td>kA</td><td>0.021389 ÷ 309.85 = 6.903×10⁻⁵</td><td>309.85 × 6.903×10⁻⁵ = <b>0.021389</b></td><td>✓ 回到 kA</td></tr>
+<tr><td>hP</td><td>0.40127 ÷ 309.85 = 1.295×10⁻³</td><td>309.85 × 1.295×10⁻³ = <b>0.40127</b></td><td>✓ 回到 hP</td></tr>
+<tr><td>k（材料）</td><td colspan="2">k = ρc · κ = 2.4192×10⁶ × 6.903×10⁻⁵ = <b>167.0 W m⁻¹K⁻¹</b></td><td>与手册一致</td></tr>
+<tr><td>h（实验）</td><td colspan="2">h = ν·ρcA / P = 1.295×10⁻³ × 309.85 / 0.040127 = <b>10.0 W m⁻²K⁻¹</b></td><td>与 A4 标称一致</td></tr>
+</table>
+
+<h2>5.2 方向问题：实验上测的是 κ 和 ν，不是 k 和 h</h2>
+
+<p>这一点很容易在口试里被追问，务必分清两条箭头：</p>
+
+<div class="f">建模方向（讲义）：  k, h, ρ, c  ──÷ρcA──▶  κ, ν          已知材料，算率
+实验方向（你们）：    T(x,t) ─▶ q, q′ ─▶ κ, ν ─×ρcA─▶ k, h   反过来反推</div>
+
+<table class="keep">
+<tr><th style="width:34%">步骤</th><th style="width:22%">得到</th><th>依据</th></tr>
+<tr><td>对各传感器拟合振幅与相位</td><td>q, q′</td><td>原始数据（这是唯一的直接测量）</td></tr>
+<tr><td>两行代数</td><td><b>κ = ω/(2qq′)</b>、<b>ν = κ(q² − q′²)</b></td><td>§7 的推导</td></tr>
+<tr><td>反推材料参数（需假设 ρc）</td><td>k = ρcκ，h = νρcA/P</td><td>§5.1</td></tr>
+</table>
+
+<div class="w">
+<b>必须承认的一点：</b>ρc 只能取文献值（铝 2700 × 896），所以 <b>h 的误差里含有一份 ρc 的系统误差</b>，而 <b>m² = ν/κ = hP/(kA) 完全不含 ρc</b>。这就是为什么"用 m² 做交叉验证"比"用 h 做交叉验证"更干净——它绕过了 ρc。
+</div>
+
+<h1>6. 符号检查：为什么是 −νθ</h1>
+
+<p>你在自己的笔记里写的是 ∂θ/∂t = κ ∂²θ/∂x² <b>+</b> νθ，这里必须改成<b>减号</b>。</p>
+
+<div class="eq">❌ &nbsp;∂θ/∂t = κ ∂²θ/∂x² + ν θ &nbsp;&nbsp;&nbsp;&nbsp; ✅ &nbsp;∂θ/∂t = κ ∂²θ/∂x² − ν θ</div>
+
+<p><b>物理上：</b>θ &gt; 0 表示棒比环境热，侧面在向外漏热，θ 必须减小 ⇒ 必须是 −νθ。写成 +νθ，等于说"越热漏得越热"，会指数爆炸。</p>
+
+<p><b>代数上：</b>这个符号决定 s² 实部的符号。代入 θ = Θ(x)e<sup>iωt</sup>：</p>
+
+<table class="keep">
+<tr><th style="width:32%">时间方程的符号</th><th style="width:33%">得到</th><th>m² = q² − q′²</th></tr>
+<tr><td>iωΘ = κΘ″ <b>+</b> νΘ</td><td>Θ″ = [(iω − ν)/κ]Θ</td><td>−ν/κ &lt; 0 ⇒ <b>q &lt; q′</b>（物理上不可能）</td></tr>
+<tr><td>iωΘ = κΘ″ <b>−</b> νΘ</td><td>Θ″ = [(iω + ν)/κ]Θ</td><td>+ν/κ &gt; 0 ⇒ <b>q &gt; q′</b>（正确）</td></tr>
+</table>
+
+<div class="n">
+课本里 s² = (ν + iω)/κ 中的那个 <b>"+ν"</b>，正是来自时间方程里的 <b>"−νθ"</b>。<b>一个负号在时间域，翻到空间域就变成正号</b>——因为"漏热"在空间上表现为"额外的衰减"，两者都是"让振幅变小"，方向一致。写错符号会让 q′ &gt; q，等价于"负的漏热"。
+</div>
+
+<h1>7. 一路推到 κ = ω/(2qq′)</h1>
+
+<p>现在把 §3 的成果和课程公式接起来。从速率形式出发，六步到底：</p>
+
+<div class="step"><div class="no">1</div><div class="bd">
+速率形式（§3 的终点）：
+<div class="eq small">∂θ/∂t = κ ∂²θ/∂x² − ν θ</div>
+</div></div>
+
+<div class="step"><div class="no">2</div><div class="bd">
+周期驱动，设单一频率解（振幅 Θ 只随 x 变）：
+<div class="eq small">θ(x,t) = Θ(x) · e<sup>iωt</sup></div>
+</div></div>
+
+<div class="step"><div class="no">3</div><div class="bd">
+代回：左边 ∂θ/∂t → iωΘe<sup>iωt</sup>，右边第二项 → −νΘe<sup>iωt</sup>，e<sup>iωt</sup> 全部约掉：
+<div class="eq small">iω Θ = κ Θ″ − ν Θ</div>
+</div></div>
+
+<div class="step"><div class="no">4</div><div class="bd">
+移项，得到<b>只有空间</b>的方程（频率 ω 已经完全跑进系数里）：
+<div class="eq small">Θ″ = [(ν + iω)/κ] · Θ &nbsp;&nbsp;≡&nbsp;&nbsp; s² Θ</div>
+</div></div>
+
+<div class="step"><div class="no">5</div><div class="bd">
+解是复指数；按课程约定把复波数写成 s = q + iq′（q 管振幅衰减，q′ 管相位滞后）：
+<div class="eq small">Θ(x) = A e<sup>−sx</sup>,&nbsp;&nbsp; e<sup>−sx</sup> = e<sup>−qx</sup>·e<sup>−iq′x</sup>,&nbsp;&nbsp; s² = (ν + iω)/κ</div>
+</div></div>
+
+<div class="step"><div class="no">6</div><div class="bd">
+左边展开复数平方，右边分成实部/虚部，两边分别相等：
+<div class="eq small">s² = (q² − q′²) + i(2qq′) &nbsp;&nbsp;⟹&nbsp;&nbsp; κ(q² − q′²) = ν，&nbsp; 2κ q q′ = ω</div>
+</div></div>
+
+<div class="k" style="text-align:center;font-size:11pt">
+<b>κ = ω / (2 q q′)</b> &nbsp;&nbsp;&nbsp;&nbsp; <b>ν = κ (q² − q′²)</b> &nbsp;&nbsp;&nbsp;&nbsp; <b>m² ≡ q² − q′² = ν/κ</b>
+</div>
+
+<h2>7.1 如果不除 ρcA，公式会长什么样</h2>
+
+<p>同一套代数，只是第 1 步用 (★) 而不是速率形式，会得到：</p>
+
+<div class="eq small">s² = (hP + iωρcA) / (kA) &nbsp;&nbsp;⟹&nbsp;&nbsp; kA = ωρcA/(2qq′)， hP = kA(q² − q′²)</div>
+
+<p><b>物理完全一样，只是每个式子都多背一个 ρcA。</b>对比一下就明白除 ρcA 的好处：</p>
+
+<table class="keep">
+<tr><th style="width:26%"></th><th style="width:37%">不除 ρcA（能量口径）</th><th>除了 ρcA（速率口径）</th></tr>
+<tr><td>两个未知数</td><td>kA、hP（含几何）</td><td><b>κ、ν（κ 不含几何）</b></td></tr>
+<tr><td>κ 的表达式</td><td>kA = ωρcA/(2qq′)</td><td><b>κ = ω/(2qq′)</b></td></tr>
+<tr><td>能否查表核对</td><td>不能（含 A）</td><td><b>能（铝 κ ≈ 6.9×10⁻⁵）</b></td></tr>
+<tr><td>能否与 ω 直接比</td><td>不能（单位 W m/K）</td><td><b>能（ν 与 ω 都是 1/s）</b></td></tr>
+</table>
+
+<div class="n">
+<b>所以"除以 ρcA"不是美化公式，而是把"每根棒的数字"翻译成"每个材料的数字 + 每根几何的数字"。</b>测的物理量一个都没变，变的只是这些数字能被谁读懂。
+</div>
+
+<h1>8. 这是物理里通用的一种手法</h1>
+
+<p>你会发现"分离出状态变量的变化率、把剩下的系数读成'输运 ÷ 惯性'"是所有演化方程的同一个动作。<b>κ = k/(ρc) 不是热学特有的技巧，而是这一族定律的统一结构。</b></p>
+
+<table class="keep">
+<tr><th style="width:16%">定律</th><th style="width:30%">原始形式（惯性 × 变化率 = 驱动）</th><th style="width:26%">除以惯性后</th><th>系数是什么</th></tr>
+<tr><td>牛顿</td><td>m · dv/dt = F</td><td>dv/dt = (1/m) F</td><td>1/惯性</td></tr>
+<tr><td>薛定谔</td><td>iℏ · ∂ψ/∂t = Ĥψ</td><td>∂ψ/∂t = −(i/ℏ) Ĥψ</td><td>1/ℏ</td></tr>
+<tr><td>菲克扩散</td><td>∂c/∂t = D ∇²c（D 已含容量）</td><td>同左</td><td>迁移率 / 容量</td></tr>
+<tr><td><b>热扩散（本文）</b></td><td><b>ρcA ∂θ/∂t = kA ∂²θ/∂x² − hPθ</b></td><td><b>∂θ/∂t = κ ∂²θ/∂x² − νθ</b></td><td><b>κ = 输运 / 储热</b></td></tr>
+</table>
+
+<h1>9. 反例：如果除以 kA 会怎样</h1>
+
+<div style="page-break-inside:avoid">
+<p>有人会觉得"除以导热的系数更自然"。做一遍看看：</p>
+<div class="eq small">(ρcA / kA) ∂θ/∂t = ∂²θ/∂x² − (hP / kA) θ</div>
+<div class="eq">(1/κ) ∂θ/∂t = θ″ − m² θ</div>
+</div>
+
+<p>这一步其实很有价值，因为<b>稳态极限（∂θ/∂t = 0）直接把左边删掉</b>，就剩下</p>
+
+<div class="eq">θ″ = m² θ &nbsp;&nbsp;⟹&nbsp;&nbsp; θ/θ₀ = cosh[m(L−x)] / cosh(mL)</div>
+
+<p><b>这正是 Module 7 的稳态鳍片方程。</b>所以两条路都合法，只是分工不同：</p>
+
+<table class="keep">
+<tr><th style="width:22%">除以什么</th><th style="width:30%">时间前面的系数</th><th>读出来的是什么</th></tr>
+<tr><td>÷ 储热 ρcA</td><td>1</td><td><b>时间是自变量</b>；系数是"每秒能摊开多少面积" ⇒ 速率，能和 ω 相加</td></tr>
+<tr><td>÷ 导热 kA</td><td>1/κ</td><td><b>空间是自变量</b>；系数是"扩散有多难" ⇒ 困难度，稳态时正好删掉</td></tr>
+</table>
+
+<div class="n">
+<b>结论：</b>除 ρcA 得到的是"<b>时间</b>的方程"（周期实验用）；除 kA 得到的是"<b>空间</b>的方程"（稳态鳍片用）。课程选前者，是因为 Module 8 的核心量是 <b>ω</b>——要和频率打交道，就必须让 ν 变成一个率。
+</div>
+
+<h1>10. 数值全链条（同一根棒）</h1>
+
+<p>下面这张表把本文所有符号串成一条链：左边是输入，中间是"除 ρcA"，右边是输出。</p>
+
+<table class="keep">
+<tr><th style="width:26%">量</th><th style="width:12%">符号</th><th style="width:20%">数值</th><th style="width:15%">单位</th><th>来历</th></tr>
+<tr><td>密度 × 比热</td><td class="sym">ρc</td><td class="num">2.4192×10⁶</td><td>J m⁻³K⁻¹</td><td>2700 × 896（铝）</td></tr>
+<tr><td>截面 / 周长</td><td class="sym">A, P</td><td class="num">1.2808e-4 / 0.040127</td><td>m² / m</td><td>d = 12.771 mm</td></tr>
+<tr><td>导热系数</td><td class="sym">k</td><td class="num">167</td><td>W m⁻¹K⁻¹</td><td>6061-T6 手册</td></tr>
+<tr><td>换热系数</td><td class="sym">h</td><td class="num">10</td><td>W m⁻²K⁻¹</td><td>A4 标称</td></tr>
+<tr><td>储热（每米）</td><td class="sym">ρcA</td><td class="num">309.85</td><td>J m⁻¹K⁻¹</td><td>ρc × A ← <b>分母</b></td></tr>
+<tr><td>轴向输运</td><td class="sym">kA</td><td class="num">0.021389</td><td>W m K⁻¹</td><td>k × A ← 分子 1</td></tr>
+<tr><td>侧向输运</td><td class="sym">hP</td><td class="num">0.40127</td><td>W m⁻¹K⁻¹</td><td>h × P ← 分子 2</td></tr>
+<tr><td colspan="5" style="background:#eef3f8;color:#0f3d5c"><b>÷ 309.85　→　两个商</b></td></tr>
+<tr><td>热扩散率</td><td class="sym">κ</td><td class="num">6.903×10⁻⁵</td><td>m² s⁻¹</td><td>kA/ρcA = k/ρc</td></tr>
+<tr><td>侧漏率</td><td class="sym">ν</td><td class="num">1.295×10⁻³</td><td>s⁻¹</td><td>hP/ρcA</td></tr>
+<tr><td>侧漏时间常数</td><td class="sym">1/ν</td><td class="num">772</td><td>s</td><td>1/ν</td></tr>
+<tr><td colspan="5" style="background:#eef3f8;color:#0f3d5c"><b>再取比值　→　分母消掉</b></td></tr>
+<tr><td>翅片参数平方</td><td class="sym">m² = ν/κ</td><td class="num">18.76</td><td>m⁻²</td><td>= hP/(kA)，与 ρc 无关</td></tr>
+<tr><td>翅片参数</td><td class="sym">m</td><td class="num">4.331</td><td>m⁻¹</td><td>√(m²)</td></tr>
+<tr><td>平均衰减长度</td><td class="sym">1/m</td><td class="num">0.2309（23.1 cm）</td><td>m</td><td>= √(κ/ν)</td></tr>
+</table>
+
+<h2>10.1 三条独立路线给出的 m² 必须一致</h2>
+
+<table class="keep">
+<tr><th style="width:32%">路线</th><th style="width:26%">式子</th><th style="width:16%">m² [m⁻²]</th><th>说明</th></tr>
+<tr><td>① 材料 / 几何正算</td><td>hP/(kA)</td><td class="num">18.76</td><td>用 h = 10、k = 167</td></tr>
+<tr><td>② 周期法实测（200 s）</td><td>ν/κ = q² − q′²</td><td class="num">18.19</td><td>五周期复核，κ = 6.665×10⁻⁵</td></tr>
+<tr><td>③ 稳态鳍片拟合（M7）</td><td>m²</td><td class="num">23.3</td><td>m = 4.83 ± 0.07 m⁻¹</td></tr>
+</table>
+
+<div class="n">
+三条路线落在 18–23 m⁻² 的同一区间里（①↔② 只差 3%）。<b>这不是巧合：它们算的是同一个数，只是入口不同。</b>① 从材料参数进，② 从周期温度场进，③ 从稳态温度剖面进——<b>它们能对上，恰好证明"除以 ρcA"这一步没有引入任何新的物理假设。</b>
+</div>
+
+<div class="k">
+<span class="kh">顺手记住这个等价式（口试很好用）。</span>
+<div class="eq" style="margin:4pt 0">1/m = √(κ / ν)</div>
+扩散把温度摊开（κ），漏热把它收掉（ν），<b>1/m 就是这两者打平的长度</b>。单位验算：√(m²s⁻¹ ÷ s⁻¹) = √(m²) = m ✓；数值 √(6.665×10⁻⁵ / 1.212×10⁻³) = 0.2345 m ≈ 23.5 cm ✓
+</div>
+
+<h1>11. 单位与量纲：四个容易错的地方</h1>
+
+<h2>11.1 m 是 m⁻¹，m² 是 m⁻²</h2>
+
+<p>符号 <span class="sym">m</span> 是斜体字母（decay constant），单位 m 是正体（metre）。<b>"m²" 读作"em squared"，单位是 m⁻²，不是"平方米"。</b></p>
+
+<table class="keep">
+<tr><th style="width:18%">量</th><th style="width:16%">单位</th><th>怎么来的</th></tr>
+<tr><td class="sym">m</td><td>m⁻¹</td><td>√(hP/kA)：[W m⁻¹K⁻¹ ÷ (W m K⁻¹)]<sup>1/2</sup> = (m⁻²)<sup>1/2</sup></td></tr>
+<tr><td class="sym">m²</td><td>m⁻²</td><td>hP/(kA)：W m⁻¹K⁻¹ ÷ W m K⁻¹</td></tr>
+<tr><td class="sym">1/m</td><td>m</td><td>衰减长度（本实验 ≈ 23 cm）</td></tr>
+<tr><td class="sym">mL</td><td>无量纲</td><td>m⁻¹ × m；"棒长相当于几个衰减长度"</td></tr>
+</table>
+
+<h2>11.2 为什么 κ 带 m²/s，而 ν 只有 1/s</h2>
+
+<p>差别来自<b>驱动量不同</b>，这是真实物理，不是记账习惯：</p>
+
+<table class="keep">
+<tr><th style="width:14%">通道</th><th style="width:26%">本构关系</th><th style="width:20%">驱动量</th><th>结果</th></tr>
+<tr><td>导热</td><td>q″ = −k ∂θ/∂x</td><td>梯度 [K/m]</td><td>带一个 1/m ⇒ κ 多一个 m²</td></tr>
+<tr><td>对流</td><td>q″ = h (θ − θ<sub>∞</sub>)</td><td>温差 [K]</td><td>不带长度 ⇒ ν 只有 1/s</td></tr>
+</table>
+
+<p>所以把两者都除以同一个 ρc 之后，<b>两者的单位就相差一个长度</b>——这一个长度正是"梯度"造出来的：</p>
+
+<table class="keep">
+<tr><th style="width:26%">系数</th><th style="width:30%">表达式</th><th>单位</th></tr>
+<tr><td>k/(ρc)</td><td>(W m⁻¹K⁻¹)/(J m⁻³K⁻¹)</td><td><b>m² s⁻¹</b></td></tr>
+<tr><td>h/(ρc)</td><td>(W m⁻²K⁻¹)/(J m⁻³K⁻¹)</td><td><b>m s⁻¹</b>（注意：只差一个 m）</td></tr>
+<tr><td>两者之比 h/k</td><td>1/m</td><td><b>m⁻¹</b> ← "梯度 vs 温差"的那一个长度</td></tr>
+</table>
+
+<h2>11.3 m² 的 m⁻² 是两个长度乘出来的</h2>
+
+<div class="eq">m² = hP/(kA) = (h/k) · (P/A) &nbsp;&nbsp;⟹&nbsp;&nbsp; [m⁻¹] × [m⁻¹] = m⁻²</div>
+
+<table class="keep">
+<tr><th style="width:18%">因子</th><th style="width:14%">单位</th><th>物理含义</th></tr>
+<tr><td>h/k</td><td>m⁻¹</td><td>沿棒走多少米，轴向梯度才能和侧向温差打平</td></tr>
+<tr><td>P/A = 4/d</td><td>m⁻¹</td><td>每单位体积有多少侧面积（面 / 体）</td></tr>
+</table>
+
+<h2>11.4 一个必须区分开的无量纲量</h2>
+
+<div class="w">
+<b>Bi<sub>⊥</sub> = h d /(4k) = (m d /4)²</b> 是<b>无量纲</b>的。它长得像 m²，但<b>不是 m²</b>：m² 的单位是 m⁻²，(md/4)² 的单位是 (m⁻¹·m)² = 1。<br>
+数值：Bi<sub>⊥</sub> = (4.331 × 0.012771 / 4)² = 0.0191 &lt; 0.1 ⇒ 径向温度可视为均匀 ⇒ <b>一维假设成立</b>。这是两个不同的判据，别混用。
+</div>
+
+<h1>12. 七个常见错误（对照自检）</h1>
+
+<table class="keep">
+<tr><th style="width:5%">#</th><th style="width:40%">错误写法 / 说法</th><th>为什么错，正确是什么</th></tr>
+<tr><td class="num">1</td><td>∂θ/∂t = κ θ″ <b>+</b> νθ</td><td>漏热使 θ 减小 ⇒ 必须是 <b>−νθ</b>（§6）。写错会让 q′ &gt; q。</td></tr>
+<tr><td class="num">2</td><td>ν = hP/(ρc)，忘了 A</td><td>储热是 ρcA（每米棒的），不是 ρc。<b>分子的 P 对应分母的 A</b>，都是"每米棒"的口径。</td></tr>
+<tr><td class="num">3</td><td>m² 读成"平方米"</td><td>它是翅片参数的平方，单位 <b>m⁻²</b>（§11.1）。</td></tr>
+<tr><td class="num">4</td><td>"k 和 h 是实验测出来的"</td><td>直接测的是 q、q′；<b>κ、ν 是拟合量；k、h 是二级反推量，且依赖 ρc</b>（§5.2）。</td></tr>
+<tr><td class="num">5</td><td>κ = k/ρ</td><td>漏了比热 c。<b>κ = k/(ρc)</b>，分母必须是"每 K 每 m³ 的能量"。</td></tr>
+<tr><td class="num">6</td><td>"m² 是新定义的参数"</td><td>m² = ν/κ = hP/(kA)，<b>两个已知量的比值</b>，ρc 在其中消掉（§4.1）。</td></tr>
+<tr><td class="num">7</td><td>"除以 ρcA 是为了公式好看"</td><td>它把"每根棒的数字"翻译成"材料属性 + 几何比值"，并让 ν 成为能和 ω 相加的率（§3.5、§7.1）。</td></tr>
+</table>
+
+<h1>13. 口试版（背这三段就够）</h1>
+
+<h2>13.1 二十秒版（被问"κ 和 ν 怎么来的"）</h2>
+
+<div class="k">
+原方程是对一个切片记能量账：<b>ρcA ∂θ/∂t = kA ∂²θ/∂x² − hPθ</b>，三项都是 W/m，ρcA 是 ∂θ/∂t 的系数，也就是热惯性。我们要的是"θ 变化多快"，所以两边除以 ρcA，右边两项就变成 (k/ρc)θ″ 和 (hP/ρcA)θ——这两个商被命名为 <b>κ</b> 和 <b>ν</b>。<b>它们不是定义的，是除出来的。</b>
+</div>
+
+<p class="en">The primitive statement is an energy balance on a slice: rho c A theta-dot equals k A theta-double-prime minus h P theta, all three in watts per metre, with rho c A the coefficient of the time derivative — the thermal inertia. Because we want the rate of change of theta itself, we divide by rho c A; the two remaining coefficients are what we name kappa and nu. They are not definitions, they are quotients.</p>
+
+<h2>13.2 四十秒版（加"为什么需要 ρc"）</h2>
+
+<div class="k">
+把 ρcA 乘回去，κ 就变回 kA、ν 就变回 hP，方程立刻还原成能量账本。<b>所以 ρc 是把"输运率"还原成"输运能力"的因子——没有 ρc，测到的 κ 只是一个孤立的数；有了 ρc，它才能告诉你这根棒的材料导热系数是多少。</b>另外，正因为除掉了 ρcA，κ 里不含截面积 A，它才是材料属性，能和手册值比较；而 ν 保留了 P/A，可以和驱动频率 ω 直接比大小。
+</div>
+
+<h2>13.3 六十秒版（加"为什么不是除以 kA"）</h2>
+
+<div class="k">
+除以储热和除以导热都合法，但分工不同：<b>除 ρcA 得到的是时间的方程</b>，时间前面的系数是 1，两个系数都是"率"，能和 ω 相加，这是周期实验需要的；<b>除 kA 得到的是空间的方程</b>，时间前面是 1/κ（扩散的"困难度"），稳态时左边直接删掉，就回到 Module 7 的 θ″ = m²θ。因为 Module 8 的核心量是频率 ω，我们选前者。而且这个选择不改变物理：同一根棒，两条路给出的 m² 都是 18–19 m⁻²。
+</div>
+
+<h1>附录 A. 一页速查卡</h1>
+
+<h2>A.1 唯一含物理的方程（其余全是代数）</h2>
+
+<div class="k" style="text-align:center;font-size:11.5pt">
+ρcA ∂θ/∂t = kA ∂²θ/∂x² − hP θ &nbsp;&nbsp;&nbsp;(★)
+<div style="font-size:8.8pt;color:#444;margin-top:3pt">
+三项单位都是 W/m · 由"切片能量守恒 + 傅里叶 + 牛顿冷却"得到 · 无任何新假设
+</div>
+</div>
+
+<h2>A.2 从 (★) 到课程公式：五步代数</h2>
+
+<table class="keep">
+<tr><th style="width:8%">步</th><th style="width:42%">操作</th><th>结果</th></tr>
+<tr><td class="num">1</td><td>÷ dx</td><td>(★) 本身就是"每米棒"口径</td></tr>
+<tr><td class="num">2</td><td>÷ ρcA</td><td>∂θ/∂t = κ θ″ − νθ，其中 <b>κ = k/(ρc)</b>、<b>ν = hP/(ρcA)</b></td></tr>
+<tr><td class="num">3</td><td>设 θ = Θ(x)e<sup>iωt</sup></td><td>iωΘ = κΘ″ − νΘ</td></tr>
+<tr><td class="num">4</td><td>整理</td><td>Θ″ = s²Θ，<b>s² = (ν + iω)/κ</b></td></tr>
+<tr><td class="num">5</td><td>s = q + iq′，分离实虚部</td><td><b>κ = ω/(2qq′)</b>、<b>ν = κ(q² − q′²)</b>、<b>m² = q² − q′² = ν/κ</b></td></tr>
+</table>
+
+<h2>A.3 六个公式一起看</h2>
+
+<table class="keep">
+<tr><th style="width:30%">关系</th><th style="width:22%">单位</th><th>一句话含义</th></tr>
+<tr><td>κ = k/(ρc)</td><td>m² s⁻¹</td><td>输运 ÷ 储热（轴向）；A 已约掉 ⇒ 材料属性</td></tr>
+<tr><td>ν = hP/(ρcA)</td><td>s⁻¹</td><td>输运 ÷ 储热（侧向）；含 P/A = 4/d ⇒ 属于这根棒</td></tr>
+<tr><td>m² = ν/κ = hP/(kA)</td><td>m⁻²</td><td>两个通道之比；<b>ρc 消掉</b></td></tr>
+<tr><td>m = √(hP/kA)</td><td>m⁻¹</td><td>翅片参数（Module 7 的同一个 m）</td></tr>
+<tr><td>1/m = √(κ/ν)</td><td>m</td><td>扩散与漏热打平的长度（≈ 23 cm）</td></tr>
+<tr><td>κ = ω/(2qq′)</td><td>m² s⁻¹</td><td>从周期温度场直接测出的热扩散率</td></tr>
+</table>
+
+<h2>A.4 三条自检（讲完前默念）</h2>
+
+<ol>
+<li><b>单位对了吗？</b>(★) 三项必须都是 W/m；速率形式三项必须都是 K/s。任一项不对 ⇒ 分母漏了 A 或 c。</li>
+<li><b>符号对吗？</b>侧面项必须是 <b>−hPθ</b>；s² 实部必须是 <b>+ν/κ</b>；否则 q′ &gt; q。</li>
+<li><b>能反推吗？</b>把 ρcA 乘回去，κ 必须变回 kA、ν 必须变回 hP。做不到 ⇒ 定义记错了。</li>
+</ol>
+
+<div class="n" style="margin-top:12pt">
+<b>文档信息。</b>本笔记由团队 R-X（Ricky Huang）整理，用于 Module 8 Part II（F1）口试的理论段与 A5 推导的配套说明。
+数值取自 <span class="mono">Module_8/data/processed/</span>（κ、ν、q、q′ 的五周期复核值）与 A4 标称的 h = 10 W m⁻² K⁻¹、k = 167 W m⁻¹ K⁻¹、d = 12.771 mm、ρ = 2700 kg m⁻³、c = 896 J kg⁻¹ K⁻¹。
+图 1、图 2 由 <span class="mono">Module_8/python/derivation_figures.py</span> 生成；HTML 源文件为 <span class="mono">Module_8/docs/f1_derivation_kappa_nu.html</span>。
+<b>凡标注"实测"以外的数值均为标称或手册值，非本次实验独立测定。</b>
+</div>
+
+</body>
+</html>
