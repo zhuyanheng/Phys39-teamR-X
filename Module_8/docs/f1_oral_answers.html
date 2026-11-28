@@ -82,7 +82,7 @@ tr:nth-child(even) td { background: #f7f9fa; }
 <tr><td>Q4</td><td>κ、ν 怎么变成 k、h</td><td>k=κρc；h=νρcA/P=νρc(d/4)，各验一次量纲</td><td>7-2</td></tr>
 <tr><td>Q5</td><td>指一个残差图或频率一致性检查</td><td>残差 0.03 °C、边界 2%；κ 五频段 4.9%、1.43σ；ν 反号</td><td>7-1</td></tr>
 <tr><td>Q6</td><td>哪个系统误差最限制 k 或 h</td><td>k 看几何与漂移；h 看减法（条件数 6–26）</td><td>7-3</td></tr>
-<tr><td>Q7</td><td>半无限近似误差、为什么依赖位置</td><td>端部反射项 e^{−2m(L−x)}；平均场 T5 处 26%，周期场 0.35%</td><td>8-1</td></tr>
+<tr><td>Q7</td><td>半无限近似误差、为什么依赖位置</td><td>端部反射项 e^{−2m(L−x)}；平均场 T5 处 26%，周期场 0.35%（<b>概念版见附 E，含图 E-1</b>）</td><td>8-1</td></tr>
 <tr><td>Q8</td><td>横向 Biot 数与它保证什么</td><td>Bi⊥=hd/(4k)~2e-4 ⇒ 一维成立；不推出半无限</td><td>9-1</td></tr>
 <tr><td>Q9</td><td>相位约定、为什么要 unwrap</td><td>φ=atan2(−S,C)；下游 φ 更小；累计 4.2 rad 必须展开</td><td>6-2</td></tr>
 <tr><td>Q10</td><td>为什么不直接做稳态拿 k</td><td>稳态欠定且依赖 T∞；周期法免 T∞</td><td>8-1</td></tr>
@@ -748,8 +748,51 @@ Q12 We need the transfer function at ω ≠ 0. A limit cycle is set by the
 Q13 m² = ν/κ = q² − q′²; 1/m is the mean-field decay length; mL ≈ 1.5,
     so the tip is not remote.</div>
 
+<h1>附 E. 半无限 vs 有限长（Q7 的概念补充）</h1>
+
+<p>两个模型解<b>同一个方程</b>，差别只在<b>末端有没有边界</b>：</p>
+
+<table>
+<tr><th style="width:16%"></th><th style="width:30%">半无限（infinite / semi-infinite rod）</th><th>有限长（finite rod）</th></tr>
+<tr><td>边界条件</td><td>只有基座 <span class="mono">θ(0)=θ₀</span></td><td>基座 <span class="mono">θ(0)=θ₀</span> <b>+</b> 末端 <span class="mono">θ′(L)=0</span>（绝热端）</td></tr>
+<tr><td>解</td><td><span class="mono">e^(−sx)</span></td><td><span class="mono">cosh[s(L−x)] / cosh(sL)</span></td></tr>
+<tr><td>物理</td><td>一列单向行波，出去就不回头</td><td>行波 <b>+</b> 端部反射回来的波</td></tr>
+<tr><td>波数</td><td colspan="2"><b>同一个</b> <span class="mono">s = q + iq′</span>：边界只改空间包络，不改 s</td></tr>
+</table>
+
+<img src="../figures/f1_oral/fig01_semi_vs_finite.png" style="width:100%;margin:2pt 0 1pt">
+<p style="font-size:7.6pt;color:#5a6b78;margin:0 0 4pt">图 E-1　空心圆 = 实测（左：平均场 θ/θ₀；中：振幅 Θ/Θ₀；右：相位相对纯行波 −q′x 的偏差），实线 = 有限长 cosh 解，虚线 = 半无限指数解。<b>三个面板都指向同一句话：两支模型共用同一个 q、q′，差的是包络；误差在 x=0 处为零，向端部单调增大。</b>右图 200 s 只偏 3.4°、500 s 偏到 12°，实测点跟着实线走——所以本实验必须用有限解拟合。</p>
+
+
+<p><b>把 cosh 拆成指数，那条回波就露出来了：</b></p>
+<div class="f">cosh[s(L−x)]/cosh(sL) = e^(−sx) · (1 + e^(−2s(L−x))) / (1 + e^(−2sL))
+                            └入射┘   └── 反射波：从端部走回来 ──┘  └基座归一化┘</div>
+
+<p><b>三个后果，正好就是 Q7 的三句话：</b><br>
+① <b>误差随位置增长</b>：回波幅度在基座只剩 <span class="mono">e^(−2qL)</span>，在端部却是 1（全长）⇒ 越靠端部，半无限越不成立；<br>
+② <b>x=0 处误差恒为 0</b>：两个模型在基座归一化到同一个 <span class="sym">θ</span>₀；<br>
+③ <b>能不能用半无限，看 qL 不看 L</b>（平均场看 mL）：判据 <span class="mono">qL ≳ 3</span>。</p>
+
+<p><b>为什么平均场差 26%、周期场只差 0.3%</b>：两个场的衰减长度差 3–4 倍。平均场 <span class="mono">1/m = 18.7 cm</span>，而棒只有 27 cm ⇒ 温度到端部还没衰减完（<span class="mono">mL = 1.45</span>，端部仍有 44%）；周期场 <span class="mono">1/q = 6.4–9.5 cm</span> ⇒ 200 s 时振荡在 5 cm 内就衰减殆尽（<span class="mono">qL = 4.25</span>，端部只剩 2.9%）。</p>
+
+<p><b>用五周期拟合的 q、q′ 复算"拿半无限去拟合有限棒"的代价</b>（合成有限解 → 只用 T1–T3 反拟合 <span class="mono">e^(−sx)</span>）：</p>
+
+<table>
+<tr><th style="width:12%">周期</th><th style="width:14%">qL</th><th style="width:18%">端部振幅 |<span class="sym">Θ</span>_tip/<span class="sym">Θ</span>₀|</th><th style="width:22%">T5 处相位误差</th><th>T5 处幅值误差 / <span class="sym">κ</span> 偏差</th></tr>
+<tr><td class="num">100 s</td><td class="num">5.77</td><td class="num">0.6%</td><td class="num">−0.7°</td><td class="num">+3.2% / −0.03%</td></tr>
+<tr><td class="num">200 s</td><td class="num">4.25</td><td class="num">2.9%</td><td class="num">+3.3°</td><td class="num">+6.3% / +0.38%</td></tr>
+<tr><td class="num">300 s</td><td class="num">3.46</td><td class="num">6.3%</td><td class="num">+7.3°</td><td class="num">+4.0% / +0.52%</td></tr>
+<tr><td class="num">400 s</td><td class="num">3.10</td><td class="num">9.0%</td><td class="num">+9.2°</td><td class="num">−1.1% / −0.97%</td></tr>
+<tr><td class="num">500 s</td><td class="num">2.85</td><td class="num">11.5%</td><td class="num">+10.3°</td><td class="num">−4.3% / −2.59%</td></tr>
+</table>
+
+<p>⇒ 200 s 以后半无限开始失效，500 s 时 T5 已差 10°、<span class="sym">κ</span> 差 2.6%。所以整条链一律用<b>有限解</b>（<span class="mono">cosh</span> 形式）拟合，不拿指数近似。</p>
+
+<div class="n"><b>最容易混淆的一点：端部条件不会破坏 <span class="sym">κ</span> = <span class="sym">ω</span>/(2qq′)。</b>
+<span class="mono">s</span> 由 <span class="mono">s² = (ν+iω)/κ</span> 定，与端部无关；端部只决定空间包络（要用 cosh 还是 exp、要不要多一个 h_tip 未知数）。所以"绝热端 vs 对流端"的选择影响的是<b>拟合形状</b>，不是反演公式。真实端部大概是对流（绝热是高估端部温度的一侧），我们没测 ⇒ 标注"端部未验证"。</div>
+
 <p class="small" style="margin-top:10pt;border-top:.8pt solid #cfd8de;padding-top:5pt">
-本册数值取自仓库 <span class="mono">Module_8/data/processed/</span>（2026-11-20 状态），与 <span class="mono">F1_prep_handbook_Huang.pdf</span> 的图 3-1 … 11-3 一一对应。若重跑分析脚本，请同步更新本册数字与手册。
+本册数值取自仓库 <span class="mono">Module_8/data/processed/</span>（2026-11-20 状态），与 <span class="mono">F1_prep_handbook_Huang.pdf</span> 的图 3-1 … 11-3 一一对应。图 E-1 由 <span class="mono">Module_8/python/analysis/f1_oral_figures.py</span> 生成。若重跑分析脚本，请同步更新本册数字与手册。
 </p>
 <!--END-->
 </body>
