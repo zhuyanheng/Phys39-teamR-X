@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Q10 的公式推导：为什么不能用稳态</title>
+<style>
+@page { size: A4; margin: 13mm 12mm 15mm 12mm; }
+* { box-sizing: border-box; }
+body { font-family: "PingFang SC","Hiragino Sans GB","Arial Unicode MS",sans-serif;
+       font-size: 9.4pt; line-height: 1.52; color: #1a1a1a; margin: 0; }
+h1 { font-size: 15.5pt; margin: 13pt 0 5pt; color: #0f3d5c; letter-spacing: .2pt;
+     page-break-after: avoid; }
+h2 { font-size: 12pt; margin: 13pt 0 4pt; padding-bottom: 2pt;
+     border-bottom: 1.1pt solid #0f3d5c; color: #0f3d5c; page-break-after: avoid; }
+h3 { font-size: 10.2pt; margin: 9pt 0 3pt; color: #14506e; page-break-after: avoid; }
+p { margin: 3pt 0; }
+ul, ol { margin: 3pt 0 3pt 16pt; padding: 0; }
+li { margin: 1.4pt 0; }
+.cover { height: 266mm; display: flex; flex-direction: column; justify-content: center;
+         border-top: 6pt solid #0f3d5c; border-bottom: 6pt solid #0f3d5c;
+         padding: 14mm 5mm; page-break-after: always; }
+.cover h1 { font-size: 24pt; line-height: 1.26; letter-spacing: .5pt; }
+.cover .sub { font-size: 12.2pt; color: #14506e; margin-top: 5mm; line-height: 1.5; }
+.cover .meta { margin-top: 13mm; font-size: 9.4pt; color: #444; line-height: 1.85; }
+.tag { display: inline-block; background: #0f3d5c; color: #fff; font-size: 7.6pt;
+       padding: .6pt 4pt; border-radius: 2pt; letter-spacing: .3pt; }
+.pb { page-break-before: always; }
+.sym { color: #b03a2e; font-weight: 700; font-style: italic;
+       font-family: "Times New Roman","Songti SC",serif; }
+code, .mono { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8.2pt;
+       background: #f2f4f6; padding: 0 1.5pt; border-radius: 2pt; }
+.f { font-family: Menlo,"SF Mono",Consolas,monospace; font-size: 8.8pt;
+     background: #f7f9fb; border-left: 3pt solid #0f3d5c; padding: 5pt 8pt;
+     margin: 5pt 0; white-space: pre-wrap; line-height: 1.55;
+     page-break-inside: avoid; }
+.eq { font-family: "Times New Roman","Songti SC",serif; font-size: 11.2pt;
+      text-align: center; margin: 6pt 0; line-height: 1.45;
+      page-break-inside: avoid; }
+.eq.small { font-size: 10pt; }
+.n { background: #eef6f1; border-left: 3pt solid #2e7d4f; padding: 5pt 8pt;
+     margin: 6pt 0; font-size: 9.3pt; page-break-inside: avoid; }
+.w { background: #fdf1ef; border-left: 3pt solid #b03a2e; padding: 5pt 8pt;
+     margin: 6pt 0; font-size: 9.3pt; page-break-inside: avoid; }
+.k { background: #f0f4fa; border: 1.1pt solid #2c5f9e; padding: 6pt 9pt;
+     margin: 7pt 0; font-size: 9.5pt; page-break-inside: avoid; }
+.k .kh { font-weight: 700; color: #20456f; letter-spacing: .2pt; }
+.step { display: flex; gap: 7pt; margin: 6pt 0; page-break-inside: avoid; }
+.step .no { flex: 0 0 16pt; height: 16pt; border-radius: 8pt; background: #0f3d5c;
+            color: #fff; font-size: 8.6pt; font-weight: 700; text-align: center;
+            line-height: 16pt; }
+.step .bd { flex: 1; }
+.en { font-size: 8.5pt; color: #4a4a4a; font-style: italic; margin-top: 2pt; }
+table { border-collapse: collapse; width: 100%; margin: 5pt 0 8pt; font-size: 8.4pt; }
+th { background: #0f3d5c; color: #fff; text-align: left; padding: 3pt 4pt;
+     font-weight: 600; font-size: 8.3pt; }
+td { border-bottom: .6pt solid #cfd8de; padding: 2.7pt 4pt; vertical-align: top;
+     overflow-wrap: anywhere; }
+tr:nth-child(even) td { background: #f7f9fa; }
+tr { page-break-inside: avoid; }
+table.keep { page-break-inside: avoid; }
+.num { text-align: right; font-family: Menlo,monospace; font-size: 8.1pt;
+       white-space: nowrap; }
+figure { margin: 8pt 0 10pt; page-break-inside: avoid; }
+figure img { width: 100%; border: .6pt solid #dbe3e8; border-radius: 2pt; }
+figcaption { font-size: 8.5pt; color: #333; margin-top: 3pt; line-height: 1.45; }
+figcaption b { color: #0f3d5c; }
+.small { font-size: 8.2pt; color: #5a6b78; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div><span class="tag">Phys 39 / 169 · Module 8 · F1 口试 · Q10 配套</span></div>
+  <h1>Q10 的公式推导<br>为什么不能用稳态</h1>
+  <div class="sub">
+    为什么"令 ∂θ/∂t = 0 直接量 k"这条路走不通：<br>
+    一个方程 → 一个数 <b>m</b> → 两个未知数 <b>k、h</b> → 只能得比值 <b>h/k</b><br>
+    再加第二个独立理由：<b>必须知道 T<sub>∞</sub></b>，而它没测
+  </div>
+  <div class="meta">
+    使用者：Ricky Huang（团队 R-X）<br>
+    用途：F1 口试 Q10（"Why not just do a steady-state experiment and get k directly?"）<br>
+    写法：与《为什么除以 ρc》同一套记号——θ = T − T<sub>∞</sub>，每步给单位<br>
+    数值：100 s 平均剖面拟合 m = 5.3565 1/m；五周期 κ = 6.80×10⁻⁵ m²/s、ν = 1.20×10⁻³ 1/s<br>
+    生成日期：2026-11-27 · 10 节 + 附录
+  </div>
+</div>
+
+<h1>0. 一页速览：这条推导线一共四步</h1>
+
+<p>这份文档只回答一个问题：<b>既然稳态最省事，为什么不能直接量 k？</b>答案不是"精度不够"，而是<b>方程数不够</b>——而且第二个理由（T<sub>∞</sub>）独立地再打击一次。</p>
+
+<table class="keep">
+<tr><th style="width:6%">#</th><th style="width:36%">做什么</th><th style="width:34%">得到什么</th><th>几个数</th></tr>
+<tr><td class="num">1</td><td>把切片方程 <span class="mono">ρcA ∂θ/∂t = kA θ″ − hPθ</span> 的时间项划掉</td><td><span class="mono">θ″ = m²θ</span>，<span class="mono">m² = hP/(kA)</span></td><td class="num">1 个：m</td></tr>
+<tr><td class="num">2</td><td>把 <span class="mono">P/A = 4/d</span> 代进去</td><td><span class="mono">h = (m²d/4)·k</span> ⇒ 只给比值 <b>h/k</b></td><td class="num">2 个未知：k, h</td></tr>
+<tr><td class="num">3</td><td>看它在频率轴上是什么位置</td><td><b>稳态 = ω→0 的极限</b>：<span class="mono">q′→0</span>、<span class="mono">q→m</span> ⇒ 相位信息消失</td><td class="num">观测量从 2 降到 1</td></tr>
+<tr><td class="num">4</td><td>再检查另一个未知量</td><td>θ = T − T<sub>∞</sub>：<b>T<sub>∞</sub> 没测</b> ⇒ m 本身也被污染</td><td class="num">误差再叠一层</td></tr>
+</table>
+
+<div class="k">
+<span class="kh">一句话答案。</span>
+稳态令 ∂θ/∂t = 0，等于<b>把"时间"这个自变量删掉</b>；时间没了，ω 也没了——而 ω 正是周期法用来把两个未知数分开的那条已知方程。于是只剩 <b>m² = hP/(kA)</b> 一个数，凡是满足 <span class="mono">h = (m²d/4)k</span> 的 (k, h) 组合都给出<b>同一条曲线、同一个残差</b>，拟合算法无法区分。<b>所以稳态给的是比值 h/k，不是 k。</b>
+</div>
+
+<div class="w">
+<b>记号先说清。</b>本文 θ 一律表示 <b>θ = T − T<sub>∞</sub></b>（超出环境的温度）。这个定义本身就是第 6 节那个麻烦的根源：拟合时你必须先替 T<sub>∞</sub> 填一个数。
+</div>
+
+<h1>1. 起点：和 κ、ν 推导同一条方程</h1>
+
+<p>不预设任何结论，只对一个厚 dx 的切片记能量账（推导见《为什么除以 ρc》§2）：</p>
+
+<div class="eq">ρcA ∂θ/∂t = kA ∂²θ/∂x² − hP θ &nbsp;&nbsp;&nbsp;(★)</div>
+
+<p>三项都是 <b>W/m</b>（每米棒长的功率）：</p>
+
+<table class="keep">
+<tr><th style="width:22%">项</th><th style="width:26%">表达式</th><th>单位检查</th></tr>
+<tr><td>储热</td><td class="mono">ρcA ∂θ/∂t</td><td>(J m⁻³K⁻¹)(m²)(K/s) = J m⁻¹s⁻¹ = <b>W/m</b> ✓</td></tr>
+<tr><td>轴向净流入</td><td class="mono">kA ∂²θ/∂x²</td><td>(W m⁻¹K⁻¹)(m²)(K m⁻²) = <b>W/m</b> ✓</td></tr>
+<tr><td>侧向漏热</td><td class="mono">hP θ</td><td>(W m⁻²K⁻¹)(m)(K) = <b>W/m</b> ✓</td></tr>
+</table>
+
+<p>周期法从这里继续往下走：除以 ρcA → 得 κ 和 ν → 设 θ ∝ e<sup>iωt</sup> → 得 <span class="mono">s² = (ν + iω)/κ</span> → 得 <span class="mono">κ = ω/(2qq′)</span>。本文走另一条岔路：<b>直接令时间项为零</b>。</p>
+
+
+<h1>2. 稳态极限：时间项一划，只剩一个数</h1>
+
+<p>令 <span class="mono">∂θ/∂t = 0</span>（稳态 = 每个点都不再随时间变），(★) 马上退化成一个只含空间的方程：</p>
+
+<div class="eq">kA θ″ = hP θ &nbsp;&nbsp;⟹&nbsp;&nbsp; θ″ = (hP / kA) θ ≡ m² θ</div>
+
+<p>顺手核对 <span class="mono">m²</span> 的单位（这是最容易写错的地方）：</p>
+
+<div class="f">hP/(kA) = (W m⁻²K⁻¹ · m) / (W m⁻¹K⁻¹ · m²)
+        = (W m⁻¹K⁻¹) / (W m K⁻¹)
+        = m⁻²        ⇒  m 的单位是 1/m ✓</div>
+
+<p>解的形状（基座 <span class="mono">θ(0)=θ₀</span>、端部绝热 <span class="mono">θ′(L)=0</span>；为什么必须用 cosh 见 Q7）：</p>
+
+<div class="eq small">θ(x) = θ₀ · cosh[m(L − x)] / cosh(mL) &nbsp;&nbsp;&nbsp;（半无限近似则为 θ₀ e<sup>−mx</sup>）</div>
+
+<p>这条曲线只有两个可调常数：<span class="mono">θ₀</span>（基座温度）和 <span class="mono">m</span>（衰减快慢）。<span class="mono">θ₀</span> 基本由第一个点钉住，所以<b>五个测点最终只贡献一个有意义的信息：m</b>。</p>
+
+<p>你的数：</p>
+
+<div class="f">m = 5.3565 1/m          （100 s 平均剖面拟合，T∞ = 24.13 °C）
+mL = 1.454              （无量纲棒长 ⇒ 端部还有 44%，必须用 cosh）
+1/m = 18.7 cm           （平均场的衰减长度，比棒长 27.15 cm 短不了多少）</div>
+
+<figure>
+  <img src="../figures/q10/fig01_degeneracy.png" alt="degeneracy of the steady-state fit">
+  <figcaption><b>图 1</b>　左：把五个平均温度减去 T<sub>∞</sub> 得到 θ，它们落在一条 cosh 上，这条曲线只由<b>一个数</b> m = 5.36 决定。右：同一个 m 只锁定了 (k, h) 平面上的一条直线 <span class="mono">h = (m²d/4)k</span>——直线上<b>任何一点</b>都给出与左图完全相同的曲线和相同的残差。材料手册把 k 限在 166–172 之后，h 才被"挤"到 15.0–15.6。注意：<b>这不是精度问题，是方程数问题；点再多也挤不出第二条约束。</b></figcaption>
+</figure>
+
+<h1>3. 一个方程、两个未知数：简并</h1>
+
+<p>把几何代进去（<span class="mono">P/A = πd/(πd²/4) = 4/d</span>）：</p>
+
+<div class="eq">m² = hP/(kA) = 4h/(kd) &nbsp;&nbsp;⟹&nbsp;&nbsp; h = (m²d/4)·k &nbsp;&nbsp;⟺&nbsp;&nbsp; h/k = m²d/4</div>
+
+<p>你的数：<span class="mono">m²d/4 = 28.69 × 0.01277/4 = 0.09160</span>。于是</p>
+
+<table class="keep">
+<tr><th style="width:24%">假设 k</th><th style="width:22%">推出 h</th><th>这说明什么</th></tr>
+<tr><td class="num">100 W m⁻¹K⁻¹</td><td class="num">9.2</td><td>数学上完全成立，物理上铝没这么低</td></tr>
+<tr><td class="num">166 W m⁻¹K⁻¹</td><td class="num">15.2</td><td>接近手册值，但这只是"因为你假定了 k"</td></tr>
+<tr><td class="num">250 W m⁻¹K⁻¹</td><td class="num">22.9</td><td>数学上也完全成立</td></tr>
+</table>
+
+<h3>3.1 为什么"残差最小"救不了它</h3>
+
+<p>拟合在最小化 <span class="mono">Σ(θᵢᵃᵗᵃ − θᵢᵐᵒᵈᵉˡ)²</span>，而模型只通过 <span class="mono">m</span> 依赖 k 与 h。也就是说雅可比矩阵沿方向</p>
+
+<div class="f">(δk, δh) ∝ (1, m²d/4) = (1, 0.0916)</div>
+
+<p><b>恒为零</b>：把 k 和 h 按这个比例同时改，模型曲线一个字都不变，残差不变。这叫<b>零空间（null space）</b>或<b>简并</b>。任何优化器、任何初值、任何正则化，都无法沿这个方向给出答案——除非外面再补一条信息。</p>
+
+<div class="n">
+<b>几何直觉（最好用的一句话）：</b>稳态只让你看到"轴向导热"和"侧向漏热"这两支的<b>平衡点</b>——就像一条直线，你只知道它的<b>斜率</b>，不知道它整体的<b>尺度</b>。k 是"每米温差推动多少热流"，h 是"每 K 温差每 m² 带走多少功率"；把两者同时放大，热流分配一模一样，温度剖面当然一模一样。
+</div>
+
+<p>外面补的那条信息只能是"<b>k 或 h 之一另外知道</b>"：查手册（k = 166–172，±2%）、或者独立标定 h。前者可行但等于<b>把手册值当输入</b>，后者我们没做。所以稳态路线的诚实说法是：<b>"给出 h/k，并用中心 k 换算出一个 h"</b>，不是"测出 k"。</p>
+
+
+<h1>4. 更本质的看法：稳态就是 ω → 0 的极限</h1>
+
+<p>上面说"少一个方程"，听起来像记账。换一个角度就能看出它是<b>物理</b>：把周期解的两条方程写出来，然后让频率归零。</p>
+
+<div class="eq small">s = q + iq′ ，&nbsp; s² = (ν + iω)/κ ，&nbsp; 分离实部虚部：</div>
+
+<div class="eq">q² − q′² = ν/κ &nbsp;&nbsp;&nbsp;&nbsp; 2qq′ = ω/κ</div>
+
+<p>第二条说明 <span class="mono">q′</span> 是"含 ω"的量：<span class="mono">q′ = ω/(2κq)</span>。于是</p>
+
+<div class="eq">ω → 0 &nbsp;⟹&nbsp; q′ → 0 ，&nbsp; q → √(ν/κ) = m</div>
+
+<div class="k">
+<span class="kh">所以 m 不是新东西——它就是"零频率的 q"。</span>
+频率一消失，虚部（相位）跟着消失，你的两个观测量（振幅衰减、相位滞后）塌缩成一个。<b>这才是"少一个数"的根本原因</b>：不是探头不够、不是点不够、也不是算法不好，而是<b>在 ω = 0 处，相位这块信息物理上不存在</b>。
+</div>
+
+<p>反过来也解释了 Ångström 法为什么成立：<b>要让相位说话，就必须让场在动。</b>ω 越大，<span class="mono">q′</span> 越大，相位携带的独立信息越强——这也是为什么"为什么要用正弦而不是阶跃"（Q12）的答案。</p>
+
+<h3>4.1 用你自己的五个周期，把这条曲线画出来</h3>
+
+<table class="keep">
+<tr><th style="width:16%">周期</th><th style="width:16%">ω (rad/s)</th><th style="width:16%">q (1/m)</th><th style="width:16%">q′ (1/m)</th><th>√(q² − q′²)</th></tr>
+<tr><td class="num">100 s</td><td class="num">0.0628</td><td class="num">21.258</td><td class="num">21.889</td><td class="num"><b>不可用</b>（负数）</td></tr>
+<tr><td class="num">200 s</td><td class="num">0.0314</td><td class="num">15.653</td><td class="num">15.061</td><td class="num">4.26</td></tr>
+<tr><td class="num">300 s</td><td class="num">0.0209</td><td class="num">12.747</td><td class="num">12.036</td><td class="num">4.20</td></tr>
+<tr><td class="num">400 s</td><td class="num">0.0157</td><td class="num">11.417</td><td class="num">9.835</td><td class="num">5.80</td></tr>
+<tr><td class="num">500 s</td><td class="num">0.0126</td><td class="num">10.515</td><td class="num">8.846</td><td class="num">5.68</td></tr>
+<tr><td><b>ω → 0</b></td><td class="num">0</td><td class="num"><b>m</b></td><td class="num"><b>0</b></td><td class="num">m</td></tr>
+</table>
+
+<p>最后一列的两种算法给出 <b>4.20 与 5.36</b>，两者差 28%——这就是那个老问题："同一个 m，从平均场读是 5.36，从周期场外推是 4.20。"（Q13 讲的就是它。）</p>
+
+<figure>
+  <img src="../figures/q10/fig03_dc_limit.png" alt="q and q-prime versus drive frequency">
+  <figcaption><b>图 2</b>　把两条曲线的理论解画满整个频率轴（用的是五周期 κ = 6.80×10⁻⁵、ν = 1.20×10⁻³）：<b>q</b>（蓝）在低频端饱和到 m = 4.20，<b>q′</b>（青）一路掉向零。空心点是你们五个周期的实测值——它们全在"两者都还很大"的区间里，离 ω→0 还有一两个量级。<b>这就是"稳态是这条曲线的端点"的图形版本：越往左走，能用的观测量越少，走到最左只剩一个数。</b></figcaption>
+</figure>
+
+<h1>5. 周期法到底多了什么</h1>
+
+<p>把两条路线并排放在一张表里，缺什么一眼就看见：</p>
+
+<table class="keep">
+<tr><th style="width:20%"></th><th style="width:34%">稳态</th><th>周期</th></tr>
+<tr><td>未知数</td><td>k、h（两个）</td><td>κ、ν（两个）</td></tr>
+<tr><td>已知的"自变量"</td><td><b>无</b></td><td><b>ω</b>——我们自己设的驱动频率</td></tr>
+<tr><td>每点观测量</td><td>1 个（平均温度）</td><td>2 个（振幅 B、相位 φ）</td></tr>
+<tr><td>方程数</td><td>1（<span class="mono">m² = hP/kA</span>）</td><td>2（实部 + 虚部）</td></tr>
+<tr><td>结果</td><td>只能给比值 h/k</td><td>κ、ν 各自可解</td></tr>
+<tr><td>是否需要 T<sub>∞</sub></td><td><b>需要</b>（而且很敏感）</td><td><b>不需要</b></td></tr>
+</table>
+
+<p>多出来的那个方程，全部来自"<b>ω 是已知的</b>"这一件事：</p>
+
+<div class="f">观测：每点两个数 B_i、φ_i  →  空间拟合  →  q、q′
+代数：κ = ω / (2 q q′)              ← ω 在分子上，是"输入"
+      ν = κ (q² − q′²)              ← 两条方程的差
+反推：k = κ ρc ,  h = ν ρc (d/4)</div>
+
+<p>稳态相当于把 <span class="mono">ω</span> 设成 0 代进第一行：<span class="mono">κ = 0/(2·q·0)</span>——退化成 0/0，什么也解不出来。这就是"不能只做稳态"的数学版本。</p>
+
+<div class="n">
+<b>还有一个常被忽略的好处：多频自检。</b>周期法里 ω 是自由参数，每换一个周期就是一次<b>独立的实验条件</b>，于是能问"κ 在五个频率上一致吗"（答案：跨度 4.9%，最大一对差 1.43σ）。稳态只有一个条件，做十次也只能重复同一个数——<b>没有内部一致性可查</b>。
+</div>
+
+
+<h1>6. 第二个、独立的理由：稳态必须知道 T<sub>∞</sub></h1>
+
+<p>上面说"只能得比值"，这是<b>结构性问题</b>。还有一层是<b>数值问题</b>：稳态路线必须先把 T<sub>∞</sub> 填进去，而它没测。这层更致命，因为它连"把 k 当已知、只求 h"这条路也一起毁掉。</p>
+
+<h3>6.1 机理：θ 越小的点，被 T<sub>∞</sub> 误差伤得越重</h3>
+
+<p>θ = T − T<sub>∞</sub>。若真实室温比你填的数高 δ，等价于每个 θ 都被平移 −δ。但 m 是由 θ 的<b>相对</b>衰减率决定的，所以要看 <b>δ/θ</b>：</p>
+
+<table class="keep">
+<tr><th style="width:14%"></th><th style="width:14%">T1</th><th style="width:14%">T2</th><th style="width:14%">T3</th><th style="width:14%">T4</th><th>T5</th></tr>
+<tr><td>θ (K)</td><td class="num">8.02</td><td class="num">6.49</td><td class="num">5.40</td><td class="num">4.56</td><td class="num">3.75</td></tr>
+<tr><td>1/θ (K⁻¹)</td><td class="num">0.125</td><td class="num">0.154</td><td class="num">0.185</td><td class="num">0.219</td><td class="num"><b>0.267</b></td></tr>
+<tr><td>δ=1 K 时的相对扰动</td><td class="num">12%</td><td class="num">15%</td><td class="num">19%</td><td class="num">22%</td><td class="num"><b>27%</b></td></tr>
+</table>
+
+<p><b>扰动随 x 增大</b>——端部被削掉的比例远大于基座。这在图形上<b>看起来就是"衰减得更快"</b>，于是拟合只能靠<b>调大 m</b> 来补偿。所以 T<sub>∞</sub> 猜高 ⇒ θ 被削 ⇒ m 偏大 ⇒ h 偏大（h ∝ m²）。</p>
+
+<h3>6.2 定量：一个解析式 + 一条实测曲线</h3>
+
+<p>用两点指数估计 <span class="mono">m = (1/xₙ)[ln θ₀ − ln θₙ]</span> 对 T<sub>∞</sub> 求导：</p>
+
+<div class="eq small">∂m/∂T<sub>∞</sub> = (1/xₙ) · (1/θₙ − 1/θ₀) = (1/0.1915)(0.267 − 0.125) = <b>0.74 m⁻¹ 每 K</b></div>
+
+<p>换成相对量：<b>室温错 1 K ⇒ m 偏 14% ⇒ h 偏 28%</b>（因为 h ∝ m²）。而我们的 T<sub>∞</sub> 是从"开跑前 TEC 的第一读数"取的（<span class="mono">m08_initial_tec_room_references.json</span>，24.13 °C），<b>不是独立空气温度计</b>；长时间跑动下室温漂 1–2 K 完全可能。</p>
+
+<p>实际重做 1 参数 cosh 拟合（固定 T<sub>∞</sub>，拟合 θ₀ 和 m，同 analysis 的模型）：</p>
+
+<table class="keep">
+<tr><th style="width:26%">假定的 T<sub>∞</sub></th><th style="width:22%">拟合出的 m (1/m)</th><th style="width:22%">反推 h (k=164.5)</th><th>相对 24 °C</th></tr>
+<tr><td class="num">18 °C</td><td class="num">3.43</td><td class="num">6.2</td><td class="num">−58%</td></tr>
+<tr><td class="num">20 °C</td><td class="num">3.82</td><td class="num">7.7</td><td class="num">−47%</td></tr>
+<tr><td class="num">22 °C</td><td class="num">4.38</td><td class="num">10.1</td><td class="num">−31%</td></tr>
+<tr><td class="num"><b>24 °C</b></td><td class="num"><b>5.28</b></td><td class="num"><b>14.6</b></td><td class="num">—</td></tr>
+<tr><td class="num">26 °C</td><td class="num">7.10</td><td class="num">26.5</td><td class="num">+82%</td></tr>
+<tr><td class="num">27 °C</td><td class="num">9.06</td><td class="num">43.1</td><td class="num">+196%</td></tr>
+</table>
+
+<p class="small">（h 一列用 k = 164.5 W m⁻¹K⁻¹，即周期法给的中心值；若用手册 167，各数再高 1.5%。）</p>
+
+<figure>
+  <img src="../figures/q10/fig02_room_sensitivity.png" alt="m and h versus assumed room temperature">
+  <figcaption><b>图 3</b>　只改变"你假定的室温"，重新拟合 100 s 的五个平均值：<b>m 从 3.4 涨到 9.1，h 从 6 涨到 43</b>，两个量级的变化只来自一个从未测过的常数。红色虚线是端部的平均温度 27.9 °C——一旦假定的 T<sub>∞</sub> 逼近它，θ₅ → 0、1/θ₅ 发散，拟合彻底失控。<b>这就是"没有独立室温计"在稳态路线里的真实代价。</b></figcaption>
+</figure>
+
+<h3>6.3 周期法为什么完全免疫</h3>
+
+<p>因为 B 和 φ 是"相对均值"的量。把整条曲线加一个常数 Δ：</p>
+
+<div class="f">T(t) = a + B cos(ωt + φ)
+        ↓  a → a + Δ  （等价于 T∞ 猜错 Δ）
+T(t) = (a + Δ) + B cos(ωt + φ)      ← B 与 φ 一个字都没变</div>
+
+<p>最小二乘里的常数项（设计矩阵的第一列）把这个平移<b>全部吸收</b>，振幅和相位两列不受影响。所以 <span class="mono">κ = ω/(2qq′)</span> 里既没有 T<sub>∞</sub>、也没有 h、也没有 A/P——<b>这是周期法最值钱的性质。</b></p>
+
+
+<h1>7. 两条路线的数值对照（同一根棒）</h1>
+
+<p>把两条链子并排走一遍，每一步都写清"用了哪个输入"：</p>
+
+<table class="keep">
+<tr><th style="width:6%">步</th><th style="width:44%">稳态路线</th><th>周期路线</th></tr>
+<tr><td class="num">1</td><td>五个平均温度 → 拟合 <b>m = 5.3565</b> 1/m（需 T<sub>∞</sub> = 24.13 °C）</td><td>五条曲线 → 拟合 <b>q = 15.653、q′ = 15.061</b> 1/m</td></tr>
+<tr><td class="num">2</td><td><span class="mono">h/k = m²d/4 = 0.09160</span></td><td><span class="mono">κ = ω/(2qq′) = 6.80×10⁻⁵</span> m²/s</td></tr>
+<tr><td class="num">3</td><td>两个未知数，到此为止</td><td><span class="mono">k = κρc = 164.5</span> W m⁻¹K⁻¹</td></tr>
+<tr><td class="num">4</td><td>借 k = 164.5 ⇒ <b>h = 15.1</b> W m⁻²K⁻¹</td><td><span class="mono">ν = κ(q²−q′²) = 1.20×10⁻³</span> 1/s ⇒ <b>h = 9.3</b></td></tr>
+</table>
+
+<p>注意第 4 步的分岔：<b>同一个 h，15.1 和 9.3，差 63%。</b>这不是谁算错了，而是三条效应叠在一起：</p>
+
+<div class="f">① 放大：h ∝ m²  ⇒  m 差 25% 变成 h 差 56%
+② 来源：稳态的 m 依赖 T∞（第 6 节：1 K → 14%）；周期的 h 不依赖 T∞
+③ 条件数：周期的 h ∝ (q² − q′²)，两个大数相减
+   Ω = (q² + q′²)/(q² − q′²) = 5.8 – 25.9
+   ⇒ 周期法自己的 h 也在 9.3 – 18.2 之间飘</div>
+
+<p>所以<b>诚实</b>的说法是：</p>
+
+<div class="n">
+<b>稳态（借 k）给 h = 15.1；周期给 h = 9.3–18.2。15.1 落在这个区间里，但没有独立信息能判断谁更准。</b>而这个宽度（2 倍）本身主要由 <span class="mono">q² − q′²</span> 的条件数决定（Ω 最大到 26）。这就是为什么本实验只报"<b>h 的量级</b>"，而把 k 报到 ±5%。
+</div>
+
+<p>反过来说，如果哪天装了独立室温计，稳态这条路的 h 会从"量级"变成"可分辨"——这是最值得补的一个实验（<span class="mono">2</span> 小时即可）。</p>
+
+<h1>8. 交叉检查：两条路线本应互相钉住</h1>
+
+<p>两条路线之间有一个<b>恒等式</b>，是最便宜的体检：</p>
+
+<div class="eq">m² = ν/κ = q² − q′²</div>
+
+<table class="keep">
+<tr><th style="width:34%">m 的两个来源</th><th style="width:26%">数值 (1/m)</th><th>结论</th></tr>
+<tr><td>平均场 cosh 拟合</td><td class="num">4.56 – 5.97</td><td>依赖 T<sub>∞</sub>，端部信息在 cosh 里</td></tr>
+<tr><td>周期场 √(q² − q′²)</td><td class="num">4.20 – 5.80</td><td>不依赖 T<sub>∞</sub>，但吃条件数</td></tr>
+<tr><td colspan="2">两边差</td><td><b>5 – 35%</b>（比任何一条路线自己的误差棒都大）</td></tr>
+</table>
+
+<p>差 5–35% 说明"端部模型 + 室温"这块系统误差还没吃完（Q7 的 ε<sub>T</sub> 最大 26%、第 6 节的 0.74 m⁻¹/K 都在这个量级）。<b>但它至少是同一个量级、同一个方向，所以"物理图像正确、数值未致密"是站得住的结论。</b></p>
+
+<div class="w">
+<b>而 100 s 那一组在这条检查上直接失效：</b>q = 21.258 但 q′ = 21.889 ⇒ <span class="mono">q² − q′² &lt; 0</span> ⇒ m² 为负，物理上不可能。这跟 <span class="mono">ν = κ(q² − q′²) &lt; 0</span>（"负的漏热"）是同一件事——所以 100 s 只能当诊断，不能进最终值。
+</div>
+
+
+<h1>9. 那稳态还剩什么用？（第三条理由：它自己也稳不住）</h1>
+
+<p>"不能单独用"不等于"没用"。稳态提供的是周期法<b>结构上拿不到</b>的东西：</p>
+
+<table class="keep">
+<tr><th style="width:34%">稳态给什么</th><th>周期给什么</th></tr>
+<tr><td>m（<b>含端部信息</b>，cosh 才拟合得动）</td><td>q、q′（<b>免 T<sub>∞</sub></b>）</td></tr>
+<tr><td>唯一能<b>检验端部边界条件</b>的路线</td><td>检验线性、单频、扫描时序</td></tr>
+<tr><td>与 √(q² − q′²) 的交叉检查</td><td>多频一致性（5 个独立 ω）</td></tr>
+<tr><td>给 h/k 的比值（免去假设 A/P）</td><td>给 κ、ν 的绝对值</td></tr>
+</table>
+
+<p>一句话：<b>稳态给"形状"，周期给"动力学"。</b>两者互补；缺了任何一个，另一个都无法自证。</p>
+
+<h3>9.1 但"做稳态"本身有个隐形成本：它必须真的稳</h3>
+
+<p>周期法的判据是"周期内相位/幅值重复"，天然可以平均；稳态的判据只能是"斜率 &lt; x °C/min"，而热量扩散的时间常数是几百秒——<b>等到它真稳，要等很久</b>。Module 7 的实测记录（<span class="mono">docs/module_notes/module_07_stationary_fin.md</span>）：</p>
+
+<div class="f">40 °C 保温 31 min = 3.1 τ（τ = 591–739 s）
+  仍差预注册判据 |dT/dt| ≤ 0.02 °C/min 的 2.6 倍
+  再达标需 ln 2.6 = 0.96 τ ≈ 9 min；连漂移限 3.4× 一起满足需 ≈ 12 min 更多
+
+窗口滑动（window_slide）是最大项：
+  最后 900 s 里 m 仍以 ≈1% / 100 s 下降（4.860 → 4.804 1/m）
+  ⇒ 单报一个 m，会继承"几十个百分点"的散布，而这<b>不是</b>误差棒，是漂移</div>
+
+<h3>9.2 而且"自由拟合 T<sub>∞</sub>"这条路已经被证明是死的</h3>
+
+<p>有人会问："那就把 T<sub>∞</sub> 也当未知数一起拟合不就行了？" Module 7 试过，结果正好说明这是<b>病态</b>：</p>
+
+<div class="f">同一份稳态记录，自由拟合 T∞ 的结果：
+  T∞ = 26.98 °C      ← 比探头自己的静置读数高 3 °C
+  m  = 6.29 1/m      ← 比固定 T∞ 时高 30%
+  ⇒ 拟合把自由度花在"补偿漂移"上，而不是求 m
+
+Module 7 独立的敏感性分析（mL ≈ 1.3 的记录）：
+  环境温度 +1 °C  ⇒  m 变化 +7.6%
+本节对 100 s 记录的解析估计：0.74 1/m 每 K ≈ +14%
+  （同一方向、同一量级；差别来自该记录端部 θ₅ 更小）</div>
+
+<div class="w">
+<b>所以完整的答案是三条，不是一条：</b><br>
+① <b>结构</b>：只有一个方程、两个未知数 ⇒ 只能得 h/k（第 3 节）；<br>
+② <b>物理</b>：稳态是 ω→0，相位观测量在极限处消失（第 4 节）；<br>
+③ <b>数值</b>：必须假定 T<sub>∞</sub>，而 m 对它有 8–14%/K 的敏感度，同时"稳"本身要等几十个 τ（第 6、9 节）。
+</div>
+
+
+<h1>10. 口试版</h1>
+
+<h3>10.1 三十秒版（被问"为什么不直接做稳态"）</h3>
+
+<div class="k">
+稳态令 ∂θ/∂t = 0，等于把时间这个自变量删掉；时间没了、ω 也没了，而 ω 正是周期法用来分开两个未知数的那条已知量。剩下 <b>m² = hP/(kA)</b> 一个数，<span class="mono">h = (m²d/4)k</span>：凡是满足这个比值的 (k, h) 组合曲线完全重合、残差完全一样，所以只能给 <b>h/k</b>，拿不到 k。<b>换频率看更清楚：ω→0 时 q′→0、q→m，相位这个观测量在极限处消失了。</b>
+</div>
+
+<h3>10.2 六十秒版（再加数字与 T<sub>∞</sub>）</h3>
+
+<div class="k">
+接上面。第二个独立理由是它<b>必须知道 T<sub>∞</sub></b>。我的 θ 从基座 8.0 K 衰到端部 3.75 K，所以室温错 1 K，端部的相对扰动是 27%、基座只有 12%——曲线看起来就像"衰减更快"，m 被抬高 0.74 1/m（14%）。而 <b>h ∝ m²</b>，所以 h 偏 28%。实测把 T<sub>∞</sub> 从 18 改到 26 °C，反推的 h 从 6 变到 26。周期法的 B 和 φ 对整体平移免疫，κ = ω/(2qq′) 里连 h 和 T<sub>∞</sub> 都不出现。
+</div>
+
+<h3>10.3 英文口语卡（可直接照念）</h3>
+
+<div class="f">Q10-1  A steady state sets the time derivative to zero, and that removes the
+       drive frequency, which is exactly the known quantity the periodic
+       method uses to separate the two unknowns.</div>
+
+<div class="f">Q10-2  What is left is one number, m^2 = hP/(kA).  Substituting P/A = 4/d
+       gives h = (m^2 d/4) k, so the fit only fixes the ratio h/k.  Every
+       pair on that line produces the same profile and the same residual.</div>
+
+<div class="f">Q10-3  Equivalently, steady state is the omega -> 0 limit: q' goes to zero
+       and q goes to m, so the phase observable disappears.</div>
+
+<div class="f">Q10-4  The second reason is the room temperature.  My excess temperature
+       falls from 8.0 K to 3.75 K, so a 1 K error in T_inf perturbs the tip
+       by 27 per cent and inflates m by 0.74 per metre, which is 28 per cent
+       in h because h scales as m squared.</div>
+
+<div class="f">Q10-5  The periodic route is immune: adding a constant to the trace changes
+       only the mean, not the amplitude or the phase.</div>
+
+<div class="n">
+<b>追问预案</b><br>
+① <b>"装个温度计不就完了？"</b>——对，这是最该补的实验（2 小时）。补上之后稳态的 h 会从"量级"变成"可分辨"，但它仍然只给 h/k 这个<b>结构</b>问题：k 还是得从手册来。<br>
+② <b>"那你的 h 到底多少？"</b>——只报量级 9.3–18.2 W m⁻²K⁻¹。因为 h ∝ (q² − q′²)，条件数 Ω = 5.8–25.9，相当于把两个大数相减。<br>
+③ <b>"100 s 那组为什么不能用？"</b>——q′ = 21.89 &gt; q = 21.26 ⇒ q² − q′² &lt; 0 ⇒ ν 变负、"负的漏热"，物理上不可能。<br>
+④ <b>"那你还做稳态干什么？"</b>——只有它能检验端部边界条件（cosh 形状）、并给 √(q² − q′²) 一个独立对照（现在差 5–35%）。
+</div>
+
+<div class="w">
+<b>四个常见错误写法</b><br>
+① 说"稳态测得更准"——错，是<b>少一个方程</b>，不是精度问题；<br>
+② 报"稳态测出 k = ⋯"——你报的其实是"用 k = 167 换出来的 h"；<br>
+③ 把 T<sub>∞</sub> 当未知数自由拟合——Module 7 试过：T<sub>∞</sub> 跑到 26.98 °C、m 高 30%，那是<b>病态</b>不是解法；<br>
+④ 忘记 h ∝ m²：只报"m 差 25%"，不说"h 差 56%"，会被追一句就露。
+</div>
+
+<h1>附录 A. 一页速查</h1>
+
+<h3>A.1 四个公式</h3>
+
+<table class="keep">
+<tr><th style="width:34%">关系</th><th style="width:20%">单位</th><th>一句话含义</th></tr>
+<tr><td class="mono">m² = hP/(kA) = 4h/(kd)</td><td class="num">m⁻²</td><td>稳态唯一能测到的组合：两个通道的<b>比值</b></td></tr>
+<tr><td class="mono">h = (m²d/4) k ⟺ h/k = m²d/4</td><td class="num">—</td><td>简并直线：一个 m 只锁一条线</td></tr>
+<tr><td class="mono">m = √(ν/κ) = lim<sub>ω→0</sub> q</td><td class="num">m⁻¹</td><td>稳态 = 零频率的 q；此时 q′ = 0</td></tr>
+<tr><td class="mono">∂m/∂T<sub>∞</sub> ≈ (1/xₙ)(1/θₙ − 1/θ₀)</td><td class="num">m⁻¹K⁻¹</td><td>θ 越小的点越怕室温错（≈0.74 每 K）</td></tr>
+</table>
+
+<h3>A.2 你的数字（背这七个就够）</h3>
+
+<table class="keep">
+<tr><th style="width:46%">量</th><th style="width:22%">值</th><th>备注</th></tr>
+<tr><td>m（100 s 平均剖面）</td><td class="num">5.3565 1/m</td><td>mL = 1.454，1/m = 18.7 cm</td></tr>
+<tr><td>h/k = m²d/4</td><td class="num">0.09160</td><td>d = 12.77 mm</td></tr>
+<tr><td>√(ν/κ)（周期法）</td><td class="num">4.20 1/m</td><td>比 5.36 低 28%</td></tr>
+<tr><td>∂m/∂T<sub>∞</sub></td><td class="num">0.74 K⁻¹</td><td>⇒ h 偏 28% 每 K</td></tr>
+<tr><td>T<sub>∞</sub> 敏感性（18→26 °C）</td><td class="num">h: 6.2→26.5</td><td>k = 164.5 固定</td></tr>
+<tr><td>两条路线的 h</td><td class="num">15.1 vs 9.3–18.2</td><td>稳态（借 k） vs 周期</td></tr>
+<tr><td>条件数 Ω = (q²+q′²)/(q²−q′²)</td><td class="num">5.8–25.9</td><td>h 的误差被放大 6–26 倍</td></tr>
+</table>
+
+<h3>A.3 三条自检（讲完前默念）</h3>
+
+<ol>
+<li><b>方程数对了吗？</b>稳态 1 个方程、2 个未知数 ⇒ 只能给比值；周期 2 个方程（实部+虚部）⇒ 各自可解。</li>
+<li><b>ω 在哪？</b>κ = ω/(2qq′) 里 ω 在分子；稳态 ω = 0 ⇒ 退化。这句话能一句话讲清"为什么必须让场动起来"。</li>
+<li><b>误差方向对吗？</b>T<sub>∞</sub> 猜高 ⇒ θ 被削 ⇒ m 偏大 ⇒ h 偏大（h ∝ m²）；Δh/h ≈ 2Δm/m。</li>
+</ol>
+
+<p class="small" style="margin-top:10pt;border-top:.8pt solid #cfd8de;padding-top:5pt">
+数值来源：<span class="mono">Module_8/data/processed/five_period_review/</span>（五周期 q、q′、κ、ν）、<span class="mono">transport_note/m08_transport_parameters.json</span>（平均剖面 m 与室温参考）、<span class="mono">m08_initial_tec_room_references.json</span>（T<sub>∞</sub> 取法）、<span class="mono">docs/module_notes/module_07_stationary_fin.md</span>（31 min 保温、T<sub>∞</sub> 自由拟合、+7.6%/K）。图 1–3 由 <span class="mono">Module_8/python/q10_figures.py</span> 生成；图 3 的曲线用同一份模型对 100 s 五个平均值重做 1 参数 cosh 拟合（固定 T<sub>∞</sub>，拟合 θ₀ 与 m），给出 3.82 / 4.38 / 5.28 / 7.10，与口试册 Q10 的表一致。
+</p>
+<!--END-->
+</body>
+</html>
+
